@@ -250,7 +250,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 Can I pay with UPI or PhonePe if I am in India?
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Yes! We support instant UPI QR code scans and payment requests for PhonePe, Google Pay, and Paytm, as well as international PayPal and credit card payments.
+                Yes! We support VISA debit/credit, Mastercard, international PayPal, and instant UPI QR code scans for PhonePe, Google Pay, and Paytm.
               </p>
             </div>
             <div className="space-y-1.5">

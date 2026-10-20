@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage, onO
           <div className="flex items-center gap-3 text-[11px] text-slate-400">
             <span className="text-amber-400 font-medium">Limited slots: 4 remaining this week</span>
             <span className="hidden md:inline">·</span>
-            <span className="hidden md:inline">Payment via PayPal & UPI</span>
+            <span className="hidden md:inline">Payment via Visa, Mastercard, PayPal & UPI</span>
           </div>
         </div>
       </div>

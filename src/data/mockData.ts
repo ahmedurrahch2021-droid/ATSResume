@@ -201,7 +201,7 @@ export const TESTIMONIALS: Testimonial[] = [
     quote: 'As an engineer, I hate writing about myself. The AI draft pulled out the right tech stack, but the developer review made my actual system architectures and metrics look truly impressive. Worth 5x the price.',
     metric: 'Offer accepted at $130k',
     avatarSeed: 'david',
-    packageUsed: 'Resume Starter ($15)'
+    packageUsed: 'Resume Starter ($10)'
   },
   {
     name: 'Priya R.',

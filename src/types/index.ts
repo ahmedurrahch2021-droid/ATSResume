@@ -82,7 +82,7 @@ export interface OrderFormData {
   pageLength: '1' | '2';
   targetSalary: string;
   specialNotes: string;
-  paymentMethod: 'paypal' | 'upi' | 'card';
+  paymentMethod: 'visa' | 'mastercard' | 'paypal' | 'upi' | 'card';
 }
 
 export interface Testimonial {
