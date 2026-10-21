@@ -2,11 +2,11 @@
 
 @theme {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --color-brand-navy: #0F172A;
-  --color-brand-blue: #3B82F6;
-  --color-brand-emerald: #10B981;
-  --color-brand-amber: #F59E0B;
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-brand-emerald: #059669;
+  --color-brand-emerald-light: #10B981;
+  --color-brand-slate: #0F172A;
+  --color-brand-slate-muted: #64748B;
 }
 
 body {

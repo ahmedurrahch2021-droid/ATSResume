@@ -187,16 +187,16 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onSelectPlan }) 
           <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto">
             Choose your package and submit your target job. We’ll handle the rest.
           </p>
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={() => onSelectPlan('starter')}
-              className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-emerald-500/20"
+              className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm"
             >
               Start For $10 (Starter)
             </button>
             <button
               onClick={() => onSelectPlan('boost')}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center gap-1.5"
+              className="w-full sm:w-auto px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5"
             >
               <span>Get Career Boost ($25)</span>
               <ArrowRight className="w-4 h-4" />

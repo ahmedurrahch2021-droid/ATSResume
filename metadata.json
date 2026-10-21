@@ -1,6 +1,6 @@
 {
-  "name": "ResumeRevive",
-  "description": "Professional ATS-optimized resume and cover letter overhaul in 24 hours. AI speed combined with senior web developer human review.",
+  "name": "ATSresume",
+  "description": "ATS-verified resume optimization, authentic single-column templates, and 24-hour developer overhaul. Tested against Workday, Greenhouse, and Lever.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

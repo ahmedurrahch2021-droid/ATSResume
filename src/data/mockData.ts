@@ -1,4 +1,10 @@
-import { PricingPackage, ExampleResume, Testimonial, FaqItem } from '../types';
+import { PricingPackage, ExampleResume, Testimonial, FaqItem, ResumeTemplate } from '../types';
+
+export const ATS_IMAGES = {
+  verifiedResume: '/src/assets/images/ats_verified_resume_showcase_1792524530590.jpg',
+  scannerDashboard: '/src/assets/images/ats_scanner_software_dashboard_1792524531983.jpg',
+  templatePreview: '/src/assets/images/ats_resume_template_preview_1792524530797.jpg'
+};
 
 export const PACKAGES: PricingPackage[] = [
   {
@@ -436,7 +442,7 @@ export const ATS_CASE_STUDY_DATA = {
     recruiterScreeningCalls: 6,
     finalRoundInterviews: 3,
     offerLanded: '$82,000 Base + Equity at Series B Tech Scaleup',
-    timeToOffer: '18 days after ResumeRevive overhaul'
+    timeToOffer: '18 days after ATSresume overhaul'
   }
 };
 
@@ -464,6 +470,194 @@ export const ATS_PIPELINE_STEPS = [
     name: 'Ranked Recruiter Dashboard',
     subtitle: 'Top 5-10 candidates only',
     desc: 'Out of 250+ submissions, the recruiter only opens the top 5 to 10 profiles sorted by ATS match score. If you aren\'t in that top tier, no human ever sees your qualifications.'
+  }
+];
+
+export const ATS_TEMPLATES: ResumeTemplate[] = [
+  {
+    id: 'tech-core',
+    title: 'Software Engineering Core ATS',
+    category: 'tech',
+    categoryLabel: 'Tech & Engineering',
+    recommendedFor: 'Frontend, Full-Stack, Backend, DevOps & Mobile Engineers',
+    atsScore: 99,
+    downloadCount: '4,820 downloads',
+    format: 'Clean Single-Column · UTF-8 Validated',
+    previewImage: ATS_IMAGES.templatePreview,
+    highlightPoints: [
+      'Standardized "Technical Skills" matrix prioritized for Boolean parsing',
+      'Accomplishment bullets formatted according to Google XYZ impact formula',
+      'Zero unparseable graphic skill bars or multi-column layout glitches',
+      'Fully editable .DOCX format + pre-formatted print-ready PDF layout'
+    ],
+    sampleContent: {
+      name: 'Alex R. Chen',
+      contact: 'San Francisco, CA · (555) 123-4567 · alex.chen@email.com · linkedin.com/in/alexrchen',
+      summary: 'Senior Software Engineer with 6+ years designing distributed backend microservices and high-throughput web applications. Proven track record reducing API latency by 35% and scaling transactional platforms to 2M+ daily requests.',
+      skills: ['TypeScript', 'Node.js', 'Go', 'React', 'PostgreSQL', 'Redis', 'Docker', 'Kubernetes', 'AWS (EKS, S3, RDS)', 'CI/CD Pipelines'],
+      experience: [
+        {
+          role: 'Senior Software Engineer',
+          company: 'ScaleTech Systems · San Francisco, CA',
+          dates: '04/2021 – Present',
+          bullets: [
+            'Spearheaded migration of legacy monolithic payment service to Go/Node.js microservices, cutting p99 latency from 450ms to 85ms across 1.8M daily transactions.',
+            'Architected distributed Redis caching layer, reducing PostgreSQL read query loads by 42% and eliminating peak Black Friday database bottlenecks.',
+            'Mentored 5 junior engineers and instituted automated TypeScript linting and unit testing protocols, elevating sprint code coverage from 68% to 92%.'
+          ]
+        },
+        {
+          role: 'Software Engineer',
+          company: 'Nexus Digital Media · San Jose, CA',
+          dates: '08/2018 – 03/2021',
+          bullets: [
+            'Developed 12+ customer-facing React components with Tailwind CSS, improving core web vitals (LCP/FID) by 28%.',
+            'Engineered RESTful and GraphQL APIs consumed by iOS and Android clients, maintaining 99.98% operational uptime.',
+            'Collaborated with product managers in 2-week agile sprints, delivering 94% of committed user stories on schedule.'
+          ]
+        }
+      ],
+      education: 'B.S. in Computer Science · University of California, Berkeley (3.8 GPA)',
+      certifications: ['AWS Certified Solutions Architect – Associate', 'Certified Kubernetes Application Developer (CKAD)']
+    }
+  },
+  {
+    id: 'product-growth',
+    title: 'Product & Growth Leadership',
+    category: 'product',
+    categoryLabel: 'Product & Growth',
+    recommendedFor: 'Product Managers, Growth Leads, PMMs & Scrum Masters',
+    atsScore: 98,
+    downloadCount: '3,210 downloads',
+    format: 'Executive Single-Column · High Impact',
+    previewImage: ATS_IMAGES.verifiedResume,
+    highlightPoints: [
+      'Tailored for Enterprise Workday and Greenhouse keyword algorithms',
+      'Strong metric placement (ARR, retention rates, activation lifts)',
+      'Clean horizontal dividing rules with 100% text parser readability',
+      'Instant free download in plain text, Microsoft Word, and PDF'
+    ],
+    sampleContent: {
+      name: 'Maya Lin, MBA',
+      contact: 'New York, NY · (555) 987-6543 · maya.lin@email.com · linkedin.com/in/mayalin-pm',
+      summary: 'Data-driven Senior Product Manager with 7+ years scaling B2B SaaS revenue funnels. Experienced driving cross-functional squads across UX, data science, and engineering to deliver $12M+ in net new annualized revenue.',
+      skills: ['Product Lifecycle Management', 'Roadmap Prioritization', 'A/B Experimentation', 'SQL & Amplitude', 'Customer Discovery', 'Pricing Strategy', 'Jira / Agile'],
+      experience: [
+        {
+          role: 'Lead Product Manager (Growth)',
+          company: 'CloudPulse B2B SaaS · New York, NY',
+          dates: '01/2022 – Present',
+          bullets: [
+            'Revamped user onboarding activation flow across web & mobile, boosting day-14 trial-to-paid conversion from 4.2% to 7.8% (+$3.4M ARR).',
+            'Designed and executed 45+ multivariate experimentation cycles in Amplitude, isolating key churn drivers and reducing monthly account churn by 18%.',
+            'Led discovery interviews with 60+ enterprise procurement leaders to define quarterly roadmap OKRs.'
+          ]
+        },
+        {
+          role: 'Product Manager',
+          company: 'Insight Analytics · Boston, MA',
+          dates: '06/2019 – 12/2021',
+          bullets: [
+            'Owned self-serve reporting dashboard product line from PRD specification to launch, reaching 45,000 monthly active users within 6 months.',
+            'Partnered with product marketing to launch enterprise tier pricing, resulting in a 24% uplift in Average Contract Value (ACV).'
+          ]
+        }
+      ],
+      education: 'M.B.A. in Product Strategy · NYU Stern School of Business | B.A. Economics · Boston University',
+      certifications: ['Pragmatic Institute Certified (PMC-III)', 'Scrum Alliance Certified Scrum Product Owner (CSPO)']
+    }
+  },
+  {
+    id: 'finance-ops',
+    title: 'Corporate Finance & Operations',
+    category: 'finance',
+    categoryLabel: 'Finance & Operations',
+    recommendedFor: 'Financial Analysts, FP&A Managers, Operations Directors',
+    atsScore: 100,
+    downloadCount: '2,940 downloads',
+    format: 'Strict Corporate Single-Column · Taleo Optimized',
+    previewImage: ATS_IMAGES.templatePreview,
+    highlightPoints: [
+      'Engineered for conservative corporate ATS environments (Taleo, SAP SuccessFactors)',
+      'Standardized financial terminology clusters and GAAP / IFRS keywords',
+      'Tabular numeral alignment and clean line-break hierarchy',
+      'One-click download in Microsoft Word (.docx) and PDF'
+    ],
+    sampleContent: {
+      name: 'David K. Vance, CPA',
+      contact: 'Chicago, IL · (555) 345-6789 · david.vance@email.com · linkedin.com/in/davidvance-cpa',
+      summary: 'Senior Corporate Financial Analyst with 5+ years specializing in FP&A, revenue forecasting, and capital budget modeling for multi-entity healthcare and retail enterprises.',
+      skills: ['Financial Modeling', 'FP&A', 'Variance Analysis', 'Advanced Excel / VBA', 'SAP ERP', 'Power BI / Tableau', 'GAAP Accounting', 'Cash Flow Optimization'],
+      experience: [
+        {
+          role: 'Senior Financial Analyst (FP&A)',
+          company: 'Midwest Health Partners · Chicago, IL',
+          dates: '03/2021 – Present',
+          bullets: [
+            'Built 3-statement rolling forecasting model for $140M operating division, improving quarterly expense forecasting accuracy from 88% to 96.4%.',
+            'Identified $1.8M in annual vendor contract overlap through cost-center audit, negotiating restructured vendor agreements.',
+            'Prepared monthly executive variance reports and board presentation decks directly for CFO and Audit Committee.'
+          ]
+        },
+        {
+          role: 'Financial Analyst',
+          company: 'Apex Retail Corporation · Chicago, IL',
+          dates: '07/2018 – 02/2021',
+          bullets: [
+            'Automated store-level P&L consolidation spreadsheets in Excel/VBA, saving the accounting team 14 hours each monthly close.',
+            'Conducted capital expenditure ROI analyses for 22 store expansions, resulting in approval of 19 high-performing locations.'
+          ]
+        }
+      ],
+      education: 'B.S. in Accountancy & Finance · University of Illinois Urbana-Champaign',
+      certifications: ['Certified Public Accountant (CPA) – Illinois Board', 'Financial Modeling & Valuation Analyst (FMVA)']
+    }
+  },
+  {
+    id: 'early-career',
+    title: 'Early Career & Recent Graduate',
+    category: 'entry',
+    categoryLabel: 'Entry Level & Graduate',
+    recommendedFor: 'Fresh College Graduates, Career Switchers, Interns',
+    atsScore: 99,
+    downloadCount: '5,400 downloads',
+    format: '1-Page Strict Discipline · ATS High Callback',
+    previewImage: ATS_IMAGES.verifiedResume,
+    highlightPoints: [
+      'Tailored specifically to overcome lack of 10+ years experience with project framing',
+      'Education and technical coursework elevated to pass entry-level ATS degree filters',
+      'Compact 1-page geometry guaranteeing zero awkward overflow lines',
+      'Instant free download in Microsoft Word (.docx) and PDF'
+    ],
+    sampleContent: {
+      name: 'Jordan Miller',
+      contact: 'Austin, TX · (555) 789-0123 · jordan.miller@email.com · linkedin.com/in/jordanmiller-tech',
+      summary: 'Recent Computer Science graduate with strong foundational training in data structures, algorithms, and full-stack web development. Completed 2 intensive engineering internships and 3 production-grade open-source capstone applications.',
+      skills: ['Python', 'JavaScript (ES6+)', 'React', 'HTML5/CSS3', 'SQL (PostgreSQL)', 'Git / GitHub', 'REST APIs', 'Agile Principles'],
+      experience: [
+        {
+          role: 'Software Engineering Intern',
+          company: 'Austin Tech Labs · Austin, TX',
+          dates: '05/2023 – 08/2023',
+          bullets: [
+            'Collaborated with 4-person team to build customer analytics dashboard in React & Node.js, utilized by 2,000+ daily internal users.',
+            'Wrote 30+ unit tests using Jest, catching 6 critical bugs prior to production staging deployment.',
+            'Documented internal API endpoints in Swagger/Postman, reducing onboarding ramp time for new engineering interns by 40%.'
+          ]
+        },
+        {
+          role: 'Capstone Project Lead (Full Stack)',
+          company: 'University Engineering Lab · Austin, TX',
+          dates: '01/2023 – 05/2023',
+          bullets: [
+            'Designed and deployed full-stack campus event reservation app with PostgreSQL backend and authentication, serving 850 student accounts.',
+            'Integrated Stripe test payments and automated email notifications via SendGrid webhook triggers.'
+          ]
+        }
+      ],
+      education: 'B.S. in Computer Science · University of Texas at Austin (Graduated May 2024 · Dean’s List)',
+      certifications: ['Meta Front-End Developer Professional Certificate (Coursera)']
+    }
   }
 ];
 

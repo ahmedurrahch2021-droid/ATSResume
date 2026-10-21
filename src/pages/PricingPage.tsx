@@ -62,14 +62,14 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 key={pkg.id}
                 className={`relative bg-white rounded-2xl transition-all duration-200 flex flex-col justify-between ${
                   pkg.popular
-                    ? 'border-2 border-blue-500 shadow-xl ring-4 ring-blue-500/10 -translate-y-1'
-                    : 'border border-slate-200 shadow-sm hover:border-slate-300'
+                    ? 'border-2 border-emerald-600 shadow-md ring-2 ring-emerald-600/10'
+                    : 'border border-slate-200 shadow-xs hover:border-slate-300'
                 }`}
               >
                 {/* Popular / Value Badges */}
                 {pkg.badge && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
+                    <span className="bg-emerald-600 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
                       {pkg.badge}
                     </span>
                   </div>
@@ -128,9 +128,9 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 <div className="p-6 sm:p-8 pt-0 border-t border-slate-100 mt-6 space-y-3">
                   <button
                     onClick={() => onSelectPlan(pkg.id, rushDelivery)}
-                    className={`w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-sm ${
+                    className={`w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-xs ${
                       pkg.popular
-                        ? 'bg-emerald-500 hover:bg-emerald-600 text-slate-950 shadow-emerald-500/20'
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20'
                         : 'bg-slate-900 hover:bg-slate-800 text-white'
                     }`}
                   >
@@ -138,8 +138,8 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
-                  <p className="text-[11px] text-center text-slate-400 flex items-center justify-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
+                  <p className="text-[11px] text-center text-slate-500 flex items-center justify-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                     100% money-back guarantee
                   </p>
                 </div>
@@ -234,7 +234,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 Are there any recurring monthly charges?
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Zero. Unlike automated resume websites that trick you into a $29.99/month recurring charge after a $2 trial, ResumeRevive is 100% one-time flat fee. You only pay for the service you order.
+                Zero. Unlike automated resume websites that trick you into a $29.99/month recurring charge after a $2 trial, ATSresume is 100% one-time flat fee. You only pay for the service you order.
               </p>
             </div>
             <div className="space-y-1.5">
@@ -242,7 +242,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 How does the 100% money-back guarantee work?
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                If our finished draft doesn't exceed your expectations after your free revision round, send an email to hello@resumerevive.ai and we immediately issue a full refund to your original payment method.
+                If our finished draft doesn't exceed your expectations after your free revision round, send an email to hello@atsresume.ai and we immediately issue a full refund to your original payment method.
               </p>
             </div>
             <div className="space-y-1.5">

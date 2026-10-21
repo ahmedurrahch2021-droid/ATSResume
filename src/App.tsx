@@ -9,6 +9,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ChecklistModal } from './components/ChecklistModal';
 import { HomePage } from './pages/HomePage';
+import { TemplatesPage } from './pages/TemplatesPage';
 import { PricingPage } from './pages/PricingPage';
 import { ExamplesPage } from './pages/ExamplesPage';
 import { FreeScorePage } from './pages/FreeScorePage';
@@ -42,7 +43,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-emerald-600 selection:text-white">
       {/* Sticky Navigation */}
       <Navbar
         currentPage={currentPage}
@@ -57,6 +58,13 @@ export default function App() {
             onNavigate={handleNavigate}
             onOpenOrder={(pkg) => handleOpenOrder(pkg || 'starter')}
             onOpenChecklist={() => setChecklistModalOpen(true)}
+          />
+        )}
+
+        {currentPage === 'templates' && (
+          <TemplatesPage
+            onNavigate={handleNavigate}
+            onOpenOrder={(pkg) => handleOpenOrder(pkg || 'starter')}
           />
         )}
 

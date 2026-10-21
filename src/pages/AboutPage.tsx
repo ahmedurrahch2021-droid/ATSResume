@@ -21,15 +21,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
-            <Terminal className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">
+            <Terminal className="w-3.5 h-3.5 text-emerald-600" />
             Founder & Lead Reviewer
           </div>
           <h1 className="font-heading text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             I Build Web Platforms & Optimize Resumes. Here's Why I Do Both.
           </h1>
-          <p className="text-base text-slate-600 leading-relaxed">
-            The philosophy behind ResumeRevive: Why automated tools alone fail job seekers, and how technical screening insight turns cold applications into interviews.
+          <p className="text-base text-slate-600 leading-relaxed font-light">
+            The philosophy behind ATSresume: Why automated tools alone fail job seekers, and how technical screening insight turns cold applications into interviews.
           </p>
         </div>
 
@@ -37,16 +37,16 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-10 shadow-sm space-y-8">
           {/* Founder Intro Row */}
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-8 border-b border-slate-100">
-            <div className="w-24 h-24 rounded-2xl bg-gradient-to-tr from-slate-900 to-blue-700 text-white flex flex-col items-center justify-center font-heading font-extrabold text-2xl shadow-md shrink-0">
-              <span>RR</span>
-              <span className="text-[10px] font-sans font-normal text-blue-200 mt-0.5">DEV & QA</span>
+            <div className="w-24 h-24 rounded-2xl bg-emerald-600 text-white flex flex-col items-center justify-center font-heading font-extrabold text-2xl shadow-sm shrink-0">
+              <span>ATS</span>
+              <span className="text-[10px] font-sans font-normal text-emerald-100 mt-0.5">DEV & QA</span>
             </div>
             <div className="space-y-2 text-center sm:text-left">
               <h2 className="font-heading text-xl font-bold text-slate-900">
-                Hi, I'm the Lead Engineer behind ResumeRevive.
+                Hi, I'm the Lead Engineer behind ATSresume.
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                As a senior full-stack web developer, I build and maintain live web applications and eCommerce systems. Over the years, I've sat on the hiring side of the table, screening hundreds of engineering, product, marketing, and corporate resumes.
+                As a senior full-stack web developer, I build and maintain live web applications and distributed systems. Over the years, I've sat on the hiring side of the table, screening hundreds of engineering, product, marketing, and corporate resumes.
               </p>
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2">
                 <span className="text-xs px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md font-medium">
@@ -74,7 +74,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
               <div className="p-4 rounded-xl bg-red-50/60 border border-red-200/80 space-y-1.5">
                 <span className="text-xs font-bold text-red-900">Problem 1: The ATS Robot Filter</span>
                 <p className="text-xs text-red-700 leading-relaxed">
-                  People use fancy Canva templates with 2-column tables, photos, or weird fonts. Applicant Tracking Systems (ATS) like Workday scramble these into unreadable gibberish.
+                  People use fancy Canva templates with 2-column tables, photos, or non-standard fonts. Applicant Tracking Systems (ATS) like Workday scramble these into unreadable text.
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-red-50/60 border border-red-200/80 space-y-1.5">
@@ -94,11 +94,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               When ChatGPT came out, thousands of job seekers pasted prompts and submitted the raw text. But hiring managers now spot unedited AI output in 3 seconds: robotic filler words like <em>"spearheaded synergized paradigms"</em>, hallucinated job titles, and fabricated metrics.
             </p>
-            <div className="p-5 rounded-xl bg-blue-50/80 border border-blue-200 text-blue-950 space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-blue-800">
-                The ResumeRevive Pledge:
+            <div className="p-5 rounded-xl bg-emerald-50/80 border border-emerald-200 text-emerald-950 space-y-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                The ATSresume Pledge:
               </h4>
-              <p className="text-xs sm:text-sm italic leading-relaxed">
+              <p className="text-xs sm:text-sm italic leading-relaxed text-slate-800">
                 "Unlike automated builders, I personally read every resume twice — once for technical accuracy and domain truth, and once for recruiter impact. You get AI efficiency with senior human judgment. No template fluff. No hallucinated nonsense."
               </p>
             </div>
@@ -149,7 +149,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
             </div>
             <button
               onClick={() => onSelectPlan('boost')}
-              className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-emerald-500/20 flex items-center gap-1.5"
+              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm flex items-center gap-1.5"
             >
               <span>Build My Resume Now — From $10</span>
               <ArrowRight className="w-4 h-4" />

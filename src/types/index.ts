@@ -1,5 +1,6 @@
 export type PageRoute = 
   | 'home' 
+  | 'templates'
   | 'pricing' 
   | 'examples' 
   | 'how-it-works' 
@@ -8,6 +9,33 @@ export type PageRoute =
   | 'faq' 
   | 'contact' 
   | 'order';
+
+export interface ResumeTemplate {
+  id: string;
+  title: string;
+  category: 'tech' | 'product' | 'finance' | 'entry' | 'creative';
+  categoryLabel: string;
+  recommendedFor: string;
+  atsScore: number;
+  downloadCount: string;
+  format: string;
+  previewImage?: string;
+  highlightPoints: string[];
+  sampleContent: {
+    name: string;
+    contact: string;
+    summary: string;
+    skills: string[];
+    experience: {
+      role: string;
+      company: string;
+      dates: string;
+      bullets: string[];
+    }[];
+    education: string;
+    certifications?: string[];
+  };
+}
 
 export interface PricingPackage {
   id: 'starter' | 'boost' | 'full';
