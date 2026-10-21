@@ -38,10 +38,10 @@ export const OrderPage: React.FC<OrderPageProps> = ({
 
   // Card details state
   const [cardBrand, setCardBrand] = useState<'visa' | 'mastercard'>('visa');
-  const [cardNumber, setCardNumber] = useState<string>('4111 2345 6789 4242');
+  const [cardNumber, setCardNumber] = useState<string>('');
   const [cardholderName, setCardholderName] = useState<string>('');
-  const [cardExpiry, setCardExpiry] = useState<string>('12/28');
-  const [cardCvv, setCardCvv] = useState<string>('888');
+  const [cardExpiry, setCardExpiry] = useState<string>('');
+  const [cardCvv, setCardCvv] = useState<string>('');
 
   const [formData, setFormData] = useState<OrderFormData>({
     fullName: '',
@@ -97,28 +97,13 @@ export const OrderPage: React.FC<OrderPageProps> = ({
 
   const handleCompleteOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsProcessingPayment(true);
-
-    if (formData.paymentMethod === 'visa') {
-      setProcessingStatus('Authorizing via Verified by Visa (3D Secure 2.0)...');
-    } else if (formData.paymentMethod === 'mastercard') {
-      setProcessingStatus('Authorizing via Mastercard Identity Check (SecureCode)...');
-    } else if (formData.paymentMethod === 'card') {
-      setProcessingStatus(`Authorizing via ${cardBrand === 'visa' ? 'Visa 3D Secure' : 'Mastercard Identity Check'}...`);
-    } else if (formData.paymentMethod === 'paypal') {
-      setProcessingStatus('Authorizing via PayPal Express Checkout...');
-    } else {
-      setProcessingStatus('Verifying transaction via NPCI UPI Gateway...');
-    }
-
-    setTimeout(() => {
-      const randomNum = Math.floor(10000 + Math.random() * 90000);
-      setOrderId(`RR-${randomNum}`);
-      setIsProcessingPayment(false);
-      setProcessingStatus('');
-      setOrderComplete(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 1400);
+    // Online payment is not connected yet. Do not simulate authorisation,
+    // do not generate an order ID, and do not issue a receipt.
+    // TODO(payments): wire a real processor (Stripe, PayPal, or a BD gateway)
+    // and only mark the order paid after the processor confirms it.
+    setIsProcessingPayment(false);
+    setProcessingStatus('');
+    window.alert('Online payment is not available yet. Please contact hello@resumerevive.ai to place your order.');
   };
 
   const handleDownloadIntakeReceipt = () => {
@@ -135,13 +120,13 @@ export const OrderPage: React.FC<OrderPageProps> = ({
 
     const maskedCard = 
       (formData.paymentMethod === 'visa' || formData.paymentMethod === 'mastercard' || formData.paymentMethod === 'card')
-        ? `\n- Card Authorization: ${cardBrand === 'visa' ? 'Visa' : 'Mastercard'} Ending in 4242 (Tokenized)\n- Security Protocol: 256-Bit TLS Bank Encryption · PCI-DSS Level 1`
+        ? `\n- Card Authorization: ${cardBrand === 'visa' ? 'Visa' : 'Mastercard'} `
         : '';
 
     const content = `=====================================================
 RESUMEREVIVE — OFFICIAL ORDER RECEIPT & INTAKE CONFIRMATION
 Order Reference: ${orderId}
-Status: VERIFIED & IN PRODUCTION QUEUE
+Status: PENDING PAYMENT CONFIRMATION
 =====================================================
 
 CUSTOMER DETAILS:
@@ -156,7 +141,6 @@ SERVICE SPECIFICATION:
 - 12h Rush Add-on: ${formData.urgentDelivery ? '+$10' : 'None'}
 - Total Paid: $${totalAmount} USD
 - Payment Channel: ${paymentNetworkName}${maskedCard}
-- Fraud Protection: Zero Fraud Liability Guarantee
 
 TARGET ROLE BRIEF:
 - Target Job Title: ${formData.targetRole || 'General Advancement'}
@@ -242,7 +226,7 @@ Delivered by: Lead Engineer & Resume Editor, ResumeRevive.ai
               <div className="flex items-center gap-1.5">
                 <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100/70 border border-emerald-300 px-2 py-0.5 rounded flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  PCI-DSS Level 1 Encrypted
+                  Payment processor pending setup
                 </span>
               </div>
             </div>
@@ -250,7 +234,7 @@ Delivered by: Lead Engineer & Resume Editor, ResumeRevive.ai
             <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 pt-0.5">
               <span className="flex items-center gap-1 text-slate-700">
                 <Lock className="w-3 h-3 text-slate-500" />
-                Tokenized Card Transaction · Zero Fraud Liability
+                Card payments not yet enabled
               </span>
               <span className="font-mono text-slate-600">
                 Auth Code: AUTH-{Math.floor(100000 + Math.random() * 900000)}
@@ -896,7 +880,7 @@ Delivered by: Lead Engineer & Resume Editor, ResumeRevive.ai
                       setFormData({ ...formData, paymentMethod: 'visa' });
                       setCardBrand('visa');
                       if (!cardNumber.startsWith('4')) {
-                        setCardNumber('4111 2345 6789 4242');
+                        setCardNumber('');
                       }
                     }}
                     className={`p-3.5 rounded-xl border-2 text-left transition-all ${
@@ -990,7 +974,7 @@ Delivered by: Lead Engineer & Resume Editor, ResumeRevive.ai
                             Secure Card Payment Portal
                           </h4>
                           <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-bold">
-                            PCI-DSS Level 1
+                            Payment processor pending setup
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 mt-0.5">
@@ -1006,7 +990,7 @@ Delivered by: Lead Engineer & Resume Editor, ResumeRevive.ai
                             setFormData({ ...formData, paymentMethod: 'visa' });
                             setCardBrand('visa');
                             if (!cardNumber.startsWith('4')) {
-                              setCardNumber('4111 2345 6789 4242');
+                              setCardNumber('');
                             }
                           }}
                           className={`px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 ${

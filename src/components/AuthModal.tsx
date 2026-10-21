@@ -14,24 +14,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen,
   onClose,
   onLoginSuccess,
-  defaultEmail = 'ahmedur.rahch2021@gmail.com',
+  defaultEmail = '',
   initialMode = 'signup'
 }) => {
   const [mode, setMode] = useState<'signup' | 'signin'>(initialMode);
   const [email, setEmail] = useState<string>(defaultEmail);
-  const [password, setPassword] = useState<string>('••••••••');
-  const [fullName, setFullName] = useState<string>('Ahmedur Rahman');
+  const [password, setPassword] = useState<string>('');
+  const [fullName, setFullName] = useState<string>('');
   const [country, setCountry] = useState<string>('Bangladesh');
 
   if (!isOpen) return null;
 
   const handleGoogleSignIn = () => {
-    const isBD = country === 'Bangladesh' || email.includes('.bd') || Intl.DateTimeFormat().resolvedOptions().timeZone === 'Asia/Dhaka';
+    const isBD = country === 'Bangladesh';
     const account: UserAccount = {
       uid: 'user-' + Date.now(),
-      email: email || 'ahmedur.rahch2021@gmail.com',
-      displayName: fullName || 'Ahmedur Rahman',
-      photoUrl: 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(fullName || 'Ahmedur'),
+      email: email.trim(),
+      displayName: fullName.trim(),
+      photoUrl: 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(fullName.trim() || 'User'),
       isLoggedIn: true,
       country: isBD ? 'Bangladesh' : country,
       isBangladeshTalentPass: isBD,
@@ -45,6 +45,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email.includes('@') || !fullName.trim()) return;
     handleGoogleSignIn();
   };
 
@@ -152,7 +153,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Ahmedur Rahman"
+                  placeholder="Your full name"
                   className="w-full text-xs pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
