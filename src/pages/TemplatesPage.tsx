@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ATS_TEMPLATES, ATS_IMAGES } from '../data/mockData';
-import { ResumeTemplate, PageRoute } from '../types';
+import { ATS_TEMPLATES } from '../data/mockData';
+import { ResumeTemplate, PageRoute, ResumeData } from '../types';
+import { EmailSubscriptionBox } from '../components/EmailSubscriptionBox';
 import { 
   Download, 
   Eye, 
@@ -14,19 +15,25 @@ import {
   X,
   FileCode,
   Layers,
-  SearchCheck
+  SearchCheck,
+  Printer,
+  Edit3
 } from 'lucide-react';
 
 interface TemplatesPageProps {
   onNavigate: (route: PageRoute) => void;
   onOpenOrder: (packageId?: 'starter' | 'boost' | 'full') => void;
+  onOpenInEditor?: (templateResumeData: ResumeData) => void;
 }
 
-export const TemplatesPage: React.FC<TemplatesPageProps> = ({ onNavigate, onOpenOrder }) => {
+export const TemplatesPage: React.FC<TemplatesPageProps> = ({ 
+  onNavigate, 
+  onOpenOrder,
+  onOpenInEditor 
+}) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activePreviewTemplate, setActivePreviewTemplate] = useState<ResumeTemplate | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
 
   const categories = [
     { id: 'all', label: 'All Templates' },
@@ -40,382 +47,370 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({ onNavigate, onOpen
     tpl => selectedCategory === 'all' || tpl.category === selectedCategory
   );
 
-  const handleDownloadFile = (template: ResumeTemplate, formatType: 'docx' | 'pdf' | 'txt') => {
-    // Generate clean text representation of the ATS resume for immediate download
+  // Convert template to rich ResumeData for live editor
+  const handleLaunchEditor = (template: ResumeTemplate) => {
+    const resumePayload: ResumeData = {
+      fullName: template.sampleContent.name,
+      targetTitle: template.title,
+      email: 'alex.candidate@email.com',
+      phone: '+1 (555) 234-5678',
+      location: 'San Francisco, CA (Open to Remote)',
+      linkedin: 'linkedin.com/in/alex-candidate',
+      portfolio: 'github.com/alex-candidate',
+      summary: template.sampleContent.summary,
+      experience: template.sampleContent.experience.map((exp, idx) => ({
+        id: `tpl-exp-${idx}`,
+        role: exp.role,
+        company: exp.company,
+        location: 'Remote',
+        dates: exp.dates,
+        bullets: exp.bullets
+      })),
+      education: [
+        {
+          id: 'tpl-edu-1',
+          degree: template.sampleContent.education.split('–')[0]?.trim() || template.sampleContent.education,
+          institution: template.sampleContent.education.split('–')[1]?.trim() || 'State University',
+          location: 'San Francisco, CA',
+          dates: '2016 – 2020',
+          gpa: '3.85 / 4.0'
+        }
+      ],
+      skills: {
+        languages: template.sampleContent.skills.slice(0, 4).join(', '),
+        frameworks: template.sampleContent.skills.slice(4, 7).join(', '),
+        toolsAndCloud: template.sampleContent.skills.slice(7).join(', '),
+        methodologies: 'Agile, Scrum, CI/CD, Microservices, Clean Architecture'
+      },
+      projects: [
+        {
+          id: 'tpl-proj-1',
+          name: 'OpenSource Systems Core',
+          roleOrTech: 'TypeScript, React, Docker',
+          bullets: [
+            'Architected open-source productivity system with 1,200+ stars on GitHub.',
+            'Decreased response latency by 35% through caching optimization.'
+          ]
+        }
+      ],
+      certifications: template.sampleContent.certifications || [
+        'AWS Certified Solutions Architect (2024)',
+        'Certified Scrum Master (CSM)'
+      ]
+    };
+
+    if (onOpenInEditor) {
+      onOpenInEditor(resumePayload);
+    } else {
+      onNavigate('suite');
+    }
+  };
+
+  // Direct clean printable PDF routine
+  const handleDownloadPdf = (template: ResumeTemplate) => {
+    // Open print window formatted cleanly for PDF saving
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      // Fallback: load into editor and trigger print
+      handleLaunchEditor(template);
+      return;
+    }
+
     const { sampleContent } = template;
-    const content = `=======================================================
-${sampleContent.name.toUpperCase()}
-${sampleContent.contact}
-=======================================================
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${sampleContent.name} - ATS Resume</title>
+          <style>
+            @page { size: letter; margin: 0.7in; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #111827; margin: 0; padding: 0.5in; }
+            h1 { font-size: 18pt; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; color: #C82333; }
+            .title { font-size: 11pt; font-weight: bold; color: #374151; margin-bottom: 6px; }
+            .contact { font-size: 9.5pt; color: #4B5563; margin-bottom: 14px; border-bottom: 1.5px solid #111827; padding-bottom: 8px; }
+            h2 { font-size: 10.5pt; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold; color: #C82333; border-bottom: 1px solid #D1D5DB; padding-bottom: 3px; margin: 14px 0 6px 0; }
+            .entry { margin-bottom: 10px; page-break-inside: avoid; }
+            .entry-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 10pt; }
+            .entry-sub { font-style: italic; color: #4B5563; font-size: 9.5pt; margin-bottom: 4px; }
+            ul { margin: 4px 0 0 18px; padding: 0; font-size: 9.5pt; color: #374151; }
+            li { margin-bottom: 3px; }
+          </style>
+        </head>
+        <body>
+          <h1>${sampleContent.name}</h1>
+          <div class="title">${template.title}</div>
+          <div class="contact">${sampleContent.contact}</div>
 
-PROFESSIONAL SUMMARY
--------------------------------------------------------
-${sampleContent.summary}
+          <h2>Professional Summary</h2>
+          <p style="font-size: 9.5pt; margin: 0 0 8px 0; color: #374151;">${sampleContent.summary}</p>
 
-CORE TECHNICAL SKILLS & COMPETENCIES
--------------------------------------------------------
-${sampleContent.skills.join(' · ')}
+          <h2>Core Technical Skills</h2>
+          <p style="font-size: 9.5pt; margin: 0 0 8px 0; color: #374151;">${sampleContent.skills.join(' · ')}</p>
 
-PROFESSIONAL EXPERIENCE
--------------------------------------------------------
-${sampleContent.experience
-  .map(
-    exp => `${exp.role} | ${exp.company}
-Dates: ${exp.dates}
-${exp.bullets.map(b => `• ${b}`).join('\n')}`
-  )
-  .join('\n\n')}
+          <h2>Professional Experience</h2>
+          ${sampleContent.experience.map(exp => `
+            <div class="entry">
+              <div class="entry-header">
+                <span>${exp.role}</span>
+                <span>${exp.dates}</span>
+              </div>
+              <div class="entry-sub">${exp.company}</div>
+              <ul>
+                ${exp.bullets.map(b => `<li>${b}</li>`).join('')}
+              </ul>
+            </div>
+          `).join('')}
 
-EDUCATION & ACADEMICS
--------------------------------------------------------
-${sampleContent.education}
+          <h2>Education & Credentials</h2>
+          <p style="font-size: 9.5pt; margin: 0; color: #374151;">${sampleContent.education}</p>
+          ${sampleContent.certifications ? `<p style="font-size: 9.5pt; margin-top: 4px; color: #374151;"><strong>Certifications:</strong> ${sampleContent.certifications.join(', ')}</p>` : ''}
 
-${
-  sampleContent.certifications
-    ? `CERTIFICATIONS & CREDENTIALS
--------------------------------------------------------
-${sampleContent.certifications.map(c => `• ${c}`).join('\n')}
-`
-    : ''
-}
-=======================================================
-ATS Compliance Benchmark: Verified Single-Column UTF-8
-Verified by ATSresume (https://atsresume.ai)
-`;
+          <script>
+            window.onload = function() {
+              window.print();
+            };
+          </script>
+        </body>
+      </html>
+    `;
 
-    const blob = new Blob([content], { type: formatType === 'docx' ? 'application/msword' : 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${template.id}-ats-resume-template.${formatType === 'docx' ? 'doc' : 'txt'}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    setDownloadSuccessMessage(`Downloaded "${template.title}" in ${formatType.toUpperCase()} format!`);
-    setTimeout(() => {
-      setDownloadSuccessMessage(null);
-    }, 4000);
+    printWindow.document.write(html);
+    printWindow.document.close();
   };
 
   const handleCopyText = (template: ResumeTemplate) => {
     const { sampleContent } = template;
-    const plainText = `${sampleContent.name}\n${sampleContent.contact}\n\nSUMMARY\n${sampleContent.summary}\n\nSKILLS\n${sampleContent.skills.join(', ')}\n\nEXPERIENCE\n` +
-      sampleContent.experience.map(e => `${e.role} - ${e.company} (${e.dates})\n` + e.bullets.map(b => `- ${b}`).join('\n')).join('\n\n') +
-      `\n\nEDUCATION\n${sampleContent.education}`;
-    
-    navigator.clipboard.writeText(plainText);
+    const content = `${sampleContent.name.toUpperCase()}
+${sampleContent.contact}
+
+PROFESSIONAL SUMMARY
+${sampleContent.summary}
+
+CORE SKILLS
+${sampleContent.skills.join(' · ')}
+
+WORK EXPERIENCE
+${sampleContent.experience
+  .map(exp => `${exp.role} | ${exp.company} (${exp.dates})\n${exp.bullets.map(b => `• ${b}`).join('\n')}`)
+  .join('\n\n')}
+
+EDUCATION
+${sampleContent.education}
+`;
+    navigator.clipboard.writeText(content);
     setCopiedId(template.id);
-    setTimeout(() => setCopiedId(null), 2500);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 py-12 sm:py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-12">
-        {/* Header Section with Generous Whitespace */}
+    <div className="bg-stone-50 min-h-screen py-12 text-stone-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>100% Free · ATS-Verified Single-Column Layouts</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#C82333]">
+            <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+            100% Free · Verified ATS Single-Column Standard
           </div>
-
-          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight text-balance leading-tight">
-            ATS-Tested Resume Templates for <span className="text-emerald-700">Immediate Download</span>
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight">
+            Free ATS-Verified Resume Templates
           </h1>
-
-          <p className="text-base sm:text-lg text-slate-600 font-light leading-relaxed">
-            Every template below is mathematically verified against parsing algorithms in Workday, Greenhouse, Taleo, and Lever. No multi-column tables, no broken icons, and no hidden text boxes.
+          <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            Engineered strictly for high-volume parsing systems like Workday, Greenhouse, Taleo, and Lever. No tables, no columns, no lost data. 
           </p>
-
-          {/* Quick Notice Banner on Download Success */}
-          {downloadSuccessMessage && (
-            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-300 text-xs font-semibold text-emerald-900 flex items-center justify-center gap-2 animate-in fade-in">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span>{downloadSuccessMessage}</span>
-            </div>
-          )}
         </div>
 
-        {/* Category Filter Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-          {categories.map((cat) => {
-            const isActive = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 text-xs sm:text-sm font-medium rounded-xl transition-all ${
-                  isActive
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/80'
-                }`}
-              >
-                {cat.label}
-              </button>
-            );
-          })}
+        {/* Category Filter Pills */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                selectedCategory === cat.id
+                  ? 'bg-[#C82333] text-white shadow-xs'
+                  : 'bg-white text-stone-700 border border-stone-200 hover:border-stone-300'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
 
         {/* Templates Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTemplates.map((template) => (
             <div
               key={template.id}
-              className="bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-500/60 transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between overflow-hidden group"
+              className="bg-white rounded-2xl border border-stone-200 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-shadow group"
             >
-              {/* Card Visual Header with Real Image or Styled Fallback */}
-              <div className="relative aspect-[16/10] bg-slate-50 border-b border-slate-100 overflow-hidden">
-                <img
-                  src={template.previewImage || ATS_IMAGES.templatePreview}
-                  alt={`${template.title} preview`}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                />
-                
-                {/* Overlay Metadata */}
-                <div className="absolute top-3 left-3 flex items-center gap-2">
-                  <span className="px-2.5 py-1 rounded-md bg-white/95 backdrop-blur-xs text-[11px] font-bold text-slate-800 shadow-xs border border-slate-200">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-red-50 text-[#C82333] border border-red-200">
                     {template.categoryLabel}
                   </span>
-                </div>
-
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-600 text-white text-[11px] font-bold shadow-xs">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>{template.atsScore}% ATS Score</span>
-                </div>
-
-                <div className="absolute bottom-3 left-3">
-                  <span className="text-[10px] text-slate-600 font-medium px-2 py-0.5 rounded bg-white/90 backdrop-blur-xs border border-slate-200/60">
-                    {template.downloadCount}
+                  <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    {template.atsScore}% ATS Pass
                   </span>
+                </div>
+
+                <div>
+                  <h3 className="font-heading text-base font-bold text-stone-900 group-hover:text-[#C82333] transition-colors">
+                    {template.title}
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-1 font-medium">
+                    Recommended for: {template.recommendedFor}
+                  </p>
+                </div>
+
+                <div className="space-y-1.5 pt-2 border-t border-stone-100">
+                  {template.highlightPoints.map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-xs text-stone-600">
+                      <Check className="w-3.5 h-3.5 text-[#C82333] shrink-0 mt-0.5" />
+                      <span>{point}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Card Body */}
-              <div className="p-6 sm:p-7 space-y-5 flex-1 flex flex-col justify-between">
-                <div className="space-y-3">
-                  <div>
-                    <h3 className="font-heading text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                      {template.title}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 font-medium">
-                      Recommended for: {template.recommendedFor}
-                    </p>
-                  </div>
+              {/* Action Buttons */}
+              <div className="pt-6 mt-4 border-t border-stone-100 space-y-2">
+                {/* Primary: Open in Live Editor */}
+                <button
+                  type="button"
+                  onClick={() => handleLaunchEditor(template)}
+                  className="w-full py-2.5 px-3 bg-[#C82333] hover:bg-[#A71D2A] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98]"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                  <span>Open in Live Editor (Free)</span>
+                </button>
 
-                  <div className="space-y-2 pt-1 border-t border-slate-100">
-                    {template.highlightPoints.map((point, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-600">
-                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                        <span>{point}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadPdf(template)}
+                    className="w-full py-2 px-2.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1"
+                    title="Download clean printable vector PDF"
+                  >
+                    <Printer className="w-3.5 h-3.5 text-stone-300" />
+                    <span>Print PDF</span>
+                  </button>
 
-                {/* Actions Row */}
-                <div className="pt-4 border-t border-slate-100 space-y-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => setActivePreviewTemplate(template)}
-                      className="px-3.5 py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
-                    >
-                      <Eye className="w-3.5 h-3.5 text-slate-500" />
-                      <span>Live Preview</span>
-                    </button>
-
-                    <button
-                      onClick={() => handleCopyText(template)}
-                      className="px-3.5 py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
-                    >
-                      {copiedId === template.id ? (
-                        <>
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                          <span className="text-emerald-700">Copied!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5 text-slate-500" />
-                          <span>Copy Plain Text</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => handleDownloadFile(template, 'docx')}
-                      className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-xs"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>Download DOCX</span>
-                    </button>
-
-                    <button
-                      onClick={() => handleDownloadFile(template, 'pdf')}
-                      className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-xs"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>Download PDF</span>
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActivePreviewTemplate(template)}
+                    className="w-full py-2 px-2.5 bg-white hover:bg-stone-50 text-stone-700 border border-stone-200 text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-stone-500" />
+                    <span>Preview</span>
+                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Upgrade / Pro Customization Banner */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200/90 text-center space-y-6">
-          <div className="max-w-2xl mx-auto space-y-2">
-            <span className="text-xs uppercase font-bold tracking-wider text-emerald-700 bg-emerald-100/70 px-3 py-1 rounded-md">
-              Need Personal Human Review?
-            </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-slate-900">
-              Don't Want to Format it Yourself? We'll Tailor it for $10
-            </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Send us your raw job history and your target job description. We run algorithmic ATS alignment and our senior web developer personally reviews and edits every line with a 24-hour turnaround guarantee.
-            </p>
-          </div>
+        {/* Email Subscription Banner */}
+        <EmailSubscriptionBox
+          variant="banner"
+          title="Get the 2026 International ATS Checklist & Weekly Job Alerts"
+          description="Join 28,000+ engineers, product managers, and remote professionals receiving our verified ATS templates and international hiring playbooks free."
+        />
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <button
-              onClick={() => onOpenOrder('starter')}
-              className="w-full sm:w-auto px-7 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-emerald-600/20 active:scale-[0.98] flex items-center justify-center gap-2"
-            >
-              <span>Build My Tailored Resume — $10</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => onNavigate('free-resume-score')}
-              className="w-full sm:w-auto px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-800 font-semibold text-sm rounded-xl border border-slate-200 transition-colors flex items-center justify-center gap-2"
-            >
-              <SearchCheck className="w-4 h-4 text-emerald-600" />
-              <span>Free ATS Score Scanner</span>
-            </button>
-          </div>
-        </div>
       </div>
 
-      {/* Full Live Preview Modal */}
+      {/* Template Preview Modal */}
       {activePreviewTemplate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
-            {/* Modal Top Bar */}
-            <div className="p-4 px-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-              <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-emerald-600" />
-                <div>
-                  <h3 className="font-heading font-bold text-sm text-slate-900">
-                    {activePreviewTemplate.title}
-                  </h3>
-                  <p className="text-[11px] text-slate-500">
-                    Authentic single-column ATS hierarchy · 100% parseable text strings
-                  </p>
-                </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="p-4 px-6 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+              <div>
+                <h3 className="font-heading text-sm font-bold text-stone-900">
+                  {activePreviewTemplate.title}
+                </h3>
+                <span className="text-[11px] text-[#C82333] font-semibold">
+                  Verified ATS Single-Column Layout ({activePreviewTemplate.atsScore}% Pass Rate)
+                </span>
               </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleDownloadFile(activePreviewTemplate, 'docx')}
-                  className="px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-1.5"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download .DOCX</span>
-                </button>
-                <button
-                  onClick={() => setActivePreviewTemplate(null)}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Simulated Paper View */}
-            <div className="p-6 sm:p-10 overflow-y-auto bg-slate-100 space-y-6">
-              <div className="bg-white p-8 sm:p-12 rounded-xl shadow-sm border border-slate-200 max-w-2xl mx-auto space-y-6 font-sans text-xs text-slate-800 leading-relaxed">
-                {/* Header */}
-                <div className="border-b border-slate-800 pb-3 text-center sm:text-left space-y-1">
-                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
-                    {activePreviewTemplate.sampleContent.name}
-                  </h1>
-                  <p className="text-[11px] text-slate-600">
-                    {activePreviewTemplate.sampleContent.contact}
-                  </p>
-                </div>
-
-                {/* Professional Summary */}
-                <div className="space-y-1">
-                  <h4 className="font-bold text-[11px] uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-                    Professional Summary
-                  </h4>
-                  <p className="text-[11px] text-slate-700 leading-relaxed">
-                    {activePreviewTemplate.sampleContent.summary}
-                  </p>
-                </div>
-
-                {/* Core Skills */}
-                <div className="space-y-1">
-                  <h4 className="font-bold text-[11px] uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-                    Core Competencies & Technical Skills
-                  </h4>
-                  <p className="text-[11px] text-slate-700">
-                    {activePreviewTemplate.sampleContent.skills.join(' · ')}
-                  </p>
-                </div>
-
-                {/* Work Experience */}
-                <div className="space-y-3">
-                  <h4 className="font-bold text-[11px] uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-                    Professional Experience
-                  </h4>
-                  {activePreviewTemplate.sampleContent.experience.map((exp, idx) => (
-                    <div key={idx} className="space-y-1">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px]">
-                        <span className="font-bold text-slate-900">{exp.role}</span>
-                        <span className="text-slate-500 font-mono">{exp.dates}</span>
-                      </div>
-                      <p className="text-[10px] text-slate-600 italic">{exp.company}</p>
-                      <ul className="list-disc pl-4 space-y-1 text-[11px] text-slate-700">
-                        {exp.bullets.map((b, bIdx) => (
-                          <li key={bIdx}>{b}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Education */}
-                <div className="space-y-1">
-                  <h4 className="font-bold text-[11px] uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-                    Education & Credentials
-                  </h4>
-                  <p className="text-[11px] text-slate-700">
-                    {activePreviewTemplate.sampleContent.education}
-                  </p>
-                  {activePreviewTemplate.sampleContent.certifications && (
-                    <p className="text-[10px] text-slate-600 mt-1">
-                      Certifications: {activePreviewTemplate.sampleContent.certifications.join(', ')}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Bottom Actions */}
-            <div className="p-4 px-6 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-xs">
-              <span className="text-slate-500">
-                Single-column ATS format · Guaranteed Workday & Greenhouse pass
-              </span>
               <button
-                onClick={() => handleDownloadFile(activePreviewTemplate, 'docx')}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition-colors flex items-center gap-1.5"
+                onClick={() => setActivePreviewTemplate(null)}
+                className="p-1.5 text-stone-400 hover:text-stone-600 rounded-lg"
               >
-                <Download className="w-3.5 h-3.5" />
-                <span>Download This Template Free</span>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto space-y-4 text-xs font-sans">
+              <div className="text-center pb-3 border-b-2 border-stone-900 space-y-1">
+                <h2 className="font-heading text-xl font-black text-[#C82333] uppercase">
+                  {activePreviewTemplate.sampleContent.name}
+                </h2>
+                <p className="text-[11px] text-stone-600">
+                  {activePreviewTemplate.sampleContent.contact}
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="font-bold text-[11px] uppercase text-[#C82333] border-b border-stone-200 pb-0.5">
+                  Professional Summary
+                </h4>
+                <p className="text-[11px] text-stone-700 leading-relaxed">
+                  {activePreviewTemplate.sampleContent.summary}
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="font-bold text-[11px] uppercase text-[#C82333] border-b border-stone-200 pb-0.5">
+                  Core Skills
+                </h4>
+                <p className="text-[11px] text-stone-700">
+                  {activePreviewTemplate.sampleContent.skills.join(' · ')}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-bold text-[11px] uppercase text-[#C82333] border-b border-stone-200 pb-0.5">
+                  Professional Experience
+                </h4>
+                {activePreviewTemplate.sampleContent.experience.map((exp, idx) => (
+                  <div key={idx} className="space-y-1">
+                    <div className="flex justify-between font-bold text-stone-900">
+                      <span>{exp.role} | {exp.company}</span>
+                      <span className="font-mono text-stone-500 font-normal">{exp.dates}</span>
+                    </div>
+                    <ul className="list-disc pl-4 space-y-0.5 text-stone-700">
+                      {exp.bullets.map((b, bIdx) => (
+                        <li key={bIdx}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 px-6 border-t border-stone-200 bg-stone-50 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => handleDownloadPdf(activePreviewTemplate)}
+                className="px-3 py-2 bg-white border border-stone-200 text-stone-700 font-semibold text-xs rounded-lg flex items-center gap-1.5 hover:bg-stone-100"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                Print / Save PDF
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  handleLaunchEditor(activePreviewTemplate);
+                  setActivePreviewTemplate(null);
+                }}
+                className="px-4 py-2 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-lg flex items-center gap-1.5 shadow-sm"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                Open in Live Editor (Free)
               </button>
             </div>
           </div>

@@ -33,3 +33,23 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   background: #94a3b8;
 }
 
+@media print {
+  header, footer, nav, .print\:hidden {
+    display: none !important;
+  }
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  #printable-ats-resume {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}
+
+

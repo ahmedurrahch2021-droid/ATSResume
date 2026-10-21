@@ -30,7 +30,10 @@ import {
   FileSearch,
   Check,
   Eye,
-  AlertCircle
+  AlertCircle,
+  Target,
+  Sparkles,
+  Zap
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -70,38 +73,46 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* Left Content Column */}
             <div className="lg:col-span-7 space-y-8 text-left">
               {/* Trust Tag */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200/80 text-xs text-emerald-800 font-semibold">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 border border-red-200/80 text-xs text-[#C82333] font-semibold">
+                <ShieldCheck className="w-4 h-4 text-[#C82333]" />
                 <span>Verified Single-Column Architecture · 100% Parsing Guarantee</span>
               </div>
 
               {/* Main Headline with balanced measure */}
               <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight text-balance leading-[1.12]">
                 Your Resume, Rebuilt for the{' '}
-                <span className="text-emerald-700">Algorithms That Decide</span>
+                <span className="text-[#C82333]">Algorithms That Decide</span>
               </h1>
 
               {/* Value Proposition */}
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-light max-w-2xl">
-                Over 75% of job applications are silently filtered out by enterprise ATS software before a human recruiter clicks your profile. We combine algorithmic keyword alignment with human senior developer quality review so your qualifications actually reach interviews.
+                Applicant tracking systems silently disqualify multi-column and poorly formatted resumes. We combine algorithmic keyword alignment, live single-column editing, and human developer review so your qualifications actually reach interviews.
               </p>
 
               {/* Primary & Secondary Action Buttons */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <button
-                  onClick={() => onOpenOrder('starter')}
-                  className="px-7 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base rounded-xl transition-all shadow-md shadow-emerald-600/20 active:scale-[0.98] flex items-center justify-center gap-2"
+                  onClick={() => onNavigate('suite')}
+                  className="px-7 py-4 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-base rounded-xl transition-all shadow-md shadow-red-900/20 active:scale-[0.98] flex items-center justify-center gap-2"
                 >
-                  <span>Build My Resume — $10</span>
+                  <Sparkles className="w-5 h-5 text-red-200" />
+                  <span>Launch Live CV Editor (Free)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
-                  onClick={() => onNavigate('templates')}
-                  className="px-6 py-4 bg-slate-50 hover:bg-slate-100 text-slate-800 font-semibold text-base rounded-xl border border-slate-200 transition-colors flex items-center justify-center gap-2"
+                  onClick={() => onOpenOrder('starter')}
+                  className="px-6 py-4 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
-                  <FileDown className="w-4 h-4 text-emerald-600" />
-                  <span>Free ATS Templates (.docx)</span>
+                  <span>1-on-1 Review — $10</span>
+                </button>
+
+                <button
+                  onClick={() => onNavigate('templates')}
+                  className="px-5 py-4 bg-slate-50 hover:bg-slate-100 text-slate-800 font-semibold text-base rounded-xl border border-slate-200 transition-colors flex items-center justify-center gap-2"
+                >
+                  <FileDown className="w-4 h-4 text-[#C82333]" />
+                  <span>Free Templates</span>
                 </button>
               </div>
 
@@ -415,6 +426,124 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2.5: ALL-IN-ONE ATS POWER SUITE SHOWCASE */}
+      <section className="bg-slate-50 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/70 px-3 py-1 rounded-md border border-emerald-300 inline-flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              Open-Source Innovation · 100% Free & Private
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight text-balance">
+              The All-in-One ATS Resume Suite
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-light">
+              We synthesized the core breakthroughs of the top 5 open-source resume projects—<strong>Reactive Resume</strong>, <strong>Resume Matcher</strong>, <strong>RenderCV</strong>, <strong>OpenResume</strong>, and <strong>ATS Screener</strong>—into a single high-speed in-browser workspace.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Tool 1: Live Builder */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-2xs hover:shadow-sm transition-shadow flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
+                  <Layers className="w-5 h-5" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">Reactive Resume + OpenResume</span>
+                  <h3 className="font-heading text-lg font-bold text-slate-900">
+                    Live ATS Resume Builder
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Dual-mode input with structured forms or instant raw text importing. Generates single-column ATS layouts adhering strictly to <strong>RenderCV</strong> typographic discipline with real-time metric checks and instant PDF export.
+                </p>
+              </div>
+              <ul className="text-xs text-slate-500 space-y-1.5 pt-2 border-t border-slate-100">
+                <li className="flex items-center gap-1.5 text-slate-700">✓ In-line Google XYZ formula audit</li>
+                <li className="flex items-center gap-1.5 text-slate-700">✓ Developer, PM & DevOps presets</li>
+                <li className="flex items-center gap-1.5 text-slate-700">✓ Instant ATS PDF print & JSON export</li>
+              </ul>
+            </div>
+
+            {/* Tool 2: Job Matcher */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-2xs hover:shadow-sm transition-shadow flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
+                  <Target className="w-5 h-5" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">Resume Matcher Technology</span>
+                  <h3 className="font-heading text-lg font-bold text-slate-900">
+                    Job Description Matcher
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Paste any job description to compute your real-time semantic alignment score. Identifies missing hard tech skills, soft skills, and keyword frequencies with 1-click bullet injections.
+                </p>
+              </div>
+              <ul className="text-xs text-slate-500 space-y-1.5 pt-2 border-t border-slate-100">
+                <li className="flex items-center gap-1.5 text-slate-700">✓ Real-time % match calculation</li>
+                <li className="flex items-center gap-1.5 text-slate-700">✓ 1-click add missing skills</li>
+                <li className="flex items-center gap-1.5 text-slate-700">✓ Targeted bullet recommendations</li>
+              </ul>
+            </div>
+
+            {/* Tool 3: ATS Screener */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-2xs hover:shadow-sm transition-shadow flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
+                  <SearchCheck className="w-5 h-5" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">ATS Screener Engine</span>
+                  <h3 className="font-heading text-lg font-bold text-slate-900">
+                    Automated Diagnostic Auditor
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Deep multi-vector parser evaluating contact header readability, action verb strength, quantified metrics ratio, and formatting traps before you submit to Workday or Greenhouse.
+                </p>
+              </div>
+              <ul className="text-xs text-slate-500 space-y-1.5 pt-2 border-t border-slate-100">
+                <li className="flex items-center gap-1.5 text-slate-700">✓ 5-vector category score breakdown</li>
+                <li className="flex items-center gap-1.5 text-slate-700">✓ Detects column & table traps</li>
+                <li className="flex items-center gap-1.5 text-slate-700">✓ Actionable pass/fail checklist</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Unified Action Strip */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-2xs">
+            <div className="space-y-1 max-w-xl">
+              <h3 className="font-heading text-base sm:text-lg font-bold text-slate-900">
+                Ready to engineer your job-winning resume?
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Use the full interactive suite 100% free with zero registration, or upgrade to our 24-hour developer overhaul service for $10.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => onNavigate('suite')}
+                className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-xs transition-colors"
+              >
+                <span>Launch Free ATS Suite</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onOpenOrder('starter')}
+                className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors"
+              >
+                <span>Hire Developer ($10)</span>
+              </button>
             </div>
           </div>
         </div>

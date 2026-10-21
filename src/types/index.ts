@@ -1,5 +1,7 @@
 export type PageRoute = 
   | 'home' 
+  | 'suite'
+  | 'editor'
   | 'templates'
   | 'pricing' 
   | 'examples' 
@@ -9,6 +11,106 @@ export type PageRoute =
   | 'faq' 
   | 'contact' 
   | 'order';
+
+export interface ResumeExperienceItem {
+  id: string;
+  role: string;
+  company: string;
+  location: string;
+  dates: string;
+  bullets: string[];
+}
+
+export interface ResumeEducationItem {
+  id: string;
+  degree: string;
+  institution: string;
+  location: string;
+  dates: string;
+  gpa?: string;
+}
+
+export interface ResumeProjectItem {
+  id: string;
+  name: string;
+  roleOrTech: string;
+  link?: string;
+  bullets: string[];
+}
+
+export interface ResumeLanguageItem {
+  id: string;
+  name: string;
+  level: 'Native' | 'Fluent' | 'C2 (Mastery)' | 'C1 (Advanced)' | 'B2 (Upper Intermediate)' | 'B1 (Intermediate)' | 'A2' | 'A1';
+}
+
+export interface CompetitiveProgrammingItem {
+  id: string;
+  platform: 'Codeforces' | 'LeetCode' | 'HackerRank' | 'Kaggle' | 'CodeChef' | 'GitHub' | 'Other';
+  handle: string;
+  rating?: string;
+  badgeOrRank?: string;
+}
+
+export interface CustomSectionItem {
+  id: string;
+  title: string;
+  subtitle?: string;
+  date?: string;
+  description: string;
+}
+
+export interface CustomSection {
+  id: string;
+  title: string;
+  items: CustomSectionItem[];
+}
+
+export type TargetMarket = 'global' | 'us_uk' | 'bangladesh';
+
+export interface ResumeData {
+  fullName: string;
+  targetTitle: string;
+  email: string;
+  phone: string;
+  location: string;
+  linkedin: string;
+  portfolio: string;
+  github?: string;
+  summary: string;
+  // International & Photo fields
+  photoUrl?: string;
+  photoShape?: 'circle' | 'square' | 'hidden';
+  nationality?: string;
+  visaStatus?: string;
+  drivingLicense?: string;
+  remoteReadiness?: string;
+  targetMarket?: TargetMarket;
+  // Core sections
+  experience: ResumeExperienceItem[];
+  education: ResumeEducationItem[];
+  skills: {
+    languages: string;
+    frameworks: string;
+    toolsAndCloud: string;
+    methodologies: string;
+  };
+  languages?: ResumeLanguageItem[];
+  competitiveProgramming?: CompetitiveProgrammingItem[];
+  projects: ResumeProjectItem[];
+  certifications: string[];
+  customSections?: CustomSection[];
+}
+
+export interface JobMatchAnalysis {
+  matchPercentage: number;
+  matchedKeywords: string[];
+  missingHardSkills: string[];
+  missingSoftSkills: string[];
+  keywordDensityWarning?: string;
+  recommendedBullets: string[];
+  summaryFeedback: string;
+}
 
 export interface ResumeTemplate {
   id: string;
@@ -70,6 +172,15 @@ export interface ExampleResume {
   metricsHighlight: string;
 }
 
+export interface DetailedCheckItem {
+  id: string;
+  name: string;
+  category: 'ATS Essentials' | 'Resume Sections' | 'Content' | 'Job Tailoring' | 'Recruiter Red Flags' | 'Bias & Discrimination' | 'Seniority & Impact';
+  status: 'pass' | 'warning' | 'fail';
+  detail: string;
+  recommendation?: string;
+}
+
 export interface AtsScanResult {
   score: number;
   categoryScores: {
@@ -87,6 +198,7 @@ export interface AtsScanResult {
   quantifiedCount: number;
   strongVerbsCount: number;
   summaryFeedback: string;
+  detailedChecks?: DetailedCheckItem[];
 }
 
 export interface OrderFormData {
