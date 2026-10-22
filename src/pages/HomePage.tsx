@@ -75,7 +75,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               {/* Trust Tag */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 border border-red-200/80 text-xs text-[#C82333] font-semibold">
                 <ShieldCheck className="w-4 h-4 text-[#C82333]" />
-                <span>Verified Single-Column Architecture · 100% Parsing Guarantee</span>
+                <span>Single-Column Layout · Plain-Text Friendly</span>
               </div>
 
               {/* Main Headline with balanced measure */}
@@ -146,7 +146,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <div className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                       <span className="text-xs font-bold text-slate-800 tracking-tight">
-                        Alex R. Chen · ATS Verified Profile
+                        Example profile (illustrative)
                       </span>
                     </div>
                     <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
@@ -158,7 +158,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <div className="relative mt-3 rounded-xl overflow-hidden bg-slate-50 border border-slate-200/70">
                     <img
                       src={ATS_IMAGES.verifiedResume}
-                      alt="Real ATS verified single-column resume showcase"
+                      alt="Example single-column resume layout"
                       referrerPolicy="no-referrer"
                       className="w-full h-auto object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-300"
                       onClick={() => setZoomPreviewOpen(true)}
@@ -178,15 +178,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-3 gap-2 text-center text-[10px]">
                     <div className="p-1.5 rounded-lg bg-slate-50 border border-slate-100">
                       <span className="text-slate-400 block font-mono">Workday</span>
-                      <span className="font-bold text-emerald-700">100% Parsed</span>
+                      <span className="font-bold text-emerald-700">Illustrative only</span>
                     </div>
                     <div className="p-1.5 rounded-lg bg-slate-50 border border-slate-100">
                       <span className="text-slate-400 block font-mono">Greenhouse</span>
-                      <span className="font-bold text-emerald-700">100% Parsed</span>
+                      <span className="font-bold text-emerald-700">Illustrative only</span>
                     </div>
                     <div className="p-1.5 rounded-lg bg-slate-50 border border-slate-100">
                       <span className="text-slate-400 block font-mono">Taleo / Lever</span>
-                      <span className="font-bold text-emerald-700">100% Parsed</span>
+                      <span className="font-bold text-emerald-700">Illustrative only</span>
                     </div>
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               What is an ATS, and Why Optimization is Non-Negotiable
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-light">
-              Over <strong>98% of Fortune 500 enterprises</strong> and <strong>70%+ of high-growth tech scaleups</strong> use Applicant Tracking Systems (ATS) like Workday, Greenhouse, Taleo, and Lever. You are rarely evaluated by a human first—you are ranked by deterministic text scrapers.
+              Many employers use applicant tracking systems (ATS) such as Workday, Greenhouse, Taleo, and Lever to screen applications before a recruiter reads them. Clear formatting and relevant keywords help your resume get through that step.
             </p>
           </div>
 
@@ -315,9 +315,9 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="lg:col-span-7 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded">
-                    Verified Candidate Case Study
+                    Example case study
                   </span>
-                  <span className="text-xs text-slate-500">· Real Diagnostic</span>
+                  <span className="text-xs text-slate-500">· Illustrative example</span>
                 </div>
                 <h3 className="font-heading text-2xl sm:text-3xl font-bold text-slate-900">
                   The 38-Application Wakeup Call: How a Top Performer Got Filtered Out
@@ -779,7 +779,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="max-w-5xl mx-auto space-y-12">
           <div className="text-center space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">
-              Verified Candidate Outcomes
+              Example outcomes
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
               Real Applicants Who Beat the ATS Filter
@@ -897,7 +897,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-emerald-600" />
                 <h3 className="font-heading font-bold text-sm text-slate-900">
-                  ATS Verified Single-Column Specimen (100% Parsing Pass)
+                  Single-column layout example
                 </h3>
               </div>
               <button
