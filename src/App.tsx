@@ -21,9 +21,13 @@ import { ContactPage } from './pages/ContactPage';
 import { OrderPage } from './pages/OrderPage';
 import { UserAccount, INITIAL_GUEST_ACCOUNT } from './types/auth';
 import { AuthModal } from './components/AuthModal';
+import { useLocation, useNavigate } from 'react-router';
+import { ROUTE_PATHS, routeFromPath } from './routes';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageRoute>('home');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPage: PageRoute = routeFromPath(location.pathname);
   const [checklistModalOpen, setChecklistModalOpen] = useState<boolean>(false);
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
   const [orderPackageId, setOrderPackageId] = useState<'starter' | 'boost' | 'full'>('boost');
@@ -60,7 +64,7 @@ export default function App() {
   };
 
   const handleNavigate = (route: PageRoute) => {
-    setCurrentPage(route);
+    navigate(ROUTE_PATHS[route]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -72,7 +76,7 @@ export default function App() {
     if (preloadedData) {
       setPreloadedOrderData(preloadedData);
     }
-    setCurrentPage('order');
+    navigate(ROUTE_PATHS.order);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
