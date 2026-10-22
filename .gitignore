@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Prerender spike output (not committed)
+dist-spike/
