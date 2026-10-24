@@ -18,6 +18,7 @@ import { StaticRouter, Routes, Route } from 'react-router';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { PRERENDER_ROUTES, ROUTE_PATHS, ROUTE_META, SITE_ORIGIN } from '../src/routes';
+import { SITE_JSON_LD } from '../src/seo';
 import type { PageRoute } from '../src/types';
 import { HomePage } from '../src/pages/HomePage';
 import { TemplatesPage } from '../src/pages/TemplatesPage';
@@ -100,7 +101,9 @@ function withHead(template: string, route: PageRoute, body: string): string {
   const emptyRoot = '<div id="root"></div>';
   if (!html.includes(emptyRoot)) throw new Error('Template has no empty #root element');
   html = html.replace(emptyRoot, `<div id="root">${body}</div>`);
-  const extraHead = [canonicalTag, robotsTag].filter(Boolean).map((t) => `    ${t}`).join('\n');
+  // JSON-LD is built from a fixed object, so it cannot inject markup.
+  const jsonLdTag = `<script type="application/ld+json">${JSON.stringify(SITE_JSON_LD)}</script>`;
+  const extraHead = [canonicalTag, robotsTag, jsonLdTag].filter(Boolean).map((t) => `    ${t}`).join('\n');
   return html.replace('</head>', `${extraHead}\n  </head>`);
 }
 
