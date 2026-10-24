@@ -77,7 +77,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 <Sparkles className="w-4 h-4" />
               </div>
               <span className="font-heading font-black text-xl tracking-tight text-slate-900">
-                ATS<span className="text-[#C82333]">resume</span>
+                ATS <span className="text-[#C82333]">Resume Maker</span>
               </span>
             </div>
             <p className="text-xs text-slate-500 leading-relaxed">

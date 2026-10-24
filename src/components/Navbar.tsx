@@ -88,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex items-baseline gap-1">
               <span className="font-heading font-black text-xl tracking-tight text-[#C82333]">
-                ATS<span className="text-stone-900 font-bold">resume</span>
+                ATS <span className="text-stone-900 font-bold">Resume Maker</span>
               </span>
             </div>
           </Link>

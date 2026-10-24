@@ -1179,12 +1179,12 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                         <span className="text-[9px] text-slate-400">Scan to pay</span>
                       </div>
                       <div className="text-xs space-y-1.5 text-slate-700">
-                        <p>UPI VPA: <strong className="font-mono text-slate-900">resumerevive@upi</strong></p>
+                        <p>UPI VPA: <strong className="font-mono text-slate-900">atsresumemaker@upi</strong></p>
                         <p>Total INR: <strong>₹{(totalAmount * 84).toLocaleString()}</strong> (~${totalAmount} USD)</p>
                         <button
                           type="button"
                           onClick={() => {
-                            navigator.clipboard?.writeText('resumerevive@upi');
+                            navigator.clipboard?.writeText('atsresumemaker@upi');
                             setCopiedUpi(true);
                             setTimeout(() => setCopiedUpi(false), 2000);
                           }}
