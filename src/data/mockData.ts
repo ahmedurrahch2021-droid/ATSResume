@@ -1,9 +1,9 @@
 import { PricingPackage, ExampleResume, Testimonial, FaqItem, ResumeTemplate } from '../types';
 
 export const ATS_IMAGES = {
-  verifiedResume: '/src/assets/images/ats_verified_resume_showcase_1792524530590.jpg',
-  scannerDashboard: '/src/assets/images/ats_scanner_software_dashboard_1792524531983.jpg',
-  templatePreview: '/src/assets/images/ats_resume_template_preview_1792524530797.jpg'
+  verifiedResume: '/images/ats_verified_resume_showcase_1792524530590.jpg',
+  scannerDashboard: '/images/ats_scanner_software_dashboard_1792524531983.jpg',
+  templatePreview: '/images/ats_resume_template_preview_1792524530797.jpg'
 };
 
 export const PACKAGES: PricingPackage[] = [
