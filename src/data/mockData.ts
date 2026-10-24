@@ -247,16 +247,16 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'faq-3',
     category: 'pricing',
-    question: 'Is there really a 100% money-back guarantee?',
-    directAnswer: 'Yes. If you are not completely satisfied with your finished resume after your free revision round, email us and we refund 100% of your payment with zero hassle.',
-    extendedAnswer: 'We stand firmly behind our craft. We would rather protect your trust and our reputation than keep money for a service you do not love. Simply message ahmedur.rahch2021@gmail.com within 14 days.'
+    question: 'What if I am not satisfied with my resume?',
+    directAnswer: 'Every order includes one free revision round. If you are still not satisfied after it, contact us before you accept the final draft and we will discuss the next steps with you.',
+    extendedAnswer: 'Email ahmedur.rahch2021@gmail.com with your order details. Refund terms are confirmed with you in writing when you get in touch.'
   },
   {
     id: 'faq-4',
     category: 'ats',
     question: 'Will my new resume pass automated ATS scanners?',
-    directAnswer: 'Yes. Every resume is built with standard single-column ATS hierarchy, clean UTF-8 typography, and keyword-matched sections verified against Workday, Greenhouse, and Lever criteria.',
-    extendedAnswer: 'Applicant Tracking Systems reject resumes with text boxes, nested multi-column tables, photos, or non-standard heading tags. We deliver clean, ATS-compliant layouts in both PDF and fully editable Microsoft Word (.docx) formats so your keywords parse cleanly every time.'
+    directAnswer: 'No resume can be guaranteed to pass every automated scanner, because each employer configures its system differently. We build single-column, text-based layouts, which are generally easier for applicant tracking systems to read, and we match keywords to the job description you send us.',
+    extendedAnswer: 'Applicant Tracking Systems commonly struggle with text boxes, nested multi-column tables, images and non-standard heading tags. We deliver ATS-friendly layouts as both PDF and editable Microsoft Word (.docx) files, so you can check the text yourself.'
   },
   {
     id: 'faq-5',
@@ -275,9 +275,9 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'faq-7',
     category: 'pricing',
-    question: 'What payment methods do you accept?',
-    directAnswer: 'We accept PayPal, Credit/Debit cards (Visa, MasterCard, Amex), and PhonePe / Google Pay UPI.',
-    extendedAnswer: 'All transactions are encrypted and processed securely. You receive an immediate receipt and order reference code upon checkout.'
+    question: 'How do I pay for my order?',
+    directAnswer: 'Online payment is not available yet. To place an order, email ahmedur.rahch2021@gmail.com and we will arrange payment with you.',
+    extendedAnswer: 'We will update this answer when online checkout opens.'
   },
   {
     id: 'faq-8',
@@ -300,7 +300,7 @@ export const CHECKLIST_ITEMS = [
   { id: 9, category: 'Header & Contact', title: 'Clickable Clean Links', description: 'Clean LinkedIn and GitHub links without long tracking query strings.' },
   { id: 10, category: 'Header & Contact', title: 'Zero Unnecessary Personal Data', description: 'No photo, no physical street address, and no marital status.' },
   { id: 11, category: 'Formatting', title: 'Consistent Date Formats', description: 'Uniform date structures (e.g., "Jan 2022 – Present") across all entries.' },
-  { id: 12, category: 'Formatting', title: 'Page Length Discipline', description: 'Exactly 1 page for under 5 years, or exactly 2 full pages for 5+ years.' },
+  { id: 12, category: 'Formatting', title: 'Page Length Discipline', description: 'Usually 1 page for under 5 years of experience, and usually 2 pages for 5 or more years. Some senior, academic or technical roles need more. Any length should stay tight and relevant.' },
   { id: 13, category: 'Grammar & Tone', title: 'Tense Consistency', description: 'Past tense for previous jobs, present tense for current active employment.' },
   { id: 14, category: 'Grammar & Tone', title: 'Zero First-Person Pronouns', description: 'No "I", "me", "my", or "our" anywhere in professional summaries or bullets.' },
   { id: 15, category: 'Final Polish', title: 'PDF & DOCX Tested', description: 'File size under 500KB with clean searchable text selection.' }
@@ -621,12 +621,12 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
     recommendedFor: 'Fresh College Graduates, Career Switchers, Interns',
     atsScore: 99,
     downloadCount: '5,400 downloads',
-    format: '1-Page Strict Discipline · ATS High Callback',
+    format: '1-Page Layout · Early Career',
     previewImage: ATS_IMAGES.verifiedResume,
     highlightPoints: [
       'Tailored specifically to overcome lack of 10+ years experience with project framing',
       'Education and technical coursework elevated to pass entry-level ATS degree filters',
-      'Compact 1-page geometry guaranteeing zero awkward overflow lines',
+      'A compact one-page layout that keeps the most relevant details easy to scan',
       'Instant free download in Microsoft Word (.docx) and PDF'
     ],
     sampleContent: {
