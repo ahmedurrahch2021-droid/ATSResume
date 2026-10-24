@@ -30,6 +30,12 @@ export function routeFromPath(pathname: string): PageRoute {
 }
 
 /**
+ * Production origin, used for canonical URLs and the sitemap. Change this
+ * if the site moves to a custom domain.
+ */
+export const SITE_ORIGIN = 'https://atsresumemaker.ai.studio';
+
+/**
  * Page metadata for the public, indexable routes. Titles stay under 60
  * characters and descriptions under 160, as set in docs/SEO_AEO_PLAN.md §8.
  * Routes not listed here are not prerendered (order, suite, editor).

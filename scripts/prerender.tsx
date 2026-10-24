@@ -17,7 +17,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter, Routes, Route } from 'react-router';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { PRERENDER_ROUTES, ROUTE_PATHS, ROUTE_META } from '../src/routes';
+import { PRERENDER_ROUTES, ROUTE_PATHS, ROUTE_META, SITE_ORIGIN } from '../src/routes';
 import type { PageRoute } from '../src/types';
 import { HomePage } from '../src/pages/HomePage';
 import { TemplatesPage } from '../src/pages/TemplatesPage';
@@ -88,6 +88,7 @@ function withHead(template: string, route: PageRoute, body: string): string {
 
   const titleTag = `<title>${meta.title}</title>`;
   const robotsTag = meta.noindex ? '<meta name="robots" content="noindex,follow" />' : '';
+  const canonicalTag = `<link rel="canonical" href="${SITE_ORIGIN}${ROUTE_PATHS[route]}" />`;
   const descTag = `<meta name="description" content="${meta.description}" />`;
 
   let html = template;
@@ -99,7 +100,8 @@ function withHead(template: string, route: PageRoute, body: string): string {
   const emptyRoot = '<div id="root"></div>';
   if (!html.includes(emptyRoot)) throw new Error('Template has no empty #root element');
   html = html.replace(emptyRoot, `<div id="root">${body}</div>`);
-  return robotsTag ? html.replace('</head>', `    ${robotsTag}\n  </head>`) : html;
+  const extraHead = [canonicalTag, robotsTag].filter(Boolean).map((t) => `    ${t}`).join('\n');
+  return html.replace('</head>', `${extraHead}\n  </head>`);
 }
 
 const template = readFileSync(join(DIST, 'index.html'), 'utf8');
@@ -127,4 +129,15 @@ if (failures > 0) {
   console.error(`${failures} route(s) failed to prerender.`);
   process.exit(1);
 }
+// sitemap.xml lists only indexable pages: not noindex.
+const indexable = PRERENDER_ROUTES.filter((r) => !ROUTE_META[r]?.noindex);
+const urls = indexable
+  .map((r) => `  <url><loc>${SITE_ORIGIN}${ROUTE_PATHS[r]}</loc></url>`)
+  .join('\n');
+writeFileSync(
+  join(DIST, 'sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
+  'utf8',
+);
+console.log(`Wrote sitemap.xml with ${indexable.length} URLs.`);
 console.log(`Prerendered ${PRERENDER_ROUTES.length} routes.`);

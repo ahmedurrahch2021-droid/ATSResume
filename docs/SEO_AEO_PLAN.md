@@ -156,7 +156,7 @@ Each phase is a separate branch and PR. Typecheck and build must pass before eac
 4. `Product`/`Offer` on `/pricing` only after prices are confirmed.
 5. `HowTo` on `/how-it-works` only if the steps are visible on the page.
 6. Generate `sitemap.xml` at build from the route list (lastmod from git or content date).
-7. `robots.txt` pointing to the sitemap; disallow `/order` and `/suite`.
+7. `robots.txt` pointing to the sitemap; disallow `/order`. **Correction:** `/suite` is not disallowed, because a crawler must fetch the page to see its `noindex` tag. Disallowing it would hide the tag without removing the page from search.
 - **Acceptance:** Rich Results Test and the Schema.org validator report no errors; sitemap contains only indexable URLs.
 
 ### Phase 3 — Content and E-E-A-T
