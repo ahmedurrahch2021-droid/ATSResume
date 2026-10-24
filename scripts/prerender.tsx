@@ -18,7 +18,8 @@ import { StaticRouter, Routes, Route } from 'react-router';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { PRERENDER_ROUTES, ROUTE_PATHS, ROUTE_META, SITE_ORIGIN } from '../src/routes';
-import { SITE_JSON_LD } from '../src/seo';
+import { SITE_JSON_LD, faqPageJsonLd } from '../src/seo';
+import { FAQ_ITEMS } from '../src/data/mockData';
 import type { PageRoute } from '../src/types';
 import { HomePage } from '../src/pages/HomePage';
 import { TemplatesPage } from '../src/pages/TemplatesPage';
@@ -103,7 +104,10 @@ function withHead(template: string, route: PageRoute, body: string): string {
   html = html.replace(emptyRoot, `<div id="root">${body}</div>`);
   // JSON-LD is built from a fixed object, so it cannot inject markup.
   const jsonLdTag = `<script type="application/ld+json">${JSON.stringify(SITE_JSON_LD)}</script>`;
-  const extraHead = [canonicalTag, robotsTag, jsonLdTag].filter(Boolean).map((t) => `    ${t}`).join('\n');
+  // FAQPage markup is only emitted for approved items on the FAQ page.
+  const faqData = route === 'faq' ? faqPageJsonLd(FAQ_ITEMS) : null;
+  const faqTag = faqData ? `<script type="application/ld+json">${JSON.stringify(faqData)}</script>` : '';
+  const extraHead = [canonicalTag, robotsTag, jsonLdTag, faqTag].filter(Boolean).map((t) => `    ${t}`).join('\n');
   return html.replace('</head>', `${extraHead}\n  </head>`);
 }
 
