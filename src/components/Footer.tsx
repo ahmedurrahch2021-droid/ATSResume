@@ -1,5 +1,7 @@
 import React from 'react';
 import { PageRoute } from '../types';
+import { Link } from 'react-router';
+import { ROUTE_PATHS } from '../routes';
 import { ShieldCheck, Clock, CheckCircle2, FileDown, Sparkles, PenTool } from 'lucide-react';
 import { EmailSubscriptionBox } from './EmailSubscriptionBox';
 
@@ -10,8 +12,8 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist, onOpenOrder }) => {
-  const handleNav = (route: PageRoute) => {
-    setCurrentPage(route);
+  // The link itself navigates (real <a href>). This only scrolls.
+  const handleNavClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -102,36 +104,36 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <button onClick={() => handleNav('editor')} className="text-[#C82333] font-bold hover:text-[#A71D2A] transition-colors flex items-center gap-1.5">
+                <Link to={ROUTE_PATHS['editor']} onClick={handleNavClick} className="text-[#C82333] font-bold hover:text-[#A71D2A] transition-colors flex items-center gap-1.5">
                   <PenTool className="w-3.5 h-3.5" />
                   <span>Live CV Editor (Free PDF)</span>
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('templates')} className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1">
+                <Link to={ROUTE_PATHS['templates']} onClick={handleNavClick} className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1">
                   <FileDown className="w-3.5 h-3.5" />
                   <span>Free ATS Templates & Gallery</span>
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('free-resume-score')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['free-resume-score']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   Free ATS Resume Score Scanner
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('suite')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['suite']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   Job Matcher & Gap Analysis
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('examples')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['examples']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   Before & After Transformations
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['pricing']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   Pricing Plans ($10 / $25 / $35)
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -143,24 +145,24 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <button onClick={() => handleNav('how-it-works')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['how-it-works']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   How The 4-Step Process Works
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('about')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['about']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   About Senior Developer Founder
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('faq')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   Frequently Asked Questions (FAQ)
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNav('contact')} className="hover:text-slate-900 transition-colors">
+                <Link to={ROUTE_PATHS['contact']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   Direct Contact & Support
-                </button>
+                </Link>
               </li>
               <li>
                 <button onClick={onOpenChecklist} className="text-[#C82333] hover:text-[#A71D2A] font-semibold transition-colors">
@@ -208,11 +210,11 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
         <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© 2026 ATSresume. All rights reserved. ATS-verified resume templates & career optimization.</p>
           <div className="flex items-center gap-4">
-            <button onClick={() => handleNav('faq')} className="hover:text-slate-800">Privacy Policy</button>
+            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-slate-800">Privacy Policy</Link>
             <span>·</span>
-            <button onClick={() => handleNav('faq')} className="hover:text-slate-800">Terms of Service</button>
+            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-slate-800">Terms of Service</Link>
             <span>·</span>
-            <button onClick={() => handleNav('faq')} className="hover:text-slate-800">Money-Back Guarantee</button>
+            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-slate-800">Money-Back Guarantee</Link>
           </div>
         </div>
       </div>

@@ -16,7 +16,8 @@ export const ROUTE_PATHS: Record<PageRoute, string> = {
   contact: '/contact',
   order: '/order',
   suite: '/suite',
-  editor: '/editor',
+  // The editor and the suite are the same page in App.tsx, so they share one URL.
+  editor: '/suite',
 };
 
 /** Reverse lookup from a URL path to a page. Unknown paths show the home page. */
@@ -36,6 +37,8 @@ export function routeFromPath(pathname: string): PageRoute {
 export interface RouteMeta {
   title: string;
   description: string;
+  /** Set for app pages that should not appear in search results. */
+  noindex?: boolean;
 }
 
 export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
@@ -74,6 +77,10 @@ export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
   contact: {
     title: 'Contact | ATSresume',
     description: 'Get in touch with the ATSresume team about your resume or your order.',
+  },  suite: {
+    title: 'Resume Editor | ATSresume',
+    description: 'Edit and check your resume in the ATSresume editor.',
+    noindex: true,
   },
 };
 
@@ -88,4 +95,5 @@ export const PRERENDER_ROUTES: PageRoute[] = [
   'faq',
   'about',
   'contact',
+  'suite',
 ];

@@ -28,6 +28,10 @@ import { HowItWorksPage } from '../src/pages/HowItWorksPage';
 import { AboutPage } from '../src/pages/AboutPage';
 import { FaqPage } from '../src/pages/FaqPage';
 import { ContactPage } from '../src/pages/ContactPage';
+import { SuitePage } from '../src/pages/SuitePage';
+import { Navbar } from '../src/components/Navbar';
+import { Footer } from '../src/components/Footer';
+import { INITIAL_GUEST_ACCOUNT } from '../src/types/auth';
 
 const DIST = 'dist';
 const noop = () => {};
@@ -44,20 +48,36 @@ const ELEMENTS: Record<PageRoute, React.ReactElement | null> = {
   about: <AboutPage onSelectPlan={noop} />,
   faq: <FaqPage onSelectPlan={noop} onNavigateContact={noop} />,
   contact: <ContactPage onSelectPlan={noop} />,
-  // Not prerendered:
+  suite: <SuitePage onNavigate={noop} onOpenOrder={noop} />,
+  // Not prerendered: order is transactional; editor is the same page as suite.
   order: null,
-  suite: null,
   editor: null,
 };
 
+// Same frame as App.tsx: the wrapper div, Navbar, <main>, Footer. Keeping it
+// identical lets the client hydrate the prerendered markup without a mismatch.
+// Modals (auth, checklist) render nothing while closed, so they are omitted.
 function renderPage(route: PageRoute): string {
   const element = ELEMENTS[route];
   if (!element) throw new Error(`No prerender element for route "${route}"`);
   return renderToString(
     <StaticRouter location={ROUTE_PATHS[route]}>
-      <Routes>
-        <Route path={ROUTE_PATHS[route]} element={element} />
-      </Routes>
+      <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-emerald-600 selection:text-white">
+        <Navbar
+          currentPage={route}
+          setCurrentPage={noop}
+          onOpenOrder={noop}
+          userAccount={INITIAL_GUEST_ACCOUNT}
+          onOpenAuth={noop}
+          onSignOut={noop}
+        />
+        <main className="flex-1">
+          <Routes>
+            <Route path={ROUTE_PATHS[route]} element={element} />
+          </Routes>
+        </main>
+        <Footer setCurrentPage={noop} onOpenChecklist={noop} onOpenOrder={noop} />
+      </div>
     </StaticRouter>,
   );
 }
@@ -67,6 +87,7 @@ function withHead(template: string, route: PageRoute, body: string): string {
   if (!meta) throw new Error(`No metadata for route "${route}"`);
 
   const titleTag = `<title>${meta.title}</title>`;
+  const robotsTag = meta.noindex ? '<meta name="robots" content="noindex,follow" />' : '';
   const descTag = `<meta name="description" content="${meta.description}" />`;
 
   let html = template;
@@ -77,7 +98,8 @@ function withHead(template: string, route: PageRoute, body: string): string {
 
   const emptyRoot = '<div id="root"></div>';
   if (!html.includes(emptyRoot)) throw new Error('Template has no empty #root element');
-  return html.replace(emptyRoot, `<div id="root">${body}</div>`);
+  html = html.replace(emptyRoot, `<div id="root">${body}</div>`);
+  return robotsTag ? html.replace('</head>', `    ${robotsTag}\n  </head>`) : html;
 }
 
 const template = readFileSync(join(DIST, 'index.html'), 'utf8');
