@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { PageRoute } from '../types';
+import { Link } from 'react-router';
+import { ROUTE_PATHS } from '../routes';
 import { 
   Menu, 
   X, 
@@ -43,8 +45,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'Contact', route: 'contact' },
   ];
 
-  const handleNav = (route: PageRoute) => {
-    setCurrentPage(route);
+  // The link itself navigates (real <a href>). This only closes the menu and scrolls.
+  const handleNavClick = () => {
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -77,8 +79,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-8">
           {/* Zone 1: Brand Wordmark with Verified ATS Emblem in Editorial Red */}
-          <button 
-            onClick={() => handleNav('home')}
+          <Link to={ROUTE_PATHS['home']} 
+            onClick={handleNavClick}
             className="flex items-center gap-2 text-left group focus:outline-none whitespace-nowrap shrink-0"
           >
             <div className="w-8 h-8 rounded-lg bg-[#C82333] flex items-center justify-center text-white shadow-xs group-hover:bg-[#A71D2A] transition-colors">
@@ -89,16 +91,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ATS<span className="text-stone-900 font-bold">resume</span>
               </span>
             </div>
-          </button>
+          </Link>
 
           {/* Zone 2: Clean single-line Nav Items */}
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => {
               const isActive = currentPage === item.route || (item.route === 'suite' && currentPage === 'editor');
               return (
-                <button
+                <Link to={ROUTE_PATHS[item.route]}
                   key={item.route}
-                  onClick={() => handleNav(item.route)}
+                  onClick={handleNavClick}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'bg-red-50 text-[#C82333] font-bold border border-red-200'
@@ -114,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </span>
                   )}
                   {item.label}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -178,9 +180,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           {navItems.map((item) => {
             const isActive = currentPage === item.route;
             return (
-              <button
+              <Link to={ROUTE_PATHS[item.route]}
                 key={item.route}
-                onClick={() => handleNav(item.route)}
+                onClick={handleNavClick}
                 className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-between ${
                   isActive
                     ? 'bg-slate-100 text-slate-900 font-semibold'
@@ -199,7 +201,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {item.badge}
                   </span>
                 )}
-              </button>
+              </Link>
             );
           })}
 
