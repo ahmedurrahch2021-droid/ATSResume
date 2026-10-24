@@ -183,7 +183,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                   <span className="font-heading font-bold text-sm text-emerald-950">
-                    AFTER — ResumeRevive Overhaul
+                    AFTER — ATS Resume Maker Overhaul
                   </span>
                 </div>
                 <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">

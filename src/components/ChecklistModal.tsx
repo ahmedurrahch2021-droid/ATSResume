@@ -29,18 +29,18 @@ export const ChecklistModal: React.FC<ChecklistModalProps> = ({ isOpen, onClose,
   };
 
   const handleDownload = () => {
-    const textContent = `RESUMEREVIVE — 25-POINT ATS RESUME AUDIT CHECKLIST
+    const textContent = `ATS RESUME MAKER — 25-POINT ATS RESUME AUDIT CHECKLIST
 Used to review 500+ resumes by Senior Web Developers.
 
 ${CHECKLIST_ITEMS.map((item, idx) => `[ ] ${idx + 1}. [${item.category}] ${item.title}\n    ${item.description}\n`).join('\n')}
 
-Visit ResumeRevive.ai to get your resume professionally rebuilt in 24 hours starting at $10!`;
+Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours starting at $10!`;
 
     const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'ResumeRevive-25-Point-ATS-Checklist.txt';
+    link.download = 'ATS-Resume-Maker-25-Point-ATS-Checklist.txt';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

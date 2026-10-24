@@ -93,7 +93,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </div>
             <div className="text-xs text-slate-500 space-y-0.5">
               <p className="font-medium text-slate-700">Founder Direct Support:</p>
-              <p>hello@atsresume.ai · 24/7 Monitoring</p>
+              <p>ahmedur.rahch2021@gmail.com · 24/7 Monitoring</p>
             </div>
           </div>
 
@@ -208,7 +208,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
 
         {/* Bottom copyright line */}
         <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© 2026 ATSresume. All rights reserved. ATS-verified resume templates & career optimization.</p>
+          <p>© 2026 ATS Resume Maker. All rights reserved. ATS-verified resume templates & career optimization.</p>
           <div className="flex items-center gap-4">
             <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-slate-800">Privacy Policy</Link>
             <span>·</span>

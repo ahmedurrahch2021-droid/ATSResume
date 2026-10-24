@@ -49,43 +49,43 @@ export interface RouteMeta {
 
 export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
   home: {
-    title: 'ATSresume | Free ATS Resume Checker & Templates',
+    title: 'ATS Resume Maker | Free ATS Resume Checker & Templates',
     description: 'Free ATS resume checker with clear fixes, plus single-column resume templates. Check your resume before you apply.',
   },
   'free-resume-score': {
-    title: 'Free ATS Resume Checker | ATSresume',
+    title: 'Free ATS Resume Checker | ATS Resume Maker',
     description: 'Upload your resume and get a free ATS check with clear fixes for formatting, keywords and measurable results.',
   },
   templates: {
-    title: 'ATS Resume Templates | ATSresume',
+    title: 'ATS Resume Templates | ATS Resume Maker',
     description: 'Single-column resume templates designed to be readable by applicant tracking systems.',
   },
   examples: {
-    title: 'Resume Examples by Role | ATSresume',
+    title: 'Resume Examples by Role | ATS Resume Maker',
     description: 'Resume examples organised by role and experience level, with notes on what each one does well.',
   },
   pricing: {
-    title: 'Pricing | ATSresume',
+    title: 'Pricing | ATS Resume Maker',
     description: 'Simple resume review packages. See what each package includes before you order.',
   },
   'how-it-works': {
-    title: 'How It Works | ATSresume',
-    description: 'How ATSresume checks and improves your resume, step by step.',
+    title: 'How It Works | ATS Resume Maker',
+    description: 'How ATS Resume Maker checks and improves your resume, step by step.',
   },
   faq: {
-    title: 'Resume FAQ | ATSresume',
+    title: 'Resume FAQ | ATS Resume Maker',
     description: 'Answers to common questions about ATS-friendly resumes, PDFs, length and keywords.',
   },
   about: {
-    title: 'About | ATSresume',
-    description: 'Who we are and how ATSresume approaches resume checking.',
+    title: 'About | ATS Resume Maker',
+    description: 'Who we are and how ATS Resume Maker approaches resume checking.',
   },
   contact: {
-    title: 'Contact | ATSresume',
-    description: 'Get in touch with the ATSresume team about your resume or your order.',
+    title: 'Contact | ATS Resume Maker',
+    description: 'Get in touch with the ATS Resume Maker team about your resume or your order.',
   },  suite: {
-    title: 'Resume Editor | ATSresume',
-    description: 'Edit and check your resume in the ATSresume editor.',
+    title: 'Resume Editor | ATS Resume Maker',
+    description: 'Edit and check your resume in the ATS Resume Maker editor.',
     noindex: true,
   },
 };

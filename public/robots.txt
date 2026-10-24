@@ -1,4 +1,4 @@
-# Crawl rules for ATSresume. Sitemap lists the indexable public pages.
+# Crawl rules for ATS Resume Maker. Sitemap lists the indexable public pages.
 User-agent: *
 # Transactional order form: not for search results and not worth crawling.
 Disallow: /order

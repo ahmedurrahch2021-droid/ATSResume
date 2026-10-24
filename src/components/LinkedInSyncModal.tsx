@@ -132,7 +132,7 @@ ${resumeData.experience.slice(0, 2).map(exp => `• At ${exp.company} (${exp.rol
               Easy Apply Ingestion Tip
             </div>
             <p className="text-sky-800 leading-relaxed">
-              When applying with LinkedIn "Easy Apply", applicant tracking systems parse your LinkedIn profile directly. Keeping your LinkedIn experience bullets identical to your ATSresume bullets ensures 100% data consistency.
+              When applying with LinkedIn "Easy Apply", applicant tracking systems parse your LinkedIn profile directly. Keeping your LinkedIn experience bullets identical to your ATS Resume Maker bullets ensures 100% data consistency.
             </p>
           </div>
         </div>

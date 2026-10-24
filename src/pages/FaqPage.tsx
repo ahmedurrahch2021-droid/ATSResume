@@ -151,7 +151,7 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
               Have a question not listed here?
             </h4>
             <p className="text-xs text-slate-500">
-              We respond to inquiries within 2 hours. Email hello@resumerevive.ai
+              We respond to inquiries within 2 hours. Email ahmedur.rahch2021@gmail.com
             </p>
           </div>
           <button
