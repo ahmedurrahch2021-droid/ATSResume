@@ -59,7 +59,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
-                ATS Career Cloud
+                ATS Resume Maker
               </span>
               {isBD && (
                 <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">

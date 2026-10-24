@@ -29,7 +29,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
             I Build Web Platforms & Optimize Resumes. Here's Why I Do Both.
           </h1>
           <p className="text-base text-slate-600 leading-relaxed font-light">
-            The philosophy behind ATSresume: Why automated tools alone fail job seekers, and how technical screening insight turns cold applications into interviews.
+            The philosophy behind ATS Resume Maker: Why automated tools alone fail job seekers, and how technical screening insight turns cold applications into interviews.
           </p>
         </div>
 
@@ -43,7 +43,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
             </div>
             <div className="space-y-2 text-center sm:text-left">
               <h2 className="font-heading text-xl font-bold text-slate-900">
-                Hi, I'm the Lead Engineer behind ATSresume.
+                Hi, I'm the Lead Engineer behind ATS Resume Maker.
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 As a senior full-stack web developer, I build and maintain live web applications and distributed systems. Over the years, I've sat on the hiring side of the table, screening hundreds of engineering, product, marketing, and corporate resumes.
@@ -96,7 +96,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onSelectPlan }) => {
             </p>
             <div className="p-5 rounded-xl bg-emerald-50/80 border border-emerald-200 text-emerald-950 space-y-2">
               <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800">
-                The ATSresume Pledge:
+                The ATS Resume Maker Pledge:
               </h4>
               <p className="text-xs sm:text-sm italic leading-relaxed text-slate-800">
                 "Unlike automated builders, I personally read every resume twice — once for technical accuracy and domain truth, and once for recruiter impact. You get AI efficiency with senior human judgment. No template fluff. No hallucinated nonsense."

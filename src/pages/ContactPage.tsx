@@ -62,8 +62,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
                   <Mail className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
                   <div>
                     <span className="text-slate-400 block text-[11px]">Direct Email</span>
-                    <a href="mailto:hello@resumerevive.ai" className="font-medium text-white hover:text-blue-300 transition-colors">
-                      hello@resumerevive.ai
+                    <a href="mailto:ahmedur.rahch2021@gmail.com" className="font-medium text-white hover:text-blue-300 transition-colors">
+                      ahmedur.rahch2021@gmail.com
                     </a>
                   </div>
                 </div>

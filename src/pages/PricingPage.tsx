@@ -234,7 +234,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 Are there any recurring monthly charges?
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Zero. Unlike automated resume websites that trick you into a $29.99/month recurring charge after a $2 trial, ATSresume is 100% one-time flat fee. You only pay for the service you order.
+                Zero. Unlike automated resume websites that trick you into a $29.99/month recurring charge after a $2 trial, ATS Resume Maker is 100% one-time flat fee. You only pay for the service you order.
               </p>
             </div>
             <div className="space-y-1.5">
@@ -242,7 +242,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 How does the 100% money-back guarantee work?
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                If our finished draft doesn't exceed your expectations after your free revision round, send an email to hello@atsresume.ai and we immediately issue a full refund to your original payment method.
+                If our finished draft doesn't exceed your expectations after your free revision round, send an email to ahmedur.rahch2021@gmail.com and we immediately issue a full refund to your original payment method.
               </p>
             </div>
             <div className="space-y-1.5">

@@ -1,5 +1,5 @@
 {
-  "name": "ATSresume",
+  "name": "ATS Resume Maker",
   "description": "ATS-verified resume optimization, authentic single-column templates, and 24-hour developer overhaul. Tested against Workday, Greenhouse, and Lever.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

@@ -331,7 +331,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <span className="font-mono font-bold text-red-800 text-sm">38 Apps · 35 Rejections · 0 Calls</span>
                   </div>
                   <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl">
-                    <span className="text-[10px] uppercase font-bold text-emerald-700 block">After ATSresume Overhaul</span>
+                    <span className="text-[10px] uppercase font-bold text-emerald-700 block">After ATS Resume Maker Overhaul</span>
                     <span className="font-mono font-bold text-emerald-800 text-sm">10 Apps · 6 Calls · $82k Offer</span>
                   </div>
                 </div>
@@ -372,12 +372,12 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </div>
 
-            {/* What ATSresume Did + The Verified Outcome */}
+            {/* What ATS Resume Maker Did + The Verified Outcome */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
               <div className="space-y-3">
                 <h4 className="font-heading text-sm font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  The ATSresume Technical Overhaul:
+                  The ATS Resume Maker Technical Overhaul:
                 </h4>
                 <div className="space-y-2.5">
                   {ATS_CASE_STUDY_DATA.theOptimizationFixes.map((fix, idx) => (
@@ -670,7 +670,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </ul>
             </div>
 
-            {/* ATSresume */}
+            {/* ATS Resume Maker */}
             <div className="p-6 sm:p-7 rounded-2xl bg-white border-2 border-emerald-600 space-y-4 shadow-sm relative">
               <div className="absolute -top-3 right-6">
                 <span className="bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
@@ -678,7 +678,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </span>
               </div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 block">
-                ✅ ATSresume Dual Engine
+                ✅ ATS Resume Maker Dual Engine
               </span>
               <p className="text-xs text-slate-700 leading-relaxed font-medium">
                 AI tailors achievements directly to your target job description, followed by personal line-by-line editing by a senior web developer.

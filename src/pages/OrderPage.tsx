@@ -103,7 +103,7 @@ export const OrderPage: React.FC<OrderPageProps> = ({
     // and only mark the order paid after the processor confirms it.
     setIsProcessingPayment(false);
     setProcessingStatus('');
-    window.alert('Online payment is not available yet. Please contact hello@resumerevive.ai to place your order.');
+    window.alert('Online payment is not available yet. Please contact ahmedur.rahch2021@gmail.com to place your order.');
   };
 
   const handleDownloadIntakeReceipt = () => {
@@ -124,7 +124,7 @@ export const OrderPage: React.FC<OrderPageProps> = ({
         : '';
 
     const content = `=====================================================
-RESUMEREVIVE — OFFICIAL ORDER RECEIPT & INTAKE CONFIRMATION
+ATS RESUME MAKER — OFFICIAL ORDER RECEIPT & INTAKE CONFIRMATION
 Order Reference: ${orderId}
 Status: PENDING PAYMENT CONFIRMATION
 =====================================================
@@ -149,16 +149,16 @@ TARGET ROLE BRIEF:
 - Target Page Count: ${formData.pageLength} Page(s)
 
 100% MONEY-BACK POLICY:
-If you are not satisfied after your free revision round, contact hello@resumerevive.ai for an immediate full refund.
+If you are not satisfied after your free revision round, contact ahmedur.rahch2021@gmail.com for an immediate full refund.
 
-Delivered by: Lead Engineer & Resume Editor, ResumeRevive.ai
+Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
 =====================================================`;
 
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ResumeRevive-Receipt-${orderId}.txt`;
+    a.download = `ATS-Resume-Maker-Receipt-${orderId}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
