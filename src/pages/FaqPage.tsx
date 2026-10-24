@@ -5,7 +5,6 @@ import {
   HelpCircle, 
   Search, 
   ChevronDown, 
-  ChevronUp, 
   ArrowRight, 
   Sparkles, 
   ShieldCheck,
@@ -20,7 +19,6 @@ interface FaqPageProps {
 export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContact }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [expandedId, setExpandedId] = useState<string | null>(FAQ_ITEMS[0].id);
 
   const categories = [
     { id: 'all', label: 'All Questions' },
@@ -40,9 +38,6 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
     return matchesCategory && matchesQuery;
   });
 
-  const toggleExpand = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
 
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -95,39 +90,34 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
         <div className="space-y-3">
           {filteredFaqs.length > 0 ? (
             filteredFaqs.map((faq) => {
-              const isExpanded = expandedId === faq.id;
               return (
-                <div
+                <details
                   key={faq.id}
-                  className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-150"
+                  open={faq.id === FAQ_ITEMS[0].id}
+                  className="group bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-150"
                 >
-                  <button
-                    onClick={() => toggleExpand(faq.id)}
-                    className="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-slate-50/50 transition-colors focus:outline-none"
-                  >
+                  <summary className="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-slate-50/50 transition-colors focus:outline-none cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                     <span className="font-heading text-sm sm:text-base font-bold text-slate-900">
                       {faq.question}
                     </span>
                     <span className="p-1 rounded-md text-slate-400 shrink-0">
-                      {isExpanded ? <ChevronUp className="w-5 h-5 text-blue-600" /> : <ChevronDown className="w-5 h-5" />}
+                      <ChevronDown className="w-5 h-5 transition-transform group-open:rotate-180 group-open:text-blue-600" />
                     </span>
-                  </button>
+                  </summary>
 
-                  {isExpanded && (
-                    <div className="px-5 pb-5 pt-0 space-y-3 border-t border-slate-100 text-slate-700 animate-in fade-in duration-150">
-                      {/* Direct Answer Paragraph (AEO target) */}
-                      <div className="p-3.5 bg-blue-50/60 rounded-lg border border-blue-100 text-xs sm:text-sm font-medium text-slate-900 leading-relaxed">
-                        <span className="font-bold text-blue-800 mr-1">Direct Answer:</span>
-                        {faq.directAnswer}
-                      </div>
+                <div className="px-5 pb-5 pt-0 space-y-3 border-t border-slate-100 text-slate-700">
+                  {/* Direct Answer Paragraph (AEO target) */}
+                  <div className="p-3.5 bg-blue-50/60 rounded-lg border border-blue-100 text-xs sm:text-sm font-medium text-slate-900 leading-relaxed">
+                    <span className="font-bold text-blue-800 mr-1">Direct Answer:</span>
+                    {faq.directAnswer}
+                  </div>
 
-                      {/* Extended Explanation */}
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        {faq.extendedAnswer}
-                      </p>
-                    </div>
-                  )}
+                  {/* Extended Explanation */}
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {faq.extendedAnswer}
+                  </p>
                 </div>
+                </details>
               );
             })
           ) : (
