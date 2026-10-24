@@ -19,6 +19,7 @@ import { AboutPage } from './pages/AboutPage';
 import { FaqPage } from './pages/FaqPage';
 import { ContactPage } from './pages/ContactPage';
 import { OrderPage } from './pages/OrderPage';
+import { CoverLetterPage } from './pages/CoverLetterPage';
 import { UserAccount, INITIAL_GUEST_ACCOUNT } from './types/auth';
 import { AuthModal } from './components/AuthModal';
 import { useLocation, useNavigate } from 'react-router';
@@ -165,6 +166,10 @@ export default function App() {
           <ContactPage
             onSelectPlan={(pkg) => handleOpenOrder(pkg)}
           />
+        )}
+
+        {currentPage === 'cover-letter' && (
+          <CoverLetterPage />
         )}
 
         {currentPage === 'order' && (

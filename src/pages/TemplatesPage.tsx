@@ -106,10 +106,20 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
     }
   };
 
+function escapeHtml(str: string): string {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
   // Direct clean printable PDF routine
   const handleDownloadPdf = (template: ResumeTemplate) => {
-    // Open print window formatted cleanly for PDF saving
-    const printWindow = window.open('', '_blank');
+    // Open print window safely formatted for PDF saving
+    const printWindow = window.open('', '_blank', 'noopener,noreferrer');
     if (!printWindow) {
       // Fallback: load into editor and trigger print
       handleLaunchEditor(template);
@@ -117,11 +127,34 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
     }
 
     const { sampleContent } = template;
+    const safeName = escapeHtml(sampleContent.name);
+    const safeTitle = escapeHtml(template.title);
+    const safeContact = escapeHtml(sampleContent.contact);
+    const safeSummary = escapeHtml(sampleContent.summary);
+    const safeSkills = escapeHtml(sampleContent.skills.join(' · '));
+    const safeEducation = escapeHtml(sampleContent.education);
+    const safeCerts = sampleContent.certifications
+      ? escapeHtml(sampleContent.certifications.join(', '))
+      : '';
+
+    const expHtml = sampleContent.experience.map(exp => `
+      <div class="entry">
+        <div class="entry-header">
+          <span>${escapeHtml(exp.role)}</span>
+          <span>${escapeHtml(exp.dates)}</span>
+        </div>
+        <div class="entry-sub">${escapeHtml(exp.company)}</div>
+        <ul>
+          ${exp.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}
+        </ul>
+      </div>
+    `).join('');
+
     const html = `
       <!DOCTYPE html>
       <html>
         <head>
-          <title>${sampleContent.name} - ATS Resume</title>
+          <title>${safeName} - ATS Resume</title>
           <style>
             @page { size: letter; margin: 0.7in; }
             body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #111827; margin: 0; padding: 0.5in; }
@@ -137,33 +170,22 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
           </style>
         </head>
         <body>
-          <h1>${sampleContent.name}</h1>
-          <div class="title">${template.title}</div>
-          <div class="contact">${sampleContent.contact}</div>
+          <h1>${safeName}</h1>
+          <div class="title">${safeTitle}</div>
+          <div class="contact">${safeContact}</div>
 
           <h2>Professional Summary</h2>
-          <p style="font-size: 9.5pt; margin: 0 0 8px 0; color: #374151;">${sampleContent.summary}</p>
+          <p style="font-size: 9.5pt; margin: 0 0 8px 0; color: #374151;">${safeSummary}</p>
 
           <h2>Core Technical Skills</h2>
-          <p style="font-size: 9.5pt; margin: 0 0 8px 0; color: #374151;">${sampleContent.skills.join(' · ')}</p>
+          <p style="font-size: 9.5pt; margin: 0 0 8px 0; color: #374151;">${safeSkills}</p>
 
           <h2>Professional Experience</h2>
-          ${sampleContent.experience.map(exp => `
-            <div class="entry">
-              <div class="entry-header">
-                <span>${exp.role}</span>
-                <span>${exp.dates}</span>
-              </div>
-              <div class="entry-sub">${exp.company}</div>
-              <ul>
-                ${exp.bullets.map(b => `<li>${b}</li>`).join('')}
-              </ul>
-            </div>
-          `).join('')}
+          ${expHtml}
 
           <h2>Education & Credentials</h2>
-          <p style="font-size: 9.5pt; margin: 0; color: #374151;">${sampleContent.education}</p>
-          ${sampleContent.certifications ? `<p style="font-size: 9.5pt; margin-top: 4px; color: #374151;"><strong>Certifications:</strong> ${sampleContent.certifications.join(', ')}</p>` : ''}
+          <p style="font-size: 9.5pt; margin: 0; color: #374151;">${safeEducation}</p>
+          ${safeCerts ? `<p style="font-size: 9.5pt; margin-top: 4px; color: #374151;"><strong>Certifications:</strong> ${safeCerts}</p>` : ''}
 
           <script>
             window.onload = function() {
@@ -237,6 +259,36 @@ ${sampleContent.education}
           ))}
         </div>
 
+        {/* Matching Cover Letter Banner */}
+        <div className="bg-white rounded-2xl border border-red-200 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start sm:items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-red-50 text-[#C82333] flex items-center justify-center shrink-0 border border-red-100">
+              <FileText className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm sm:text-base font-bold text-stone-900">
+                  Pair with a Matching Cover Letter
+                </h3>
+                <span className="text-[10px] font-bold text-[#C82333] bg-red-50 px-2 py-0.5 rounded border border-red-200 uppercase">
+                  New
+                </span>
+              </div>
+              <p className="text-xs text-stone-600 mt-0.5 leading-relaxed">
+                Create a matching cover letter with the exact same fonts, margins, and letterhead styles in our live two-pane editor.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => onNavigate('cover-letter')}
+            className="px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold flex items-center gap-2 transition-colors shrink-0"
+          >
+            <span>Open Cover Letter Studio</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
         {/* Templates Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTemplates.map((template) => (
@@ -250,7 +302,7 @@ ${sampleContent.education}
                     {template.categoryLabel}
                   </span>
                   <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    {template.atsScore}% ATS Pass
+                    {template.architecture || 'Single-Column Standard'}
                   </span>
                 </div>
 
@@ -261,6 +313,11 @@ ${sampleContent.education}
                   <p className="text-xs text-stone-500 mt-1 font-medium">
                     Recommended for: {template.recommendedFor}
                   </p>
+                  {template.compatibility && (
+                    <p className="text-[11px] text-stone-400 mt-0.5 font-mono">
+                      Parses in: {template.compatibility}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-1.5 pt-2 border-t border-stone-100">
@@ -314,7 +371,7 @@ ${sampleContent.education}
         <EmailSubscriptionBox
           variant="banner"
           title="Get the 2026 International ATS Checklist & Weekly Job Alerts"
-          description="Join 28,000+ engineers, product managers, and remote professionals receiving our verified ATS templates and international hiring playbooks free."
+          description="Receive our verified single-column templates, parsing guidelines, and international hiring playbooks free in your inbox."
         />
 
       </div>
@@ -330,7 +387,7 @@ ${sampleContent.education}
                   {activePreviewTemplate.title}
                 </h3>
                 <span className="text-[11px] text-[#C82333] font-semibold">
-                  Verified ATS Single-Column Layout ({activePreviewTemplate.atsScore}% Pass Rate)
+                  Verified ATS Single-Column Standard Layout
                 </span>
               </div>
               <button

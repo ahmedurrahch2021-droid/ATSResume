@@ -93,25 +93,26 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <button
                   onClick={() => onNavigate('suite')}
-                  className="px-7 py-4 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-base rounded-xl transition-all shadow-md shadow-red-900/20 active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="px-6 py-4 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-base rounded-xl transition-all shadow-md shadow-red-900/20 active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-5 h-5 text-red-200" />
-                  <span>Launch Live CV Editor (Free)</span>
+                  <span>Live CV Editor (Free)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
-                  onClick={() => onOpenOrder('starter')}
-                  className="px-6 py-4 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base rounded-xl transition-colors flex items-center justify-center gap-2"
+                  onClick={() => onNavigate('cover-letter')}
+                  className="px-5 py-4 bg-red-50 hover:bg-red-100 text-[#C82333] font-bold text-base rounded-xl border border-red-200 transition-colors flex items-center justify-center gap-2"
                 >
-                  <span>1-on-1 Review — $10</span>
+                  <FileText className="w-4 h-4" />
+                  <span>Cover Letter Studio (NEW)</span>
                 </button>
 
                 <button
                   onClick={() => onNavigate('templates')}
                   className="px-5 py-4 bg-slate-50 hover:bg-slate-100 text-slate-800 font-semibold text-base rounded-xl border border-slate-200 transition-colors flex items-center justify-center gap-2"
                 >
-                  <FileDown className="w-4 h-4 text-[#C82333]" />
+                  <FileDown className="w-4 h-4 text-slate-500" />
                   <span>Free Templates</span>
                 </button>
               </div>

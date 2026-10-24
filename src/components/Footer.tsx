@@ -2,7 +2,7 @@ import React from 'react';
 import { PageRoute } from '../types';
 import { Link } from 'react-router';
 import { ROUTE_PATHS } from '../routes';
-import { ShieldCheck, Clock, CheckCircle2, FileDown, Sparkles, PenTool } from 'lucide-react';
+import { ShieldCheck, Clock, CheckCircle2, FileDown, Sparkles, PenTool, HelpCircle, TrendingUp } from 'lucide-react';
 import { EmailSubscriptionBox } from './EmailSubscriptionBox';
 
 interface FooterProps {
@@ -116,6 +116,12 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 </Link>
               </li>
               <li>
+                <Link to={ROUTE_PATHS['cover-letter']} onClick={handleNavClick} className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+                  <span>Cover Letter Studio (NEW)</span>
+                </Link>
+              </li>
+              <li>
                 <Link to={ROUTE_PATHS['free-resume-score']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
                   Free ATS Resume Score Scanner
                 </Link>
@@ -126,8 +132,9 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 </Link>
               </li>
               <li>
-                <Link to={ROUTE_PATHS['examples']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
-                  Before & After Transformations
+                <Link to={ROUTE_PATHS['examples']} onClick={handleNavClick} className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5 font-medium">
+                  <TrendingUp className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Resume Examples & Before/After</span>
                 </Link>
               </li>
               <li>
@@ -155,8 +162,9 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 </Link>
               </li>
               <li>
-                <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-slate-900 transition-colors">
-                  Frequently Asked Questions (FAQ)
+                <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="text-slate-900 hover:text-[#C82333] font-semibold transition-colors flex items-center gap-1.5">
+                  <HelpCircle className="w-3.5 h-3.5 text-[#C82333]" />
+                  <span>Frequently Asked Questions (FAQ)</span>
                 </Link>
               </li>
               <li>

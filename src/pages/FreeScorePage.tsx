@@ -967,6 +967,15 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       <span>Cohesive typography matching your ATS resume theme</span>
                     </li>
                   </ul>
+                  {onNavigate && (
+                    <button
+                      onClick={() => onNavigate('cover-letter')}
+                      className="mt-2 px-5 py-2.5 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2"
+                    >
+                      <FileText className="w-4 h-4" />
+                      <span>Open Cover Letter Studio (Free)</span>
+                    </button>
+                  )}
                 </div>
                 <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3 text-xs">
                   <p className="font-bold text-slate-800">Targeted Cover Letter Blueprint</p>

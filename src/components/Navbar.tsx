@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { Link } from 'react-router';
 import { ROUTE_PATHS } from '../routes';
@@ -7,9 +7,14 @@ import {
   X, 
   ArrowRight, 
   ShieldCheck, 
-  Clock, 
+  ChevronDown,
+  PenTool,
+  FileText,
+  FileDown,
   SearchCheck,
-  FileDown
+  Target,
+  TrendingUp,
+  Sparkles
 } from 'lucide-react';
 
 import { UserAccount } from '../types/auth';
@@ -32,89 +37,279 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSignOut
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [mobileToolsExpanded, setMobileToolsExpanded] = useState(true);
 
-  const navItems: { label: string; route: PageRoute; highlight?: boolean; badge?: string }[] = [
-    { label: 'Home', route: 'home' },
-    { label: 'Live CV Editor', route: 'suite', badge: 'EDITOR', highlight: true },
-    { label: 'Free Templates', route: 'templates', badge: 'FREE' },
-    { label: 'Pricing', route: 'pricing' },
-    { label: 'Examples', route: 'examples' },
-    { label: 'How It Works', route: 'how-it-works' },
-    { label: 'About', route: 'about' },
-    { label: 'FAQ', route: 'faq' },
-    { label: 'Contact', route: 'contact' },
-  ];
+  const megaMenuRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // The link itself navigates (real <a href>). This only closes the menu and scrolls.
+  // Close mega menu on click outside or Escape
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (megaMenuRef.current && !megaMenuRef.current.contains(event.target as Node)) {
+        setMegaMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMegaMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setMegaMenuOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setMegaMenuOpen(false);
+    }, 150);
+  };
+
   const handleNavClick = () => {
     setMobileMenuOpen(false);
+    setMegaMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Primary top-level links (decluttered: no raw FAQ or Examples in top row)
+  const primaryLinks: { label: string; route: PageRoute }[] = [
+    { label: 'Pricing', route: 'pricing' },
+    { label: 'How It Works', route: 'how-it-works' },
+    { label: 'About', route: 'about' },
+    { label: 'Contact', route: 'contact' },
+  ];
+
+  interface NavToolItem {
+    title: string;
+    description: string;
+    route: PageRoute;
+    badge?: string;
+    icon: React.ReactNode;
+    iconBg: string;
+  }
+
+  // Tools & Builders Mega Menu Items
+  const creationTools: NavToolItem[] = [
+    {
+      title: 'Live CV Editor',
+      description: 'Dual-mode in-browser builder with real-time scoring and vector PDF export.',
+      route: 'suite' as PageRoute,
+      badge: 'FREE',
+      icon: <PenTool className="w-4 h-4 text-[#C82333]" />,
+      iconBg: 'bg-red-50 border-red-100',
+    },
+    {
+      title: 'Cover Letter Studio',
+      description: 'Targeted matching letterhead, modular cards, and Word (.docx) export.',
+      route: 'cover-letter' as PageRoute,
+      badge: 'NEW',
+      icon: <FileText className="w-4 h-4 text-emerald-700" />,
+      iconBg: 'bg-emerald-50 border-emerald-100',
+    },
+    {
+      title: 'Free ATS Resume Templates',
+      description: 'Single-column formats verified against Workday, Greenhouse & Lever.',
+      route: 'templates' as PageRoute,
+      icon: <FileDown className="w-4 h-4 text-blue-700" />,
+      iconBg: 'bg-blue-50 border-blue-100',
+    },
+  ];
+
+  const diagnosticTools: NavToolItem[] = [
+    {
+      title: 'ATS Resume Score Scanner',
+      description: 'Instant 27-point multi-vector audit checking format, keywords & metrics.',
+      route: 'free-resume-score' as PageRoute,
+      icon: <SearchCheck className="w-4 h-4 text-purple-700" />,
+      iconBg: 'bg-purple-50 border-purple-100',
+    },
+    {
+      title: 'Job Description Matcher',
+      description: 'Paste any job posting to compute semantic keyword alignment & gap analysis.',
+      route: 'suite' as PageRoute,
+      icon: <Target className="w-4 h-4 text-amber-700" />,
+      iconBg: 'bg-amber-50 border-amber-100',
+    },
+    {
+      title: 'Before & After Examples',
+      description: 'Role-by-role resume transformations and verified callback case studies.',
+      route: 'examples' as PageRoute,
+      icon: <TrendingUp className="w-4 h-4 text-slate-700" />,
+      iconBg: 'bg-slate-100 border-slate-200',
+    },
+  ];
+
+  const isToolsActive = ['suite', 'editor', 'cover-letter', 'templates', 'free-resume-score', 'examples'].includes(currentPage);
+
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200 text-stone-900 shadow-xs">
-      {/* Top micro-trust announcement bar with distinctive editorial tone */}
-      <div className="bg-stone-50 text-xs text-stone-600 py-1.5 px-4 border-b border-stone-200/80">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-4 text-[11px] sm:text-xs">
-            <span className="flex items-center gap-1.5 text-[#C82333] font-semibold">
-              <Clock className="w-3.5 h-3.5 text-[#C82333]" />
-              Guaranteed 24-Hour Turnaround
-            </span>
-            <span className="hidden sm:inline text-stone-300">·</span>
-            <span className="hidden sm:flex items-center gap-1 text-stone-600">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#C82333]" />
-              100% Money-Back Guarantee
-            </span>
-          </div>
-          <div className="flex items-center gap-3 text-[11px] text-stone-500">
-            <span className="text-[#C82333] font-medium">Free Single-Column Vector ATS Templates</span>
-            <span className="hidden md:inline">·</span>
-            <span className="hidden md:inline">Visa, Mastercard, PayPal & UPI</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main navigation: Strict 3-Zone Contract */}
+      {/* Main navigation: Clean, spacious bar with expanded height */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-8">
+        <div className="flex items-center justify-between h-20 gap-8">
           {/* Zone 1: Brand Wordmark with Verified ATS Emblem in Editorial Red */}
           <Link to={ROUTE_PATHS['home']} 
             onClick={handleNavClick}
-            className="flex items-center gap-2 text-left group focus:outline-none whitespace-nowrap shrink-0"
+            className="flex items-center gap-2.5 text-left group focus:outline-none whitespace-nowrap shrink-0"
           >
-            <div className="w-8 h-8 rounded-lg bg-[#C82333] flex items-center justify-center text-white shadow-xs group-hover:bg-[#A71D2A] transition-colors">
-              <ShieldCheck className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-[#C82333] flex items-center justify-center text-white shadow-xs group-hover:bg-[#A71D2A] transition-colors">
+              <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="font-heading font-black text-xl tracking-tight text-[#C82333]">
+              <span className="font-heading font-black text-2xl tracking-tight text-[#C82333]">
                 ATS <span className="text-stone-900 font-bold">Resume Maker</span>
               </span>
             </div>
           </Link>
 
-          {/* Zone 2: Clean single-line Nav Items */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => {
-              const isActive = currentPage === item.route || (item.route === 'suite' && currentPage === 'editor');
+          {/* Zone 2: Decluttered Nav with Senior Mega Menu Trigger */}
+          <nav className="hidden lg:flex items-center gap-2">
+            {/* Mega Menu Dropdown Container */}
+            <div 
+              ref={megaMenuRef}
+              className="relative"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                type="button"
+                onClick={() => setMegaMenuOpen(!megaMenuOpen)}
+                aria-expanded={megaMenuOpen}
+                aria-haspopup="true"
+                className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 focus:outline-none ${
+                  isToolsActive || megaMenuOpen
+                    ? 'bg-red-50 text-[#C82333] font-bold border border-red-200'
+                    : 'text-stone-700 hover:text-stone-900 hover:bg-stone-50 border border-transparent'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+                <span>Tools & Builders</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-[#C82333]' : 'text-stone-400'}`} />
+              </button>
+
+              {/* Two-Column Rich Mega Menu Panel */}
+              {megaMenuOpen && (
+                <div 
+                  className="absolute left-0 mt-2 w-[720px] bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                  role="menu"
+                >
+                  <div className="grid grid-cols-2 gap-6">
+                    {/* Column 1: Creation & Editors */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                          Creation & Editors
+                        </span>
+                      </div>
+                      <div className="space-y-1">
+                        {creationTools.map((tool) => (
+                          <Link
+                            key={tool.title}
+                            to={ROUTE_PATHS[tool.route]}
+                            onClick={handleNavClick}
+                            role="menuitem"
+                            className="p-3 rounded-xl hover:bg-slate-50 transition-all flex items-start gap-3 group border border-transparent hover:border-slate-200/80"
+                          >
+                            <div className={`p-2 rounded-lg border ${tool.iconBg} mt-0.5 shrink-0 group-hover:scale-105 transition-transform`}>
+                              {tool.icon}
+                            </div>
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-2">
+                                <span className="font-heading font-bold text-xs text-slate-900 group-hover:text-[#C82333] transition-colors">
+                                  {tool.title}
+                                </span>
+                                {tool.badge && (
+                                  <span className="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-red-50 text-[#C82333] border border-red-200">
+                                    {tool.badge}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                                {tool.description}
+                              </p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Column 2: Diagnostics & Insights */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                          Diagnostics & Analysis
+                        </span>
+                      </div>
+                      <div className="space-y-1">
+                        {diagnosticTools.map((tool) => (
+                          <Link
+                            key={tool.title}
+                            to={ROUTE_PATHS[tool.route]}
+                            onClick={handleNavClick}
+                            role="menuitem"
+                            className="p-3 rounded-xl hover:bg-slate-50 transition-all flex items-start gap-3 group border border-transparent hover:border-slate-200/80"
+                          >
+                            <div className={`p-2 rounded-lg border ${tool.iconBg} mt-0.5 shrink-0 group-hover:scale-105 transition-transform`}>
+                              {tool.icon}
+                            </div>
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-2">
+                                <span className="font-heading font-bold text-xs text-slate-900 group-hover:text-[#C82333] transition-colors">
+                                  {tool.title}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                                {tool.description}
+                              </p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mega Menu Footer Callout */}
+                  <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 bg-slate-50/70 -mx-6 -mb-6 p-4 rounded-b-2xl">
+                    <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                      <span>🇧🇩</span> Bangladesh Talent Initiative: 100% Free Forever DIY builder & downloads.
+                    </span>
+                    <Link
+                      to={ROUTE_PATHS['free-resume-score']}
+                      onClick={handleNavClick}
+                      className="font-bold text-[#C82333] hover:text-[#A71D2A] flex items-center gap-1 transition-colors"
+                    >
+                      <span>Check Score Free</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Clean Primary Links */}
+            {primaryLinks.map((item) => {
+              const isActive = currentPage === item.route;
               return (
-                <Link to={ROUTE_PATHS[item.route]}
+                <Link 
+                  to={ROUTE_PATHS[item.route]}
                   key={item.route}
                   onClick={handleNavClick}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap shrink-0 ${
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'bg-red-50 text-[#C82333] font-bold border border-red-200'
-                      : item.highlight
-                      ? 'text-[#C82333] hover:text-[#A71D2A] hover:bg-red-50/60 flex items-center gap-1 font-semibold'
-                      : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
+                      : 'text-stone-700 hover:text-stone-900 hover:bg-stone-50'
                   }`}
                 >
-                  {item.highlight && <SearchCheck className="w-3.5 h-3.5 text-[#C82333]" />}
-                  {item.badge && (
-                    <span className="mr-1 text-[9px] uppercase font-bold text-[#C82333] bg-red-50 border border-red-200 px-1.5 py-0.2 rounded">
-                      {item.badge}
-                    </span>
-                  )}
                   {item.label}
                 </Link>
               );
@@ -122,9 +317,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Zone 3: Account Status & Primary Action */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             {userAccount?.isLoggedIn ? (
-              <div className="flex items-center gap-2 bg-stone-50 border border-stone-200 py-1 px-2.5 rounded-lg text-xs">
+              <div className="flex items-center gap-2 bg-stone-50 border border-stone-200 py-1.5 px-3 rounded-xl text-xs">
                 {userAccount.photoUrl && (
                   <img src={userAccount.photoUrl} alt="" className="w-5 h-5 rounded-full" />
                 )}
@@ -148,7 +343,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onOpenAuth}
-                className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-stone-200 text-stone-700 hover:bg-stone-50 transition-colors whitespace-nowrap shrink-0"
+                className="text-xs font-semibold px-3.5 py-2 rounded-xl border border-stone-200 text-stone-700 hover:bg-stone-50 transition-colors whitespace-nowrap shrink-0"
               >
                 Sign In
               </button>
@@ -156,7 +351,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onOpenOrder('starter')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C82333] hover:bg-[#A71D2A] text-white font-semibold text-xs rounded-lg transition-all shadow-xs active:scale-[0.98] whitespace-nowrap shrink-0"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-xs active:scale-[0.98] whitespace-nowrap shrink-0"
             >
               <span>Review — $10</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -165,7 +360,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile menu trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-100 focus:outline-none"
+              className="lg:hidden p-2 rounded-xl text-stone-600 hover:text-stone-900 hover:bg-stone-100 focus:outline-none"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -174,46 +369,82 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Drawer Menu (Clean Light Theme) */}
+      {/* Mobile Drawer Menu (Clean Light Theme with Grouped Sections) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-1 animate-in fade-in slide-in-from-top-2 duration-200 shadow-lg">
-          {navItems.map((item) => {
-            const isActive = currentPage === item.route;
-            return (
-              <Link to={ROUTE_PATHS[item.route]}
-                key={item.route}
-                onClick={handleNavClick}
-                className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-between ${
-                  isActive
-                    ? 'bg-slate-100 text-slate-900 font-semibold'
-                    : item.highlight
-                    ? 'text-emerald-700 bg-emerald-50/60 font-semibold'
-                    : 'text-slate-700 hover:bg-slate-50'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  {item.highlight && <SearchCheck className="w-4 h-4 text-emerald-600" />}
-                  {item.route === 'templates' && <FileDown className="w-4 h-4 text-emerald-600" />}
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && (
-                  <span className="text-[10px] uppercase font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto">
+          {/* Tools & Builders Accordion */}
+          <div className="space-y-1">
+            <button
+              type="button"
+              onClick={() => setMobileToolsExpanded(!mobileToolsExpanded)}
+              className="w-full flex items-center justify-between py-2 text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-100"
+            >
+              <span className="flex items-center gap-1.5 text-slate-900 font-bold">
+                <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+                Tools & Builders
+              </span>
+              <ChevronDown className={`w-4 h-4 transition-transform ${mobileToolsExpanded ? 'rotate-180 text-[#C82333]' : 'text-slate-400'}`} />
+            </button>
 
-          <div className="pt-4 border-t border-slate-100">
+            {mobileToolsExpanded && (
+              <div className="space-y-1 pt-1.5 pl-2">
+                {[...creationTools, ...diagnosticTools].map((tool) => (
+                  <Link
+                    key={tool.title}
+                    to={ROUTE_PATHS[tool.route]}
+                    onClick={handleNavClick}
+                    className="w-full text-left p-2.5 rounded-lg text-xs font-medium transition-colors flex items-center justify-between text-slate-700 hover:bg-slate-50"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`p-1.5 rounded border ${tool.iconBg} shrink-0`}>
+                        {tool.icon}
+                      </div>
+                      <span className="font-semibold">{tool.title}</span>
+                    </div>
+                    {tool.badge && (
+                      <span className="text-[9px] uppercase font-bold text-[#C82333] bg-red-50 border border-red-200 px-1.5 py-0.2 rounded">
+                        {tool.badge}
+                      </span>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Primary Links */}
+          <div className="pt-2 space-y-1 border-t border-slate-100">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1">
+              General
+            </div>
+            {primaryLinks.map((item) => {
+              const isActive = currentPage === item.route;
+              return (
+                <Link 
+                  to={ROUTE_PATHS[item.route]}
+                  key={item.route}
+                  onClick={handleNavClick}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center justify-between ${
+                    isActive
+                      ? 'bg-red-50 text-[#C82333] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="pt-4 border-t border-slate-100 space-y-2">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenOrder('starter');
               }}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+              className="w-full py-3 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
             >
-              <span>Build My Resume — $10</span>
+              <span>1-on-1 Review — $10</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

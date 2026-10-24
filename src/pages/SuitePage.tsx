@@ -334,7 +334,7 @@ Requirements:
       />
 
       {/* Top Banner / Toolbar */}
-      <div className="bg-white border-b border-slate-200 sticky top-16 z-30 shadow-xs print:hidden">
+      <div className="bg-white border-b border-slate-200 sticky top-20 z-30 shadow-xs print:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Left: Suite Identification */}

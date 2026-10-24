@@ -14,6 +14,7 @@ export const ROUTE_PATHS: Record<PageRoute, string> = {
   faq: '/faq',
   about: '/about',
   contact: '/contact',
+  'cover-letter': '/cover-letter',
   order: '/order',
   suite: '/suite',
   // The editor and the suite are the same page in App.tsx, so they share one URL.
@@ -83,7 +84,12 @@ export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
   contact: {
     title: 'Contact | ATS Resume Maker',
     description: 'Get in touch with the ATS Resume Maker team about your resume or your order.',
-  },  suite: {
+  },
+  'cover-letter': {
+    title: 'Free ATS Cover Letter Builder | ATS Resume Maker',
+    description: 'Build recruiter-ready, ATS-matching cover letters with live preview, modular cards, and vector PDF export.',
+  },
+  suite: {
     title: 'Resume Editor | ATS Resume Maker',
     description: 'Edit and check your resume in the ATS Resume Maker editor.',
     noindex: true,
@@ -101,5 +107,6 @@ export const PRERENDER_ROUTES: PageRoute[] = [
   'faq',
   'about',
   'contact',
+  'cover-letter',
   'suite',
 ];

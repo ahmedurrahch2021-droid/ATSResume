@@ -480,8 +480,8 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
     category: 'tech',
     categoryLabel: 'Tech & Engineering',
     recommendedFor: 'Frontend, Full-Stack, Backend, DevOps & Mobile Engineers',
-    atsScore: 99,
-    downloadCount: '4,820 downloads',
+    architecture: 'Single-Column · Table-Free',
+    compatibility: 'Workday, Greenhouse, Taleo, Lever',
     format: 'Clean Single-Column · UTF-8 Validated',
     previewImage: ATS_IMAGES.templatePreview,
     highlightPoints: [
@@ -527,8 +527,8 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
     category: 'product',
     categoryLabel: 'Product & Growth',
     recommendedFor: 'Product Managers, Growth Leads, PMMs & Scrum Masters',
-    atsScore: 98,
-    downloadCount: '3,210 downloads',
+    architecture: 'Executive Single-Column',
+    compatibility: 'Workday, Greenhouse, Taleo, Lever',
     format: 'Executive Single-Column · High Impact',
     previewImage: ATS_IMAGES.verifiedResume,
     highlightPoints: [
@@ -573,8 +573,8 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
     category: 'finance',
     categoryLabel: 'Finance & Operations',
     recommendedFor: 'Financial Analysts, FP&A Managers, Operations Directors',
-    atsScore: 100,
-    downloadCount: '2,940 downloads',
+    architecture: 'Standard Single-Column Layout',
+    compatibility: 'Taleo, SAP SuccessFactors, Workday',
     format: 'Strict Corporate Single-Column · Taleo Optimized',
     previewImage: ATS_IMAGES.templatePreview,
     highlightPoints: [
@@ -619,8 +619,8 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
     category: 'entry',
     categoryLabel: 'Entry Level & Graduate',
     recommendedFor: 'Fresh College Graduates, Career Switchers, Interns',
-    atsScore: 99,
-    downloadCount: '5,400 downloads',
+    architecture: '1-Page Chronological Single-Column',
+    compatibility: 'Workday, Greenhouse, Lever, Taleo',
     format: '1-Page Layout · Early Career',
     previewImage: ATS_IMAGES.verifiedResume,
     highlightPoints: [

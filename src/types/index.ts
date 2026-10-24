@@ -10,6 +10,7 @@ export type PageRoute =
   | 'about' 
   | 'faq' 
   | 'contact' 
+  | 'cover-letter'
   | 'order';
 
 export interface ResumeExperienceItem {
@@ -118,8 +119,10 @@ export interface ResumeTemplate {
   category: 'tech' | 'product' | 'finance' | 'entry' | 'creative';
   categoryLabel: string;
   recommendedFor: string;
-  atsScore: number;
-  downloadCount: string;
+  atsScore?: number;
+  downloadCount?: string;
+  architecture?: string;
+  compatibility?: string;
   format: string;
   previewImage?: string;
   highlightPoints: string[];
