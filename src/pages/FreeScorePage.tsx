@@ -111,16 +111,16 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
   };
 
   const getScoreColor = (score: number) => {
-    if (score < 50) return 'text-[#C82333] bg-red-50 border-red-200';
+    if (score < 50) return 'text-accent bg-soft border-line';
     if (score < 75) return 'text-amber-600 bg-amber-50 border-amber-200';
-    return 'text-emerald-700 bg-emerald-50 border-emerald-200';
+    return 'text-accent bg-soft border-line';
   };
 
   // 27 checks definition grouped into 7 categories
   const categoriesList = [
     {
       name: 'ATS essentials',
-      icon: <FileCheck className="w-5 h-5 text-[#C82333]" />,
+      icon: <FileCheck className="w-5 h-5 text-accent" />,
       items: [
         'File format and size',
         'ATS-friendly design',
@@ -132,7 +132,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       name: 'Resume sections',
-      icon: <Layers className="w-5 h-5 text-[#C82333]" />,
+      icon: <Layers className="w-5 h-5 text-accent" />,
       items: [
         'Essential sections',
         'Contact information',
@@ -141,7 +141,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       name: 'Content',
-      icon: <FileText className="w-5 h-5 text-[#C82333]" />,
+      icon: <FileText className="w-5 h-5 text-accent" />,
       items: [
         'ATS parse rate',
         'Quantifying impact with metrics',
@@ -152,7 +152,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       name: 'Job tailoring',
-      icon: <Target className="w-5 h-5 text-[#C82333]" />,
+      icon: <Target className="w-5 h-5 text-accent" />,
       items: [
         'Hard skills match',
         'Soft skills match',
@@ -162,7 +162,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       name: 'Recruiter red flags',
-      icon: <AlertTriangle className="w-5 h-5 text-[#C82333]" />,
+      icon: <AlertTriangle className="w-5 h-5 text-accent" />,
       items: [
         'Resume credibility',
         'Interview risk signals',
@@ -172,7 +172,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       name: 'Bias & discrimination',
-      icon: <ShieldAlert className="w-5 h-5 text-[#C82333]" />,
+      icon: <ShieldAlert className="w-5 h-5 text-accent" />,
       items: [
         'Age and date bias',
         'Employment gaps'
@@ -180,7 +180,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       name: 'Seniority & impact',
-      icon: <Sparkles className="w-5 h-5 text-[#C82333]" />,
+      icon: <Sparkles className="w-5 h-5 text-accent" />,
       items: [
         'Career progression',
         'Skills evidence',
@@ -242,9 +242,9 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800">
+    <div className="min-h-screen bg-soft text-ink">
       {/* 1. HERO SECTION: Split layout with Red Brand Accents */}
-      <section className="relative overflow-hidden bg-white border-b border-slate-200 pt-12 pb-16 sm:pt-16 sm:pb-24">
+      <section className="relative overflow-hidden bg-paper border-b border-line pt-12 pb-16 sm:pt-16 sm:pb-24">
         {/* Subtle background glow */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-red-100/40 rounded-full blur-3xl pointer-events-none -z-10" />
         <div className="absolute -bottom-10 left-1/3 w-80 h-80 bg-slate-100/80 rounded-full blur-2xl pointer-events-none -z-10" />
@@ -253,22 +253,22 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Column: Heading, Subtitle & Uploader */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-50 border border-red-200 text-[#C82333] text-xs font-bold uppercase tracking-wider">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-soft border border-line text-accent text-xs font-bold uppercase tracking-wider">
                 <SearchCheck className="w-4 h-4" />
                 <span>Resume Checker · 27 Crucial Checks</span>
               </div>
 
-              <h1 className="font-heading text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.1]">
+              <h1 className="font-heading text-4xl sm:text-5xl font-black text-ink tracking-tight leading-[1.1]">
                 Is your resume <br className="hidden sm:inline" />
-                <span className="text-[#C82333]">good enough?</span>
+                <span className="text-accent">good enough?</span>
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg text-muted leading-relaxed max-w-2xl">
                 A free and fast ATS resume checker doing <strong>27 crucial checks</strong> to ensure your resume’s content, layout, and keywords are technically compatible with enterprise applicant tracking systems and get you interview callbacks.
               </p>
 
               {/* Upload & Paste Control Box */}
-              <div className="bg-white rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#C82333] p-6 sm:p-8 transition-all shadow-sm space-y-5">
+              <div className="bg-paper rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#C82333] p-6 sm:p-8 transition-all shadow-sm space-y-5">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <button
@@ -276,8 +276,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       onClick={() => setInputMode('upload')}
                       className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
                         inputMode === 'upload'
-                          ? 'bg-[#C82333] text-white shadow-xs'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          ? 'bg-accent text-white shadow-xs'
+                          : 'bg-slate-100 text-muted hover:bg-slate-200'
                       }`}
                     >
                       Drop File (PDF / DOCX)
@@ -287,15 +287,15 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       onClick={() => setInputMode('paste')}
                       className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
                         inputMode === 'paste'
-                          ? 'bg-[#C82333] text-white shadow-xs'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          ? 'bg-accent text-white shadow-xs'
+                          : 'bg-slate-100 text-muted hover:bg-slate-200'
                       }`}
                     >
                       Paste Text Directly
                     </button>
                   </div>
 
-                  <span className="text-xs text-slate-400 font-medium hidden sm:inline">
+                  <span className="text-xs text-muted/60 font-medium hidden sm:inline">
                     100% Free · Instant Score
                   </span>
                 </div>
@@ -305,7 +305,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
-                    className="cursor-pointer py-8 px-4 text-center rounded-xl bg-slate-50/70 hover:bg-red-50/40 border border-slate-200/80 transition-colors flex flex-col items-center justify-center space-y-3"
+                    className="cursor-pointer py-8 px-4 text-center rounded-xl bg-soft/70 hover:bg-soft/40 border border-line/80 transition-colors flex flex-col items-center justify-center space-y-3"
                   >
                     <input
                       ref={fileInputRef}
@@ -314,24 +314,24 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       onChange={handleFileUpload}
                       className="hidden"
                     />
-                    <div className="w-12 h-12 rounded-xl bg-red-50 border border-red-200 text-[#C82333] flex items-center justify-center shadow-xs">
+                    <div className="w-12 h-12 rounded-xl bg-soft border border-line text-accent flex items-center justify-center shadow-xs">
                       <Upload className="w-6 h-6" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-800">
+                      <p className="text-sm font-bold text-ink">
                         {uploadedFileName ? (
-                          <span className="text-[#C82333] font-mono">Loaded: {uploadedFileName}</span>
+                          <span className="text-accent font-mono">Loaded: {uploadedFileName}</span>
                         ) : (
-                          <>Drop your resume here or <span className="text-[#C82333] underline">choose a file</span></>
+                          <>Drop your resume here or <span className="text-accent underline">choose a file</span></>
                         )}
                       </p>
-                      <p className="text-xs text-slate-500 mt-1">
+                      <p className="text-xs text-muted/80 mt-1">
                         PDF, DOCX & TXT. Max 2MB file size.
                       </p>
                     </div>
                     <button
                       type="button"
-                      className="px-5 py-2.5 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-sm"
+                      className="px-5 py-2.5 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-xl transition-all shadow-sm"
                     >
                       {uploadedFileName ? 'Change Resume File' : 'Upload Your Resume'}
                     </button>
@@ -339,11 +339,11 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 ) : (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                        <FileText className="w-4 h-4 text-[#C82333]" />
+                      <label className="text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                        <FileText className="w-4 h-4 text-accent" />
                         Paste Resume Content
                       </label>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-muted/60">
                         {resumeText.trim().split(/\s+/).filter(Boolean).length} words
                       </span>
                     </div>
@@ -360,11 +360,11 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 {/* Optional Target Job Description */}
                 <div className="space-y-1.5 pt-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                      <Target className="w-3.5 h-3.5 text-[#C82333]" />
+                    <label className="text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                      <Target className="w-3.5 h-3.5 text-accent" />
                       Target Job Description (Optional)
                     </label>
-                    <span className="text-[11px] text-[#C82333] font-semibold">
+                    <span className="text-[11px] text-accent font-semibold">
                       Enables Keyword Match
                     </span>
                   </div>
@@ -380,25 +380,25 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 {/* Action Bar & Quick Samples */}
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-slate-500 font-medium">Or try sample:</span>
+                    <span className="text-[11px] text-muted/80 font-medium">Or try sample:</span>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('developer')}
-                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
+                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Developer
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('marketing')}
-                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
+                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Marketing
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('sales')}
-                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
+                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Sales
                     </button>
@@ -408,7 +408,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     type="button"
                     disabled={isScanning}
                     onClick={handleRunScan}
-                    className="w-full sm:w-auto px-6 py-3 bg-[#C82333] hover:bg-[#A71D2A] disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-red-500/20 flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-6 py-3 bg-accent hover:bg-accent/90 disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-red-500/20 flex items-center justify-center gap-2"
                   >
                     {isScanning ? (
                       <>
@@ -424,8 +424,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </button>
                 </div>
 
-                <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-slate-500">
-                  <Lock className="w-3.5 h-3.5 text-slate-400" />
+                <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-muted/80">
+                  <Lock className="w-3.5 h-3.5 text-muted/60" />
                   <span>We never share your data with 3rd parties or use it for AI model training.</span>
                 </div>
               </div>
@@ -434,15 +434,15 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {/* Right Column: Visual Feature Poster */}
             <div className="lg:col-span-5 space-y-6">
               <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-[#C82333]/20 rounded-full blur-2xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-40 h-40 bg-accent/20 rounded-full blur-2xl pointer-events-none" />
                 
                 <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <div className="w-3 h-3 rounded-full bg-soft0" />
                     <div className="w-3 h-3 rounded-full bg-amber-500" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                    <div className="w-3 h-3 rounded-full bg-soft0" />
                   </div>
-                  <span className="text-[11px] font-mono text-slate-400">ATS Engine v4.2</span>
+                  <span className="text-[11px] font-mono text-muted/60">ATS Engine v4.2</span>
                 </div>
 
                 <div className="mt-6 space-y-4">
@@ -452,7 +452,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       <span className="text-emerald-400 font-mono">98.4%</span>
                     </div>
                     <div className="w-full h-1.5 bg-slate-700 rounded-full mt-2 overflow-hidden">
-                      <div className="h-full bg-emerald-500 rounded-full w-[98%]" />
+                      <div className="h-full bg-soft0 rounded-full w-[98%]" />
                     </div>
                   </div>
 
@@ -462,23 +462,23 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       <span className="text-[#F87171] font-mono">2 / 5 Found</span>
                     </div>
                     <div className="w-full h-1.5 bg-slate-700 rounded-full mt-2 overflow-hidden">
-                      <div className="h-full bg-[#C82333] rounded-full w-[40%]" />
+                      <div className="h-full bg-accent rounded-full w-[40%]" />
                     </div>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span className="text-slate-300">Enterprise ATS Tested</span>
-                      <span className="text-slate-400 text-[11px]">Workday · Greenhouse · Taleo · Lever</span>
+                      <span className="text-muted/60 text-[11px]">Workday · Greenhouse · Taleo · Lever</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 text-xs text-slate-400 leading-relaxed">
+                  <div className="pt-2 text-xs text-muted/60 leading-relaxed">
                     "Most rejections happen before a human recruiter looks at your resume. Our dual-tier system tests machine parsing and recruiter impact."
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-muted/60">
                   <span>5,363+ Scans Processed</span>
                   <span className="text-amber-400 flex items-center gap-1">
                     <Star className="w-3.5 h-3.5 fill-current" /> 4.5/5 Rating
@@ -495,7 +495,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
         <section id="scan-results" className="py-12 bg-slate-100 border-b border-slate-300">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             {/* Main Score Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+            <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
                 <div className="flex items-center gap-5">
                   <div className={`w-24 h-24 rounded-2xl border-2 flex flex-col items-center justify-center shrink-0 ${getScoreColor(scanResult.score)}`}>
@@ -507,17 +507,17 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     </span>
                   </div>
                   <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted/80">
                       Overall ATS Readiness
                     </span>
-                    <h3 className="font-heading text-xl font-bold text-slate-900 mt-0.5">
+                    <h3 className="font-heading text-xl font-bold text-ink mt-0.5">
                       {scanResult.score < 50
                         ? 'High Rejection Risk (75%+ Filtering Likelihood)'
                         : scanResult.score < 75
                         ? 'Average Rating (Needs Metric & Keyword Elevation)'
                         : 'Strong Foundation (Ready for Executive Polish)'}
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl">
+                    <p className="text-xs sm:text-sm text-muted mt-1 max-w-xl">
                       {scanResult.summaryFeedback}
                     </p>
                   </div>
@@ -529,13 +529,13 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       onClick={() => onNavigate('editor')}
                       className="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
                     >
-                      <PenTool className="w-4 h-4 text-[#C82333]" />
+                      <PenTool className="w-4 h-4 text-accent" />
                       <span>Open in Live CV Editor (Free)</span>
                     </button>
                   )}
                   <button
                     onClick={() => onSelectPlan('starter', { resume: resumeText, jd: jobDescriptionText })}
-                    className="px-5 py-3 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-red-500/20 flex items-center justify-center gap-2"
+                    className="px-5 py-3 bg-accent hover:bg-accent/90 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-red-500/20 flex items-center justify-center gap-2"
                   >
                     <span>Fix With Senior Dev — From $10</span>
                     <ArrowRight className="w-4 h-4" />
@@ -545,26 +545,26 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
               {/* 5 Category Metric Breakdown */}
               <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="p-3.5 rounded-xl bg-soft border border-line">
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-600 font-medium">Quantified Metrics</span>
-                    <span className="font-bold text-slate-900">{scanResult.categoryScores.quantifiedMetrics}%</span>
+                    <span className="text-muted font-medium">Quantified Metrics</span>
+                    <span className="font-bold text-ink">{scanResult.categoryScores.quantifiedMetrics}%</span>
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-[#C82333] rounded-full" 
+                      className="h-full bg-accent rounded-full" 
                       style={{ width: `${scanResult.categoryScores.quantifiedMetrics}%` }} 
                     />
                   </div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
+                  <span className="text-[10px] text-muted/60 mt-1 block">
                     {scanResult.quantifiedCount} quantified lines
                   </span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="p-3.5 rounded-xl bg-soft border border-line">
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-600 font-medium">Action Verbs</span>
-                    <span className="font-bold text-slate-900">{scanResult.categoryScores.actionVerbs}%</span>
+                    <span className="text-muted font-medium">Action Verbs</span>
+                    <span className="font-bold text-ink">{scanResult.categoryScores.actionVerbs}%</span>
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
@@ -572,15 +572,15 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       style={{ width: `${scanResult.categoryScores.actionVerbs}%` }} 
                     />
                   </div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
+                  <span className="text-[10px] text-muted/60 mt-1 block">
                     {scanResult.strongVerbsCount} power verbs found
                   </span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="p-3.5 rounded-xl bg-soft border border-line">
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-600 font-medium">Keywords Match</span>
-                    <span className="font-bold text-slate-900">{scanResult.categoryScores.skillsRelevance}%</span>
+                    <span className="text-muted font-medium">Keywords Match</span>
+                    <span className="font-bold text-ink">{scanResult.categoryScores.skillsRelevance}%</span>
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
@@ -588,31 +588,31 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       style={{ width: `${scanResult.categoryScores.skillsRelevance}%` }} 
                     />
                   </div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
+                  <span className="text-[10px] text-muted/60 mt-1 block">
                     {scanResult.detectedKeywords.length} core keywords
                   </span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="p-3.5 rounded-xl bg-soft border border-line">
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-600 font-medium">ATS Layout</span>
-                    <span className="font-bold text-slate-900">{scanResult.categoryScores.atsReadability}%</span>
+                    <span className="text-muted font-medium">ATS Layout</span>
+                    <span className="font-bold text-ink">{scanResult.categoryScores.atsReadability}%</span>
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-emerald-600 rounded-full" 
+                      className="h-full bg-accent rounded-full" 
                       style={{ width: `${scanResult.categoryScores.atsReadability}%` }} 
                     />
                   </div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
+                  <span className="text-[10px] text-muted/60 mt-1 block">
                     Clean plain-text parsing
                   </span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="p-3.5 rounded-xl bg-soft border border-line">
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-600 font-medium">Section Order</span>
-                    <span className="font-bold text-slate-900">{scanResult.categoryScores.structureFormatting}%</span>
+                    <span className="text-muted font-medium">Section Order</span>
+                    <span className="font-bold text-ink">{scanResult.categoryScores.structureFormatting}%</span>
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
@@ -620,7 +620,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       style={{ width: `${scanResult.categoryScores.structureFormatting}%` }} 
                     />
                   </div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
+                  <span className="text-[10px] text-muted/60 mt-1 block">
                     Enterprise hierarchy
                   </span>
                 </div>
@@ -629,13 +629,13 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
             {/* 27-Check Interactive Diagnostic Drawer */}
             {scanResult.detailedChecks && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+              <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
                   <div>
-                    <h3 className="font-heading text-lg font-bold text-slate-900">
+                    <h3 className="font-heading text-lg font-bold text-ink">
                       The 27 Crucial Checks Diagnostic Breakdown
                     </h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-muted/80 mt-0.5">
                       Status of your resume against all 27 automated and recruiter criteria.
                     </p>
                   </div>
@@ -647,8 +647,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                         onClick={() => setSelectedCheckCategory(cat)}
                         className={`text-[11px] font-semibold px-2.5 py-1 rounded-md transition-colors ${
                           selectedCheckCategory === cat
-                            ? 'bg-[#C82333] text-white shadow-xs'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            ? 'bg-accent text-white shadow-xs'
+                            : 'bg-slate-100 text-muted hover:bg-slate-200'
                         }`}
                       >
                         {cat}
@@ -665,16 +665,16 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                         key={chk.id}
                         className={`p-3.5 rounded-xl border text-xs flex flex-col justify-between space-y-2 ${
                           chk.status === 'pass'
-                            ? 'bg-emerald-50/50 border-emerald-200 text-slate-800'
+                            ? 'bg-soft/50 border-line text-ink'
                             : chk.status === 'warning'
-                            ? 'bg-amber-50/60 border-amber-200 text-slate-800'
-                            : 'bg-red-50/60 border-red-200 text-slate-800'
+                            ? 'bg-amber-50/60 border-amber-200 text-ink'
+                            : 'bg-soft/60 border-line text-ink'
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                          <span className="font-bold text-ink flex items-center gap-1.5">
                             {chk.status === 'pass' ? (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                              <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
                             ) : chk.status === 'warning' ? (
                               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
                             ) : (
@@ -682,15 +682,15 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                             )}
                             {chk.name}
                           </span>
-                          <span className="text-[10px] uppercase font-bold text-slate-400">
+                          <span className="text-[10px] uppercase font-bold text-muted/60">
                             {chk.category}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-600 leading-relaxed">
+                        <p className="text-[11px] text-muted leading-relaxed">
                           {chk.detail}
                         </p>
                         {chk.recommendation && (
-                          <div className="pt-1 text-[10px] text-slate-500 border-t border-slate-200/50">
+                          <div className="pt-1 text-[10px] text-muted/80 border-t border-line/50">
                             <strong>Tip:</strong> {chk.recommendation}
                           </div>
                         )}
@@ -704,7 +704,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       )}
 
       {/* 3. TWO-TIER SCORING SYSTEM BREAKDOWN (Left/Right Section) */}
-      <section className="py-16 sm:py-24 bg-white border-b border-slate-200">
+      <section className="py-16 sm:py-24 bg-paper border-b border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Visual Column */}
@@ -714,12 +714,12 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   <span className="text-xs font-bold text-[#F87171] uppercase tracking-wider">
                     Two-Tier ATS Scoring Architecture
                   </span>
-                  <span className="text-xs font-mono text-slate-400">Enterprise Standard</span>
+                  <span className="text-xs font-mono text-muted/60">Enterprise Standard</span>
                 </div>
 
                 <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 space-y-2">
                   <div className="flex items-center gap-2 text-sm font-bold text-white">
-                    <span className="w-5 h-5 rounded-full bg-[#C82333] text-white flex items-center justify-center text-xs">1</span>
+                    <span className="w-5 h-5 rounded-full bg-accent text-white flex items-center justify-center text-xs">1</span>
                     <h4>Tier 1: Machine ATS Parsability</h4>
                   </div>
                   <p className="text-xs text-slate-300 leading-relaxed">
@@ -729,7 +729,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
                 <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 space-y-2">
                   <div className="flex items-center gap-2 text-sm font-bold text-white">
-                    <span className="w-5 h-5 rounded-full bg-[#C82333] text-white flex items-center justify-center text-xs">2</span>
+                    <span className="w-5 h-5 rounded-full bg-accent text-white flex items-center justify-center text-xs">2</span>
                     <h4>Tier 2: Recruiter Impact & Calibration</h4>
                   </div>
                   <p className="text-xs text-slate-300 leading-relaxed">
@@ -741,13 +741,13 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
             {/* Explanation Column */}
             <div className="lg:col-span-7 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+              <span className="text-xs font-bold uppercase tracking-wider text-accent">
                 Algorithmic Evaluation
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
                 ATS Resume Maker’s Resume Checker forms its score with a two-tier system
               </h2>
-              <div className="space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+              <div className="space-y-4 text-muted text-sm sm:text-base leading-relaxed">
                 <p>
                   When applying for a job, your resume is first filtered by an applicant tracking system before it ever touches a recruiter’s screen. ATS software parses candidate data into a searchable database.
                 </p>
@@ -757,19 +757,19 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               </div>
 
               <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                  <span className="text-xs font-bold text-slate-900 block mb-1">
+                <div className="p-4 rounded-xl bg-soft border border-line">
+                  <span className="text-xs font-bold text-ink block mb-1">
                     1. Machine Parsability Proportion
                   </span>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-muted/80 leading-relaxed">
                     We test against rules established from reverse-engineering Workday, Taleo, Greenhouse, and Lever.
                   </p>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                  <span className="text-xs font-bold text-slate-900 block mb-1">
+                <div className="p-4 rounded-xl bg-soft border border-line">
+                  <span className="text-xs font-bold text-ink block mb-1">
                     2. Measurable Accomplishments
                   </span>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-muted/80 leading-relaxed">
                     Flags vague duty claims ("Responsible for bugs") and elevates them with metrics ("Resolved 45+ critical bugs, reducing churn by 18%").
                   </p>
                 </div>
@@ -812,7 +812,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 <ul className="space-y-2.5 pt-2">
                   {cat.items.map((item, itemIdx) => (
                     <li key={itemIdx} className="flex items-center gap-2.5 text-xs text-slate-300">
-                      <div className="w-4 h-4 rounded bg-[#C82333]/20 border border-[#C82333]/50 text-[#F87171] flex items-center justify-center shrink-0">
+                      <div className="w-4 h-4 rounded bg-accent/20 border border-[#C82333]/50 text-[#F87171] flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3" />
                       </div>
                       <span>{item}</span>
@@ -841,7 +841,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 onClick={() => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="w-full py-2.5 bg-white text-[#C82333] font-bold text-xs rounded-xl hover:bg-slate-100 transition-colors shadow-xs"
+                className="w-full py-2.5 bg-paper text-accent font-bold text-xs rounded-xl hover:bg-slate-100 transition-colors shadow-xs"
               >
                 Upload & Scan My Resume Free
               </button>
@@ -851,16 +851,16 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       </section>
 
       {/* 5. INTERACTIVE TABS: "Put your resume score to work" */}
-      <section className="py-16 sm:py-24 bg-white border-b border-slate-200">
+      <section className="py-16 sm:py-24 bg-paper border-b border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">
               End-to-End Application Platform
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
               Put your resume score to work
             </h2>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-muted leading-relaxed">
               Checking is just step one. ATS Resume Maker covers every stage of the international hiring cycle: the rewrite, the cover letter, the job tracking, and the interview prep.
             </p>
 
@@ -879,8 +879,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
                     activeTab === tab.id
-                      ? 'bg-[#C82333] text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      ? 'bg-accent text-white shadow-sm'
+                      : 'bg-slate-100 text-ink/90 hover:bg-slate-200'
                   }`}
                 >
                   {tab.label}
@@ -890,37 +890,37 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
           </div>
 
           {/* Active Tab Panel Content */}
-          <div className="bg-slate-50 rounded-2xl border border-slate-200 p-8 sm:p-12">
+          <div className="bg-soft rounded-2xl border border-line p-8 sm:p-12">
             {activeTab === 'builder' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent">
                     Live Visual CV Builder
                   </span>
-                  <h3 className="font-heading text-2xl font-bold text-slate-900">
+                  <h3 className="font-heading text-2xl font-bold text-ink">
                     Turn diagnostic feedback into an interview-earning resume
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-muted leading-relaxed">
                     Your report flags what to fix. Our Live CV Builder helps you fix it in real time, with custom color pickers, photo support, and vector PDF exports that pass Workday and Greenhouse parsers.
                   </p>
-                  <ul className="space-y-2 text-xs text-slate-700">
+                  <ul className="space-y-2 text-xs text-ink/90">
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#C82333]" />
+                      <Check className="w-4 h-4 text-accent" />
                       <span>20+ specialized sections reviewed by senior technical recruiters</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#C82333]" />
+                      <Check className="w-4 h-4 text-accent" />
                       <span>Google XYZ formula suggestions that turn flat duties into measurable numbers</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#C82333]" />
+                      <Check className="w-4 h-4 text-accent" />
                       <span>One-click downloadable vector PDF with selectable plain text</span>
                     </li>
                   </ul>
                   {onNavigate && (
                     <button
                       onClick={() => onNavigate('editor')}
-                      className="mt-2 px-5 py-2.5 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2"
+                      className="mt-2 px-5 py-2.5 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2"
                     >
                       <PenTool className="w-4 h-4" />
                       <span>Launch Live CV Editor (Free)</span>
@@ -928,17 +928,17 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   )}
                 </div>
 
-                <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3 font-mono text-xs">
-                  <div className="flex items-center justify-between text-slate-400 pb-2 border-b">
+                <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-3 font-mono text-xs">
+                  <div className="flex items-center justify-between text-muted/60 pb-2 border-b">
                     <span>Live Builder Preview</span>
-                    <span className="text-emerald-600 font-bold">100% ATS Safe</span>
+                    <span className="text-accent font-bold">100% ATS Safe</span>
                   </div>
-                  <p className="text-slate-800 font-bold text-sm">SARAH CHEN · STAFF SYSTEMS ARCHITECT</p>
-                  <p className="text-slate-500 text-[11px]">San Francisco, CA · sarah.chen@dev.io · linkedin.com/in/sarahchen</p>
-                  <div className="pt-2 text-slate-700 text-[11px] leading-relaxed">
+                  <p className="text-ink font-bold text-sm">SARAH CHEN · STAFF SYSTEMS ARCHITECT</p>
+                  <p className="text-muted/80 text-[11px]">San Francisco, CA · sarah.chen@dev.io · linkedin.com/in/sarahchen</p>
+                  <div className="pt-2 text-ink/90 text-[11px] leading-relaxed">
                     • Architected distributed Kafka streaming pipeline handling 4.5M msgs/sec, reducing p99 latency by 34%.
                   </div>
-                  <div className="text-slate-700 text-[11px] leading-relaxed">
+                  <div className="text-ink/90 text-[11px] leading-relaxed">
                     • Led 8 senior engineers across 3 time zones; migrated Kubernetes cluster with 99.99% uptime.
                   </div>
                 </div>
@@ -948,38 +948,38 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {activeTab === 'cover-letter' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent">
                     Targeted Cover Letters
                   </span>
-                  <h3 className="font-heading text-2xl font-bold text-slate-900">
+                  <h3 className="font-heading text-2xl font-bold text-ink">
                     Match your resume with a letter worth reading
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-muted leading-relaxed">
                     When the role calls for one, generate a matching letter that builds on your resume’s accomplishments instead of lazily restating them.
                   </p>
-                  <ul className="space-y-2 text-xs text-slate-700">
+                  <ul className="space-y-2 text-xs text-ink/90">
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#C82333]" />
+                      <Check className="w-4 h-4 text-accent" />
                       <span>Addresses hiring manager directly with role-specific pain points</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#C82333]" />
+                      <Check className="w-4 h-4 text-accent" />
                       <span>Cohesive typography matching your ATS resume theme</span>
                     </li>
                   </ul>
                   {onNavigate && (
                     <button
                       onClick={() => onNavigate('cover-letter')}
-                      className="mt-2 px-5 py-2.5 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2"
+                      className="mt-2 px-5 py-2.5 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2"
                     >
                       <FileText className="w-4 h-4" />
                       <span>Open Cover Letter Studio (Free)</span>
                     </button>
                   )}
                 </div>
-                <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3 text-xs">
-                  <p className="font-bold text-slate-800">Targeted Cover Letter Blueprint</p>
-                  <p className="text-slate-600 text-[11px] leading-relaxed italic">
+                <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-3 text-xs">
+                  <p className="font-bold text-ink">Targeted Cover Letter Blueprint</p>
+                  <p className="text-muted text-[11px] leading-relaxed italic">
                     "Dear Hiring Team, Having spent the last 4 years scaling real-time transaction engines to $120M annual volume, I was immediately drawn to your mission to democratize payment infra..."
                   </p>
                 </div>
@@ -989,18 +989,18 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {activeTab === 'import' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent">
                     Instant Import
                   </span>
-                  <h3 className="font-heading text-2xl font-bold text-slate-900">
+                  <h3 className="font-heading text-2xl font-bold text-ink">
                     Keep your resume history, upgrade everything around it
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-muted leading-relaxed">
                     The file you just checked can immediately become your working draft. Upload an old Word file or paste your LinkedIn URL, and ATS Resume Maker parses your career history into modern format.
                   </p>
                 </div>
-                <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3 text-xs">
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-slate-800">
+                <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-3 text-xs">
+                  <div className="p-3 bg-soft border border-line rounded-lg text-ink">
                     <strong>LinkedIn / PDF Parser:</strong> Extracts job titles, companies, dates, and bullets automatically with zero copy-paste fatigue.
                   </div>
                 </div>
@@ -1010,22 +1010,22 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {activeTab === 'tracker' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent">
                     Job Search Command Center
                   </span>
-                  <h3 className="font-heading text-2xl font-bold text-slate-900">
+                  <h3 className="font-heading text-2xl font-bold text-ink">
                     Keep every application and interview round organized
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-muted leading-relaxed">
                     Once you’re sending tailored resumes to multiple roles, our built-in tracker holds each version, application status, interview date, and recruiter note in one clean dashboard.
                   </p>
                 </div>
-                <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-2 text-xs">
-                  <div className="flex items-center justify-between p-2 rounded bg-slate-50 border">
+                <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
+                  <div className="flex items-center justify-between p-2 rounded bg-soft border">
                     <span>Google · Senior Engineer</span>
                     <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">Interview Round 2</span>
                   </div>
-                  <div className="flex items-center justify-between p-2 rounded bg-slate-50 border">
+                  <div className="flex items-center justify-between p-2 rounded bg-soft border">
                     <span>Stripe · Technical Lead</span>
                     <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">Take-Home Test</span>
                   </div>
@@ -1036,22 +1036,22 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {activeTab === 'interview' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent">
                     Interview Readiness
                   </span>
-                  <h3 className="font-heading text-2xl font-bold text-slate-900">
+                  <h3 className="font-heading text-2xl font-bold text-ink">
                     Prepare for the interviews your resume earns
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-muted leading-relaxed">
                     When your checked resume gets you the call, prep with likely behavioral questions, STAR stories, and personal pitch outlines generated directly from your actual experience bullets.
                   </p>
                 </div>
-                <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-2 text-xs">
-                  <p className="font-bold text-slate-800">STAR Story Outline:</p>
-                  <p className="text-slate-600 text-[11px]"><strong>Situation:</strong> Database scaling bottleneck during Black Friday sale.</p>
-                  <p className="text-slate-600 text-[11px]"><strong>Task:</strong> Maintain 99.99% availability under 10x traffic spike.</p>
-                  <p className="text-slate-600 text-[11px]"><strong>Action:</strong> Implemented read-replicas and distributed Redis caching layer.</p>
-                  <p className="text-slate-600 text-[11px]"><strong>Result:</strong> Zero downtime, saved $45,000 in cloud compute overages.</p>
+                <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
+                  <p className="font-bold text-ink">STAR Story Outline:</p>
+                  <p className="text-muted text-[11px]"><strong>Situation:</strong> Database scaling bottleneck during Black Friday sale.</p>
+                  <p className="text-muted text-[11px]"><strong>Task:</strong> Maintain 99.99% availability under 10x traffic spike.</p>
+                  <p className="text-muted text-[11px]"><strong>Action:</strong> Implemented read-replicas and distributed Redis caching layer.</p>
+                  <p className="text-muted text-[11px]"><strong>Result:</strong> Zero downtime, saved $45,000 in cloud compute overages.</p>
                 </div>
               </div>
             )}
@@ -1059,22 +1059,22 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {activeTab === 'matching' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent">
                     Smart Job Matcher
                   </span>
-                  <h3 className="font-heading text-2xl font-bold text-slate-900">
+                  <h3 className="font-heading text-2xl font-bold text-ink">
                     Apply where your resume already matches
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-muted leading-relaxed">
                     Compare your resume against live job requirements to instantly identify missing hard skills, soft skills, and keyword gaps before hitting apply.
                   </p>
                 </div>
-                <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-2 text-xs">
+                <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
                   <div className="flex items-center justify-between text-xs font-bold pb-2 border-b">
                     <span>Role Match Score</span>
-                    <span className="text-emerald-700">89% Match</span>
+                    <span className="text-accent">89% Match</span>
                   </div>
-                  <p className="text-[11px] text-slate-600">Matched: React, TypeScript, GraphQL, Docker, Microservices</p>
+                  <p className="text-[11px] text-muted">Matched: React, TypeScript, GraphQL, Docker, Microservices</p>
                   <p className="text-[11px] text-red-600 font-semibold">Missing: Kubernetes, Terraform</p>
                 </div>
               </div>
@@ -1084,16 +1084,16 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       </section>
 
       {/* 6. CAREER RESEARCH & MYTH-BUSTING GUIDES */}
-      <section className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
+      <section className="py-16 sm:py-24 bg-soft border-b border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">
               Senior Recruiter Intelligence
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
               Learn what happens to your resume after you hit apply
             </h2>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-muted leading-relaxed">
               Most ATS advice online is an outdated myth. Our senior developers and recruiters ran real tests on Workday, Lever, and Greenhouse—here is what actually works:
             </p>
           </div>
@@ -1139,22 +1139,22 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             ].map((article, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
+                className="bg-paper rounded-2xl border border-line p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between text-[11px] font-semibold">
-                    <span className="text-[#C82333] tracking-wider">{article.tag}</span>
-                    <span className="text-slate-400">{article.readTime}</span>
+                    <span className="text-accent tracking-wider">{article.tag}</span>
+                    <span className="text-muted/60">{article.readTime}</span>
                   </div>
-                  <h4 className="font-heading font-bold text-slate-900 text-base leading-snug hover:text-[#C82333] transition-colors cursor-pointer">
+                  <h4 className="font-heading font-bold text-ink text-base leading-snug hover:text-accent transition-colors cursor-pointer">
                     {article.title}
                   </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-muted/80 leading-relaxed">
                     {article.desc}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#C82333] font-bold">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-accent font-bold">
                   <span>Read Full Research</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
@@ -1165,7 +1165,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       </section>
 
       {/* 7. VERIFIED REVIEWS & SOCIAL PROOF */}
-      <section className="py-16 sm:py-24 bg-white border-b border-slate-200">
+      <section className="py-16 sm:py-24 bg-paper border-b border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <div className="flex items-center justify-center gap-1 text-amber-400 mb-2">
@@ -1173,53 +1173,53 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 <Star key={i} className="w-5 h-5 fill-current" />
               ))}
             </div>
-            <h2 className="font-heading text-3xl font-bold text-slate-900">
+            <h2 className="font-heading text-3xl font-bold text-ink">
               Trusted by executives & senior professionals worldwide
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
+            <p className="text-xs sm:text-sm text-muted/80">
               <strong>4.5 / 5</strong> average rating across 5,363+ candidates hired at Google, Stripe, Microsoft, and Amazon.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <div className="p-6 rounded-2xl bg-soft border border-line space-y-4">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}
               </div>
-              <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
+              <p className="text-xs sm:text-sm text-ink/90 italic leading-relaxed">
                 "Great tool for improving your CV. My initial score was 48 due to passive duties. After following the 27-point recommendations, callbacks jumped from 0 to 4 in two weeks."
               </p>
-              <div className="text-xs font-bold text-slate-900 border-t pt-3">
+              <div className="text-xs font-bold text-ink border-t pt-3">
                 Mark D. · Senior DevOps Engineer
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <div className="p-6 rounded-2xl bg-soft border border-line space-y-4">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}
               </div>
-              <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
+              <p className="text-xs sm:text-sm text-ink/90 italic leading-relaxed">
                 "I spent hours on Canva trying to format everything. This checker told me Canva tables fail Workday parsing. Used the ATS Live Builder and got hired at a Fortune 500 company."
               </p>
-              <div className="text-xs font-bold text-slate-900 border-t pt-3">
+              <div className="text-xs font-bold text-ink border-t pt-3">
                 Rositsa K. · Product Marketing Manager
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <div className="p-6 rounded-2xl bg-soft border border-line space-y-4">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}
               </div>
-              <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
+              <p className="text-xs sm:text-sm text-ink/90 italic leading-relaxed">
                 "Fast, accurate, and completely transparent about what applicant tracking software looks for. The Bangladesh talent initiative making it free forever is incredible."
               </p>
-              <div className="text-xs font-bold text-slate-900 border-t pt-3">
+              <div className="text-xs font-bold text-ink border-t pt-3">
                 Carolyn T. · Full Stack Developer
               </div>
             </div>
@@ -1228,13 +1228,13 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       </section>
 
       {/* 8. COMPREHENSIVE 12-ITEM FAQ ACCORDION */}
-      <section className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
+      <section className="py-16 sm:py-24 bg-soft border-b border-line">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C82333]">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">
               Frequently Asked Questions
             </span>
-            <h2 className="font-heading text-3xl font-bold text-slate-900">
+            <h2 className="font-heading text-3xl font-bold text-ink">
               Everything you need to know about ATS resume checking
             </h2>
           </div>
@@ -1245,20 +1245,20 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               return (
                 <div
                   key={index}
-                  className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs transition-all"
+                  className="bg-paper rounded-xl border border-line overflow-hidden shadow-xs transition-all"
                 >
                   <button
                     type="button"
                     onClick={() => setExpandedFaq(isOpen ? null : index)}
-                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-semibold text-slate-900 hover:text-[#C82333] transition-colors"
+                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-semibold text-ink hover:text-accent transition-colors"
                   >
                     <span className="text-sm sm:text-base">{faq.q}</span>
-                    <span className="p-1 rounded-md bg-slate-100 text-slate-500 shrink-0">
+                    <span className="p-1 rounded-md bg-slate-100 text-muted/80 shrink-0">
                       {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-muted leading-relaxed border-t border-slate-100 pt-3">
                       {faq.a}
                     </div>
                   )}
@@ -1284,7 +1284,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               onClick={() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="w-full sm:w-auto px-8 py-3.5 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-3.5 bg-accent hover:bg-accent/90 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2"
             >
               <Upload className="w-4 h-4" />
               <span>Scan My Resume Free (27 Checks)</span>
@@ -1300,7 +1300,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             )}
           </div>
 
-          <p className="text-xs text-slate-400 pt-2">
+          <p className="text-xs text-muted/60 pt-2">
             No signup required for instant scoring · 100% Free for all Bangladeshi candidates
           </p>
         </div>

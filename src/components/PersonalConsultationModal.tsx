@@ -29,28 +29,28 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-xl max-h-[92vh] flex flex-col overflow-hidden">
+      <div className="bg-paper rounded-xl shadow-2xl border border-line w-full max-w-xl max-h-[92vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div className="px-6 py-4 border-b border-line flex items-center justify-between bg-soft">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono">
                 1-on-1 Human Expert
               </span>
-              <span className="text-xs text-slate-500 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-slate-400" /> 24-Hour Turnaround
+              <span className="text-xs text-muted/80 flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-muted/60" /> 24-Hour Turnaround
               </span>
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mt-1">
+            <h3 className="text-lg font-bold text-ink mt-1">
               Personalized Consultation & Developer Overhaul
             </h3>
-            <p className="text-xs text-slate-600 mt-0.5">
+            <p className="text-xs text-muted mt-0.5">
               Work directly with an experienced tech lead and resume specialist to guarantee your interview invitations.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60 transition-colors"
+            className="p-1.5 text-muted/60 hover:text-muted rounded-lg hover:bg-slate-200/60 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -60,7 +60,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-5">
           {/* Tier Selection */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-800 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-ink uppercase tracking-wide">
               Select Your Consultation Package
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -68,15 +68,15 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
                 onClick={() => setSelectedTier('starter')}
                 className={`p-3.5 rounded-lg border cursor-pointer transition-all ${
                   selectedTier === 'starter'
-                    ? 'border-emerald-600 bg-emerald-50/50 shadow-sm ring-1 ring-emerald-500'
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                    ? 'border-emerald-600 bg-soft/50 shadow-sm ring-1 ring-emerald-500'
+                    : 'border-line hover:border-slate-300 bg-paper'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm text-slate-900">Developer Polish</span>
-                  <span className="text-base font-extrabold text-emerald-700 font-mono">$10</span>
+                  <span className="font-bold text-sm text-ink">Developer Polish</span>
+                  <span className="text-base font-extrabold text-accent font-mono">$10</span>
                 </div>
-                <p className="text-xs text-slate-600 mt-1.5 leading-snug">
+                <p className="text-xs text-muted mt-1.5 leading-snug">
                   Personal review, rewrite of 5 core bullets with Google XYZ metrics, and verified ATS parser pass report.
                 </p>
               </div>
@@ -85,15 +85,15 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
                 onClick={() => setSelectedTier('boost')}
                 className={`p-3.5 rounded-lg border cursor-pointer transition-all ${
                   selectedTier === 'boost'
-                    ? 'border-emerald-600 bg-emerald-50/50 shadow-sm ring-1 ring-emerald-500'
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                    ? 'border-emerald-600 bg-soft/50 shadow-sm ring-1 ring-emerald-500'
+                    : 'border-line hover:border-slate-300 bg-paper'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm text-slate-900">Complete Overhaul</span>
-                  <span className="text-base font-extrabold text-emerald-700 font-mono">$25</span>
+                  <span className="font-bold text-sm text-ink">Complete Overhaul</span>
+                  <span className="text-base font-extrabold text-accent font-mono">$25</span>
                 </div>
-                <p className="text-xs text-slate-600 mt-1.5 leading-snug">
+                <p className="text-xs text-muted mt-1.5 leading-snug">
                   Complete resume rewrite + tailored alignment for 1 dream job + editable Word DOCX + LinkedIn profile optimization.
                 </p>
               </div>
@@ -102,9 +102,9 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
 
           {/* Dream Job URL / Company */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-800 flex items-center justify-between">
+            <label className="text-xs font-semibold text-ink flex items-center justify-between">
               <span>Target Role & Company URL (Optional)</span>
-              <span className="text-[11px] text-slate-500 font-normal">e.g. Google, Revolut, Pathao</span>
+              <span className="text-[11px] text-muted/80 font-normal">e.g. Google, Revolut, Pathao</span>
             </label>
             <input
               type="text"
@@ -117,7 +117,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
 
           {/* Personal Questions / Specific Concerns */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-800">
+            <label className="text-xs font-semibold text-ink">
               Specific Goals or Career Questions for Your Consultant
             </label>
             <textarea
@@ -130,18 +130,18 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
           </div>
 
           {/* Guarantee Badges */}
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-1.5">
-            <div className="text-xs font-medium text-slate-800 flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="bg-soft border border-line rounded-lg p-3 space-y-1.5">
+            <div className="text-xs font-medium text-ink flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-accent" />
               100% Satisfaction Guarantee
             </div>
-            <ul className="text-[11px] text-slate-600 space-y-1">
+            <ul className="text-[11px] text-muted space-y-1">
               <li className="flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                <CheckCircle2 className="w-3 h-3 text-accent" />
                 Reviewed by a senior technical developer, not an automated generic bot.
               </li>
               <li className="flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                <CheckCircle2 className="w-3 h-3 text-accent" />
                 Delivered within 24 hours with 1 complimentary revision cycle.
               </li>
             </ul>
@@ -152,7 +152,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
             <button
               type="button"
               onClick={onClose}
-              className="text-xs text-slate-600 hover:text-slate-900 font-medium px-3 py-2"
+              className="text-xs text-muted hover:text-ink font-medium px-3 py-2"
             >
               Cancel
             </button>

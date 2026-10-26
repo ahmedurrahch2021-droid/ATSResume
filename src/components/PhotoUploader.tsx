@@ -53,14 +53,14 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
   };
 
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+    <div className="bg-soft border border-line rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h4 className="text-sm font-semibold text-slate-900 flex items-center gap-1.5">
-            <Camera className="w-4 h-4 text-slate-700" />
+          <h4 className="text-sm font-semibold text-ink flex items-center gap-1.5">
+            <Camera className="w-4 h-4 text-ink/90" />
             Professional Headshot Photo
           </h4>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-muted/80 mt-0.5">
             Standard for European (Europass), Middle East, Asia, & International CVs.
           </p>
         </div>
@@ -71,7 +71,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             className={`text-xs px-2.5 py-1 rounded border font-medium flex items-center gap-1 transition-colors ${
               photoShape === 'hidden'
                 ? 'bg-amber-50 text-amber-800 border-amber-200'
-                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                : 'bg-paper text-ink/90 border-line hover:bg-slate-100'
             }`}
           >
             {photoShape === 'hidden' ? (
@@ -107,10 +107,10 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
         ) : (
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="w-20 h-20 rounded-full border-2 border-dashed border-slate-300 hover:border-slate-400 bg-white flex flex-col items-center justify-center cursor-pointer transition-colors shrink-0 group text-center p-2"
+            className="w-20 h-20 rounded-full border-2 border-dashed border-slate-300 hover:border-slate-400 bg-paper flex flex-col items-center justify-center cursor-pointer transition-colors shrink-0 group text-center p-2"
           >
-            <Camera className="w-5 h-5 text-slate-400 group-hover:text-slate-600 mb-0.5" />
-            <span className="text-[10px] text-slate-500 font-medium leading-tight">Upload Photo</span>
+            <Camera className="w-5 h-5 text-muted/60 group-hover:text-muted mb-0.5" />
+            <span className="text-[10px] text-muted/80 font-medium leading-tight">Upload Photo</span>
           </div>
         )}
 
@@ -127,19 +127,19 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="text-xs bg-white hover:bg-slate-100 text-slate-800 font-medium px-3 py-1.5 rounded border border-slate-300 shadow-sm transition-colors"
+              className="text-xs bg-paper hover:bg-slate-100 text-ink font-medium px-3 py-1.5 rounded border border-slate-300 shadow-sm transition-colors"
             >
               {photoUrl ? 'Change Image' : 'Select Image (JPEG / PNG)'}
             </button>
 
             {photoUrl && (
               <>
-                <div className="flex items-center gap-1 bg-white border border-slate-200 rounded p-0.5">
+                <div className="flex items-center gap-1 bg-paper border border-line rounded p-0.5">
                   <button
                     type="button"
                     onClick={() => handleToggleShape('circle')}
                     className={`px-2 py-1 text-xs rounded font-medium transition-colors ${
-                      photoShape === 'circle' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
+                      photoShape === 'circle' ? 'bg-slate-900 text-white' : 'text-muted hover:bg-slate-100'
                     }`}
                   >
                     Circle
@@ -148,7 +148,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                     type="button"
                     onClick={() => handleToggleShape('square')}
                     className={`px-2 py-1 text-xs rounded font-medium transition-colors ${
-                      photoShape === 'square' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
+                      photoShape === 'square' ? 'bg-slate-900 text-white' : 'text-muted hover:bg-slate-100'
                     }`}
                   >
                     Square
@@ -165,7 +165,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
               </>
             )}
           </div>
-          <p className="text-[11px] text-slate-500">
+          <p className="text-[11px] text-muted/80">
             Processed 100% locally in your browser. Never uploaded to third-party ad servers.
           </p>
         </div>

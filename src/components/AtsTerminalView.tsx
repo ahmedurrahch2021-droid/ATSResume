@@ -48,16 +48,16 @@ export const AtsTerminalView: React.FC<AtsTerminalViewProps> = ({
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-soft0/80" />
           </div>
-          <span className="font-mono text-xs text-slate-400 font-medium ml-2 flex items-center gap-1.5">
+          <span className="font-mono text-xs text-muted/60 font-medium ml-2 flex items-center gap-1.5">
             <Terminal className="w-3.5 h-3.5 text-emerald-400" />
             ATS Ingestion Stream (Raw Parsed Stream)
           </span>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-3 text-xs text-slate-400 font-mono">
+          <div className="hidden sm:flex items-center gap-3 text-xs text-muted/60 font-mono">
             <span>{stats.words} words</span>
             <span>·</span>
             <span>{stats.chars} chars</span>
@@ -114,19 +114,19 @@ export const AtsTerminalView: React.FC<AtsTerminalViewProps> = ({
       )}
 
       {/* Terminal Body */}
-      <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed text-slate-200 selection:bg-emerald-600 selection:text-white bg-slate-900/95 max-h-[600px]">
+      <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed text-slate-200 selection:bg-accent selection:text-white bg-slate-900/95 max-h-[600px]">
         <pre className="whitespace-pre-wrap font-mono break-words">
           {plainText || '// No text extracted yet. Ingest a document or enter information in the form.'}
         </pre>
       </div>
 
       {/* Terminal Footer explanation */}
-      <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+      <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 text-[11px] text-muted/60 flex items-center justify-between">
         <span className="flex items-center gap-1">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
           Single-column standard verified: zero nested tables, icons, or multi-column stream collision.
         </span>
-        <span className="text-slate-500 hidden md:inline">
+        <span className="text-muted/80 hidden md:inline">
           Tested against Workday, Greenhouse, Taleo, Lever parsers
         </span>
       </div>

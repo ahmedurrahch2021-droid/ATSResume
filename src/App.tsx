@@ -82,7 +82,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-emerald-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-paper text-ink font-sans antialiased selection:bg-accent selection:text-white">
       {/* Sticky Navigation */}
       <Navbar
         currentPage={currentPage}

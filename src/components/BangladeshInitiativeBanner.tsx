@@ -44,7 +44,7 @@ export const BangladeshInitiativeBanner: React.FC<BangladeshInitiativeBannerProp
               onClick={() => onSelectMarket('bangladesh')}
               className={`px-2.5 py-1 rounded font-medium transition-colors ${
                 currentMarket === 'bangladesh'
-                  ? 'bg-emerald-600 text-white shadow-sm'
+                  ? 'bg-accent text-white shadow-sm'
                   : 'text-emerald-200 hover:text-white'
               }`}
             >
@@ -54,7 +54,7 @@ export const BangladeshInitiativeBanner: React.FC<BangladeshInitiativeBannerProp
               onClick={() => onSelectMarket('global')}
               className={`px-2.5 py-1 rounded font-medium transition-colors ${
                 currentMarket === 'global'
-                  ? 'bg-emerald-600 text-white shadow-sm'
+                  ? 'bg-accent text-white shadow-sm'
                   : 'text-emerald-200 hover:text-white'
               }`}
             >
@@ -64,7 +64,7 @@ export const BangladeshInitiativeBanner: React.FC<BangladeshInitiativeBannerProp
               onClick={() => onSelectMarket('us_uk')}
               className={`px-2.5 py-1 rounded font-medium transition-colors ${
                 currentMarket === 'us_uk'
-                  ? 'bg-emerald-600 text-white shadow-sm'
+                  ? 'bg-accent text-white shadow-sm'
                   : 'text-emerald-200 hover:text-white'
               }`}
             >
@@ -74,9 +74,9 @@ export const BangladeshInitiativeBanner: React.FC<BangladeshInitiativeBannerProp
 
           <button
             onClick={onLoadBangladeshSample}
-            className="text-xs bg-white text-emerald-950 hover:bg-emerald-50 font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm shrink-0"
+            className="text-xs bg-paper text-emerald-950 hover:bg-soft font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm shrink-0"
           >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
             Load BUET / BD Dev Template
           </button>
         </div>

@@ -44,25 +44,25 @@ ${resumeData.experience.slice(0, 2).map(exp => `• At ${exp.company} (${exp.rol
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-paper rounded-xl shadow-2xl border border-line w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div className="px-6 py-4 border-b border-line flex items-center justify-between bg-soft">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-[#0A66C2] text-white flex items-center justify-center font-bold text-sm">
               in
             </div>
             <div>
-              <h3 className="text-base font-semibold text-slate-900">
+              <h3 className="text-base font-semibold text-ink">
                 LinkedIn & International Job Portal Optimizer
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted/80">
                 Format your resume data for 1-click sync with LinkedIn, Wellfound, and Otta.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60 transition-colors"
+            className="p-1.5 text-muted/60 hover:text-muted rounded-lg hover:bg-slate-200/60 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -73,12 +73,12 @@ ${resumeData.experience.slice(0, 2).map(exp => `• At ${exp.company} (${exp.rol
           {/* Headline Section */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-900 tracking-wide uppercase">
+              <label className="text-xs font-semibold text-ink tracking-wide uppercase">
                 1. Optimized LinkedIn Headline (High Search Indexing)
               </label>
               <button
                 onClick={() => handleCopy(headline, 'headline')}
-                className="text-xs flex items-center gap-1 font-medium text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200 transition-colors"
+                className="text-xs flex items-center gap-1 font-medium text-accent hover:text-accent bg-soft px-2.5 py-1 rounded border border-line transition-colors"
               >
                 {copiedSection === 'headline' ? (
                   <>
@@ -91,10 +91,10 @@ ${resumeData.experience.slice(0, 2).map(exp => `• At ${exp.company} (${exp.rol
                 )}
               </button>
             </div>
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 leading-relaxed break-words">
+            <div className="p-3 bg-soft border border-line rounded-lg text-xs font-mono text-ink leading-relaxed break-words">
               {headline}
             </div>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-[11px] text-muted/80">
               Recruiters search by role title and top 3 technical keywords. This format maximizes search appearances.
             </p>
           </div>
@@ -102,12 +102,12 @@ ${resumeData.experience.slice(0, 2).map(exp => `• At ${exp.company} (${exp.rol
           {/* About Section */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-900 tracking-wide uppercase">
+              <label className="text-xs font-semibold text-ink tracking-wide uppercase">
                 2. LinkedIn "About / Summary" Section
               </label>
               <button
                 onClick={() => handleCopy(about, 'about')}
-                className="text-xs flex items-center gap-1 font-medium text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200 transition-colors"
+                className="text-xs flex items-center gap-1 font-medium text-accent hover:text-accent bg-soft px-2.5 py-1 rounded border border-line transition-colors"
               >
                 {copiedSection === 'about' ? (
                   <>
@@ -120,7 +120,7 @@ ${resumeData.experience.slice(0, 2).map(exp => `• At ${exp.company} (${exp.rol
                 )}
               </button>
             </div>
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">
+            <div className="p-3 bg-soft border border-line rounded-lg text-xs font-mono text-ink whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">
               {about}
             </div>
           </div>
@@ -138,8 +138,8 @@ ${resumeData.experience.slice(0, 2).map(exp => `• At ${exp.company} (${exp.rol
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-          <span className="text-xs text-slate-500">
+        <div className="px-6 py-3 border-t border-line bg-soft flex items-center justify-between">
+          <span className="text-xs text-muted/80">
             Copy text and paste directly into your LinkedIn profile editor.
           </span>
           <button

@@ -166,29 +166,29 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
 
   if (orderComplete) {
     return (
-      <div className="min-h-screen bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 p-8 sm:p-10 shadow-xl space-y-6 text-center animate-in zoom-in-95 duration-200">
-          <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
+      <div className="min-h-screen bg-soft py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto bg-paper rounded-2xl border border-line p-8 sm:p-10 shadow-xl space-y-6 text-center animate-in zoom-in-95 duration-200">
+          <div className="w-16 h-16 bg-emerald-100 text-accent rounded-full flex items-center justify-center mx-auto shadow-sm">
             <CheckCircle2 className="w-10 h-10" />
           </div>
 
           <div className="space-y-1">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent bg-soft px-3 py-1 rounded-full border border-line">
               Order Confirmed & Queued
             </span>
-            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-slate-900 mt-2">
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-ink mt-2">
               You're All Set! Order #{orderId}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-muted max-w-lg mx-auto leading-relaxed">
               We have received your career details and target job description. Your draft has been sent to our developer production queue.
             </p>
           </div>
 
           {/* Payment Verification & Security Badge Box */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-left space-y-3">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-200/80">
+          <div className="p-4 rounded-xl bg-soft border border-line text-left space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-line/80">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted/80 block">
                   Authorized Payment Method
                 </span>
                 <div className="flex items-center gap-2 mt-0.5">
@@ -199,9 +199,9 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     </span>
                   )}
                   {(formData.paymentMethod === 'mastercard' || (formData.paymentMethod === 'card' && cardBrand === 'mastercard')) && (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-ink bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
                       <span className="flex items-center -space-x-1">
-                        <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                        <span className="w-2.5 h-2.5 rounded-full bg-soft0 inline-block"></span>
                         <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block opacity-90"></span>
                       </span>
                       <span>Mastercard Identity Check</span>
@@ -213,11 +213,11 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     </span>
                   )}
                   {formData.paymentMethod === 'upi' && (
-                    <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    <span className="text-xs font-bold text-emerald-800 bg-soft px-2 py-0.5 rounded border border-line">
                       PhonePe / Google Pay UPI
                     </span>
                   )}
-                  <span className="text-xs font-bold text-slate-900">
+                  <span className="text-xs font-bold text-ink">
                     · ${totalAmount}.00 USD Paid
                   </span>
                 </div>
@@ -225,27 +225,27 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
 
               <div className="flex items-center gap-1.5">
                 <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100/70 border border-emerald-300 px-2 py-0.5 rounded flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-accent" />
                   Payment processor pending setup
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 pt-0.5">
-              <span className="flex items-center gap-1 text-slate-700">
-                <Lock className="w-3 h-3 text-slate-500" />
+            <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted/80 pt-0.5">
+              <span className="flex items-center gap-1 text-ink/90">
+                <Lock className="w-3 h-3 text-muted/80" />
                 Card payments not yet enabled
               </span>
-              <span className="font-mono text-slate-600">
+              <span className="font-mono text-muted">
                 Auth Code: AUTH-{Math.floor(100000 + Math.random() * 900000)}
               </span>
             </div>
           </div>
-          <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 text-left space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <div className="p-5 rounded-xl bg-soft border border-line text-left space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted/80">
               What Happens Next:
             </h4>
-            <div className="space-y-2 text-xs text-slate-700">
+            <div className="space-y-2 text-xs text-ink/90">
               <div className="flex items-start gap-2">
                 <span className="font-bold text-blue-600">1.</span>
                 <span>An order verification email has been sent to <strong>{formData.email}</strong>.</span>
@@ -278,14 +278,14 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 setCurrentStep(1);
                 onBackToPricing();
               }}
-              className="w-full sm:w-auto px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-colors"
+              className="w-full sm:w-auto px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-ink/90 font-semibold text-xs rounded-xl transition-colors"
             >
               Return To Homepage
             </button>
           </div>
 
-          <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1.5 pt-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <p className="text-[11px] text-muted/60 flex items-center justify-center gap-1.5 pt-2">
+            <ShieldCheck className="w-4 h-4 text-accent" />
             Protected by our 100% money-back satisfaction guarantee.
           </p>
         </div>
@@ -294,34 +294,34 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-soft py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Navigation & Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <button
             onClick={onBackToPricing}
-            className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition-colors"
+            className="text-xs font-semibold text-muted hover:text-ink flex items-center gap-1.5 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Pricing</span>
           </button>
-          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">
+          <div className="flex items-center gap-2 text-xs font-semibold text-accent bg-soft px-3 py-1 rounded-md border border-line">
             <Clock className="w-3.5 h-3.5" />
             <span>Guaranteed 24-Hour Turnaround</span>
           </div>
         </div>
 
         <div>
-          <h1 className="font-heading text-2xl sm:text-3xl font-bold text-slate-900">
+          <h1 className="font-heading text-2xl sm:text-3xl font-bold text-ink">
             Order Your Professional Resume Overhaul
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 mt-1">
+          <p className="text-xs sm:text-sm text-muted mt-1">
             Fill this out carefully — the more specific detail you provide, the higher your interview callback rate will be.
           </p>
         </div>
 
         {/* Step Indicator */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div className="bg-paper p-4 rounded-xl border border-line shadow-xs flex items-center justify-between">
           {[
             { num: 1, label: 'Your Details' },
             { num: 2, label: 'Choose Package' },
@@ -342,16 +342,16 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                   isCurrent 
                     ? 'text-blue-600' 
                     : isCompleted 
-                    ? 'text-emerald-600 cursor-pointer' 
-                    : 'text-slate-400'
+                    ? 'text-accent cursor-pointer' 
+                    : 'text-muted/60'
                 }`}
               >
                 <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold ${
                   isCurrent 
                     ? 'bg-blue-600 text-white' 
                     : isCompleted 
-                    ? 'bg-emerald-600 text-white' 
-                    : 'bg-slate-100 text-slate-500'
+                    ? 'bg-accent text-white' 
+                    : 'bg-slate-100 text-muted/80'
                 }`}>
                   {isCompleted ? '✓' : s.num}
                 </div>
@@ -362,22 +362,22 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
         </div>
 
         {/* Form Container */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm">
           {/* STEP 1: Your Details */}
           {currentStep === 1 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="border-b border-slate-100 pb-4">
-                <h2 className="font-heading text-lg font-bold text-slate-900">
+                <h2 className="font-heading text-lg font-bold text-ink">
                   Step 1 of 5: Your Contact Details
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-muted/80 mt-0.5">
                   Where should we deliver your completed resume files?
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">
+                  <label className="text-xs font-semibold text-ink/90">
                     Full Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -391,7 +391,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">
+                  <label className="text-xs font-semibold text-ink/90">
                     Email Address <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -405,7 +405,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">
+                  <label className="text-xs font-semibold text-ink/90">
                     Phone / WhatsApp Number (Optional)
                   </label>
                   <input
@@ -418,13 +418,13 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">
+                  <label className="text-xs font-semibold text-ink/90">
                     Preferred Contact Time
                   </label>
                   <select
                     value={formData.preferredTime}
                     onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
-                    className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none"
                   >
                     <option value="Morning (9 AM – 12 PM)">Morning (9 AM – 12 PM)</option>
                     <option value="Afternoon (12 PM – 5 PM)">Afternoon (12 PM – 5 PM)</option>
@@ -435,13 +435,13 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">
+                <label className="text-xs font-semibold text-ink/90">
                   How Did You Hear About Us?
                 </label>
                 <select
                   value={formData.referralSource}
                   onChange={(e) => setFormData({ ...formData, referralSource: e.target.value })}
-                  className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none"
                 >
                   <option value="Google Search">Google Search</option>
                   <option value="Reddit (r/resumes, r/careerguidance)">Reddit (r/resumes, r/careerguidance)</option>
@@ -470,10 +470,10 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
           {currentStep === 2 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="border-b border-slate-100 pb-4">
-                <h2 className="font-heading text-lg font-bold text-slate-900">
+                <h2 className="font-heading text-lg font-bold text-ink">
                   Step 2 of 5: Select Your Service Tier
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-muted/80 mt-0.5">
                   Pick the service level that aligns with your timeline and career goals.
                 </p>
               </div>
@@ -488,11 +488,11 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                       className={`p-5 rounded-xl border-2 cursor-pointer transition-all ${
                         isSelected
                           ? 'border-blue-600 bg-blue-50/30 ring-2 ring-blue-500/20'
-                          : 'border-slate-200 hover:border-slate-300 bg-white'
+                          : 'border-line hover:border-slate-300 bg-paper'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-heading font-bold text-sm text-slate-900">
+                        <span className="font-heading font-bold text-sm text-ink">
                           {pkg.name}
                         </span>
                         {pkg.popular && (
@@ -501,16 +501,16 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                           </span>
                         )}
                       </div>
-                      <div className="text-2xl font-extrabold text-slate-900 mb-2">
+                      <div className="text-2xl font-extrabold text-ink mb-2">
                         ${pkg.price}
                       </div>
-                      <p className="text-[11px] text-slate-500 min-h-[30px] leading-relaxed">
+                      <p className="text-[11px] text-muted/80 min-h-[30px] leading-relaxed">
                         {pkg.description}
                       </p>
                       <div className="mt-3 pt-3 border-t border-slate-100 space-y-1">
                         {pkg.features.slice(0, 3).map((feat, i) => (
-                          <div key={i} className="text-[11px] text-slate-600 flex items-center gap-1.5">
-                            <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <div key={i} className="text-[11px] text-muted flex items-center gap-1.5">
+                            <Check className="w-3.5 h-3.5 text-accent shrink-0" />
                             <span className="truncate">{feat}</span>
                           </div>
                         ))}
@@ -521,32 +521,32 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               </div>
 
               {/* Rush Delivery Checkbox */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-soft border border-line flex items-center justify-between">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={formData.urgentDelivery}
                     onChange={(e) => setFormData({ ...formData, urgentDelivery: e.target.checked })}
-                    className="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
+                    className="w-4 h-4 text-accent rounded border-slate-300 focus:ring-emerald-500"
                   />
                   <div>
-                    <span className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                    <span className="text-xs sm:text-sm font-bold text-ink flex items-center gap-1.5">
                       <Flame className="w-4 h-4 text-amber-500" />
                       Add 12-Hour Urgent Rush Delivery (+$10)
                     </span>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-muted/80">
                       Bumps your order to priority front-of-queue. Guaranteed delivery in 12 hours.
                     </p>
                   </div>
                 </label>
-                <span className="text-xs font-bold text-slate-900 shrink-0">+$10</span>
+                <span className="text-xs font-bold text-ink shrink-0">+$10</span>
               </div>
 
               <div className="pt-4 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={() => setCurrentStep(1)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1"
+                  className="px-4 py-2 text-xs font-semibold text-muted hover:text-ink flex items-center gap-1"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
@@ -567,16 +567,16 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
           {currentStep === 3 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="border-b border-slate-100 pb-4">
-                <h2 className="font-heading text-lg font-bold text-slate-900">
+                <h2 className="font-heading text-lg font-bold text-ink">
                   Step 3 of 5: Your Career Background & Experience
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-muted/80 mt-0.5">
                   Share your raw work history. Don't worry about perfect formatting — we rewrite it all.
                 </p>
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">
+                <label className="text-xs font-semibold text-ink/90">
                   Current / Most Recent Role & Company <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -591,10 +591,10 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
 
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-slate-700">
+                  <label className="text-xs font-semibold text-ink/90">
                     Past Work Experience & Key Responsibilities <span className="text-red-500">*</span>
                   </label>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-muted/60">
                     Or paste your current resume text
                   </span>
                 </div>
@@ -609,7 +609,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">
+                <label className="text-xs font-semibold text-ink/90">
                   Education
                 </label>
                 <input
@@ -622,7 +622,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-slate-700 block">
+                <label className="text-xs font-semibold text-ink/90 block">
                   Key Skills to Highlight
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -636,7 +636,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                         className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
                           isChecked
                             ? 'bg-blue-600 text-white border-blue-600 font-medium'
-                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                            : 'bg-soft text-ink/90 border-line hover:bg-slate-100'
                         }`}
                       >
                         {isChecked ? '✓ ' : '+ '}
@@ -648,7 +648,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">
+                <label className="text-xs font-semibold text-ink/90">
                   Certifications, Honors & Tools (Optional)
                 </label>
                 <input
@@ -664,7 +664,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 <button
                   type="button"
                   onClick={() => setCurrentStep(2)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1"
+                  className="px-4 py-2 text-xs font-semibold text-muted hover:text-ink flex items-center gap-1"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
@@ -686,17 +686,17 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
           {currentStep === 4 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="border-b border-slate-100 pb-4">
-                <h2 className="font-heading text-lg font-bold text-slate-900">
+                <h2 className="font-heading text-lg font-bold text-ink">
                   Step 4 of 5: Target Job & Tailoring (Critical)
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-muted/80 mt-0.5">
                   This is our secret sauce: tailoring your achievements to the exact job description you are applying for.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">
+                  <label className="text-xs font-semibold text-ink/90">
                     What Role Are You Applying For? <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -710,7 +710,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">
+                  <label className="text-xs font-semibold text-ink/90">
                     Industry / Company Type
                   </label>
                   <input
@@ -725,10 +725,10 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
 
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-slate-700">
-                    Paste the Job Description (Recommended) <span className="text-emerald-600 font-bold">★ High Impact</span>
+                  <label className="text-xs font-semibold text-ink/90">
+                    Paste the Job Description (Recommended) <span className="text-accent font-bold">★ High Impact</span>
                   </label>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-muted/60">
                     Copy/paste from LinkedIn or job board
                   </span>
                 </div>
@@ -737,18 +737,18 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                   placeholder="Paste the requirements & responsibilities from the job listing. This allows us to inject high-priority ATS keywords directly into your bullet points..."
                   value={formData.targetJobDescription}
                   onChange={(e) => setFormData({ ...formData, targetJobDescription: e.target.value })}
-                  className="w-full p-3 text-xs sm:text-sm font-mono border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none leading-relaxed bg-slate-50/40"
+                  className="w-full p-3 text-xs sm:text-sm font-mono border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none leading-relaxed bg-soft/40"
                 />
               </div>
 
               {/* Tone & Length Preferences */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">Desired Tone</label>
+                  <label className="text-xs font-semibold text-ink/90">Desired Tone</label>
                   <select
                     value={formData.tone}
                     onChange={(e) => setFormData({ ...formData, tone: e.target.value as any })}
-                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white"
+                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-paper"
                   >
                     <option value="modern">Modern & Confident (Recommended)</option>
                     <option value="professional">Professional & Corporate</option>
@@ -757,11 +757,11 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">Resume Length</label>
+                  <label className="text-xs font-semibold text-ink/90">Resume Length</label>
                   <select
                     value={formData.pageLength}
                     onChange={(e) => setFormData({ ...formData, pageLength: e.target.value as any })}
-                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white"
+                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-paper"
                   >
                     <option value="1">1 Page (Standard for &lt;5 yrs)</option>
                     <option value="2">2 Pages (Standard for 5+ yrs)</option>
@@ -769,11 +769,11 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">Target Salary</label>
+                  <label className="text-xs font-semibold text-ink/90">Target Salary</label>
                   <select
                     value={formData.targetSalary}
                     onChange={(e) => setFormData({ ...formData, targetSalary: e.target.value })}
-                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white"
+                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-paper"
                   >
                     <option value="Under $40K">Under $40K</option>
                     <option value="$40K – $60K">$40K – $60K</option>
@@ -785,7 +785,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">
+                <label className="text-xs font-semibold text-ink/90">
                   Special Notes or Gaps (Confidential)
                 </label>
                 <input
@@ -801,7 +801,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 <button
                   type="button"
                   onClick={() => setCurrentStep(3)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1"
+                  className="px-4 py-2 text-xs font-semibold text-muted hover:text-ink flex items-center gap-1"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
@@ -823,19 +823,19 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
           {currentStep === 5 && (
             <form onSubmit={handleCompleteOrder} className="space-y-6 animate-in fade-in duration-200">
               <div className="border-b border-slate-100 pb-4">
-                <h2 className="font-heading text-lg font-bold text-slate-900">
+                <h2 className="font-heading text-lg font-bold text-ink">
                   Step 5 of 5: Order Summary & Secure Payment
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-muted/80 mt-0.5">
                   Confirm your details and choose your preferred payment channel.
                 </p>
               </div>
 
               {/* Order Summary Box */}
-              <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="p-5 rounded-xl bg-soft border border-line space-y-3">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="font-bold text-slate-800">{selectedPkg.name}</span>
-                  <span className="font-mono font-bold text-slate-900">${selectedPkg.price}.00</span>
+                  <span className="font-bold text-ink">{selectedPkg.name}</span>
+                  <span className="font-mono font-bold text-ink">${selectedPkg.price}.00</span>
                 </div>
 
                 {formData.urgentDelivery && (
@@ -848,12 +848,12 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                   </div>
                 )}
 
-                <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
+                <div className="pt-2 border-t border-line flex items-center justify-between">
                   <div>
-                    <span className="font-heading font-bold text-base text-slate-900 block">Total Due:</span>
-                    <span className="text-[11px] text-slate-500">One-time flat fee · Zero recurring bills</span>
+                    <span className="font-heading font-bold text-base text-ink block">Total Due:</span>
+                    <span className="text-[11px] text-muted/80">One-time flat fee · Zero recurring bills</span>
                   </div>
-                  <span className="font-heading text-2xl font-extrabold text-emerald-600">
+                  <span className="font-heading text-2xl font-extrabold text-accent">
                     ${totalAmount}.00 USD
                   </span>
                 </div>
@@ -862,11 +862,11 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               {/* Payment Channel Selector */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                  <label className="text-xs font-bold uppercase tracking-wider text-ink/90 block">
                     Select Payment Method:
                   </label>
-                  <span className="text-[11px] text-emerald-700 font-medium flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-[11px] text-accent font-medium flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-accent" />
                     256-Bit Encrypted & Tokenized
                   </span>
                 </div>
@@ -886,16 +886,16 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     className={`p-3.5 rounded-xl border-2 text-left transition-all ${
                       formData.paymentMethod === 'visa' || (formData.paymentMethod === 'card' && cardBrand === 'visa')
                         ? 'border-blue-600 bg-blue-50/50 text-blue-950 ring-2 ring-blue-500/20 shadow-sm'
-                        : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+                        : 'border-line text-ink/90 hover:bg-soft'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-bold text-xs">VISA Card</span>
-                      <span className="text-[10px] font-black tracking-wider text-blue-800 bg-white border border-blue-200 px-1.5 py-0.5 rounded italic shadow-2xs">
+                      <span className="text-[10px] font-black tracking-wider text-blue-800 bg-paper border border-blue-200 px-1.5 py-0.5 rounded italic shadow-2xs">
                         VISA
                       </span>
                     </div>
-                    <span className="text-[10px] text-slate-500 block">Verified by Visa · 3DS 2.0</span>
+                    <span className="text-[10px] text-muted/80 block">Verified by Visa · 3DS 2.0</span>
                   </button>
 
                   {/* Option 2: Mastercard */}
@@ -911,17 +911,17 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     className={`p-3.5 rounded-xl border-2 text-left transition-all ${
                       formData.paymentMethod === 'mastercard' || (formData.paymentMethod === 'card' && cardBrand === 'mastercard')
                         ? 'border-amber-600 bg-amber-50/50 text-amber-950 ring-2 ring-amber-500/20 shadow-sm'
-                        : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+                        : 'border-line text-ink/90 hover:bg-soft'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-bold text-xs">Mastercard</span>
-                      <span className="inline-flex items-center bg-white border border-slate-200 px-1 py-0.5 rounded shadow-2xs">
-                        <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block -mr-1"></span>
+                      <span className="inline-flex items-center bg-paper border border-line px-1 py-0.5 rounded shadow-2xs">
+                        <span className="w-2.5 h-2.5 rounded-full bg-soft0 inline-block -mr-1"></span>
                         <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block opacity-90"></span>
                       </span>
                     </div>
-                    <span className="text-[10px] text-slate-500 block">Identity Check · SecureCode</span>
+                    <span className="text-[10px] text-muted/80 block">Identity Check · SecureCode</span>
                   </button>
 
                   {/* Option 3: PayPal */}
@@ -931,7 +931,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     className={`p-3.5 rounded-xl border-2 text-left transition-all ${
                       formData.paymentMethod === 'paypal'
                         ? 'border-blue-600 bg-blue-50/40 text-blue-900 ring-2 ring-blue-500/20 shadow-sm'
-                        : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+                        : 'border-line text-ink/90 hover:bg-soft'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -940,7 +940,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                         Express
                       </span>
                     </div>
-                    <span className="text-[10px] text-slate-500 block">Global balance & cards</span>
+                    <span className="text-[10px] text-muted/80 block">Global balance & cards</span>
                   </button>
 
                   {/* Option 4: PhonePe / UPI */}
@@ -949,35 +949,35 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     onClick={() => setFormData({ ...formData, paymentMethod: 'upi' })}
                     className={`p-3.5 rounded-xl border-2 text-left transition-all ${
                       formData.paymentMethod === 'upi'
-                        ? 'border-emerald-600 bg-emerald-50/40 text-emerald-950 ring-2 ring-emerald-500/20 shadow-sm'
-                        : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+                        ? 'border-emerald-600 bg-soft/40 text-emerald-950 ring-2 ring-emerald-500/20 shadow-sm'
+                        : 'border-line text-ink/90 hover:bg-soft'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-bold text-xs">PhonePe / UPI</span>
-                      <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] font-mono font-bold text-accent bg-emerald-100 px-1.5 py-0.5 rounded">
                         QR Pay
                       </span>
                     </div>
-                    <span className="text-[10px] text-slate-500 block">Instant for India (0% fee)</span>
+                    <span className="text-[10px] text-muted/80 block">Instant for India (0% fee)</span>
                   </button>
                 </div>
 
                 {/* Sub-UI for VISA or Mastercard */}
                 {(formData.paymentMethod === 'visa' || formData.paymentMethod === 'mastercard' || formData.paymentMethod === 'card') && (
-                  <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-5">
+                  <div className="p-5 sm:p-6 rounded-2xl bg-paper border border-line shadow-sm space-y-5">
                     {/* Security Certification Header */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="font-heading font-bold text-sm text-slate-900">
+                          <h4 className="font-heading font-bold text-sm text-ink">
                             Secure Card Payment Portal
                           </h4>
-                          <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-bold">
+                          <span className="text-[10px] font-mono text-accent bg-soft border border-line px-2 py-0.5 rounded font-bold">
                             Payment processor pending setup
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                        <p className="text-[11px] text-muted/80 mt-0.5">
                           Direct encrypted authorization via Visa 3D Secure 2.0 & Mastercard Identity Check
                         </p>
                       </div>
@@ -996,7 +996,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                           className={`px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 ${
                             formData.paymentMethod === 'visa' || (formData.paymentMethod === 'card' && cardBrand === 'visa')
                               ? 'bg-blue-600 text-white shadow-xs'
-                              : 'text-slate-600 hover:text-slate-900'
+                              : 'text-muted hover:text-ink'
                           }`}
                         >
                           <span className="italic font-black">VISA</span>
@@ -1014,7 +1014,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                           className={`px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 ${
                             formData.paymentMethod === 'mastercard' || (formData.paymentMethod === 'card' && cardBrand === 'mastercard')
                               ? 'bg-amber-600 text-white shadow-xs'
-                              : 'text-slate-600 hover:text-slate-900'
+                              : 'text-muted hover:text-ink'
                           }`}
                         >
                           <span className="flex items-center -space-x-1">
@@ -1027,44 +1027,44 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     </div>
 
                     {/* Official Security Badges Bar */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px]">
-                      <div className="flex items-center gap-2 p-1 text-slate-700">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-soft border border-line/80 text-[11px]">
+                      <div className="flex items-center gap-2 p-1 text-ink/90">
                         <div className="w-5 h-5 rounded bg-blue-100 text-blue-700 flex items-center justify-center font-black italic text-[9px]">
                           V
                         </div>
                         <div>
                           <span className="font-bold block text-[10px] text-blue-900 leading-tight">Verified by VISA</span>
-                          <span className="text-[9px] text-slate-400">3D Secure 2.0</span>
+                          <span className="text-[9px] text-muted/60">3D Secure 2.0</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 p-1 text-slate-700">
+                      <div className="flex items-center gap-2 p-1 text-ink/90">
                         <div className="w-5 h-5 rounded bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-[9px]">
                           MC
                         </div>
                         <div>
                           <span className="font-bold block text-[10px] text-amber-950 leading-tight">Mastercard</span>
-                          <span className="text-[9px] text-slate-400">Identity Check</span>
+                          <span className="text-[9px] text-muted/60">Identity Check</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 p-1 text-slate-700">
-                        <div className="w-5 h-5 rounded bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                      <div className="flex items-center gap-2 p-1 text-ink/90">
+                        <div className="w-5 h-5 rounded bg-emerald-100 text-accent flex items-center justify-center">
                           <Lock className="w-3 h-3" />
                         </div>
                         <div>
-                          <span className="font-bold block text-[10px] text-slate-900 leading-tight">256-Bit SSL</span>
-                          <span className="text-[9px] text-slate-400">TLS Encryption</span>
+                          <span className="font-bold block text-[10px] text-ink leading-tight">256-Bit SSL</span>
+                          <span className="text-[9px] text-muted/60">TLS Encryption</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 p-1 text-slate-700">
-                        <div className="w-5 h-5 rounded bg-slate-200 text-slate-800 flex items-center justify-center">
+                      <div className="flex items-center gap-2 p-1 text-ink/90">
+                        <div className="w-5 h-5 rounded bg-slate-200 text-ink flex items-center justify-center">
                           <ShieldCheck className="w-3 h-3" />
                         </div>
                         <div>
-                          <span className="font-bold block text-[10px] text-slate-900 leading-tight">Zero Liability</span>
-                          <span className="text-[9px] text-slate-400">Fraud Protection</span>
+                          <span className="font-bold block text-[10px] text-ink leading-tight">Zero Liability</span>
+                          <span className="text-[9px] text-muted/60">Fraud Protection</span>
                         </div>
                       </div>
                     </div>
@@ -1072,7 +1072,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     {/* Card Fields Form */}
                     <div className="space-y-4">
                       <div className="space-y-1">
-                        <label className="text-[11px] font-bold text-slate-700">
+                        <label className="text-[11px] font-bold text-ink/90">
                           Cardholder Full Name
                         </label>
                         <input
@@ -1081,17 +1081,17 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                           placeholder="Name as printed on your card"
                           value={cardholderName || formData.fullName}
                           onChange={(e) => setCardholderName(e.target.value)}
-                          className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                          className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none"
                         />
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div className="sm:col-span-2 space-y-1">
                           <div className="flex items-center justify-between">
-                            <label className="text-[11px] font-bold text-slate-700">
+                            <label className="text-[11px] font-bold text-ink/90">
                               Card Number
                             </label>
-                            <span className="text-[10px] font-mono text-emerald-600 font-bold flex items-center gap-1">
+                            <span className="text-[10px] font-mono text-accent font-bold flex items-center gap-1">
                               <Check className="w-3 h-3" />
                               {cardBrand === 'visa' ? 'Visa Validated' : 'Mastercard Validated'}
                             </span>
@@ -1113,7 +1113,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                                 }
                               }}
                               placeholder="•••• •••• •••• ••••"
-                              className="w-full p-2.5 pl-3 pr-24 text-xs sm:text-sm font-mono border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none tracking-wider"
+                              className="w-full p-2.5 pl-3 pr-24 text-xs sm:text-sm font-mono border border-slate-300 rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none tracking-wider"
                             />
                             <div className="absolute right-2.5 top-2 flex items-center gap-1">
                               {cardBrand === 'visa' ? (
@@ -1122,7 +1122,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                                 </span>
                               ) : (
                                 <span className="inline-flex items-center bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
-                                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block -mr-1"></span>
+                                  <span className="w-2.5 h-2.5 rounded-full bg-soft0 inline-block -mr-1"></span>
                                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
                                 </span>
                               )}
@@ -1131,7 +1131,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-[11px] font-bold text-slate-700">
+                          <label className="text-[11px] font-bold text-ink/90">
                             Exp / CVV
                           </label>
                           <div className="grid grid-cols-2 gap-1.5">
@@ -1141,7 +1141,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                               value={cardExpiry}
                               onChange={(e) => setCardExpiry(e.target.value)}
                               placeholder="MM/YY"
-                              className="w-full p-2.5 text-xs font-mono border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none text-center"
+                              className="w-full p-2.5 text-xs font-mono border border-slate-300 rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none text-center"
                             />
                             <input
                               type="password"
@@ -1149,18 +1149,18 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                               value={cardCvv}
                               onChange={(e) => setCardCvv(e.target.value)}
                               placeholder="CVV"
-                              className="w-full p-2.5 text-xs font-mono border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none text-center"
+                              className="w-full p-2.5 text-xs font-mono border border-slate-300 rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none text-center"
                             />
                           </div>
                         </div>
                       </div>
 
-                      <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                      <div className="p-2.5 rounded-lg bg-soft border border-slate-100 flex items-center justify-between text-[11px] text-muted/80">
                         <span className="flex items-center gap-1.5 text-emerald-800 font-medium">
-                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                          <ShieldCheck className="w-3.5 h-3.5 text-accent" />
                           Encrypted token transaction · Card details are never stored on server
                         </span>
-                        <span className="text-slate-400 font-mono">SSL 256-Bit</span>
+                        <span className="text-muted/60 font-mono">SSL 256-Bit</span>
                       </div>
                     </div>
                   </div>
@@ -1168,18 +1168,18 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
 
                 {/* Sub-UI for UPI */}
                 {formData.paymentMethod === 'upi' && (
-                  <div className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200 space-y-3">
+                  <div className="p-5 rounded-2xl bg-soft/60 border border-line space-y-3">
                     <span className="text-xs font-bold text-emerald-950 block">
                       Pay via Any UPI App (PhonePe / Google Pay / Paytm):
                     </span>
-                    <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-4 rounded-xl border border-emerald-200">
+                    <div className="flex flex-col sm:flex-row items-center gap-4 bg-paper p-4 rounded-xl border border-line">
                       <div className="w-24 h-24 bg-slate-900 text-white rounded-lg flex flex-col items-center justify-center text-center p-2 shrink-0">
                         <span className="text-[10px] font-mono">UPI QR</span>
                         <span className="font-bold text-xs text-emerald-400">₹{(totalAmount * 84).toLocaleString()}</span>
-                        <span className="text-[9px] text-slate-400">Scan to pay</span>
+                        <span className="text-[9px] text-muted/60">Scan to pay</span>
                       </div>
-                      <div className="text-xs space-y-1.5 text-slate-700">
-                        <p>UPI VPA: <strong className="font-mono text-slate-900">atsresumemaker@upi</strong></p>
+                      <div className="text-xs space-y-1.5 text-ink/90">
+                        <p>UPI VPA: <strong className="font-mono text-ink">atsresumemaker@upi</strong></p>
                         <p>Total INR: <strong>₹{(totalAmount * 84).toLocaleString()}</strong> (~${totalAmount} USD)</p>
                         <button
                           type="button"
@@ -1232,7 +1232,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 <button
                   type="button"
                   onClick={() => setCurrentStep(4)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1"
+                  className="px-4 py-2 text-xs font-semibold text-muted hover:text-ink flex items-center gap-1"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
@@ -1241,7 +1241,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 <button
                   type="submit"
                   disabled={isProcessingPayment}
-                  className="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 text-slate-950 font-extrabold text-sm rounded-xl transition-all shadow-md shadow-emerald-500/20 flex items-center gap-2"
+                  className="px-8 py-3.5 bg-soft0 hover:bg-accent disabled:bg-slate-300 text-slate-950 font-extrabold text-sm rounded-xl transition-all shadow-md shadow-emerald-500/20 flex items-center gap-2"
                 >
                   {isProcessingPayment ? (
                     <>

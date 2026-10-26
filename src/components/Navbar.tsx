@@ -106,16 +106,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       description: 'Dual-mode in-browser builder with real-time scoring and vector PDF export.',
       route: 'suite' as PageRoute,
       badge: 'FREE',
-      icon: <PenTool className="w-4 h-4 text-[#C82333]" />,
-      iconBg: 'bg-red-50 border-red-100',
+      icon: <PenTool className="w-4 h-4 text-accent" />,
+      iconBg: 'bg-soft border-red-100',
     },
     {
       title: 'Cover Letter Studio',
       description: 'Targeted matching letterhead, modular cards, and Word (.docx) export.',
       route: 'cover-letter' as PageRoute,
       badge: 'NEW',
-      icon: <FileText className="w-4 h-4 text-emerald-700" />,
-      iconBg: 'bg-emerald-50 border-emerald-100',
+      icon: <FileText className="w-4 h-4 text-accent" />,
+      iconBg: 'bg-soft border-emerald-100',
     },
     {
       title: 'Free ATS Resume Templates',
@@ -145,15 +145,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       title: 'Before & After Examples',
       description: 'Role-by-role resume transformations and verified callback case studies.',
       route: 'examples' as PageRoute,
-      icon: <TrendingUp className="w-4 h-4 text-slate-700" />,
-      iconBg: 'bg-slate-100 border-slate-200',
+      icon: <TrendingUp className="w-4 h-4 text-ink/90" />,
+      iconBg: 'bg-slate-100 border-line',
     },
   ];
 
   const isToolsActive = ['suite', 'editor', 'cover-letter', 'templates', 'free-resume-score', 'examples'].includes(currentPage);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200 text-stone-900 shadow-xs">
+    <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur-md border-b border-line text-ink shadow-xs">
       {/* Main navigation: Clean, spacious bar with expanded height */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-8">
@@ -162,12 +162,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={handleNavClick}
             className="flex items-center gap-2.5 text-left group focus:outline-none whitespace-nowrap shrink-0"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#C82333] flex items-center justify-center text-white shadow-xs group-hover:bg-[#A71D2A] transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-white shadow-xs group-hover:bg-accent/90 transition-colors">
               <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="font-heading font-black text-2xl tracking-tight text-[#C82333]">
-                ATS <span className="text-stone-900 font-bold">Resume Maker</span>
+              <span className="font-heading font-black text-2xl tracking-tight text-accent">
+                ATS <span className="text-ink font-bold">Resume Maker</span>
               </span>
             </div>
           </Link>
@@ -188,26 +188,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                 aria-haspopup="true"
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 focus:outline-none ${
                   isToolsActive || megaMenuOpen
-                    ? 'bg-red-50 text-[#C82333] font-bold border border-red-200'
-                    : 'text-stone-700 hover:text-stone-900 hover:bg-stone-50 border border-transparent'
+                    ? 'bg-soft text-accent font-bold border border-line'
+                    : 'text-ink/90 hover:text-ink hover:bg-soft border border-transparent'
                 }`}
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+                <Sparkles className="w-3.5 h-3.5 text-accent" />
                 <span>Tools & Builders</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-[#C82333]' : 'text-stone-400'}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-accent' : 'text-muted/60'}`} />
               </button>
 
               {/* Two-Column Rich Mega Menu Panel */}
               {megaMenuOpen && (
                 <div 
-                  className="absolute left-0 mt-2 w-[720px] bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                  className="absolute left-0 mt-2 w-[720px] bg-paper rounded-2xl border border-line/90 shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                   role="menu"
                 >
                   <div className="grid grid-cols-2 gap-6">
                     {/* Column 1: Creation & Editors */}
                     <div>
                       <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-muted/60">
                           Creation & Editors
                         </span>
                       </div>
@@ -218,23 +218,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                             to={ROUTE_PATHS[tool.route]}
                             onClick={handleNavClick}
                             role="menuitem"
-                            className="p-3 rounded-xl hover:bg-slate-50 transition-all flex items-start gap-3 group border border-transparent hover:border-slate-200/80"
+                            className="p-3 rounded-xl hover:bg-soft transition-all flex items-start gap-3 group border border-transparent hover:border-line/80"
                           >
                             <div className={`p-2 rounded-lg border ${tool.iconBg} mt-0.5 shrink-0 group-hover:scale-105 transition-transform`}>
                               {tool.icon}
                             </div>
                             <div className="space-y-0.5">
                               <div className="flex items-center gap-2">
-                                <span className="font-heading font-bold text-xs text-slate-900 group-hover:text-[#C82333] transition-colors">
+                                <span className="font-heading font-bold text-xs text-ink group-hover:text-accent transition-colors">
                                   {tool.title}
                                 </span>
                                 {tool.badge && (
-                                  <span className="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-red-50 text-[#C82333] border border-red-200">
+                                  <span className="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-soft text-accent border border-line">
                                     {tool.badge}
                                   </span>
                                 )}
                               </div>
-                              <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                              <p className="text-[11px] text-muted/80 leading-relaxed line-clamp-2">
                                 {tool.description}
                               </p>
                             </div>
@@ -246,7 +246,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {/* Column 2: Diagnostics & Insights */}
                     <div>
                       <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-muted/60">
                           Diagnostics & Analysis
                         </span>
                       </div>
@@ -257,18 +257,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                             to={ROUTE_PATHS[tool.route]}
                             onClick={handleNavClick}
                             role="menuitem"
-                            className="p-3 rounded-xl hover:bg-slate-50 transition-all flex items-start gap-3 group border border-transparent hover:border-slate-200/80"
+                            className="p-3 rounded-xl hover:bg-soft transition-all flex items-start gap-3 group border border-transparent hover:border-line/80"
                           >
                             <div className={`p-2 rounded-lg border ${tool.iconBg} mt-0.5 shrink-0 group-hover:scale-105 transition-transform`}>
                               {tool.icon}
                             </div>
                             <div className="space-y-0.5">
                               <div className="flex items-center gap-2">
-                                <span className="font-heading font-bold text-xs text-slate-900 group-hover:text-[#C82333] transition-colors">
+                                <span className="font-heading font-bold text-xs text-ink group-hover:text-accent transition-colors">
                                   {tool.title}
                                 </span>
                               </div>
-                              <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                              <p className="text-[11px] text-muted/80 leading-relaxed line-clamp-2">
                                 {tool.description}
                               </p>
                             </div>
@@ -279,14 +279,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </div>
 
                   {/* Mega Menu Footer Callout */}
-                  <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 bg-slate-50/70 -mx-6 -mb-6 p-4 rounded-b-2xl">
-                    <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                  <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-muted/80 bg-soft/70 -mx-6 -mb-6 p-4 rounded-b-2xl">
+                    <span className="flex items-center gap-1.5 font-medium text-ink/90">
                       <span>🇧🇩</span> Bangladesh Talent Initiative: 100% Free Forever DIY builder & downloads.
                     </span>
                     <Link
                       to={ROUTE_PATHS['free-resume-score']}
                       onClick={handleNavClick}
-                      className="font-bold text-[#C82333] hover:text-[#A71D2A] flex items-center gap-1 transition-colors"
+                      className="font-bold text-accent hover:text-[#A71D2A] flex items-center gap-1 transition-colors"
                     >
                       <span>Check Score Free</span>
                       <ArrowRight className="w-3 h-3" />
@@ -306,8 +306,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={handleNavClick}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                     isActive
-                      ? 'bg-red-50 text-[#C82333] font-bold border border-red-200'
-                      : 'text-stone-700 hover:text-stone-900 hover:bg-stone-50'
+                      ? 'bg-soft text-accent font-bold border border-line'
+                      : 'text-ink/90 hover:text-ink hover:bg-soft'
                   }`}
                 >
                   {item.label}
@@ -319,22 +319,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Zone 3: Account Status & Primary Action */}
           <div className="flex items-center gap-3 shrink-0">
             {userAccount?.isLoggedIn ? (
-              <div className="flex items-center gap-2 bg-stone-50 border border-stone-200 py-1.5 px-3 rounded-xl text-xs">
+              <div className="flex items-center gap-2 bg-soft border border-line py-1.5 px-3 rounded-xl text-xs">
                 {userAccount.photoUrl && (
                   <img src={userAccount.photoUrl} alt="" className="w-5 h-5 rounded-full" />
                 )}
                 <div className="hidden sm:block text-left leading-none">
-                  <span className="font-semibold text-stone-800 block text-[11px] truncate max-w-[100px]">
+                  <span className="font-semibold text-ink block text-[11px] truncate max-w-[100px]">
                     {userAccount.displayName.split(' ')[0]}
                   </span>
-                  <span className="text-[10px] text-[#C82333] font-medium">
+                  <span className="text-[10px] text-accent font-medium">
                     {userAccount.isBangladeshTalentPass ? '🇧🇩 Free Forever' : '1 Free CV'}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={onSignOut}
-                  className="text-stone-400 hover:text-stone-600 text-[10px] ml-1 font-medium hover:underline"
+                  className="text-muted/60 hover:text-muted text-[10px] ml-1 font-medium hover:underline"
                 >
                   Exit
                 </button>
@@ -343,7 +343,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onOpenAuth}
-                className="text-xs font-semibold px-3.5 py-2 rounded-xl border border-stone-200 text-stone-700 hover:bg-stone-50 transition-colors whitespace-nowrap shrink-0"
+                className="text-xs font-semibold px-3.5 py-2 rounded-xl border border-line text-ink/90 hover:bg-soft transition-colors whitespace-nowrap shrink-0"
               >
                 Sign In
               </button>
@@ -351,7 +351,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => onOpenOrder('starter')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-xs active:scale-[0.98] whitespace-nowrap shrink-0"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-xl transition-all shadow-xs active:scale-[0.98] whitespace-nowrap shrink-0"
             >
               <span>Review — $10</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -360,7 +360,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile menu trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-stone-600 hover:text-stone-900 hover:bg-stone-100 focus:outline-none"
+              className="lg:hidden p-2 rounded-xl text-muted hover:text-ink hover:bg-soft focus:outline-none"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -371,19 +371,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer Menu (Clean Light Theme with Grouped Sections) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto">
+        <div className="lg:hidden bg-paper border-b border-line px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto">
           {/* Tools & Builders Accordion */}
           <div className="space-y-1">
             <button
               type="button"
               onClick={() => setMobileToolsExpanded(!mobileToolsExpanded)}
-              className="w-full flex items-center justify-between py-2 text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-100"
+              className="w-full flex items-center justify-between py-2 text-xs font-bold uppercase tracking-wider text-muted/80 border-b border-slate-100"
             >
-              <span className="flex items-center gap-1.5 text-slate-900 font-bold">
-                <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+              <span className="flex items-center gap-1.5 text-ink font-bold">
+                <Sparkles className="w-3.5 h-3.5 text-accent" />
                 Tools & Builders
               </span>
-              <ChevronDown className={`w-4 h-4 transition-transform ${mobileToolsExpanded ? 'rotate-180 text-[#C82333]' : 'text-slate-400'}`} />
+              <ChevronDown className={`w-4 h-4 transition-transform ${mobileToolsExpanded ? 'rotate-180 text-accent' : 'text-muted/60'}`} />
             </button>
 
             {mobileToolsExpanded && (
@@ -393,7 +393,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     key={tool.title}
                     to={ROUTE_PATHS[tool.route]}
                     onClick={handleNavClick}
-                    className="w-full text-left p-2.5 rounded-lg text-xs font-medium transition-colors flex items-center justify-between text-slate-700 hover:bg-slate-50"
+                    className="w-full text-left p-2.5 rounded-lg text-xs font-medium transition-colors flex items-center justify-between text-ink/90 hover:bg-soft"
                   >
                     <div className="flex items-center gap-2.5">
                       <div className={`p-1.5 rounded border ${tool.iconBg} shrink-0`}>
@@ -402,7 +402,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="font-semibold">{tool.title}</span>
                     </div>
                     {tool.badge && (
-                      <span className="text-[9px] uppercase font-bold text-[#C82333] bg-red-50 border border-red-200 px-1.5 py-0.2 rounded">
+                      <span className="text-[9px] uppercase font-bold text-accent bg-soft border border-line px-1.5 py-0.2 rounded">
                         {tool.badge}
                       </span>
                     )}
@@ -414,7 +414,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Primary Links */}
           <div className="pt-2 space-y-1 border-t border-slate-100">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted/60 px-2 py-1">
               General
             </div>
             {primaryLinks.map((item) => {
@@ -426,8 +426,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={handleNavClick}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center justify-between ${
                     isActive
-                      ? 'bg-red-50 text-[#C82333] font-bold'
-                      : 'text-slate-700 hover:bg-slate-50'
+                      ? 'bg-soft text-accent font-bold'
+                      : 'text-ink/90 hover:bg-soft'
                   }`}
                 >
                   <span>{item.label}</span>
@@ -442,7 +442,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 setMobileMenuOpen(false);
                 onOpenOrder('starter');
               }}
-              className="w-full py-3 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+              className="w-full py-3 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
             >
               <span>1-on-1 Review — $10</span>
               <ArrowRight className="w-4 h-4" />

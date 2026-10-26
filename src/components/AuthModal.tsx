@@ -53,30 +53,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col">
+      <div className="bg-paper rounded-2xl shadow-2xl border border-line w-full max-w-md overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-soft/80">
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
                 ATS Resume Maker
               </span>
               {isBD && (
-                <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
+                <span className="text-xs font-semibold text-accent flex items-center gap-1">
                   🇧🇩 Free Forever Active
                 </span>
               )}
             </div>
-            <h3 className="font-heading text-lg font-bold text-slate-900 mt-1">
+            <h3 className="font-heading text-lg font-bold text-ink mt-1">
               {mode === 'signup' ? 'Create Your Career Account' : 'Welcome Back'}
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-muted/80 mt-0.5">
               Save your master CV, tailor unlimited versions, and export without watermarks.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/50 transition-colors"
+            className="p-1.5 text-muted/60 hover:text-muted rounded-lg hover:bg-slate-200/50 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -90,7 +90,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-colors ${
               mode === 'signup'
                 ? 'border-emerald-600 text-emerald-800'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-muted/80 hover:text-ink'
             }`}
           >
             Sign Up (1 Free Resume)
@@ -101,7 +101,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-colors ${
               mode === 'signin'
                 ? 'border-emerald-600 text-emerald-800'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-muted/80 hover:text-ink'
             }`}
           >
             Sign In to Existing Account
@@ -114,7 +114,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="button"
             onClick={handleGoogleSignIn}
-            className="w-full py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-300 shadow-2xs transition-colors flex items-center justify-center gap-2.5"
+            className="w-full py-2.5 px-4 bg-paper hover:bg-soft text-ink/90 text-xs font-semibold rounded-xl border border-slate-300 shadow-2xs transition-colors flex items-center justify-center gap-2.5"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -139,68 +139,68 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           <div className="flex items-center gap-2">
             <div className="flex-1 h-px bg-slate-200" />
-            <span className="text-[11px] text-slate-400 font-medium">or continue with email</span>
+            <span className="text-[11px] text-muted/60 font-medium">or continue with email</span>
             <div className="flex-1 h-px bg-slate-200" />
           </div>
 
           {mode === 'signup' && (
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-slate-700 block">Your Full Name</label>
+              <label className="text-[11px] font-semibold text-ink/90 block">Your Full Name</label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                <User className="w-4 h-4 text-muted/60 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Your full name"
-                  className="w-full text-xs pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full text-xs pl-9 pr-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
             </div>
           )}
 
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-slate-700 block">Email Address</label>
+            <label className="text-[11px] font-semibold text-ink/90 block">Email Address</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <Mail className="w-4 h-4 text-muted/60 absolute left-3 top-2.5" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="w-full text-xs pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full text-xs pl-9 pr-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-slate-700 block">Password</label>
+            <label className="text-[11px] font-semibold text-ink/90 block">Password</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <Lock className="w-4 h-4 text-muted/60 absolute left-3 top-2.5" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full text-xs pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full text-xs pl-9 pr-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-slate-700 flex items-center justify-between">
+            <label className="text-[11px] font-semibold text-ink/90 flex items-center justify-between">
               <span>Your Country of Residence</span>
               {isBD && (
-                <span className="text-[10px] text-emerald-700 font-bold">100% Free Forever Pass Active</span>
+                <span className="text-[10px] text-accent font-bold">100% Free Forever Pass Active</span>
               )}
             </label>
             <select
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg bg-white"
+              className="w-full text-xs px-3 py-2 border border-line rounded-lg bg-paper"
             >
               <option value="Bangladesh">🇧🇩 Bangladesh (100% Free Forever)</option>
               <option value="United States">🇺🇸 United States</option>
@@ -216,9 +216,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {/* Social Impact Pledge */}
           {isBD ? (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-950 space-y-1">
+            <div className="p-3 bg-soft border border-line rounded-xl text-xs text-emerald-950 space-y-1">
               <span className="font-bold flex items-center gap-1 text-emerald-900">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                <Sparkles className="w-3.5 h-3.5 text-accent" />
                 Bangladesh Talent Pledge
               </span>
               <p className="text-[11px] text-emerald-800 leading-snug">
@@ -226,9 +226,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </p>
             </div>
           ) : (
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 space-y-1">
-              <span className="font-bold text-slate-800 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <div className="p-3 bg-soft border border-line rounded-xl text-xs text-muted space-y-1">
+              <span className="font-bold text-ink flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-accent" />
                 Transparent Freemium Guarantee
               </span>
               <p className="text-[11px] leading-snug">
