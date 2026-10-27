@@ -178,4 +178,25 @@ writeFileSync(
   'utf8',
 );
 console.log(`Wrote sitemap.xml with ${indexable.length} URLs.`);
+
+// robots.txt is generated, not copied from public/, so the sitemap URL always
+// matches SITE_ORIGIN. Moving to a new domain is then a one-line change in
+// src/routes.ts, with no second place to forget.
+writeFileSync(
+  join(DIST, 'robots.txt'),
+  [
+    '# Crawl rules for ATS Resume Maker. Sitemap lists the indexable public pages.',
+    'User-agent: *',
+    '# Transactional order form: not for search results and not worth crawling.',
+    'Disallow: /order',
+    '',
+    '# /suite is not disallowed on purpose. It is marked noindex in its page',
+    '# head, and a crawler must be able to read that tag to honour it.',
+    '',
+    `Sitemap: ${SITE_ORIGIN}/sitemap.xml`,
+    '',
+  ].join('\n'),
+  'utf8',
+);
+console.log(`Wrote robots.txt pointing at ${SITE_ORIGIN}/sitemap.xml.`);
 console.log(`Prerendered ${PRERENDER_ROUTES.length} routes.`);

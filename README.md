@@ -36,7 +36,16 @@ Because the prerender step lives inside the Vite config, **any** build command p
 
 The host must serve the files in `dist/` as static files, not rewrite every path to `/index.html`. Any static host or CDN does this by default; a catch-all rewrite rule would discard the prerendered pages.
 
-`SITE_ORIGIN` in `src/routes.ts` is the single source for canonical URLs, `sitemap.xml` and structured data. Change it in one place if the site moves to another domain.
+`SITE_ORIGIN` in `src/routes.ts` is the single source for canonical URLs, `sitemap.xml`, `robots.txt` and structured data. Moving to another domain is one line there, then a rebuild — there is no second place to update.
+
+## Changing the domain
+
+1. Edit `SITE_ORIGIN` in `src/routes.ts`.
+2. Run `npm run build`.
+3. Confirm `dist/robots.txt` and `dist/sitemap.xml` show the new host.
+4. Re-publish the site, then verify a deep page (e.g. `/pricing`) serves a `<link rel="canonical">` with the new host.
+
+Keep the old host serving a 301 redirect to the new one for at least a year, so existing links and search results transfer instead of 404ing.
 
 ## Honesty rules for this codebase
 

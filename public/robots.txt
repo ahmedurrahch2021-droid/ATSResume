@@ -1,9 +1,0 @@
-# Crawl rules for ATS Resume Maker. Sitemap lists the indexable public pages.
-User-agent: *
-# Transactional order form: not for search results and not worth crawling.
-Disallow: /order
-
-# /suite is not disallowed on purpose. It is marked noindex in its page
-# head, and a crawler must be able to read that tag to honour it.
-
-Sitemap: https://atsresumemaker.ai.studio/sitemap.xml
