@@ -44,7 +44,7 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
       <div className="max-w-4xl mx-auto space-y-10">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent bg-accent-soft px-3 py-1 rounded-md border border-accent-line">
             <HelpCircle className="w-3.5 h-3.5" />
             Transparent Answers · AEO Verified
           </div>
@@ -76,8 +76,8 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`text-xs px-3.5 py-1.5 rounded-lg transition-colors font-medium ${
                   selectedCategory === cat.id
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-paper text-muted hover:bg-slate-100 border border-line'
+                    ? 'bg-ink text-white shadow-xs'
+                    : 'bg-paper text-muted hover:bg-soft border border-line'
                 }`}
               >
                 {cat.label}
@@ -101,14 +101,14 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
                       {faq.question}
                     </span>
                     <span className="p-1 rounded-md text-muted/60 shrink-0">
-                      <ChevronDown className="w-5 h-5 transition-transform group-open:rotate-180 group-open:text-blue-600" />
+                      <ChevronDown className="w-5 h-5 transition-transform group-open:rotate-180 group-open:text-accent" />
                     </span>
                   </summary>
 
-                <div className="px-5 pb-5 pt-0 space-y-3 border-t border-slate-100 text-ink/90">
+                <div className="px-5 pb-5 pt-0 space-y-3 border-t border-line text-ink/90">
                   {/* Direct Answer Paragraph (AEO target) */}
-                  <div className="p-3.5 bg-blue-50/60 rounded-lg border border-blue-100 text-xs sm:text-sm font-medium text-ink leading-relaxed">
-                    <span className="font-bold text-blue-800 mr-1">Direct Answer:</span>
+                  <div className="p-3.5 bg-accent-soft/60 rounded-lg border border-accent-line text-xs sm:text-sm font-medium text-ink leading-relaxed">
+                    <span className="font-bold text-accent mr-1">Direct Answer:</span>
                     {faq.directAnswer}
                   </div>
 
@@ -125,7 +125,7 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
               <p className="text-sm text-muted/80">No questions matched your search query.</p>
               <button
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-                className="mt-2 text-xs font-semibold text-blue-600 hover:underline"
+                className="mt-2 text-xs font-semibold text-accent hover:underline"
               >
                 Reset filters
               </button>
@@ -134,10 +134,10 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
         </div>
 
         {/* Contact fallback */}
-        <div className="p-6 bg-slate-100/70 border border-line rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-6 bg-soft/70 border border-line rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
             <h4 className="font-heading text-sm font-bold text-ink flex items-center gap-2 justify-center sm:justify-start">
-              <Mail className="w-4 h-4 text-blue-600" />
+              <Mail className="w-4 h-4 text-accent" />
               Have a question not listed here?
             </h4>
             <p className="text-xs text-muted/80">
@@ -146,7 +146,7 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onSelectPlan, onNavigateContac
           </div>
           <button
             onClick={onNavigateContact}
-            className="px-4 py-2 bg-paper hover:bg-soft border border-slate-300 text-ink text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shadow-xs"
+            className="px-4 py-2 bg-paper hover:bg-soft border border-line text-ink text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shadow-xs"
           >
             Contact Support
           </button>

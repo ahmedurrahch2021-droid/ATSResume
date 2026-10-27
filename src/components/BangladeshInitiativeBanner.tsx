@@ -27,7 +27,7 @@ export const BangladeshInitiativeBanner: React.FC<BangladeshInitiativeBannerProp
               <span className="font-semibold text-xs text-emerald-200 uppercase tracking-wider">
                 Bangladesh Talent Initiative
               </span>
-              <span className="text-[11px] bg-emerald-700/80 text-emerald-100 px-2 py-0.5 rounded font-mono font-medium">
+              <span className="text-[11px] bg-success/80 text-emerald-100 px-2 py-0.5 rounded font-mono font-medium">
                 100% Free Forever Active
               </span>
             </div>
@@ -74,7 +74,7 @@ export const BangladeshInitiativeBanner: React.FC<BangladeshInitiativeBannerProp
 
           <button
             onClick={onLoadBangladeshSample}
-            className="text-xs bg-paper text-emerald-950 hover:bg-soft font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm shrink-0"
+            className="text-xs bg-paper text-success hover:bg-soft font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm shrink-0"
           >
             <Sparkles className="w-3.5 h-3.5 text-accent" />
             Load BUET / BD Dev Template

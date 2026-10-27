@@ -29,7 +29,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
       <div className="max-w-6xl mx-auto space-y-10">
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent bg-accent-soft px-3 py-1 rounded-md border border-accent-line">
             <Sparkles className="w-3.5 h-3.5" />
             Verified Portfolio Case Studies
           </div>
@@ -52,7 +52,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
                 className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-sm ${
                   isSelected
                     ? 'bg-[#0F172A] text-white shadow-slate-900/10 ring-2 ring-blue-500'
-                    : 'bg-paper text-ink/90 hover:bg-slate-100 border border-line'
+                    : 'bg-paper text-ink/90 hover:bg-soft border border-line'
                 }`}
               >
                 <span>{ex.title}</span>
@@ -63,12 +63,12 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
 
         {/* Case Study Overview Banner */}
         <div className="bg-paper rounded-2xl border border-line p-6 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-line">
             <div>
               <div className="flex items-center gap-2 text-xs font-medium text-muted/80 uppercase tracking-wide">
                 <span>{currentExample.industry}</span>
                 <span>·</span>
-                <span className="text-blue-600 font-semibold">{currentExample.role}</span>
+                <span className="text-accent font-semibold">{currentExample.role}</span>
               </div>
               <h2 className="font-heading text-xl sm:text-2xl font-bold text-ink mt-1">
                 {currentExample.title}
@@ -77,10 +77,10 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
 
             {/* Impact Metric Badge */}
             <div className="bg-soft border border-line rounded-xl p-3.5 sm:text-right shrink-0">
-              <span className="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider block">
+              <span className="text-[11px] font-semibold text-success uppercase tracking-wider block">
                 Verified Outcome
               </span>
-              <p className="text-sm font-bold text-emerald-950 flex items-center gap-1.5 sm:justify-end mt-0.5">
+              <p className="text-sm font-bold text-success flex items-center gap-1.5 sm:justify-end mt-0.5">
                 <TrendingUp className="w-4 h-4 text-accent" />
                 {currentExample.result}
               </p>
@@ -95,7 +95,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
             <span className="text-xs font-medium text-muted/80">
               Compare Before & After:
             </span>
-            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+            <div className="flex items-center gap-1 bg-soft p-1 rounded-lg">
               <button
                 onClick={() => setViewMode('split')}
                 className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
@@ -128,7 +128,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
                     BEFORE — Unoptimized (75% Rejection)
                   </span>
                 </div>
-                <span className="text-xs font-mono text-red-700 bg-red-100 px-2 py-0.5 rounded">
+                <span className="text-xs font-mono text-danger bg-red-100 px-2 py-0.5 rounded">
                   Score: 38/100
                 </span>
               </div>
@@ -138,7 +138,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
                   <h4 className="text-xs uppercase font-bold text-muted/60 tracking-wider">
                     Target Header & Summary
                   </h4>
-                  <div className="mt-2 p-3 bg-soft rounded-lg border border-slate-100 text-xs text-muted leading-relaxed italic">
+                  <div className="mt-2 p-3 bg-soft rounded-lg border border-line text-xs text-muted leading-relaxed italic">
                     "{currentExample.before.summary}"
                   </div>
                 </div>
@@ -167,7 +167,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
                   </h5>
                   <ul className="space-y-1">
                     {currentExample.before.critique.map((crit, idx) => (
-                      <li key={idx} className="text-[11px] text-red-700 flex items-start gap-1.5">
+                      <li key={idx} className="text-[11px] text-danger flex items-start gap-1.5">
                         <span className="text-red-400 mt-0.5">•</span>
                         <span>{crit}</span>
                       </li>
@@ -178,31 +178,31 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
             </div>
 
             {/* The AFTER Resume (Emerald/Blue) */}
-            <div className="bg-paper rounded-2xl border-2 border-emerald-300 shadow-md overflow-hidden flex flex-col">
+            <div className="bg-paper rounded-2xl border-2 border-success/30 shadow-md overflow-hidden flex flex-col">
               <div className="bg-soft/80 px-5 py-3.5 border-b border-line flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-accent" />
-                  <span className="font-heading font-bold text-sm text-emerald-950">
+                  <span className="font-heading font-bold text-sm text-success">
                     AFTER — ATS Resume Maker Overhaul
                   </span>
                 </div>
-                <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                <span className="text-xs font-mono font-bold text-success bg-success-soft px-2 py-0.5 rounded">
                   Score: 98/100
                 </span>
               </div>
 
               <div className="p-6 space-y-4 flex-1">
                 <div>
-                  <h4 className="text-xs uppercase font-bold text-emerald-800 tracking-wider">
+                  <h4 className="text-xs uppercase font-bold text-success tracking-wider">
                     Optimized Executive Summary
                   </h4>
-                  <div className="mt-2 p-3 bg-soft/40 rounded-lg border border-emerald-100 text-xs text-ink leading-relaxed font-medium">
+                  <div className="mt-2 p-3 bg-soft/40 rounded-lg border border-success/20 text-xs text-ink leading-relaxed font-medium">
                     "{currentExample.after.summary}"
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="text-xs uppercase font-bold text-emerald-800 tracking-wider mb-2">
+                  <h4 className="text-xs uppercase font-bold text-success tracking-wider mb-2">
                     Accomplishment Bullets (Quantified Impact)
                   </h4>
                   <div className="space-y-2">
@@ -220,12 +220,12 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
 
                 {/* Key Improvements Callout */}
                 <div className="pt-2">
-                  <h5 className="text-xs font-semibold text-emerald-950 mb-1.5">
+                  <h5 className="text-xs font-semibold text-success mb-1.5">
                     Strategic Developer Enhancements:
                   </h5>
                   <ul className="space-y-1">
                     {currentExample.after.improvements.map((imp, idx) => (
-                      <li key={idx} className="text-[11px] text-emerald-800 flex items-start gap-1.5">
+                      <li key={idx} className="text-[11px] text-success flex items-start gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
                         <span>{imp}</span>
                       </li>
@@ -270,18 +270,18 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-blue-50/60 border border-blue-200 flex items-center justify-between flex-wrap gap-4">
+            <div className="p-4 rounded-xl bg-accent-soft/60 border border-accent-line flex items-center justify-between flex-wrap gap-4">
               <div>
-                <p className="text-xs font-bold text-blue-900">
+                <p className="text-xs font-bold text-accent">
                   Ready to transform your own resume like Sarah, David, and Alex?
                 </p>
-                <p className="text-xs text-blue-700 mt-0.5">
+                <p className="text-xs text-accent mt-0.5">
                   Delivered in 24 hours with full ATS optimization and money-back guarantee.
                 </p>
               </div>
               <button
                 onClick={() => onSelectPlan('boost')}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-accent hover:bg-accent text-white font-semibold text-xs rounded-lg transition-colors flex items-center gap-1.5"
               >
                 <span>Choose Career Boost ($25)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -309,7 +309,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
             </button>
             <button
               onClick={() => onSelectPlan('boost')}
-              className="w-full sm:w-auto px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md"
+              className="w-full sm:w-auto px-5 py-3 bg-accent hover:bg-accent text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md"
             >
               Get Career Boost ($25) →
             </button>

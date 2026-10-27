@@ -32,7 +32,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
       <div className="max-w-4xl mx-auto space-y-10">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent bg-accent-soft px-3 py-1 rounded-md border border-accent-line">
             <MessageSquare className="w-3.5 h-3.5" />
             Direct Developer Support
           </div>
@@ -69,7 +69,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Clock className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <Clock className="w-4 h-4 text-success mt-0.5 shrink-0" />
                   <div>
                     <span className="text-muted/60 block text-[11px]">Avg Response Time</span>
                     <span className="font-medium text-white">Under 2 hours</span>
@@ -124,7 +124,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
                       placeholder="Jane Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full p-2.5 text-xs sm:text-sm border border-line rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                     />
                   </div>
 
@@ -136,7 +136,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
                       placeholder="jane@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full p-2.5 text-xs sm:text-sm border border-line rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                     />
                   </div>
                 </div>
@@ -146,7 +146,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
                   <select
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="w-full p-2.5 text-xs sm:text-sm border border-slate-300 rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full p-2.5 text-xs sm:text-sm border border-line rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none"
                   >
                     <option value="Pricing">Question about packages ($15 / $25 / $35)</option>
                     <option value="Delivery">Turnaround timing / 12-hour urgent rush inquiry</option>
@@ -164,13 +164,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
                     placeholder="Tell us what role you are targeting or what questions you have..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full p-3 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-y"
+                    className="w-full p-3 text-xs sm:text-sm border border-line rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-y"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-accent hover:bg-accent text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2"
                 >
                   <Send className="w-4 h-4" />
                   <span>Send Message to Developer Desk</span>
@@ -178,7 +178,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
               </form>
             ) : (
               <div className="p-8 text-center space-y-4">
-                <div className="w-14 h-14 bg-emerald-100 text-accent rounded-full flex items-center justify-center mx-auto">
+                <div className="w-14 h-14 bg-success-soft text-accent rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="font-heading font-bold text-xl text-ink">
@@ -193,7 +193,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
                       setSubmitted(false);
                       setMessage('');
                     }}
-                    className="text-xs font-semibold text-blue-600 hover:underline"
+                    className="text-xs font-semibold text-accent hover:underline"
                   >
                     Send another message
                   </button>

@@ -70,8 +70,8 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             onClick={handleToggleVisibility}
             className={`text-xs px-2.5 py-1 rounded border font-medium flex items-center gap-1 transition-colors ${
               photoShape === 'hidden'
-                ? 'bg-amber-50 text-amber-800 border-amber-200'
-                : 'bg-paper text-ink/90 border-line hover:bg-slate-100'
+                ? 'bg-warning-soft text-warning border-warning/30'
+                : 'bg-paper text-ink/90 border-line hover:bg-soft'
             }`}
           >
             {photoShape === 'hidden' ? (
@@ -88,7 +88,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
       </div>
 
       {isAntiBiasMode && (
-        <div className="mb-3 px-3 py-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-900">
+        <div className="mb-3 px-3 py-2 bg-warning-soft border border-warning/30 rounded text-xs text-warning">
           <strong>US / UK Anti-Bias Notice:</strong> US, UK, and Canadian corporate ATS systems typically filter out resumes with headshots to prevent hiring bias. Switch to International Mode if applying in Europe, Gulf, or Asia.
         </div>
       )}
@@ -99,7 +99,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             <img
               src={photoUrl}
               alt="Professional Headshot"
-              className={`w-20 h-20 object-cover border-2 border-slate-300 shadow-sm ${
+              className={`w-20 h-20 object-cover border-2 border-line shadow-sm ${
                 photoShape === 'circle' ? 'rounded-full' : 'rounded-md'
               } ${photoShape === 'hidden' ? 'opacity-40 grayscale' : ''}`}
             />
@@ -107,7 +107,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
         ) : (
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="w-20 h-20 rounded-full border-2 border-dashed border-slate-300 hover:border-slate-400 bg-paper flex flex-col items-center justify-center cursor-pointer transition-colors shrink-0 group text-center p-2"
+            className="w-20 h-20 rounded-full border-2 border-dashed border-line hover:border-slate-400 bg-paper flex flex-col items-center justify-center cursor-pointer transition-colors shrink-0 group text-center p-2"
           >
             <Camera className="w-5 h-5 text-muted/60 group-hover:text-muted mb-0.5" />
             <span className="text-[10px] text-muted/80 font-medium leading-tight">Upload Photo</span>
@@ -127,7 +127,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="text-xs bg-paper hover:bg-slate-100 text-ink font-medium px-3 py-1.5 rounded border border-slate-300 shadow-sm transition-colors"
+              className="text-xs bg-paper hover:bg-soft text-ink font-medium px-3 py-1.5 rounded border border-line shadow-sm transition-colors"
             >
               {photoUrl ? 'Change Image' : 'Select Image (JPEG / PNG)'}
             </button>
@@ -139,7 +139,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                     type="button"
                     onClick={() => handleToggleShape('circle')}
                     className={`px-2 py-1 text-xs rounded font-medium transition-colors ${
-                      photoShape === 'circle' ? 'bg-slate-900 text-white' : 'text-muted hover:bg-slate-100'
+                      photoShape === 'circle' ? 'bg-ink text-white' : 'text-muted hover:bg-soft'
                     }`}
                   >
                     Circle
@@ -148,7 +148,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                     type="button"
                     onClick={() => handleToggleShape('square')}
                     className={`px-2 py-1 text-xs rounded font-medium transition-colors ${
-                      photoShape === 'square' ? 'bg-slate-900 text-white' : 'text-muted hover:bg-slate-100'
+                      photoShape === 'square' ? 'bg-ink text-white' : 'text-muted hover:bg-soft'
                     }`}
                   >
                     Square
@@ -158,7 +158,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                 <button
                   type="button"
                   onClick={handleRemove}
-                  className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 px-2.5 py-1.5 rounded transition-colors flex items-center gap-1"
+                  className="text-xs text-danger hover:text-danger hover:bg-danger-soft px-2.5 py-1.5 rounded transition-colors flex items-center gap-1"
                 >
                   <Trash2 className="w-3.5 h-3.5" /> Remove
                 </button>

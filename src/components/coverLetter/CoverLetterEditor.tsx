@@ -146,7 +146,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
               key={preset.id}
               type="button"
               onClick={() => onApplyPreset(preset.id)}
-              className="p-2 text-left rounded-lg border border-line hover:border-slate-300 hover:bg-soft transition-all text-xs group"
+              className="p-2 text-left rounded-lg border border-line hover:border-line hover:bg-soft transition-all text-xs group"
             >
               <div className="font-semibold text-ink truncate group-hover:text-accent">
                 {preset.name}
@@ -292,7 +292,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
           className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-accent-soft text-accent flex items-center justify-center font-bold text-xs">
               <Building2 className="w-3.5 h-3.5" />
             </div>
             <div>
@@ -400,7 +400,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                     key={i}
                     type="button"
                     onClick={() => onChange({ ...data, salutation: quick })}
-                    className="text-[10px] text-muted bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded transition-colors"
+                    className="text-[10px] text-muted bg-soft hover:bg-slate-200 px-2 py-0.5 rounded transition-colors"
                   >
                     {quick}
                   </button>
@@ -459,7 +459,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
           className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-warning-soft text-warning flex items-center justify-center font-bold text-xs">
               <FileText className="w-3.5 h-3.5" />
             </div>
             <div>
@@ -484,7 +484,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                     <button
                       type="button"
                       onClick={() => removeParagraph(index)}
-                      className="text-muted/60 hover:text-red-600 transition-colors p-1"
+                      className="text-muted/60 hover:text-danger transition-colors p-1"
                       title="Remove paragraph"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -555,7 +555,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                 <button
                   type="button"
                   onClick={() => removeHighlight(index)}
-                  className="text-muted/60 hover:text-red-600 transition-colors p-1 shrink-0"
+                  className="text-muted/60 hover:text-danger transition-colors p-1 shrink-0"
                   title="Remove highlight"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -635,7 +635,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   type="text"
                   value={data.sender.fullName}
                   disabled
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-100 bg-soft text-muted/80 cursor-not-allowed"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line bg-soft text-muted/80 cursor-not-allowed"
                 />
               </div>
             </div>
@@ -687,7 +687,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                     className={`p-2 text-left rounded-lg border transition-all text-xs ${
                       data.templateStyle === style.id
                         ? 'border-[#C82333] bg-soft/40 text-ink font-semibold shadow-2xs'
-                        : 'border-line hover:border-slate-300 text-muted'
+                        : 'border-line hover:border-line text-muted'
                     }`}
                   >
                     <div>{style.label}</div>
@@ -710,8 +710,8 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                     onClick={() => onChange({ ...data, accentColor: c.hex })}
                     className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${
                       data.accentColor === c.hex
-                        ? 'border-slate-900 bg-slate-900 text-white font-medium shadow-2xs'
-                        : 'border-line hover:border-slate-300 text-ink/90 bg-paper'
+                        ? 'border-slate-900 bg-ink text-white font-medium shadow-2xs'
+                        : 'border-line hover:border-line text-ink/90 bg-paper'
                     }`}
                   >
                     <span

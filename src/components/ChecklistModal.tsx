@@ -52,7 +52,7 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
         {/* Header */}
         <div className="bg-[#0F172A] text-white p-5 sm:p-6 flex items-start justify-between">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-success mb-1">
               <Sparkles className="w-4 h-4" />
               Free Recruiter Lead Magnet
             </div>
@@ -65,7 +65,7 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-muted/60 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-1.5 text-muted/60 hover:text-white rounded-lg hover:bg-ink transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -88,7 +88,7 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
                       placeholder="your.email@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                      className="w-full pl-9 pr-3 py-2 text-sm border border-line rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     />
                   </div>
                   <button
@@ -107,7 +107,7 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
             </div>
           ) : (
             <div className="bg-soft border border-line rounded-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-emerald-800 text-xs sm:text-sm font-medium">
+              <div className="flex items-center gap-2 text-success text-xs sm:text-sm font-medium">
                 <CheckCircle2 className="w-5 h-5 text-accent shrink-0" />
                 <span>Checklist unlocked for <strong>{email}</strong>!</span>
               </div>
@@ -138,8 +138,8 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
                   onClick={() => setFilterCategory(cat)}
                   className={`text-xs px-2.5 py-1 rounded-md transition-colors ${
                     filterCategory === cat
-                      ? 'bg-slate-900 text-white font-medium'
-                      : 'bg-slate-100 text-muted hover:bg-slate-200'
+                      ? 'bg-ink text-white font-medium'
+                      : 'bg-soft text-muted hover:bg-slate-200'
                   }`}
                 >
                   {cat}
@@ -152,10 +152,10 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
               {filteredItems.map((item) => (
                 <div
                   key={item.id}
-                  className="p-2.5 rounded-lg border border-slate-100 bg-paper hover:border-line transition-colors flex items-start gap-2.5"
+                  className="p-2.5 rounded-lg border border-line bg-paper hover:border-line transition-colors flex items-start gap-2.5"
                 >
-                  <div className="w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-muted/60 mt-0.5 shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
+                  <div className="w-5 h-5 rounded border border-line flex items-center justify-center text-muted/60 mt-0.5 shrink-0">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
@@ -176,12 +176,12 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
           </div>
 
           {/* Upsell box */}
-          <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="p-4 rounded-xl bg-accent-soft/70 border border-accent-line flex flex-col sm:flex-row items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-bold text-blue-900">
+              <p className="text-xs font-bold text-accent">
                 Prefer not to spend 6 hours fixing this yourself?
               </p>
-              <p className="text-xs text-blue-700 mt-0.5">
+              <p className="text-xs text-accent mt-0.5">
                 Get an ATS-optimized rewrite personally reviewed by a developer in 24 hours.
               </p>
             </div>
@@ -190,7 +190,7 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
                 onClose();
                 onSelectPlan('starter');
               }}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors whitespace-nowrap shadow-sm"
+              className="px-4 py-2 bg-accent hover:bg-accent text-white font-semibold text-xs rounded-lg transition-colors whitespace-nowrap shadow-sm"
             >
               Build My Resume — $10
             </button>

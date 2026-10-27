@@ -112,7 +112,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
   const getScoreColor = (score: number) => {
     if (score < 50) return 'text-accent bg-soft border-line';
-    if (score < 75) return 'text-amber-600 bg-amber-50 border-amber-200';
+    if (score < 75) return 'text-warning bg-warning-soft border-warning/30';
     return 'text-accent bg-soft border-line';
   };
 
@@ -247,7 +247,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       <section className="relative overflow-hidden bg-paper border-b border-line pt-12 pb-16 sm:pt-16 sm:pb-24">
         {/* Subtle background glow */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-red-100/40 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute -bottom-10 left-1/3 w-80 h-80 bg-slate-100/80 rounded-full blur-2xl pointer-events-none -z-10" />
+        <div className="absolute -bottom-10 left-1/3 w-80 h-80 bg-soft/80 rounded-full blur-2xl pointer-events-none -z-10" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -268,8 +268,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               </p>
 
               {/* Upload & Paste Control Box */}
-              <div className="bg-paper rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#C82333] p-6 sm:p-8 transition-all shadow-sm space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="bg-paper rounded-2xl border-2 border-dashed border-line hover:border-[#C82333] p-6 sm:p-8 transition-all shadow-sm space-y-5">
+                <div className="flex items-center justify-between pb-3 border-b border-line">
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
@@ -277,7 +277,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
                         inputMode === 'upload'
                           ? 'bg-accent text-white shadow-xs'
-                          : 'bg-slate-100 text-muted hover:bg-slate-200'
+                          : 'bg-soft text-muted hover:bg-slate-200'
                       }`}
                     >
                       Drop File (PDF / DOCX)
@@ -288,7 +288,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
                         inputMode === 'paste'
                           ? 'bg-accent text-white shadow-xs'
-                          : 'bg-slate-100 text-muted hover:bg-slate-200'
+                          : 'bg-soft text-muted hover:bg-slate-200'
                       }`}
                     >
                       Paste Text Directly
@@ -352,7 +352,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       value={resumeText}
                       onChange={(e) => setResumeText(e.target.value)}
                       placeholder="Paste your current resume content here (Experience, Education, Skills)..."
-                      className="w-full p-3.5 text-xs sm:text-sm font-mono border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#C82333] focus:border-[#C82333] outline-none leading-relaxed"
+                      className="w-full p-3.5 text-xs sm:text-sm font-mono border border-line rounded-xl focus:ring-2 focus:ring-[#C82333] focus:border-[#C82333] outline-none leading-relaxed"
                     />
                   </div>
                 )}
@@ -373,7 +373,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     value={jobDescriptionText}
                     onChange={(e) => setJobDescriptionText(e.target.value)}
                     placeholder="Paste job posting text or key skills (e.g., React, TypeScript, GraphQL, AWS)..."
-                    className="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#C82333] focus:border-[#C82333] outline-none"
+                    className="w-full px-3.5 py-2.5 text-xs border border-line rounded-xl focus:ring-2 focus:ring-[#C82333] focus:border-[#C82333] outline-none"
                   />
                 </div>
 
@@ -384,21 +384,21 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     <button
                       type="button"
                       onClick={() => handleLoadSample('developer')}
-                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
+                      className="text-[11px] px-2.5 py-1 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Developer
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('marketing')}
-                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
+                      className="text-[11px] px-2.5 py-1 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Marketing
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('sales')}
-                      className="text-[11px] px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
+                      className="text-[11px] px-2.5 py-1 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Sales
                     </button>
@@ -433,40 +433,40 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
             {/* Right Column: Visual Feature Poster */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 relative overflow-hidden">
+              <div className="bg-ink text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-accent/20 rounded-full blur-2xl pointer-events-none" />
                 
                 <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-soft0" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500" />
+                    <div className="w-3 h-3 rounded-full bg-warning-soft0" />
                     <div className="w-3 h-3 rounded-full bg-soft0" />
                   </div>
                   <span className="text-[11px] font-mono text-muted/60">ATS Engine v4.2</span>
                 </div>
 
                 <div className="mt-6 space-y-4">
-                  <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
+                  <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span className="text-slate-300">Parse Reliability Rate</span>
-                      <span className="text-emerald-400 font-mono">98.4%</span>
+                      <span className="text-success font-mono">98.4%</span>
                     </div>
-                    <div className="w-full h-1.5 bg-slate-700 rounded-full mt-2 overflow-hidden">
+                    <div className="w-full h-1.5 bg-neutral rounded-full mt-2 overflow-hidden">
                       <div className="h-full bg-soft0 rounded-full w-[98%]" />
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
+                  <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span className="text-slate-300">Google XYZ Formula Density</span>
                       <span className="text-[#F87171] font-mono">2 / 5 Found</span>
                     </div>
-                    <div className="w-full h-1.5 bg-slate-700 rounded-full mt-2 overflow-hidden">
+                    <div className="w-full h-1.5 bg-neutral rounded-full mt-2 overflow-hidden">
                       <div className="h-full bg-accent rounded-full w-[40%]" />
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
+                  <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span className="text-slate-300">Enterprise ATS Tested</span>
                       <span className="text-muted/60 text-[11px]">Workday · Greenhouse · Taleo · Lever</span>
@@ -492,11 +492,11 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
       {/* 2. DYNAMIC SCAN RESULTS (if scan was run) */}
       {scanResult && (
-        <section id="scan-results" className="py-12 bg-slate-100 border-b border-slate-300">
+        <section id="scan-results" className="py-12 bg-soft border-b border-line">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             {/* Main Score Card */}
             <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-line">
                 <div className="flex items-center gap-5">
                   <div className={`w-24 h-24 rounded-2xl border-2 flex flex-col items-center justify-center shrink-0 ${getScoreColor(scanResult.score)}`}>
                     <span className="font-heading text-3xl font-extrabold">
@@ -527,7 +527,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   {onNavigate && (
                     <button
                       onClick={() => onNavigate('editor')}
-                      className="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+                      className="px-5 py-3 bg-ink hover:bg-ink text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
                     >
                       <PenTool className="w-4 h-4 text-accent" />
                       <span>Open in Live CV Editor (Free)</span>
@@ -568,7 +568,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-slate-700 rounded-full" 
+                      className="h-full bg-neutral rounded-full" 
                       style={{ width: `${scanResult.categoryScores.actionVerbs}%` }} 
                     />
                   </div>
@@ -584,7 +584,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-amber-500 rounded-full" 
+                      className="h-full bg-warning-soft0 rounded-full" 
                       style={{ width: `${scanResult.categoryScores.skillsRelevance}%` }} 
                     />
                   </div>
@@ -616,7 +616,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </div>
                   <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-blue-600 rounded-full" 
+                      className="h-full bg-accent rounded-full" 
                       style={{ width: `${scanResult.categoryScores.structureFormatting}%` }} 
                     />
                   </div>
@@ -630,7 +630,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {/* 27-Check Interactive Diagnostic Drawer */}
             {scanResult.detailedChecks && (
               <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-line">
                   <div>
                     <h3 className="font-heading text-lg font-bold text-ink">
                       The 27 Crucial Checks Diagnostic Breakdown
@@ -648,7 +648,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                         className={`text-[11px] font-semibold px-2.5 py-1 rounded-md transition-colors ${
                           selectedCheckCategory === cat
                             ? 'bg-accent text-white shadow-xs'
-                            : 'bg-slate-100 text-muted hover:bg-slate-200'
+                            : 'bg-soft text-muted hover:bg-slate-200'
                         }`}
                       >
                         {cat}
@@ -667,7 +667,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                           chk.status === 'pass'
                             ? 'bg-soft/50 border-line text-ink'
                             : chk.status === 'warning'
-                            ? 'bg-amber-50/60 border-amber-200 text-ink'
+                            ? 'bg-warning-soft/60 border-warning/30 text-ink'
                             : 'bg-soft/60 border-line text-ink'
                         }`}
                       >
@@ -676,9 +676,9 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                             {chk.status === 'pass' ? (
                               <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
                             ) : chk.status === 'warning' ? (
-                              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                              <AlertTriangle className="w-4 h-4 text-warning shrink-0" />
                             ) : (
-                              <X className="w-4 h-4 text-red-600 shrink-0" />
+                              <X className="w-4 h-4 text-danger shrink-0" />
                             )}
                             {chk.name}
                           </span>
@@ -709,7 +709,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Visual Column */}
             <div className="lg:col-span-5 space-y-4">
-              <div className="p-6 rounded-2xl bg-slate-900 text-white space-y-5 border border-slate-800">
+              <div className="p-6 rounded-2xl bg-ink text-white space-y-5 border border-slate-800">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-xs font-bold text-[#F87171] uppercase tracking-wider">
                     Two-Tier ATS Scoring Architecture
@@ -717,7 +717,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   <span className="text-xs font-mono text-muted/60">Enterprise Standard</span>
                 </div>
 
-                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 space-y-2">
+                <div className="p-4 rounded-xl bg-ink/80 border border-slate-700/80 space-y-2">
                   <div className="flex items-center gap-2 text-sm font-bold text-white">
                     <span className="w-5 h-5 rounded-full bg-accent text-white flex items-center justify-center text-xs">1</span>
                     <h4>Tier 1: Machine ATS Parsability</h4>
@@ -727,7 +727,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 space-y-2">
+                <div className="p-4 rounded-xl bg-ink/80 border border-slate-700/80 space-y-2">
                   <div className="flex items-center gap-2 text-sm font-bold text-white">
                     <span className="w-5 h-5 rounded-full bg-accent text-white flex items-center justify-center text-xs">2</span>
                     <h4>Tier 2: Recruiter Impact & Calibration</h4>
@@ -780,7 +780,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       </section>
 
       {/* 4. THE 27 CRUCIAL CHECKS (7 Categories Grid) */}
-      <section className="py-16 sm:py-24 bg-slate-900 text-white">
+      <section className="py-16 sm:py-24 bg-ink text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-[#F87171]">
@@ -798,10 +798,10 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {categoriesList.map((cat, idx) => (
               <div
                 key={idx}
-                className="p-6 rounded-2xl bg-slate-800/90 border border-slate-700/80 shadow-sm space-y-4"
+                className="p-6 rounded-2xl bg-ink/90 border border-slate-700/80 shadow-sm space-y-4"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-ink border border-slate-700">
                     {cat.icon}
                   </div>
                   <h3 className="font-heading font-bold text-base text-white">
@@ -841,7 +841,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 onClick={() => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="w-full py-2.5 bg-paper text-accent font-bold text-xs rounded-xl hover:bg-slate-100 transition-colors shadow-xs"
+                className="w-full py-2.5 bg-paper text-accent font-bold text-xs rounded-xl hover:bg-soft transition-colors shadow-xs"
               >
                 Upload & Scan My Resume Free
               </button>
@@ -880,7 +880,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
                     activeTab === tab.id
                       ? 'bg-accent text-white shadow-sm'
-                      : 'bg-slate-100 text-ink/90 hover:bg-slate-200'
+                      : 'bg-soft text-ink/90 hover:bg-slate-200'
                   }`}
                 >
                   {tab.label}
@@ -1023,11 +1023,11 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
                   <div className="flex items-center justify-between p-2 rounded bg-soft border">
                     <span>Google · Senior Engineer</span>
-                    <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">Interview Round 2</span>
+                    <span className="px-2 py-0.5 rounded bg-success-soft text-success font-bold text-[10px]">Interview Round 2</span>
                   </div>
                   <div className="flex items-center justify-between p-2 rounded bg-soft border">
                     <span>Stripe · Technical Lead</span>
-                    <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">Take-Home Test</span>
+                    <span className="px-2 py-0.5 rounded bg-accent-soft text-accent font-bold text-[10px]">Take-Home Test</span>
                   </div>
                 </div>
               </div>
@@ -1075,7 +1075,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     <span className="text-accent">89% Match</span>
                   </div>
                   <p className="text-[11px] text-muted">Matched: React, TypeScript, GraphQL, Docker, Microservices</p>
-                  <p className="text-[11px] text-red-600 font-semibold">Missing: Kubernetes, Terraform</p>
+                  <p className="text-[11px] text-danger font-semibold">Missing: Kubernetes, Terraform</p>
                 </div>
               </div>
             )}
@@ -1154,7 +1154,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-accent font-bold">
+                <div className="pt-3 border-t border-line flex items-center justify-between text-xs text-accent font-bold">
                   <span>Read Full Research</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
@@ -1253,12 +1253,12 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-semibold text-ink hover:text-accent transition-colors"
                   >
                     <span className="text-sm sm:text-base">{faq.q}</span>
-                    <span className="p-1 rounded-md bg-slate-100 text-muted/80 shrink-0">
+                    <span className="p-1 rounded-md bg-soft text-muted/80 shrink-0">
                       {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-muted leading-relaxed border-t border-slate-100 pt-3">
+                    <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-muted leading-relaxed border-t border-line pt-3">
                       {faq.a}
                     </div>
                   )}
@@ -1270,7 +1270,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       </section>
 
       {/* 9. BOTTOM CONVERSION TOOL WIDGET */}
-      <section className="py-16 sm:py-20 bg-slate-900 text-white">
+      <section className="py-16 sm:py-20 bg-ink text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
             Get your resume score now!
@@ -1292,7 +1292,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {onNavigate && (
               <button
                 onClick={() => onNavigate('editor')}
-                className="w-full sm:w-auto px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3.5 bg-ink hover:bg-neutral text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <PenTool className="w-4 h-4 text-[#F87171]" />
                 <span>Open Live CV Editor</span>

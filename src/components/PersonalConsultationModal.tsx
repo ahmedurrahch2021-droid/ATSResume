@@ -28,13 +28,13 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="bg-paper rounded-xl shadow-2xl border border-line w-full max-w-xl max-h-[92vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="px-6 py-4 border-b border-line flex items-center justify-between bg-soft">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-success-soft text-success font-mono">
                 1-on-1 Human Expert
               </span>
               <span className="text-xs text-muted/80 flex items-center gap-1">
@@ -69,7 +69,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
                 className={`p-3.5 rounded-lg border cursor-pointer transition-all ${
                   selectedTier === 'starter'
                     ? 'border-emerald-600 bg-soft/50 shadow-sm ring-1 ring-emerald-500'
-                    : 'border-line hover:border-slate-300 bg-paper'
+                    : 'border-line hover:border-line bg-paper'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -86,7 +86,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
                 className={`p-3.5 rounded-lg border cursor-pointer transition-all ${
                   selectedTier === 'boost'
                     ? 'border-emerald-600 bg-soft/50 shadow-sm ring-1 ring-emerald-500'
-                    : 'border-line hover:border-slate-300 bg-paper'
+                    : 'border-line hover:border-line bg-paper'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -111,7 +111,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
               value={targetJobUrl}
               onChange={(e) => setTargetJobUrl(e.target.value)}
               placeholder="https://jobs.lever.co/company/job-title or Job Description"
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3 py-2 text-xs border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
               value={careerGoalsNotes}
               onChange={(e) => setCareerGoalsNotes(e.target.value)}
               placeholder="e.g. I have a 1-year employment gap; I am transitioning from QA to backend engineering; I want to ensure my resume beats European ATS systems..."
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3 py-2 text-xs border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
@@ -158,7 +158,7 @@ export const PersonalConsultationModal: React.FC<PersonalConsultationModalProps>
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
+              className="px-5 py-2.5 bg-ink hover:bg-ink text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
             >
               Proceed to Consultation Details ({selectedTier === 'starter' ? '$10' : '$25'})
               <ArrowRight className="w-4 h-4" />

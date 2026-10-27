@@ -339,7 +339,7 @@ Requirements:
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Left: Suite Identification */}
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm shadow-xs font-mono">
+              <div className="w-9 h-9 rounded-xl bg-ink text-white flex items-center justify-center font-bold text-sm shadow-xs font-mono">
                 ATS
               </div>
               <div>
@@ -347,7 +347,7 @@ Requirements:
                   <h1 className="font-heading text-lg font-bold text-ink leading-none">
                     ATS Career Workspace
                   </h1>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-ink border border-line">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-soft text-ink border border-line">
                     OPEN SOURCE POWERED
                   </span>
                 </div>
@@ -358,7 +358,7 @@ Requirements:
             </div>
 
             {/* Middle: Tool Segmented Switcher */}
-            <div className="flex items-center p-1 bg-slate-100 rounded-xl border border-line">
+            <div className="flex items-center p-1 bg-soft rounded-xl border border-line">
               <button
                 type="button"
                 onClick={() => setActiveTab('builder')}
@@ -382,7 +382,7 @@ Requirements:
               >
                 <Target className="w-3.5 h-3.5 text-accent" />
                 Job Matcher
-                <span className="ml-1 px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-emerald-100 text-accent font-mono">
+                <span className="ml-1 px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-success-soft text-accent font-mono">
                   {jobMatch.matchPercentage}%
                 </span>
               </button>
@@ -398,7 +398,7 @@ Requirements:
                 <SearchCheck className="w-3.5 h-3.5 text-accent" />
                 ATS Screener
                 <span className={`ml-1 px-1.5 py-0.2 text-[10px] font-bold rounded-full font-mono ${
-                  atsAudit.score >= 80 ? 'bg-emerald-100 text-accent' : 'bg-amber-100 text-amber-700'
+                  atsAudit.score >= 80 ? 'bg-success-soft text-accent' : 'bg-warning-soft text-warning'
                 }`}>
                   {atsAudit.score}/100
                 </span>
@@ -412,10 +412,10 @@ Requirements:
                 onClick={handleSaveToCloud}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
                   savedNotification
-                    ? 'bg-soft text-emerald-800 border-emerald-300'
+                    ? 'bg-soft text-success border-success/30'
                     : userAccount?.isLoggedIn
                     ? 'bg-paper text-ink/90 hover:bg-soft border-line'
-                    : 'bg-soft text-emerald-800 hover:bg-emerald-100 border-emerald-300 font-bold'
+                    : 'bg-soft text-success hover:bg-success-soft border-success/30 font-bold'
                 }`}
                 title="Save master resume and versions to cloud"
               >
@@ -436,7 +436,7 @@ Requirements:
               <button
                 type="button"
                 onClick={handlePrint}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-ink/90 hover:bg-slate-100 border border-line transition-colors flex items-center gap-1"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-ink/90 hover:bg-soft border border-line transition-colors flex items-center gap-1"
                 title="Print vector PDF with standard ATS margins"
               >
                 <Printer className="w-3.5 h-3.5 text-muted/80" />
@@ -446,7 +446,7 @@ Requirements:
               <button
                 type="button"
                 onClick={() => exportResumeAsJson(resumeData)}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-ink/90 hover:bg-slate-100 border border-line transition-colors hidden sm:flex items-center gap-1"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-ink/90 hover:bg-soft border border-line transition-colors hidden sm:flex items-center gap-1"
                 title="Download JSON backup"
               >
                 <Download className="w-3.5 h-3.5 text-muted/80" />
@@ -480,8 +480,8 @@ Requirements:
               
               {/* Dual Mode Switch & Sample Presets */}
               <div className="bg-paper rounded-2xl border border-line p-4 shadow-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                  <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-line">
+                  <div className="flex items-center gap-1 bg-soft p-1 rounded-lg">
                     <button
                       type="button"
                       onClick={() => setInputMode('form')}
@@ -516,28 +516,28 @@ Requirements:
                     <button
                       type="button"
                       onClick={() => handleLoadSample('developer')}
-                      className="text-xs px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Global Dev
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('bangladesh')}
-                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-emerald-100 text-emerald-800 border border-line font-semibold"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-success-soft text-success border border-line font-semibold"
                     >
                       🇧🇩 BD Tech
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('product')}
-                      className="text-xs px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Product
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('devops')}
-                      className="text-xs px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-ink/90 font-medium"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       DevOps
                     </button>
@@ -567,7 +567,7 @@ Requirements:
                   onDragLeave={() => setIsDraggingFile(false)}
                   onDrop={handleDrop}
                   className={`bg-paper rounded-2xl border-2 border-dashed p-8 text-center transition-all shadow-xs ${
-                    isDraggingFile ? 'border-emerald-500 bg-soft/40' : 'border-slate-300 hover:border-slate-400'
+                    isDraggingFile ? 'border-emerald-500 bg-soft/40' : 'border-line hover:border-slate-400'
                   }`}
                 >
                   <input
@@ -593,11 +593,11 @@ Requirements:
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isProcessingFile}
-                    className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors inline-flex items-center gap-2"
+                    className="px-4 py-2 bg-ink hover:bg-ink text-white text-xs font-semibold rounded-lg shadow-sm transition-colors inline-flex items-center gap-2"
                   >
                     {isProcessingFile ? (
                       <>
-                        <RefreshCw className="w-4 h-4 animate-spin text-emerald-400" />
+                        <RefreshCw className="w-4 h-4 animate-spin text-success" />
                         Extracting Document Streams...
                       </>
                     ) : (
@@ -667,7 +667,7 @@ Requirements:
 
                   {/* 1. Contact Information */}
                   <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-soft0" />
                         1. Contact Header (ATS Verified)
@@ -754,7 +754,7 @@ Requirements:
 
                   {/* 2. Professional Summary */}
                   <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-soft0" />
                         2. Professional Summary
@@ -772,7 +772,7 @@ Requirements:
 
                   {/* 3. Work Experience */}
                   <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <div>
                         <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                           <span className="w-2 h-2 rounded-full bg-soft0" />
@@ -785,7 +785,7 @@ Requirements:
                       <button
                         type="button"
                         onClick={handleAddExperience}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors flex items-center gap-1"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-ink text-white font-medium hover:bg-ink transition-colors flex items-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" /> Add Position
                       </button>
@@ -800,7 +800,7 @@ Requirements:
                               <button
                                 type="button"
                                 onClick={() => handleRemoveExperience(exp.id)}
-                                className="text-xs text-rose-600 hover:text-rose-700 flex items-center gap-1"
+                                className="text-xs text-danger hover:text-danger flex items-center gap-1"
                               >
                                 <Trash2 className="w-3 h-3" /> Remove Position
                               </button>
@@ -896,7 +896,7 @@ Requirements:
                                         Metric quantified
                                       </span>
                                     ) : (
-                                      <span className="text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 font-medium inline-flex items-center gap-1 font-mono">
+                                      <span className="text-[10px] text-warning bg-warning-soft px-1.5 py-0.5 rounded border border-warning/30 font-medium inline-flex items-center gap-1 font-mono">
                                         <AlertTriangle className="w-2.5 h-2.5" />
                                         Add % or $ metric
                                       </span>
@@ -913,7 +913,7 @@ Requirements:
 
                   {/* 4. Technical Skills */}
                   <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-soft0" />
                         4. Core Competencies & Skills
@@ -963,7 +963,7 @@ Requirements:
 
                   {/* 5. International Languages (CEFR Standards) */}
                   <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <div>
                         <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                           <Globe className="w-3.5 h-3.5 text-accent" />
@@ -974,7 +974,7 @@ Requirements:
                       <button
                         type="button"
                         onClick={handleAddLanguage}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors flex items-center gap-1"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-ink text-white font-medium hover:bg-ink transition-colors flex items-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" /> Add Language
                       </button>
@@ -1013,7 +1013,7 @@ Requirements:
                           <button
                             type="button"
                             onClick={() => handleRemoveLanguage(lang.id)}
-                            className="p-1.5 text-muted/60 hover:text-rose-600"
+                            className="p-1.5 text-muted/60 hover:text-danger"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1024,7 +1024,7 @@ Requirements:
 
                   {/* 6. Competitive Programming & Developer Ranks (Crucial for BD & Global Devs) */}
                   <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <div>
                         <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                           <Code className="w-3.5 h-3.5 text-accent" />
@@ -1037,7 +1037,7 @@ Requirements:
                       <button
                         type="button"
                         onClick={handleAddCpProfile}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors flex items-center gap-1"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-ink text-white font-medium hover:bg-ink transition-colors flex items-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" /> Add Profile
                       </button>
@@ -1098,7 +1098,7 @@ Requirements:
                           <button
                             type="button"
                             onClick={() => handleRemoveCpProfile(cp.id)}
-                            className="p-1 text-muted/60 hover:text-rose-600"
+                            className="p-1 text-muted/60 hover:text-danger"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1116,7 +1116,7 @@ Requirements:
               {/* Preview View Mode Switcher & Dynamic Color Picker */}
               <div className="bg-paper rounded-2xl border border-line p-4 shadow-xs space-y-3 print:hidden">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+                  <div className="flex items-center gap-1 bg-soft p-1 rounded-lg">
                     <button
                       type="button"
                       onClick={() => setPreviewMode('visual')}
@@ -1156,7 +1156,7 @@ Requirements:
 
                 {/* Accent Color Palette Selector */}
                 {previewMode === 'visual' && (
-                  <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                  <div className="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-ink/90">
                       <Palette className="w-3.5 h-3.5 text-accent" />
                       <span>Template Accent Color:</span>
@@ -1176,7 +1176,7 @@ Requirements:
                           className={`w-5 h-5 rounded-full border transition-transform ${
                             accentColor === preset.color
                               ? 'scale-125 ring-2 ring-slate-900 border-white'
-                              : 'border-slate-300 hover:scale-110'
+                              : 'border-line hover:scale-110'
                           }`}
                           style={{ backgroundColor: preset.color }}
                         />
@@ -1189,7 +1189,7 @@ Requirements:
                           type="color"
                           value={accentColor}
                           onChange={(e) => setAccentColor(e.target.value)}
-                          className="w-5 h-5 rounded cursor-pointer border border-slate-300 p-0 bg-transparent"
+                          className="w-5 h-5 rounded cursor-pointer border border-line p-0 bg-transparent"
                           title="Pick custom hex color"
                         />
                       </div>
@@ -1215,7 +1215,7 @@ Requirements:
               {previewMode === 'visual' && (
                 <div 
                   id="printable-ats-resume"
-                  className="bg-paper rounded-2xl border border-slate-300 shadow-sm p-8 sm:p-10 font-sans text-ink text-xs leading-relaxed space-y-5 print:border-none print:shadow-none print:p-0 print:m-0"
+                  className="bg-paper rounded-2xl border border-line shadow-sm p-8 sm:p-10 font-sans text-ink text-xs leading-relaxed space-y-5 print:border-none print:shadow-none print:p-0 print:m-0"
                 >
                   {/* Header */}
                   <div style={{ borderBottomColor: accentColor }} className="border-b-2 pb-3">
@@ -1427,7 +1427,7 @@ Requirements:
               )}
 
               {/* RenderCV Typographic Guarantee Callout */}
-              <div className="p-4 bg-slate-100 rounded-2xl border border-line text-xs space-y-1.5 print:hidden">
+              <div className="p-4 bg-soft rounded-2xl border border-line text-xs space-y-1.5 print:hidden">
                 <div className="flex items-center gap-2 text-ink font-bold">
                   <CheckCircle2 className="w-4 h-4 text-accent" />
                   RenderCV Typographic Integrity Guarantee
@@ -1449,7 +1449,7 @@ Requirements:
             {/* Left 6 Cols: Job Description Input */}
             <div className="lg:col-span-6 space-y-5">
               <div className="bg-paper rounded-2xl border border-line p-6 shadow-xs space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center justify-between border-b border-line pb-3">
                   <div>
                     <h2 className="font-heading text-base font-bold text-ink flex items-center gap-2">
                       <Target className="w-4 h-4 text-accent" />
@@ -1479,13 +1479,13 @@ Requirements:
                 />
 
                 <div className="p-3 bg-soft border border-line rounded-xl flex items-center justify-between">
-                  <div className="text-xs text-emerald-950">
+                  <div className="text-xs text-success">
                     <span className="font-bold">Algorithmic Match Score:</span> {jobMatch.matchPercentage}% Alignment
                   </div>
                   <button
                     type="button"
                     onClick={() => onOpenOrder('boost', { resume: plainTextResume, jd: jobDescription })}
-                    className="text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+                    className="text-xs font-bold bg-success hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
                     Tailor For This Job ($25)
@@ -1497,7 +1497,7 @@ Requirements:
             {/* Right 6 Cols: Gap Analysis */}
             <div className="lg:col-span-6 space-y-5">
               <div className="bg-paper rounded-2xl border border-line p-6 shadow-xs space-y-5">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center justify-between border-b border-line pb-3">
                   <h3 className="font-heading text-base font-bold text-ink">
                     Keyword Gap Analysis (Resume Matcher)
                   </h3>
@@ -1514,7 +1514,7 @@ Requirements:
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {jobMatch.matchedKeywords.map((kw, i) => (
-                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-soft text-emerald-800 border border-line">
+                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-soft text-success border border-line">
                         {kw}
                       </span>
                     ))}
@@ -1522,9 +1522,9 @@ Requirements:
                 </div>
 
                 {/* Missing Skills */}
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <h4 className="text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                <div className="space-y-2 pt-2 border-t border-line">
+                  <h4 className="text-xs font-bold text-danger uppercase tracking-wider flex items-center gap-1.5">
+                    <AlertTriangle className="w-3.5 h-3.5 text-danger" />
                     Critical Skills Missing from Resume ({jobMatch.missingHardSkills.length})
                   </h4>
                   <p className="text-[11px] text-muted/80">
@@ -1532,7 +1532,7 @@ Requirements:
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {jobMatch.missingHardSkills.map((sk, i) => (
-                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200">
+                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-danger-soft text-rose-800 border border-danger/30">
                         + {sk}
                       </span>
                     ))}
@@ -1541,7 +1541,7 @@ Requirements:
 
                 {/* Recommended Bullets */}
                 {jobMatch.recommendedBullets.length > 0 && (
-                  <div className="space-y-2 pt-2 border-t border-slate-100">
+                  <div className="space-y-2 pt-2 border-t border-line">
                     <h4 className="text-xs font-bold text-ink/90 uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                       Recommended Bullet Additions
@@ -1567,7 +1567,7 @@ Requirements:
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-12 space-y-6">
               <div className="bg-paper rounded-2xl border border-line p-6 shadow-xs space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-4">
                   <div>
                     <h2 className="font-heading text-lg font-bold text-ink flex items-center gap-2">
                       <SearchCheck className="w-5 h-5 text-accent" />
@@ -1612,16 +1612,16 @@ Requirements:
                 </div>
 
                 {/* Findings & Action Items */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-line">
                   <div className="space-y-3">
-                    <h3 className="text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                    <h3 className="text-xs font-bold text-danger uppercase tracking-wider flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5 text-danger" />
                       Critical Attention Needed ({atsAudit.criticalIssues.length})
                     </h3>
                     <ul className="space-y-2 text-xs text-ink/90">
                       {atsAudit.criticalIssues.map((issue, idx) => (
-                        <li key={idx} className="p-2.5 bg-rose-50/70 border border-rose-200 rounded-lg flex items-start gap-2">
-                          <span className="text-rose-600 font-bold">•</span>
+                        <li key={idx} className="p-2.5 bg-danger-soft/70 border border-danger/30 rounded-lg flex items-start gap-2">
+                          <span className="text-danger font-bold">•</span>
                           <span>{issue}</span>
                         </li>
                       ))}
@@ -1645,7 +1645,7 @@ Requirements:
                 </div>
 
                 {/* Consultation Upsell Callout */}
-                <div className="p-5 bg-slate-900 text-white rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="p-5 bg-ink text-white rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div>
                     <h4 className="font-heading font-bold text-sm">Want a Senior Developer to Guarantee 90%+ Score?</h4>
                     <p className="text-xs text-slate-300 mt-1 max-w-xl">

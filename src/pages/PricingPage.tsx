@@ -25,7 +25,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Page Title */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent bg-accent-soft px-3 py-1 rounded-md border border-accent-line">
             <Sparkles className="w-3.5 h-3.5" />
             Clear Upfront Pricing · Zero Subscriptions
           </div>
@@ -38,12 +38,12 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
 
           {/* Rush Delivery Toggle */}
           <div className="pt-4 flex items-center justify-center">
-            <label className="inline-flex items-center gap-3 p-2.5 px-4 bg-paper border border-line rounded-xl shadow-xs cursor-pointer hover:border-slate-300 transition-colors">
+            <label className="inline-flex items-center gap-3 p-2.5 px-4 bg-paper border border-line rounded-xl shadow-xs cursor-pointer hover:border-line transition-colors">
               <input
                 type="checkbox"
                 checked={rushDelivery}
                 onChange={(e) => setRushDelivery(e.target.checked)}
-                className="w-4 h-4 text-accent rounded border-slate-300 focus:ring-emerald-500"
+                className="w-4 h-4 text-accent rounded border-line focus:ring-emerald-500"
               />
               <span className="text-xs sm:text-sm font-semibold text-ink flex items-center gap-1.5">
                 <Flame className="w-4 h-4 text-amber-500" />
@@ -63,7 +63,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 className={`relative bg-paper rounded-2xl transition-all duration-200 flex flex-col justify-between ${
                   pkg.popular
                     ? 'border-2 border-emerald-600 shadow-md ring-2 ring-emerald-600/10'
-                    : 'border border-line shadow-xs hover:border-slate-300'
+                    : 'border border-line shadow-xs hover:border-line'
                 }`}
               >
                 {/* Popular / Value Badges */}
@@ -103,7 +103,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                   </div>
 
                   {/* Who this is for box */}
-                  <div className="p-3 bg-soft rounded-xl border border-slate-100 text-xs text-ink/90">
+                  <div className="p-3 bg-soft rounded-xl border border-line text-xs text-ink/90">
                     <span className="font-semibold text-ink block mb-0.5">Best For:</span>
                     {pkg.recommendedFor}
                   </div>
@@ -125,13 +125,13 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 </div>
 
                 {/* Card Action */}
-                <div className="p-6 sm:p-8 pt-0 border-t border-slate-100 mt-6 space-y-3">
+                <div className="p-6 sm:p-8 pt-0 border-t border-line mt-6 space-y-3">
                   <button
                     onClick={() => onSelectPlan(pkg.id, rushDelivery)}
                     className={`w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-xs ${
                       pkg.popular
                         ? 'bg-accent hover:bg-accent/90 text-white shadow-emerald-600/20'
-                        : 'bg-slate-900 hover:bg-slate-800 text-white'
+                        : 'bg-ink hover:bg-ink text-white'
                     }`}
                   >
                     <span>Choose {pkg.name}</span>
@@ -150,7 +150,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
 
         {/* Feature Comparison Table */}
         <div className="bg-paper rounded-2xl border border-line overflow-hidden shadow-sm">
-          <div className="p-6 bg-slate-900 text-white">
+          <div className="p-6 bg-ink text-white">
             <h3 className="font-heading text-lg font-bold">
               Detailed Feature Comparison Matrix
             </h3>
@@ -165,11 +165,11 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 <tr>
                   <th className="p-4 pl-6">Deliverable / Feature</th>
                   <th className="p-4 text-center">Starter ($10)</th>
-                  <th className="p-4 text-center text-blue-600 font-bold">Career Boost ($25)</th>
+                  <th className="p-4 text-center text-accent font-bold">Career Boost ($25)</th>
                   <th className="p-4 text-center">Full Package ($35)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-ink/90">
+              <tbody className="divide-y divide-line text-ink/90">
                 <tr>
                   <td className="p-4 pl-6 font-medium">ATS-Optimized Resume (PDF & DOCX)</td>
                   <td className="p-4 text-center text-accent font-bold">✓ 1–2 Pages</td>

@@ -52,13 +52,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const isBD = country === 'Bangladesh';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="bg-paper rounded-2xl shadow-2xl border border-line w-full max-w-md overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-soft/80">
+        <div className="px-6 py-5 border-b border-line flex items-center justify-between bg-soft/80">
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+              <span className="font-mono text-xs font-bold text-success bg-success-soft px-2 py-0.5 rounded">
                 ATS Resume Maker
               </span>
               {isBD && (
@@ -83,13 +83,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </div>
 
         {/* Tab Toggle */}
-        <div className="px-6 pt-4 flex border-b border-slate-100">
+        <div className="px-6 pt-4 flex border-b border-line">
           <button
             type="button"
             onClick={() => setMode('signup')}
             className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-colors ${
               mode === 'signup'
-                ? 'border-emerald-600 text-emerald-800'
+                ? 'border-emerald-600 text-success'
                 : 'border-transparent text-muted/80 hover:text-ink'
             }`}
           >
@@ -100,7 +100,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             onClick={() => setMode('signin')}
             className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-colors ${
               mode === 'signin'
-                ? 'border-emerald-600 text-emerald-800'
+                ? 'border-emerald-600 text-success'
                 : 'border-transparent text-muted/80 hover:text-ink'
             }`}
           >
@@ -114,7 +114,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="button"
             onClick={handleGoogleSignIn}
-            className="w-full py-2.5 px-4 bg-paper hover:bg-soft text-ink/90 text-xs font-semibold rounded-xl border border-slate-300 shadow-2xs transition-colors flex items-center justify-center gap-2.5"
+            className="w-full py-2.5 px-4 bg-paper hover:bg-soft text-ink/90 text-xs font-semibold rounded-xl border border-line shadow-2xs transition-colors flex items-center justify-center gap-2.5"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -216,12 +216,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {/* Social Impact Pledge */}
           {isBD ? (
-            <div className="p-3 bg-soft border border-line rounded-xl text-xs text-emerald-950 space-y-1">
-              <span className="font-bold flex items-center gap-1 text-emerald-900">
+            <div className="p-3 bg-soft border border-line rounded-xl text-xs text-success space-y-1">
+              <span className="font-bold flex items-center gap-1 text-success">
                 <Sparkles className="w-3.5 h-3.5 text-accent" />
                 Bangladesh Talent Pledge
               </span>
-              <p className="text-[11px] text-emerald-800 leading-snug">
+              <p className="text-[11px] text-success leading-snug">
                 As part of our commitment to Bangladeshi graduates and youth facing the job crisis, your account is granted <strong>unlimited free resume creations, cloud saves, and vector PDF exports forever</strong>.
               </p>
             </div>
@@ -239,7 +239,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           <button
             type="submit"
-            className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+            className="w-full py-2.5 bg-ink hover:bg-ink text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm"
           >
             {mode === 'signup' ? 'Complete Sign-Up & Save Resume' : 'Sign In to Your Workspace'}
             <ArrowRight className="w-3.5 h-3.5" />

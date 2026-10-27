@@ -41,17 +41,17 @@ export const AtsTerminalView: React.FC<AtsTerminalViewProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-900 text-slate-100 rounded-lg overflow-hidden border border-slate-800 shadow-md">
+    <div className="flex flex-col h-full bg-ink text-slate-100 rounded-lg overflow-hidden border border-slate-800 shadow-md">
       {/* Terminal Header */}
       <div className="bg-slate-950 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-danger-soft0/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-warning-soft0/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-soft0/80" />
           </div>
           <span className="font-mono text-xs text-muted/60 font-medium ml-2 flex items-center gap-1.5">
-            <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+            <Terminal className="w-3.5 h-3.5 text-success" />
             ATS Ingestion Stream (Raw Parsed Stream)
           </span>
         </div>
@@ -66,12 +66,12 @@ export const AtsTerminalView: React.FC<AtsTerminalViewProps> = ({
           </div>
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1 px-2.5 py-1 text-xs font-mono rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1 text-xs font-mono rounded bg-ink hover:bg-neutral text-slate-200 border border-slate-700 transition-colors"
             title="Copy plain text"
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-400" /> Copied
+                <Check className="w-3.5 h-3.5 text-success" /> Copied
               </>
             ) : (
               <>
@@ -104,7 +104,7 @@ export const AtsTerminalView: React.FC<AtsTerminalViewProps> = ({
             {onApplyCleanedText && (
               <button
                 onClick={handlePurge}
-                className="shrink-0 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-medium rounded text-xs transition-colors flex items-center gap-1 shadow-sm"
+                className="shrink-0 px-3 py-1.5 bg-warning-soft0 hover:bg-amber-400 text-slate-950 font-medium rounded text-xs transition-colors flex items-center gap-1 shadow-sm"
               >
                 <Sparkles className="w-3.5 h-3.5" /> 1-Click Purge
               </button>
@@ -114,7 +114,7 @@ export const AtsTerminalView: React.FC<AtsTerminalViewProps> = ({
       )}
 
       {/* Terminal Body */}
-      <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed text-slate-200 selection:bg-accent selection:text-white bg-slate-900/95 max-h-[600px]">
+      <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed text-slate-200 selection:bg-accent selection:text-white bg-ink/95 max-h-[600px]">
         <pre className="whitespace-pre-wrap font-mono break-words">
           {plainText || '// No text extracted yet. Ingest a document or enter information in the form.'}
         </pre>
@@ -123,7 +123,7 @@ export const AtsTerminalView: React.FC<AtsTerminalViewProps> = ({
       {/* Terminal Footer explanation */}
       <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 text-[11px] text-muted/60 flex items-center justify-between">
         <span className="flex items-center gap-1">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <CheckCircle2 className="w-3.5 h-3.5 text-success" />
           Single-column standard verified: zero nested tables, icons, or multi-column stream collision.
         </span>
         <span className="text-muted/80 hidden md:inline">
