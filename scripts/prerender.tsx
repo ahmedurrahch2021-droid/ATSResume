@@ -1,6 +1,11 @@
 /**
  * Prerender public routes to static HTML after `vite build`.
  *
+ * This script is run by the `ats-prerender` plugin in vite.config.ts, which
+ * fires on every build, so a host that calls `vite build` directly still gets
+ * one real HTML file per route, with its own metadata. Do not move it back
+ * into an npm script — that is how the site previously shipped as a shell.
+ *
  * For each route in PRERENDER_ROUTES this writes dist/<path>/index.html.
  * The file is the built dist/index.html with:
  *   - the route's <title> and meta description,
