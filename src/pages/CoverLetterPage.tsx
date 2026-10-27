@@ -154,39 +154,39 @@ export const CoverLetterPage: React.FC = () => {
   ].join(' ').split(/\s+/).filter(Boolean).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="min-h-screen bg-soft text-ink pb-20">
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
-          <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+        <div className="fixed bottom-6 right-6 z-50 bg-ink text-white text-xs px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <Sparkles className="w-3.5 h-3.5 text-accent" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Top Studio Control Bar */}
-      <section className="bg-white border-b border-slate-200/90 sticky top-20 z-30 shadow-2xs">
+      <section className="bg-paper border-b border-line/90 sticky top-20 z-30 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             {/* Title & Metadata */}
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-red-50 text-[#C82333] border border-red-100 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-soft text-accent border border-red-100 flex items-center justify-center shrink-0">
                 <FileText className="w-4 h-4" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
+                  <h1 className="text-sm sm:text-base font-bold text-ink tracking-tight">
                     Cover Letter Studio
                   </h1>
-                  <span className="text-[10px] uppercase font-bold text-[#C82333] bg-red-50 border border-red-100 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] uppercase font-bold text-accent bg-soft border border-red-100 px-1.5 py-0.5 rounded">
                     ATS Matching
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                <div className="flex items-center gap-2 text-xs text-muted/80 mt-0.5">
                   <span>{totalWords} words</span>
                   <span aria-hidden="true">·</span>
                   <span>Target: {letterData.recipient.companyName || 'Employer'}</span>
                   <span aria-hidden="true">·</span>
-                  <span className="text-emerald-700 font-medium">1-Page Recommended</span>
+                  <span className="text-accent font-medium">1-Page Recommended</span>
                 </div>
               </div>
             </div>
@@ -196,27 +196,27 @@ export const CoverLetterPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCopyText}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-ink/90 bg-paper hover:bg-soft border border-line rounded-lg transition-colors shadow-2xs"
                 title="Copy formatted plain text for online job portals"
               >
-                {copySuccess ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copySuccess ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copySuccess ? 'Copied!' : 'Copy Text'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleDownloadWord}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-ink/90 bg-paper hover:bg-soft border border-line rounded-lg transition-colors shadow-2xs"
                 title="Export as an editable Microsoft Word document"
               >
-                <FileDown className="w-3.5 h-3.5 text-blue-600" />
+                <FileDown className="w-3.5 h-3.5 text-accent" />
                 <span>Word (.doc)</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleDownloadPdf}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-[#C82333] hover:bg-[#A71D2A] rounded-lg transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-accent hover:bg-accent/90 rounded-lg transition-colors shadow-xs"
                 title="Print or save as a crisp, searchable vector PDF"
               >
                 <FileDown className="w-3.5 h-3.5" />
@@ -226,7 +226,7 @@ export const CoverLetterPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleReset}
-                className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors ml-1"
+                className="p-1.5 text-muted/60 hover:text-muted hover:bg-soft rounded-lg transition-colors ml-1"
                 title="Reset to default template"
               >
                 <RotateCcw className="w-4 h-4" />
@@ -235,14 +235,14 @@ export const CoverLetterPage: React.FC = () => {
           </div>
 
           {/* Mobile Tab Toggle (< 1024px) */}
-          <div className="flex lg:hidden items-center justify-center gap-1 mt-3 pt-2.5 border-t border-slate-100">
+          <div className="flex lg:hidden items-center justify-center gap-1 mt-3 pt-2.5 border-t border-line">
             <button
               type="button"
               onClick={() => setMobileTab('edit')}
               className={`flex-1 py-1.5 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-colors ${
                 mobileTab === 'edit'
-                  ? 'bg-red-50 text-[#C82333] border border-red-200'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-soft text-accent border border-line'
+                  : 'text-muted hover:bg-soft'
               }`}
             >
               <Edit3 className="w-3.5 h-3.5" />
@@ -253,8 +253,8 @@ export const CoverLetterPage: React.FC = () => {
               onClick={() => setMobileTab('preview')}
               className={`flex-1 py-1.5 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-colors ${
                 mobileTab === 'preview'
-                  ? 'bg-red-50 text-[#C82333] border border-red-200'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-soft text-accent border border-line'
+                  : 'text-muted hover:bg-soft'
               }`}
             >
               <Eye className="w-3.5 h-3.5" />
@@ -278,9 +278,9 @@ export const CoverLetterPage: React.FC = () => {
             />
 
             {/* Recruiter Advice Box */}
-            <div className="mt-6 p-4 rounded-xl bg-slate-100/70 border border-slate-200 text-xs text-slate-600 space-y-2">
-              <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                <ShieldCheck className="w-4 h-4 text-[#C82333]" />
+            <div className="mt-6 p-4 rounded-xl bg-soft/70 border border-line text-xs text-muted space-y-2">
+              <div className="flex items-center gap-1.5 font-bold text-ink">
+                <ShieldCheck className="w-4 h-4 text-accent" />
                 <span>ATS & Recruiter Cover Letter Best Practices</span>
               </div>
               <p className="leading-relaxed">
@@ -293,9 +293,9 @@ export const CoverLetterPage: React.FC = () => {
           <div className={`lg:col-span-6 ${mobileTab === 'edit' ? 'hidden lg:block' : 'block'}`}>
             <div className="sticky top-40 space-y-3">
               {/* Preview Zoom Controls Bar */}
-              <div className="bg-white rounded-xl border border-slate-200/90 px-4 py-2.5 flex items-center justify-between shadow-2xs">
-                <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                  <Eye className="w-3.5 h-3.5 text-[#C82333]" />
+              <div className="bg-paper rounded-xl border border-line/90 px-4 py-2.5 flex items-center justify-between shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-semibold text-ink/90">
+                  <Eye className="w-3.5 h-3.5 text-accent" />
                   <span>Real-Time Sheet Preview</span>
                 </div>
 
@@ -303,20 +303,20 @@ export const CoverLetterPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setPreviewScale(prev => Math.max(0.5, prev - 0.1))}
-                    className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
+                    className="p-1 text-muted/80 hover:text-ink hover:bg-soft rounded transition-colors"
                     title="Zoom Out"
                   >
                     <ZoomOut className="w-3.5 h-3.5" />
                   </button>
 
-                  <span className="text-xs font-mono text-slate-600 min-w-12 text-center">
+                  <span className="text-xs font-mono text-muted min-w-12 text-center">
                     {Math.round(previewScale * 100)}%
                   </span>
 
                   <button
                     type="button"
                     onClick={() => setPreviewScale(prev => Math.min(1.3, prev + 0.1))}
-                    className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
+                    className="p-1 text-muted/80 hover:text-ink hover:bg-soft rounded transition-colors"
                     title="Zoom In"
                   >
                     <ZoomIn className="w-3.5 h-3.5" />
@@ -325,7 +325,7 @@ export const CoverLetterPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setPreviewScale(0.85)}
-                    className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors ml-1"
+                    className="p-1 text-muted/80 hover:text-ink hover:bg-soft rounded transition-colors ml-1"
                     title="Reset to Fit"
                   >
                     <Maximize2 className="w-3.5 h-3.5" />
@@ -334,7 +334,7 @@ export const CoverLetterPage: React.FC = () => {
               </div>
 
               {/* Elevated Workspace Viewport */}
-              <div className="bg-slate-200/60 rounded-2xl border border-slate-300/80 p-4 sm:p-6 overflow-x-auto overflow-y-auto max-h-[calc(100vh-220px)] shadow-inner flex justify-center">
+              <div className="bg-slate-200/60 rounded-2xl border border-line/80 p-4 sm:p-6 overflow-x-auto overflow-y-auto max-h-[calc(100vh-220px)] shadow-inner flex justify-center">
                 <CoverLetterPreview data={letterData} scale={previewScale} />
               </div>
             </div>

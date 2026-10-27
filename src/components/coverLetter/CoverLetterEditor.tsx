@@ -119,11 +119,11 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
   return (
     <div className="space-y-4">
       {/* Quick Presets & Resume Sync Header */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs space-y-3">
+      <div className="bg-paper rounded-xl border border-line p-4 shadow-2xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#C82333]" />
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            <Sparkles className="w-4 h-4 text-accent" />
+            <h3 className="text-xs font-bold text-ink uppercase tracking-wider">
               Quick Starters & Presets
             </h3>
           </div>
@@ -132,7 +132,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
             <button
               type="button"
               onClick={onSyncFromResume}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-[#C82333] bg-red-50 hover:bg-red-100/80 rounded-md border border-red-200 transition-colors"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-accent bg-soft hover:bg-red-100/80 rounded-md border border-line transition-colors"
             >
               <FolderSync className="w-3.5 h-3.5" />
               <span>Import from Active Resume</span>
@@ -146,12 +146,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
               key={preset.id}
               type="button"
               onClick={() => onApplyPreset(preset.id)}
-              className="p-2 text-left rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-xs group"
+              className="p-2 text-left rounded-lg border border-line hover:border-line hover:bg-soft transition-all text-xs group"
             >
-              <div className="font-semibold text-slate-900 truncate group-hover:text-[#C82333]">
+              <div className="font-semibold text-ink truncate group-hover:text-accent">
                 {preset.name}
               </div>
-              <div className="text-[10px] text-slate-500 truncate">
+              <div className="text-[10px] text-muted/80 truncate">
                 {preset.targetCompany} · {preset.badge}
               </div>
             </button>
@@ -160,33 +160,33 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
       </div>
 
       {/* Modular Section 1: Sender Contact Information */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-paper rounded-xl border border-line shadow-2xs overflow-hidden">
         <button
           type="button"
           onClick={() => toggleSection('sender')}
-          className="w-full px-4 py-3 bg-slate-50/60 hover:bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-left transition-colors"
+          className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-red-50 text-[#C82333] flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-soft text-accent flex items-center justify-center font-bold text-xs">
               <User className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+              <h4 className="text-xs font-bold text-ink uppercase tracking-wide">
                 1. Your Personal Information
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted/80">
                 Full name, target title, email, phone and location
               </p>
             </div>
           </div>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openSections.sender ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-muted/60 transition-transform ${openSections.sender ? 'rotate-180' : ''}`} />
         </button>
 
         {openSections.sender && (
           <div className="p-4 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -194,12 +194,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.sender.fullName}
                   onChange={(e) => handleSenderChange('fullName', e.target.value)}
                   placeholder="e.g. Alex Vance"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Professional Title <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -207,14 +207,14 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.sender.jobTitle}
                   onChange={(e) => handleSenderChange('jobTitle', e.target.value)}
                   placeholder="e.g. Senior Full-Stack Engineer"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -222,12 +222,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.sender.email}
                   onChange={(e) => handleSenderChange('email', e.target.value)}
                   placeholder="alex.vance@gmail.com"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Phone Number
                 </label>
                 <input
@@ -235,12 +235,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.sender.phone}
                   onChange={(e) => handleSenderChange('phone', e.target.value)}
                   placeholder="+1 (555) 000-0000"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Location (City, Country/State)
                 </label>
                 <input
@@ -248,14 +248,14 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.sender.location}
                   onChange={(e) => handleSenderChange('location', e.target.value)}
                   placeholder="San Francisco, CA"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Portfolio / GitHub Link
                 </label>
                 <input
@@ -263,12 +263,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.sender.portfolioUrl || ''}
                   onChange={(e) => handleSenderChange('portfolioUrl', e.target.value)}
                   placeholder="alexvance.dev"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   LinkedIn Profile
                 </label>
                 <input
@@ -276,7 +276,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.sender.linkedInUrl || ''}
                   onChange={(e) => handleSenderChange('linkedInUrl', e.target.value)}
                   placeholder="linkedin.com/in/alexvance"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
             </div>
@@ -285,33 +285,33 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
       </div>
 
       {/* Modular Section 2: Recipient Details */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-paper rounded-xl border border-line shadow-2xs overflow-hidden">
         <button
           type="button"
           onClick={() => toggleSection('recipient')}
-          className="w-full px-4 py-3 bg-slate-50/60 hover:bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-left transition-colors"
+          className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-accent-soft text-accent flex items-center justify-center font-bold text-xs">
               <Building2 className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+              <h4 className="text-xs font-bold text-ink uppercase tracking-wide">
                 2. Employer & Recipient Details
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted/80">
                 Company name, hiring manager, department, and application date
               </p>
             </div>
           </div>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openSections.recipient ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-muted/60 transition-transform ${openSections.recipient ? 'rotate-180' : ''}`} />
         </button>
 
         {openSections.recipient && (
           <div className="p-4 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Hiring Manager / Team <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -319,12 +319,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.recipient.hiringManagerName}
                   onChange={(e) => handleRecipientChange('hiringManagerName', e.target.value)}
                   placeholder="e.g. Jane Smith or Hiring Team"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Target Company Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -332,14 +332,14 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.recipient.companyName}
                   onChange={(e) => handleRecipientChange('companyName', e.target.value)}
                   placeholder="e.g. Stripe, Inc."
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Department / Group
                 </label>
                 <input
@@ -347,12 +347,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.recipient.department || ''}
                   onChange={(e) => handleRecipientChange('department', e.target.value)}
                   placeholder="Core Infrastructure Team"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Company Location / Address
                 </label>
                 <input
@@ -360,12 +360,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.recipient.companyAddress || ''}
                   onChange={(e) => handleRecipientChange('companyAddress', e.target.value)}
                   placeholder="San Francisco, CA"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Letter Date
                 </label>
                 <input
@@ -373,14 +373,14 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.date}
                   onChange={(e) => onChange({ ...data, date: e.target.value })}
                   placeholder="e.g. October 24, 2026"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
             </div>
 
             {/* Salutation Helper */}
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">
+              <label className="block text-xs font-medium text-ink/90 mb-1">
                 Formal Salutation
               </label>
               <input
@@ -388,7 +388,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                 value={data.salutation}
                 onChange={(e) => onChange({ ...data, salutation: e.target.value })}
                 placeholder="Dear Ms. Smith and the Hiring Team,"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
               />
               <div className="flex flex-wrap gap-1.5 mt-1.5">
                 {[
@@ -400,7 +400,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                     key={i}
                     type="button"
                     onClick={() => onChange({ ...data, salutation: quick })}
-                    className="text-[10px] text-slate-600 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded transition-colors"
+                    className="text-[10px] text-muted bg-soft hover:bg-slate-200 px-2 py-0.5 rounded transition-colors"
                   >
                     {quick}
                   </button>
@@ -412,26 +412,26 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
       </div>
 
       {/* Modular Section 3: The Opening Hook */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-paper rounded-xl border border-line shadow-2xs overflow-hidden">
         <button
           type="button"
           onClick={() => toggleSection('opening')}
-          className="w-full px-4 py-3 bg-slate-50/60 hover:bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-left transition-colors"
+          className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-soft text-accent flex items-center justify-center font-bold text-xs">
               <Sparkles className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+              <h4 className="text-xs font-bold text-ink uppercase tracking-wide">
                 3. Opening Hook & Intent
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted/80">
                 Specify role, excitement for company, and candidate summary
               </p>
             </div>
           </div>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openSections.opening ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-muted/60 transition-transform ${openSections.opening ? 'rotate-180' : ''}`} />
         </button>
 
         {openSections.opening && (
@@ -441,9 +441,9 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
               value={data.opening}
               onChange={(e) => onChange({ ...data, opening: e.target.value })}
               placeholder="State the role you are applying for, your background, and why this company's mission inspires you..."
-              className="w-full text-xs p-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333] leading-relaxed"
+              className="w-full text-xs p-3 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333] leading-relaxed"
             />
-            <div className="flex items-center justify-between text-[11px] text-slate-500">
+            <div className="flex items-center justify-between text-[11px] text-muted/80">
               <span>Tip: Avoid generic phrases like "I found this job on LinkedIn". Lead with specific mission alignment.</span>
               <span>{data.opening.length} chars</span>
             </div>
@@ -452,39 +452,39 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
       </div>
 
       {/* Modular Section 4: Narrative Body Paragraphs */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-paper rounded-xl border border-line shadow-2xs overflow-hidden">
         <button
           type="button"
           onClick={() => toggleSection('body')}
-          className="w-full px-4 py-3 bg-slate-50/60 hover:bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-left transition-colors"
+          className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-warning-soft text-warning flex items-center justify-center font-bold text-xs">
               <FileText className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+              <h4 className="text-xs font-bold text-ink uppercase tracking-wide">
                 4. Core Evidence & Value Story
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted/80">
                 Detailed paragraphs connecting your past track record to their job requirements
               </p>
             </div>
           </div>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openSections.body ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-muted/60 transition-transform ${openSections.body ? 'rotate-180' : ''}`} />
         </button>
 
         {openSections.body && (
           <div className="p-4 space-y-3">
             {data.bodyParagraphs.map((paragraph, index) => (
               <div key={index} className="space-y-1 relative">
-                <div className="flex items-center justify-between text-xs text-slate-600 mb-1">
+                <div className="flex items-center justify-between text-xs text-muted mb-1">
                   <span className="font-medium">Paragraph {index + 1}</span>
                   {data.bodyParagraphs.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeParagraph(index)}
-                      className="text-slate-400 hover:text-red-600 transition-colors p-1"
+                      className="text-muted/60 hover:text-danger transition-colors p-1"
                       title="Remove paragraph"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -496,7 +496,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={paragraph}
                   onChange={(e) => handleParagraphChange(index, e.target.value)}
                   placeholder={`Describe your technical or organizational achievements relevant to the ${data.recipient.companyName || 'target'} role...`}
-                  className="w-full text-xs p-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333] leading-relaxed"
+                  className="w-full text-xs p-3 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333] leading-relaxed"
                 />
               </div>
             ))}
@@ -504,7 +504,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
             <button
               type="button"
               onClick={addParagraph}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-700 hover:text-[#C82333] font-medium py-1.5 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-ink/90 hover:text-accent font-medium py-1.5 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Another Paragraph</span>
@@ -514,48 +514,48 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
       </div>
 
       {/* Modular Section 5: Key Highlights & Metrics */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-paper rounded-xl border border-line shadow-2xs overflow-hidden">
         <button
           type="button"
           onClick={() => toggleSection('highlights')}
-          className="w-full px-4 py-3 bg-slate-50/60 hover:bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-left transition-colors"
+          className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
             <div className="w-6 h-6 rounded-md bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-xs">
               <Award className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+              <h4 className="text-xs font-bold text-ink uppercase tracking-wide">
                 5. Scannable Metric Highlights (Optional)
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted/80">
                 Enhancv-style bullet points highlighting quantifiable wins
               </p>
             </div>
           </div>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openSections.highlights ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-muted/60 transition-transform ${openSections.highlights ? 'rotate-180' : ''}`} />
         </button>
 
         {openSections.highlights && (
           <div className="p-4 space-y-2.5">
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-muted/80 leading-relaxed">
               Recruiters spend 7 seconds scanning cover letters. Adding 2–3 quantified bullet points dramatically boosts interview callbacks.
             </p>
 
             {data.keyHighlights.map((highlight, index) => (
               <div key={index} className="flex items-center gap-2">
-                <span className="text-slate-400 text-xs font-bold shrink-0">•</span>
+                <span className="text-muted/60 text-xs font-bold shrink-0">•</span>
                 <input
                   type="text"
                   value={highlight}
                   onChange={(e) => handleHighlightChange(index, e.target.value)}
                   placeholder="e.g. Scaled API throughput to $14M+ daily volume with sub-50ms latency..."
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
                 <button
                   type="button"
                   onClick={() => removeHighlight(index)}
-                  className="text-slate-400 hover:text-red-600 transition-colors p-1 shrink-0"
+                  className="text-muted/60 hover:text-danger transition-colors p-1 shrink-0"
                   title="Remove highlight"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -566,7 +566,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
             <button
               type="button"
               onClick={addHighlight}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-700 hover:text-[#C82333] font-medium py-1.5 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-ink/90 hover:text-accent font-medium py-1.5 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Metric Highlight</span>
@@ -576,32 +576,32 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
       </div>
 
       {/* Modular Section 6: Closing & Call-to-Action */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-paper rounded-xl border border-line shadow-2xs overflow-hidden">
         <button
           type="button"
           onClick={() => toggleSection('closing')}
-          className="w-full px-4 py-3 bg-slate-50/60 hover:bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-left transition-colors"
+          className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-stone-100 text-stone-700 flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-stone-100 text-ink/90 flex items-center justify-center font-bold text-xs">
               <Send className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+              <h4 className="text-xs font-bold text-ink uppercase tracking-wide">
                 6. Closing Paragraph & Sign-off
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted/80">
                 Polite interview invitation and formal signature
               </p>
             </div>
           </div>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openSections.closing ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-muted/60 transition-transform ${openSections.closing ? 'rotate-180' : ''}`} />
         </button>
 
         {openSections.closing && (
           <div className="p-4 space-y-3">
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">
+              <label className="block text-xs font-medium text-ink/90 mb-1">
                 Closing Paragraph
               </label>
               <textarea
@@ -609,13 +609,13 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                 value={data.closing}
                 onChange={(e) => onChange({ ...data, closing: e.target.value })}
                 placeholder="State your gratitude, excitement to discuss next steps, and contact preference..."
-                className="w-full text-xs p-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333] leading-relaxed"
+                className="w-full text-xs p-3 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333] leading-relaxed"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Sign-off Phrase
                 </label>
                 <input
@@ -623,19 +623,19 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                   value={data.signOff}
                   onChange={(e) => onChange({ ...data, signOff: e.target.value })}
                   placeholder="e.g. Sincerely, or Respectfully,"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-[#C82333]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-[#C82333]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Printed Signature Name
                 </label>
                 <input
                   type="text"
                   value={data.sender.fullName}
                   disabled
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-100 bg-slate-50 text-slate-500 cursor-not-allowed"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-line bg-soft text-muted/80 cursor-not-allowed"
                 />
               </div>
             </div>
@@ -644,33 +644,33 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
       </div>
 
       {/* Modular Section 7: Design, Typography & Accent Color */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-paper rounded-xl border border-line shadow-2xs overflow-hidden">
         <button
           type="button"
           onClick={() => toggleSection('styling')}
-          className="w-full px-4 py-3 bg-slate-50/60 hover:bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-left transition-colors"
+          className="w-full px-4 py-3 bg-soft/60 hover:bg-soft border-b border-line/80 flex items-center justify-between text-left transition-colors"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-red-50 text-[#C82333] flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-md bg-soft text-accent flex items-center justify-center font-bold text-xs">
               <Palette className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+              <h4 className="text-xs font-bold text-ink uppercase tracking-wide">
                 7. Layout, Font & Accent Color
               </h4>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted/80">
                 Choose template architecture, typography, and letterhead accents
               </p>
             </div>
           </div>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openSections.styling ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-muted/60 transition-transform ${openSections.styling ? 'rotate-180' : ''}`} />
         </button>
 
         {openSections.styling && (
           <div className="p-4 space-y-4">
             {/* Template Style Selector */}
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-2">
+              <label className="block text-xs font-medium text-ink/90 mb-2">
                 Letterhead Structure
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -686,12 +686,12 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                     onClick={() => onChange({ ...data, templateStyle: style.id as CoverLetterTemplateStyle })}
                     className={`p-2 text-left rounded-lg border transition-all text-xs ${
                       data.templateStyle === style.id
-                        ? 'border-[#C82333] bg-red-50/40 text-slate-900 font-semibold shadow-2xs'
-                        : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                        ? 'border-[#C82333] bg-soft/40 text-ink font-semibold shadow-2xs'
+                        : 'border-line hover:border-line text-muted'
                     }`}
                   >
                     <div>{style.label}</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">{style.desc}</div>
+                    <div className="text-[10px] text-muted/60 mt-0.5">{style.desc}</div>
                   </button>
                 ))}
               </div>
@@ -699,7 +699,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
 
             {/* Accent Color Picker */}
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-2">
+              <label className="block text-xs font-medium text-ink/90 mb-2">
                 Accent Theme Color
               </label>
               <div className="flex flex-wrap items-center gap-2">
@@ -710,8 +710,8 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                     onClick={() => onChange({ ...data, accentColor: c.hex })}
                     className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${
                       data.accentColor === c.hex
-                        ? 'border-slate-900 bg-slate-900 text-white font-medium shadow-2xs'
-                        : 'border-slate-200 hover:border-slate-300 text-slate-700 bg-white'
+                        ? 'border-slate-900 bg-ink text-white font-medium shadow-2xs'
+                        : 'border-line hover:border-line text-ink/90 bg-paper'
                     }`}
                   >
                     <span
@@ -727,7 +727,7 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
             {/* Typography & Spacing */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Typography Pairing
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
@@ -742,19 +742,19 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                       onClick={() => onChange({ ...data, fontFamily: font.id as CoverLetterFontFamily })}
                       className={`px-2 py-1.5 text-center rounded border text-xs transition-all ${
                         data.fontFamily === font.id
-                          ? 'border-[#C82333] bg-red-50 text-[#C82333] font-bold'
-                          : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                          ? 'border-[#C82333] bg-soft text-accent font-bold'
+                          : 'border-line text-muted hover:bg-soft'
                       }`}
                     >
                       <div className="text-xs">{font.label}</div>
-                      <div className="text-[10px] text-slate-400">{font.family}</div>
+                      <div className="text-[10px] text-muted/60">{font.family}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-ink/90 mb-1">
                   Line Density & Size
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
@@ -769,8 +769,8 @@ export const CoverLetterEditor: React.FC<CoverLetterEditorProps> = ({
                       onClick={() => onChange({ ...data, fontSize: density.id as CoverLetterData['fontSize'] })}
                       className={`px-2 py-2 text-center rounded border text-xs transition-all ${
                         data.fontSize === density.id
-                          ? 'border-[#C82333] bg-red-50 text-[#C82333] font-bold'
-                          : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                          ? 'border-[#C82333] bg-soft text-accent font-bold'
+                          : 'border-line text-muted hover:bg-soft'
                       }`}
                     >
                       {density.label}

@@ -225,19 +225,19 @@ ${sampleContent.education}
   };
 
   return (
-    <div className="bg-stone-50 min-h-screen py-12 text-stone-900">
+    <div className="bg-soft min-h-screen py-12 text-ink">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#C82333]">
-            <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-soft border border-line text-xs font-bold text-accent">
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
             100% Free · Verified ATS Single-Column Standard
           </div>
-          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-black text-ink tracking-tight">
             Free ATS-Verified Resume Templates
           </h1>
-          <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+          <p className="text-muted text-sm sm:text-base leading-relaxed">
             Engineered strictly for high-volume parsing systems like Workday, Greenhouse, Taleo, and Lever. No tables, no columns, no lost data. 
           </p>
         </div>
@@ -250,8 +250,8 @@ ${sampleContent.education}
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 selectedCategory === cat.id
-                  ? 'bg-[#C82333] text-white shadow-xs'
-                  : 'bg-white text-stone-700 border border-stone-200 hover:border-stone-300'
+                  ? 'bg-accent text-white shadow-xs'
+                  : 'bg-paper text-ink/90 border border-line hover:border-stone-300'
               }`}
             >
               {cat.label}
@@ -260,21 +260,21 @@ ${sampleContent.education}
         </div>
 
         {/* Matching Cover Letter Banner */}
-        <div className="bg-white rounded-2xl border border-red-200 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="bg-paper rounded-2xl border border-line p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-start sm:items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-red-50 text-[#C82333] flex items-center justify-center shrink-0 border border-red-100">
+            <div className="w-10 h-10 rounded-xl bg-soft text-accent flex items-center justify-center shrink-0 border border-red-100">
               <FileText className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm sm:text-base font-bold text-stone-900">
+                <h3 className="text-sm sm:text-base font-bold text-ink">
                   Pair with a Matching Cover Letter
                 </h3>
-                <span className="text-[10px] font-bold text-[#C82333] bg-red-50 px-2 py-0.5 rounded border border-red-200 uppercase">
+                <span className="text-[10px] font-bold text-accent bg-soft px-2 py-0.5 rounded border border-line uppercase">
                   New
                 </span>
               </div>
-              <p className="text-xs text-stone-600 mt-0.5 leading-relaxed">
+              <p className="text-xs text-muted mt-0.5 leading-relaxed">
                 Create a matching cover letter with the exact same fonts, margins, and letterhead styles in our live two-pane editor.
               </p>
             </div>
@@ -294,36 +294,36 @@ ${sampleContent.education}
           {filteredTemplates.map((template) => (
             <div
               key={template.id}
-              className="bg-white rounded-2xl border border-stone-200 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-shadow group"
+              className="bg-paper rounded-2xl border border-line p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-shadow group"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-red-50 text-[#C82333] border border-red-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-soft text-accent border border-line">
                     {template.categoryLabel}
                   </span>
-                  <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="text-xs font-mono font-bold text-accent bg-soft px-2 py-0.5 rounded border border-line">
                     {template.architecture || 'Single-Column Standard'}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="font-heading text-base font-bold text-stone-900 group-hover:text-[#C82333] transition-colors">
+                  <h3 className="font-heading text-base font-bold text-ink group-hover:text-accent transition-colors">
                     {template.title}
                   </h3>
-                  <p className="text-xs text-stone-500 mt-1 font-medium">
+                  <p className="text-xs text-muted/80 mt-1 font-medium">
                     Recommended for: {template.recommendedFor}
                   </p>
                   {template.compatibility && (
-                    <p className="text-[11px] text-stone-400 mt-0.5 font-mono">
+                    <p className="text-[11px] text-muted/60 mt-0.5 font-mono">
                       Parses in: {template.compatibility}
                     </p>
                   )}
                 </div>
 
-                <div className="space-y-1.5 pt-2 border-t border-stone-100">
+                <div className="space-y-1.5 pt-2 border-t border-line">
                   {template.highlightPoints.map((point, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-xs text-stone-600">
-                      <Check className="w-3.5 h-3.5 text-[#C82333] shrink-0 mt-0.5" />
+                    <div key={idx} className="flex items-start gap-2 text-xs text-muted">
+                      <Check className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
                       <span>{point}</span>
                     </div>
                   ))}
@@ -331,12 +331,12 @@ ${sampleContent.education}
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-6 mt-4 border-t border-stone-100 space-y-2">
+              <div className="pt-6 mt-4 border-t border-line space-y-2">
                 {/* Primary: Open in Live Editor */}
                 <button
                   type="button"
                   onClick={() => handleLaunchEditor(template)}
-                  className="w-full py-2.5 px-3 bg-[#C82333] hover:bg-[#A71D2A] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98]"
+                  className="w-full py-2.5 px-3 bg-accent hover:bg-accent/90 text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98]"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                   <span>Open in Live Editor (Free)</span>
@@ -349,16 +349,16 @@ ${sampleContent.education}
                     className="w-full py-2 px-2.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1"
                     title="Download clean printable vector PDF"
                   >
-                    <Printer className="w-3.5 h-3.5 text-stone-300" />
+                    <Printer className="w-3.5 h-3.5 text-line" />
                     <span>Print PDF</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setActivePreviewTemplate(template)}
-                    className="w-full py-2 px-2.5 bg-white hover:bg-stone-50 text-stone-700 border border-stone-200 text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1"
+                    className="w-full py-2 px-2.5 bg-paper hover:bg-soft text-ink/90 border border-line text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1"
                   >
-                    <Eye className="w-3.5 h-3.5 text-stone-500" />
+                    <Eye className="w-3.5 h-3.5 text-muted/80" />
                     <span>Preview</span>
                   </button>
                 </div>
@@ -379,20 +379,20 @@ ${sampleContent.education}
       {/* Template Preview Modal */}
       {activePreviewTemplate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden">
+          <div className="bg-paper rounded-2xl shadow-2xl border border-line w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="p-4 px-6 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+            <div className="p-4 px-6 border-b border-line flex items-center justify-between bg-soft">
               <div>
-                <h3 className="font-heading text-sm font-bold text-stone-900">
+                <h3 className="font-heading text-sm font-bold text-ink">
                   {activePreviewTemplate.title}
                 </h3>
-                <span className="text-[11px] text-[#C82333] font-semibold">
+                <span className="text-[11px] text-accent font-semibold">
                   Verified ATS Single-Column Standard Layout
                 </span>
               </div>
               <button
                 onClick={() => setActivePreviewTemplate(null)}
-                className="p-1.5 text-stone-400 hover:text-stone-600 rounded-lg"
+                className="p-1.5 text-muted/60 hover:text-muted rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -401,43 +401,43 @@ ${sampleContent.education}
             {/* Content */}
             <div className="p-6 overflow-y-auto space-y-4 text-xs font-sans">
               <div className="text-center pb-3 border-b-2 border-stone-900 space-y-1">
-                <h2 className="font-heading text-xl font-black text-[#C82333] uppercase">
+                <h2 className="font-heading text-xl font-black text-accent uppercase">
                   {activePreviewTemplate.sampleContent.name}
                 </h2>
-                <p className="text-[11px] text-stone-600">
+                <p className="text-[11px] text-muted">
                   {activePreviewTemplate.sampleContent.contact}
                 </p>
               </div>
 
               <div className="space-y-1">
-                <h4 className="font-bold text-[11px] uppercase text-[#C82333] border-b border-stone-200 pb-0.5">
+                <h4 className="font-bold text-[11px] uppercase text-accent border-b border-line pb-0.5">
                   Professional Summary
                 </h4>
-                <p className="text-[11px] text-stone-700 leading-relaxed">
+                <p className="text-[11px] text-ink/90 leading-relaxed">
                   {activePreviewTemplate.sampleContent.summary}
                 </p>
               </div>
 
               <div className="space-y-1">
-                <h4 className="font-bold text-[11px] uppercase text-[#C82333] border-b border-stone-200 pb-0.5">
+                <h4 className="font-bold text-[11px] uppercase text-accent border-b border-line pb-0.5">
                   Core Skills
                 </h4>
-                <p className="text-[11px] text-stone-700">
+                <p className="text-[11px] text-ink/90">
                   {activePreviewTemplate.sampleContent.skills.join(' · ')}
                 </p>
               </div>
 
               <div className="space-y-3">
-                <h4 className="font-bold text-[11px] uppercase text-[#C82333] border-b border-stone-200 pb-0.5">
+                <h4 className="font-bold text-[11px] uppercase text-accent border-b border-line pb-0.5">
                   Professional Experience
                 </h4>
                 {activePreviewTemplate.sampleContent.experience.map((exp, idx) => (
                   <div key={idx} className="space-y-1">
-                    <div className="flex justify-between font-bold text-stone-900">
+                    <div className="flex justify-between font-bold text-ink">
                       <span>{exp.role} | {exp.company}</span>
-                      <span className="font-mono text-stone-500 font-normal">{exp.dates}</span>
+                      <span className="font-mono text-muted/80 font-normal">{exp.dates}</span>
                     </div>
-                    <ul className="list-disc pl-4 space-y-0.5 text-stone-700">
+                    <ul className="list-disc pl-4 space-y-0.5 text-ink/90">
                       {exp.bullets.map((b, bIdx) => (
                         <li key={bIdx}>{b}</li>
                       ))}
@@ -448,11 +448,11 @@ ${sampleContent.education}
             </div>
 
             {/* Footer */}
-            <div className="p-4 px-6 border-t border-stone-200 bg-stone-50 flex items-center justify-between">
+            <div className="p-4 px-6 border-t border-line bg-soft flex items-center justify-between">
               <button
                 type="button"
                 onClick={() => handleDownloadPdf(activePreviewTemplate)}
-                className="px-3 py-2 bg-white border border-stone-200 text-stone-700 font-semibold text-xs rounded-lg flex items-center gap-1.5 hover:bg-stone-100"
+                className="px-3 py-2 bg-paper border border-line text-ink/90 font-semibold text-xs rounded-lg flex items-center gap-1.5 hover:bg-soft"
               >
                 <Printer className="w-3.5 h-3.5" />
                 Print / Save PDF
@@ -464,7 +464,7 @@ ${sampleContent.education}
                   handleLaunchEditor(activePreviewTemplate);
                   setActivePreviewTemplate(null);
                 }}
-                className="px-4 py-2 bg-[#C82333] hover:bg-[#A71D2A] text-white font-bold text-xs rounded-lg flex items-center gap-1.5 shadow-sm"
+                className="px-4 py-2 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-lg flex items-center gap-1.5 shadow-sm"
               >
                 <Edit3 className="w-3.5 h-3.5" />
                 Open in Live Editor (Free)

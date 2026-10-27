@@ -324,7 +324,7 @@ Requirements:
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="min-h-screen bg-soft text-ink pb-20">
       {/* 1. Bangladesh Talent Initiative & Global Market Banner */}
       <BangladeshInitiativeBanner
         currentMarket={targetMarket}
@@ -334,41 +334,41 @@ Requirements:
       />
 
       {/* Top Banner / Toolbar */}
-      <div className="bg-white border-b border-slate-200 sticky top-20 z-30 shadow-xs print:hidden">
+      <div className="bg-paper border-b border-line sticky top-20 z-30 shadow-xs print:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Left: Suite Identification */}
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm shadow-xs font-mono">
+              <div className="w-9 h-9 rounded-xl bg-ink text-white flex items-center justify-center font-bold text-sm shadow-xs font-mono">
                 ATS
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="font-heading text-lg font-bold text-slate-900 leading-none">
+                  <h1 className="font-heading text-lg font-bold text-ink leading-none">
                     ATS Career Workspace
                   </h1>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-soft text-ink border border-line">
                     OPEN SOURCE POWERED
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-muted/80 mt-0.5">
                   Single-Column RenderCV · Resume Matcher · ATS Screener · LinkedIn Optimizer
                 </p>
               </div>
             </div>
 
             {/* Middle: Tool Segmented Switcher */}
-            <div className="flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200">
+            <div className="flex items-center p-1 bg-soft rounded-xl border border-line">
               <button
                 type="button"
                 onClick={() => setActiveTab('builder')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                   activeTab === 'builder'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-paper text-ink shadow-xs'
+                    : 'text-muted hover:text-ink'
                 }`}
               >
-                <Layers className="w-3.5 h-3.5 text-emerald-600" />
+                <Layers className="w-3.5 h-3.5 text-accent" />
                 Live Builder
               </button>
               <button
@@ -376,13 +376,13 @@ Requirements:
                 onClick={() => setActiveTab('matcher')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                   activeTab === 'matcher'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-paper text-ink shadow-xs'
+                    : 'text-muted hover:text-ink'
                 }`}
               >
-                <Target className="w-3.5 h-3.5 text-emerald-600" />
+                <Target className="w-3.5 h-3.5 text-accent" />
                 Job Matcher
-                <span className="ml-1 px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-700 font-mono">
+                <span className="ml-1 px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-success-soft text-accent font-mono">
                   {jobMatch.matchPercentage}%
                 </span>
               </button>
@@ -391,14 +391,14 @@ Requirements:
                 onClick={() => setActiveTab('auditor')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                   activeTab === 'auditor'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-paper text-ink shadow-xs'
+                    : 'text-muted hover:text-ink'
                 }`}
               >
-                <SearchCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <SearchCheck className="w-3.5 h-3.5 text-accent" />
                 ATS Screener
                 <span className={`ml-1 px-1.5 py-0.2 text-[10px] font-bold rounded-full font-mono ${
-                  atsAudit.score >= 80 ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                  atsAudit.score >= 80 ? 'bg-success-soft text-accent' : 'bg-warning-soft text-warning'
                 }`}>
                   {atsAudit.score}/100
                 </span>
@@ -412,14 +412,14 @@ Requirements:
                 onClick={handleSaveToCloud}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
                   savedNotification
-                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                    ? 'bg-soft text-success border-success/30'
                     : userAccount?.isLoggedIn
-                    ? 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200'
-                    : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border-emerald-300 font-bold'
+                    ? 'bg-paper text-ink/90 hover:bg-soft border-line'
+                    : 'bg-soft text-success hover:bg-success-soft border-success/30 font-bold'
                 }`}
                 title="Save master resume and versions to cloud"
               >
-                <UploadCloud className="w-3.5 h-3.5 text-emerald-600" />
+                <UploadCloud className="w-3.5 h-3.5 text-accent" />
                 {savedNotification ? 'Saved to Cloud!' : userAccount?.isLoggedIn ? 'Save to Cloud' : 'Sign Up to Save'}
               </button>
 
@@ -436,27 +436,27 @@ Requirements:
               <button
                 type="button"
                 onClick={handlePrint}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 border border-slate-200 transition-colors flex items-center gap-1"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-ink/90 hover:bg-soft border border-line transition-colors flex items-center gap-1"
                 title="Print vector PDF with standard ATS margins"
               >
-                <Printer className="w-3.5 h-3.5 text-slate-500" />
+                <Printer className="w-3.5 h-3.5 text-muted/80" />
                 Print / Vector PDF
               </button>
 
               <button
                 type="button"
                 onClick={() => exportResumeAsJson(resumeData)}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 border border-slate-200 transition-colors hidden sm:flex items-center gap-1"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-ink/90 hover:bg-soft border border-line transition-colors hidden sm:flex items-center gap-1"
                 title="Download JSON backup"
               >
-                <Download className="w-3.5 h-3.5 text-slate-500" />
+                <Download className="w-3.5 h-3.5 text-muted/80" />
                 JSON
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsConsultationModalOpen(true)}
-                className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-3 py-1.5 rounded-lg bg-accent hover:bg-accent/90 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5"
               >
                 <Zap className="w-3.5 h-3.5" />
                 1-on-1 Review ($10)
@@ -479,14 +479,14 @@ Requirements:
             <div className="lg:col-span-6 space-y-5 print:hidden">
               
               {/* Dual Mode Switch & Sample Presets */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                  <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+              <div className="bg-paper rounded-2xl border border-line p-4 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-line">
+                  <div className="flex items-center gap-1 bg-soft p-1 rounded-lg">
                     <button
                       type="button"
                       onClick={() => setInputMode('form')}
                       className={`text-xs font-medium px-3 py-1 rounded-md transition-colors ${
-                        inputMode === 'form' ? 'bg-white text-slate-900 shadow-2xs font-bold' : 'text-slate-600'
+                        inputMode === 'form' ? 'bg-paper text-ink shadow-2xs font-bold' : 'text-muted'
                       }`}
                     >
                       Structured Form
@@ -495,7 +495,7 @@ Requirements:
                       type="button"
                       onClick={() => setInputMode('upload')}
                       className={`text-xs font-medium px-3 py-1 rounded-md transition-colors ${
-                        inputMode === 'upload' ? 'bg-white text-slate-900 shadow-2xs font-bold' : 'text-slate-600'
+                        inputMode === 'upload' ? 'bg-paper text-ink shadow-2xs font-bold' : 'text-muted'
                       }`}
                     >
                       Upload File (.pdf / .docx)
@@ -504,7 +504,7 @@ Requirements:
                       type="button"
                       onClick={() => setInputMode('paste')}
                       className={`text-xs font-medium px-3 py-1 rounded-md transition-colors ${
-                        inputMode === 'paste' ? 'bg-white text-slate-900 shadow-2xs font-bold' : 'text-slate-600'
+                        inputMode === 'paste' ? 'bg-paper text-ink shadow-2xs font-bold' : 'text-muted'
                       }`}
                     >
                       Quick Paste
@@ -512,47 +512,47 @@ Requirements:
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Presets:</span>
+                    <span className="text-[11px] font-semibold text-muted/60 uppercase tracking-wider">Presets:</span>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('developer')}
-                      className="text-xs px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Global Dev
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('bangladesh')}
-                      className="text-xs px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-success-soft text-success border border-line font-semibold"
                     >
                       🇧🇩 BD Tech
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('product')}
-                      className="text-xs px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       Product
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('devops')}
-                      className="text-xs px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
+                      className="text-xs px-2 py-0.5 rounded bg-soft hover:bg-slate-200 text-ink/90 font-medium"
                     >
                       DevOps
                     </button>
                   </div>
                 </div>
 
-                <div className="pt-2 flex items-center justify-between text-xs text-slate-500">
+                <div className="pt-2 flex items-center justify-between text-xs text-muted/80">
                   <span className="flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-accent" />
                     100% Client-Side Privacy — Nothing uploaded to external ad trackers
                   </span>
                   <button
                     type="button"
                     onClick={handleCopyText}
-                    className="text-emerald-700 font-semibold hover:underline flex items-center gap-1"
+                    className="text-accent font-semibold hover:underline flex items-center gap-1"
                   >
                     {copiedNotification ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                     {copiedNotification ? 'Copied!' : 'Copy Plain Text'}
@@ -566,8 +566,8 @@ Requirements:
                   onDragOver={(e) => { e.preventDefault(); setIsDraggingFile(true); }}
                   onDragLeave={() => setIsDraggingFile(false)}
                   onDrop={handleDrop}
-                  className={`bg-white rounded-2xl border-2 border-dashed p-8 text-center transition-all shadow-xs ${
-                    isDraggingFile ? 'border-emerald-500 bg-emerald-50/40' : 'border-slate-300 hover:border-slate-400'
+                  className={`bg-paper rounded-2xl border-2 border-dashed p-8 text-center transition-all shadow-xs ${
+                    isDraggingFile ? 'border-emerald-500 bg-soft/40' : 'border-line hover:border-slate-400'
                   }`}
                 >
                   <input
@@ -580,24 +580,24 @@ Requirements:
                     }}
                     className="hidden"
                   />
-                  <div className="w-14 h-14 mx-auto rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-soft text-accent flex items-center justify-center mb-3">
                     <UploadCloud className="w-7 h-7" />
                   </div>
-                  <h3 className="font-heading text-sm font-bold text-slate-900">
+                  <h3 className="font-heading text-sm font-bold text-ink">
                     Drag and Drop Your Existing CV / Resume
                   </h3>
-                  <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-4 leading-relaxed">
+                  <p className="text-xs text-muted/80 max-w-md mx-auto mt-1 mb-4 leading-relaxed">
                     Supports <strong>PDF, Word (.docx), and Plain Text</strong>. Our client-side engine extracts your career data, checks for outdated bio-data bloat, and auto-populates the editor.
                   </p>
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isProcessingFile}
-                    className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors inline-flex items-center gap-2"
+                    className="px-4 py-2 bg-ink hover:bg-ink text-white text-xs font-semibold rounded-lg shadow-sm transition-colors inline-flex items-center gap-2"
                   >
                     {isProcessingFile ? (
                       <>
-                        <RefreshCw className="w-4 h-4 animate-spin text-emerald-400" />
+                        <RefreshCw className="w-4 h-4 animate-spin text-success" />
                         Extracting Document Streams...
                       </>
                     ) : (
@@ -612,12 +612,12 @@ Requirements:
 
               {/* Paste / Raw Text Mode */}
               {inputMode === 'paste' && (
-                <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-xs">
+                <div className="bg-paper rounded-2xl border border-line p-6 space-y-4 shadow-xs">
                   <div className="space-y-1">
-                    <h3 className="font-heading text-sm font-bold text-slate-900">
+                    <h3 className="font-heading text-sm font-bold text-ink">
                       Import or Paste Existing Resume Text
                     </h3>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted/80">
                       Paste raw text from Google Docs or LinkedIn. Our parser extracts contact details, experience, and competencies into standardized single-column fields.
                     </p>
                   </div>
@@ -626,20 +626,20 @@ Requirements:
                     value={rawPasteText}
                     onChange={(e) => setRawPasteText(e.target.value)}
                     placeholder="Paste full resume text here..."
-                    className="w-full text-xs font-mono p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full text-xs font-mono p-3.5 bg-soft border border-line rounded-xl focus:bg-paper focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                   <div className="flex justify-end gap-2">
                     <button
                       type="button"
                       onClick={() => setRawPasteText(plainTextResume)}
-                      className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50"
+                      className="px-3 py-1.5 rounded-lg border border-line text-xs font-medium text-muted hover:bg-soft"
                     >
                       Load Current Form Text
                     </button>
                     <button
                       type="button"
                       onClick={handleParsePaste}
-                      className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs"
+                      className="px-4 py-2 rounded-lg bg-accent hover:bg-accent/90 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
                       Auto-Populate Structured Form
@@ -666,126 +666,126 @@ Requirements:
                   />
 
                   {/* 1. Contact Information */}
-                  <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                      <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
+                      <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-soft0" />
                         1. Contact Header (ATS Verified)
                       </h3>
-                      <span className="text-[11px] text-slate-400">Single-line ATS format</span>
+                      <span className="text-[11px] text-muted/60">Single-line ATS format</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">Full Name</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">Full Name</label>
                         <input
                           type="text"
                           value={resumeData.fullName}
                           onChange={(e) => setResumeData({ ...resumeData, fullName: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">Target Professional Title</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">Target Professional Title</label>
                         <input
                           type="text"
                           value={resumeData.targetTitle}
                           onChange={(e) => setResumeData({ ...resumeData, targetTitle: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">Email</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">Email</label>
                         <input
                           type="email"
                           value={resumeData.email}
                           onChange={(e) => setResumeData({ ...resumeData, email: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">Phone (+Country Code)</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">Phone (+Country Code)</label>
                         <input
                           type="text"
                           value={resumeData.phone}
                           onChange={(e) => setResumeData({ ...resumeData, phone: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">Location (City, Country)</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">Location (City, Country)</label>
                         <input
                           type="text"
                           value={resumeData.location}
                           onChange={(e) => setResumeData({ ...resumeData, location: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">LinkedIn Profile</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">LinkedIn Profile</label>
                         <input
                           type="text"
                           value={resumeData.linkedin}
                           onChange={(e) => setResumeData({ ...resumeData, linkedin: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">GitHub / Portfolio URL</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">GitHub / Portfolio URL</label>
                         <input
                           type="text"
                           value={resumeData.portfolio}
                           onChange={(e) => setResumeData({ ...resumeData, portfolio: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-slate-600 block mb-1">Work Authorization / Visa</label>
+                        <label className="text-[11px] font-semibold text-muted block mb-1">Work Authorization / Visa</label>
                         <input
                           type="text"
                           value={resumeData.visaStatus || ''}
                           placeholder="e.g. Authorized to work / Open to remote"
                           onChange={(e) => setResumeData({ ...resumeData, visaStatus: e.target.value })}
-                          className="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full text-xs px-3 py-2 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* 2. Professional Summary */}
-                  <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                      <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
+                      <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-soft0" />
                         2. Professional Summary
                       </h3>
-                      <span className="text-[11px] text-slate-400">2–3 sentences with key metrics</span>
+                      <span className="text-[11px] text-muted/60">2–3 sentences with key metrics</span>
                     </div>
 
                     <textarea
                       rows={3}
                       value={resumeData.summary}
                       onChange={(e) => setResumeData({ ...resumeData, summary: e.target.value })}
-                      className="w-full text-xs p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed"
+                      className="w-full text-xs p-3 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed"
                     />
                   </div>
 
                   {/* 3. Work Experience */}
-                  <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <div>
-                        <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                        <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-soft0" />
                           3. Work Experience (Google XYZ Metric Format)
                         </h3>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                        <p className="text-[11px] text-muted/80 mt-0.5">
                           Format: "Accomplished [X] measured by [Y] by doing [Z]"
                         </p>
                       </div>
                       <button
                         type="button"
                         onClick={handleAddExperience}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors flex items-center gap-1"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-ink text-white font-medium hover:bg-ink transition-colors flex items-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" /> Add Position
                       </button>
@@ -793,14 +793,14 @@ Requirements:
 
                     <div className="space-y-6">
                       {resumeData.experience.map((exp, expIdx) => (
-                        <div key={exp.id} className="p-4 bg-slate-50/70 border border-slate-200 rounded-xl space-y-3">
+                        <div key={exp.id} className="p-4 bg-soft/70 border border-line rounded-xl space-y-3">
                           <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-slate-700">Role #{expIdx + 1}</span>
+                            <span className="text-xs font-bold text-ink/90">Role #{expIdx + 1}</span>
                             {resumeData.experience.length > 1 && (
                               <button
                                 type="button"
                                 onClick={() => handleRemoveExperience(exp.id)}
-                                className="text-xs text-rose-600 hover:text-rose-700 flex items-center gap-1"
+                                className="text-xs text-danger hover:text-danger flex items-center gap-1"
                               >
                                 <Trash2 className="w-3 h-3" /> Remove Position
                               </button>
@@ -817,7 +817,7 @@ Requirements:
                                 newExp[expIdx].role = e.target.value;
                                 setResumeData({ ...resumeData, experience: newExp });
                               }}
-                              className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
+                              className="px-3 py-1.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
                             />
                             <input
                               type="text"
@@ -828,7 +828,7 @@ Requirements:
                                 newExp[expIdx].company = e.target.value;
                                 setResumeData({ ...resumeData, experience: newExp });
                               }}
-                              className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                              className="px-3 py-1.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                             />
                             <input
                               type="text"
@@ -839,7 +839,7 @@ Requirements:
                                 newExp[expIdx].location = e.target.value;
                                 setResumeData({ ...resumeData, experience: newExp });
                               }}
-                              className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                              className="px-3 py-1.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                             />
                             <input
                               type="text"
@@ -850,18 +850,18 @@ Requirements:
                                 newExp[expIdx].dates = e.target.value;
                                 setResumeData({ ...resumeData, experience: newExp });
                               }}
-                              className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                              className="px-3 py-1.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                             />
                           </div>
 
                           {/* Bullets */}
                           <div className="space-y-2 pt-1">
                             <div className="flex items-center justify-between">
-                              <span className="text-[11px] font-semibold text-slate-500 uppercase">Impact Bullets:</span>
+                              <span className="text-[11px] font-semibold text-muted/80 uppercase">Impact Bullets:</span>
                               <button
                                 type="button"
                                 onClick={() => handleAddBullet(exp.id)}
-                                className="text-[11px] text-emerald-700 font-semibold hover:underline flex items-center gap-1"
+                                className="text-[11px] text-accent font-semibold hover:underline flex items-center gap-1"
                               >
                                 <Plus className="w-3 h-3" /> Add Bullet
                               </button>
@@ -872,12 +872,12 @@ Requirements:
                               return (
                                 <div key={bIdx} className="space-y-1">
                                   <div className="flex items-start gap-1.5">
-                                    <span className="text-slate-400 mt-2 text-xs font-mono">•</span>
+                                    <span className="text-muted/60 mt-2 text-xs font-mono">•</span>
                                     <textarea
                                       rows={2}
                                       value={bullet}
                                       onChange={(e) => handleUpdateBullet(exp.id, bIdx, e.target.value)}
-                                      className="flex-1 text-xs p-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed"
+                                      className="flex-1 text-xs p-2 bg-paper border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed"
                                     />
                                     {exp.bullets.length > 1 && (
                                       <button
@@ -891,12 +891,12 @@ Requirements:
                                   </div>
                                   <div className="pl-4 flex items-center gap-2">
                                     {hasMetric ? (
-                                      <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 font-medium inline-flex items-center gap-1 font-mono">
+                                      <span className="text-[10px] text-accent bg-soft px-1.5 py-0.5 rounded border border-line font-medium inline-flex items-center gap-1 font-mono">
                                         <CheckCircle2 className="w-2.5 h-2.5" />
                                         Metric quantified
                                       </span>
                                     ) : (
-                                      <span className="text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 font-medium inline-flex items-center gap-1 font-mono">
+                                      <span className="text-[10px] text-warning bg-warning-soft px-1.5 py-0.5 rounded border border-warning/30 font-medium inline-flex items-center gap-1 font-mono">
                                         <AlertTriangle className="w-2.5 h-2.5" />
                                         Add % or $ metric
                                       </span>
@@ -912,18 +912,18 @@ Requirements:
                   </div>
 
                   {/* 4. Technical Skills */}
-                  <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                      <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
+                      <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-soft0" />
                         4. Core Competencies & Skills
                       </h3>
-                      <span className="text-[11px] text-slate-400">Comma-separated keywords</span>
+                      <span className="text-[11px] text-muted/60">Comma-separated keywords</span>
                     </div>
 
                     <div className="space-y-3 text-xs">
                       <div>
-                        <label className="font-semibold text-slate-600 block mb-1">Languages</label>
+                        <label className="font-semibold text-muted block mb-1">Languages</label>
                         <input
                           type="text"
                           value={resumeData.skills.languages}
@@ -931,11 +931,11 @@ Requirements:
                             ...resumeData,
                             skills: { ...resumeData.skills, languages: e.target.value }
                           })}
-                          className="w-full px-3 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full px-3 py-1.5 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="font-semibold text-slate-600 block mb-1">Frameworks & Libraries</label>
+                        <label className="font-semibold text-muted block mb-1">Frameworks & Libraries</label>
                         <input
                           type="text"
                           value={resumeData.skills.frameworks}
@@ -943,11 +943,11 @@ Requirements:
                             ...resumeData,
                             skills: { ...resumeData.skills, frameworks: e.target.value }
                           })}
-                          className="w-full px-3 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full px-3 py-1.5 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="font-semibold text-slate-600 block mb-1">Tools, Cloud & Databases</label>
+                        <label className="font-semibold text-muted block mb-1">Tools, Cloud & Databases</label>
                         <input
                           type="text"
                           value={resumeData.skills.toolsAndCloud}
@@ -955,26 +955,26 @@ Requirements:
                             ...resumeData,
                             skills: { ...resumeData.skills, toolsAndCloud: e.target.value }
                           })}
-                          className="w-full px-3 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full px-3 py-1.5 border border-line rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* 5. International Languages (CEFR Standards) */}
-                  <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <div>
-                        <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                          <Globe className="w-3.5 h-3.5 text-emerald-600" />
+                        <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                          <Globe className="w-3.5 h-3.5 text-accent" />
                           5. Spoken Languages (CEFR Standard)
                         </h3>
-                        <p className="text-[11px] text-slate-500">Crucial for international & remote jobs</p>
+                        <p className="text-[11px] text-muted/80">Crucial for international & remote jobs</p>
                       </div>
                       <button
                         type="button"
                         onClick={handleAddLanguage}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors flex items-center gap-1"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-ink text-white font-medium hover:bg-ink transition-colors flex items-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" /> Add Language
                       </button>
@@ -992,7 +992,7 @@ Requirements:
                               newL[lIdx].name = e.target.value;
                               setResumeData({ ...resumeData, languages: newL });
                             }}
-                            className="flex-1 text-xs px-3 py-1.5 border border-slate-200 rounded-lg"
+                            className="flex-1 text-xs px-3 py-1.5 border border-line rounded-lg"
                           />
                           <select
                             value={lang.level}
@@ -1001,7 +1001,7 @@ Requirements:
                               newL[lIdx].level = e.target.value as any;
                               setResumeData({ ...resumeData, languages: newL });
                             }}
-                            className="text-xs px-3 py-1.5 border border-slate-200 rounded-lg bg-white"
+                            className="text-xs px-3 py-1.5 border border-line rounded-lg bg-paper"
                           >
                             <option value="Native">Native</option>
                             <option value="Fluent">Fluent</option>
@@ -1013,7 +1013,7 @@ Requirements:
                           <button
                             type="button"
                             onClick={() => handleRemoveLanguage(lang.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600"
+                            className="p-1.5 text-muted/60 hover:text-danger"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1023,21 +1023,21 @@ Requirements:
                   </div>
 
                   {/* 6. Competitive Programming & Developer Ranks (Crucial for BD & Global Devs) */}
-                  <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <div className="bg-paper rounded-2xl border border-line p-5 shadow-xs space-y-3">
+                    <div className="flex items-center justify-between border-b border-line pb-2">
                       <div>
-                        <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                          <Code className="w-3.5 h-3.5 text-emerald-600" />
+                        <h3 className="font-heading text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                          <Code className="w-3.5 h-3.5 text-accent" />
                           6. Competitive Programming & Developer Profiles
                         </h3>
-                        <p className="text-[11px] text-slate-500">
+                        <p className="text-[11px] text-muted/80">
                           Codeforces, LeetCode, GitHub — proves pure algorithmic problem-solving
                         </p>
                       </div>
                       <button
                         type="button"
                         onClick={handleAddCpProfile}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors flex items-center gap-1"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-ink text-white font-medium hover:bg-ink transition-colors flex items-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" /> Add Profile
                       </button>
@@ -1045,7 +1045,7 @@ Requirements:
 
                     <div className="space-y-2">
                       {(resumeData.competitiveProgramming || []).map((cp, cpIdx) => (
-                        <div key={cp.id} className="flex flex-wrap items-center gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                        <div key={cp.id} className="flex flex-wrap items-center gap-2 bg-soft p-2.5 rounded-lg border border-line">
                           <select
                             value={cp.platform}
                             onChange={(e) => {
@@ -1053,7 +1053,7 @@ Requirements:
                               newCp[cpIdx].platform = e.target.value as any;
                               setResumeData({ ...resumeData, competitiveProgramming: newCp });
                             }}
-                            className="text-xs px-2 py-1 border border-slate-200 rounded bg-white font-semibold"
+                            className="text-xs px-2 py-1 border border-line rounded bg-paper font-semibold"
                           >
                             <option value="Codeforces">Codeforces</option>
                             <option value="LeetCode">LeetCode</option>
@@ -1071,7 +1071,7 @@ Requirements:
                               newCp[cpIdx].handle = e.target.value;
                               setResumeData({ ...resumeData, competitiveProgramming: newCp });
                             }}
-                            className="flex-1 min-w-[120px] text-xs px-2 py-1 border border-slate-200 rounded bg-white font-mono"
+                            className="flex-1 min-w-[120px] text-xs px-2 py-1 border border-line rounded bg-paper font-mono"
                           />
                           <input
                             type="text"
@@ -1082,7 +1082,7 @@ Requirements:
                               newCp[cpIdx].rating = e.target.value;
                               setResumeData({ ...resumeData, competitiveProgramming: newCp });
                             }}
-                            className="w-24 text-xs px-2 py-1 border border-slate-200 rounded bg-white font-mono"
+                            className="w-24 text-xs px-2 py-1 border border-line rounded bg-paper font-mono"
                           />
                           <input
                             type="text"
@@ -1093,12 +1093,12 @@ Requirements:
                               newCp[cpIdx].badgeOrRank = e.target.value;
                               setResumeData({ ...resumeData, competitiveProgramming: newCp });
                             }}
-                            className="w-28 text-xs px-2 py-1 border border-slate-200 rounded bg-white"
+                            className="w-28 text-xs px-2 py-1 border border-line rounded bg-paper"
                           />
                           <button
                             type="button"
                             onClick={() => handleRemoveCpProfile(cp.id)}
-                            className="p-1 text-slate-400 hover:text-rose-600"
+                            className="p-1 text-muted/60 hover:text-danger"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1114,41 +1114,41 @@ Requirements:
             <div className="lg:col-span-6 space-y-4">
               
               {/* Preview View Mode Switcher & Dynamic Color Picker */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3 print:hidden">
+              <div className="bg-paper rounded-2xl border border-line p-4 shadow-xs space-y-3 print:hidden">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+                  <div className="flex items-center gap-1 bg-soft p-1 rounded-lg">
                     <button
                       type="button"
                       onClick={() => setPreviewMode('visual')}
                       className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
-                        previewMode === 'visual' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600'
+                        previewMode === 'visual' ? 'bg-paper text-ink shadow-2xs' : 'text-muted'
                       }`}
                     >
-                      <FileText className="w-3.5 h-3.5 text-[#C82333]" />
+                      <FileText className="w-3.5 h-3.5 text-accent" />
                       RenderCV Preview
                     </button>
                     <button
                       type="button"
                       onClick={() => setPreviewMode('terminal')}
                       className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
-                        previewMode === 'terminal' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600'
+                        previewMode === 'terminal' ? 'bg-paper text-ink shadow-2xs' : 'text-muted'
                       }`}
                     >
-                      <Terminal className="w-3.5 h-3.5 text-[#C82333]" />
+                      <Terminal className="w-3.5 h-3.5 text-accent" />
                       What the ATS Reads
                     </button>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono text-slate-500">
-                      ATS Score: <strong className="text-[#C82333] font-bold">{atsAudit.score}/100</strong>
+                    <span className="text-[11px] font-mono text-muted/80">
+                      ATS Score: <strong className="text-accent font-bold">{atsAudit.score}/100</strong>
                     </span>
                     <button
                       type="button"
                       onClick={() => setIsConsultationModalOpen(true)}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-[#C82333] font-bold border border-red-200 transition-colors flex items-center gap-1"
+                      className="text-xs px-3 py-1.5 rounded-lg bg-soft hover:bg-red-100 text-accent font-bold border border-line transition-colors flex items-center gap-1"
                     >
-                      <Zap className="w-3.5 h-3.5 text-[#C82333]" />
+                      <Zap className="w-3.5 h-3.5 text-accent" />
                       1-on-1 Consultation ($10)
                     </button>
                   </div>
@@ -1156,9 +1156,9 @@ Requirements:
 
                 {/* Accent Color Palette Selector */}
                 {previewMode === 'visual' && (
-                  <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
-                      <Palette className="w-3.5 h-3.5 text-[#C82333]" />
+                  <div className="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-ink/90">
+                      <Palette className="w-3.5 h-3.5 text-accent" />
                       <span>Template Accent Color:</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -1176,20 +1176,20 @@ Requirements:
                           className={`w-5 h-5 rounded-full border transition-transform ${
                             accentColor === preset.color
                               ? 'scale-125 ring-2 ring-slate-900 border-white'
-                              : 'border-slate-300 hover:scale-110'
+                              : 'border-line hover:scale-110'
                           }`}
                           style={{ backgroundColor: preset.color }}
                         />
                       ))}
-                      <div className="flex items-center gap-1 pl-1.5 border-l border-slate-200">
-                        <label className="text-[10px] font-mono font-medium text-slate-500 cursor-pointer">
+                      <div className="flex items-center gap-1 pl-1.5 border-l border-line">
+                        <label className="text-[10px] font-mono font-medium text-muted/80 cursor-pointer">
                           Custom:
                         </label>
                         <input
                           type="color"
                           value={accentColor}
                           onChange={(e) => setAccentColor(e.target.value)}
-                          className="w-5 h-5 rounded cursor-pointer border border-slate-300 p-0 bg-transparent"
+                          className="w-5 h-5 rounded cursor-pointer border border-line p-0 bg-transparent"
                           title="Pick custom hex color"
                         />
                       </div>
@@ -1215,7 +1215,7 @@ Requirements:
               {previewMode === 'visual' && (
                 <div 
                   id="printable-ats-resume"
-                  className="bg-white rounded-2xl border border-slate-300 shadow-sm p-8 sm:p-10 font-sans text-slate-900 text-xs leading-relaxed space-y-5 print:border-none print:shadow-none print:p-0 print:m-0"
+                  className="bg-paper rounded-2xl border border-line shadow-sm p-8 sm:p-10 font-sans text-ink text-xs leading-relaxed space-y-5 print:border-none print:shadow-none print:p-0 print:m-0"
                 >
                   {/* Header */}
                   <div style={{ borderBottomColor: accentColor }} className="border-b-2 pb-3">
@@ -1227,14 +1227,14 @@ Requirements:
                         <p style={{ color: accentColor }} className="text-xs font-bold uppercase tracking-wider opacity-90">
                           {resumeData.targetTitle}
                         </p>
-                        <div className="text-[11px] text-slate-600 flex flex-wrap items-center gap-x-2 gap-y-1 pt-0.5">
+                        <div className="text-[11px] text-muted flex flex-wrap items-center gap-x-2 gap-y-1 pt-0.5">
                           {resumeData.phone && <span>{resumeData.phone}</span>}
                           {resumeData.email && <span>• {resumeData.email}</span>}
                           {resumeData.location && <span>• {resumeData.location}</span>}
                           {resumeData.linkedin && <span>• {resumeData.linkedin}</span>}
                           {resumeData.portfolio && <span>• {resumeData.portfolio}</span>}
                           {resumeData.visaStatus && targetMarket !== 'us_uk' && (
-                            <span className="font-medium text-slate-800">• {resumeData.visaStatus}</span>
+                            <span className="font-medium text-ink">• {resumeData.visaStatus}</span>
                           )}
                         </div>
                       </div>
@@ -1263,7 +1263,7 @@ Requirements:
                       >
                         Professional Summary
                       </h2>
-                      <p className="text-slate-700 text-[11px] leading-relaxed">
+                      <p className="text-ink/90 text-[11px] leading-relaxed">
                         {resumeData.summary}
                       </p>
                     </div>
@@ -1281,14 +1281,14 @@ Requirements:
                       {resumeData.experience.map(exp => (
                         <div key={exp.id} className="space-y-1">
                           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                            <span className="font-bold text-slate-900 text-xs">
-                              {exp.role} <span className="font-normal text-slate-600">| {exp.company}</span>
+                            <span className="font-bold text-ink text-xs">
+                              {exp.role} <span className="font-normal text-muted">| {exp.company}</span>
                             </span>
-                            <span className="text-[11px] text-slate-500 font-medium font-mono">
+                            <span className="text-[11px] text-muted/80 font-medium font-mono">
                               {exp.dates} · {exp.location}
                             </span>
                           </div>
-                          <ul className="list-disc list-outside pl-4 space-y-0.5 text-[11px] text-slate-700">
+                          <ul className="list-disc list-outside pl-4 space-y-0.5 text-[11px] text-ink/90">
                             {exp.bullets.map((b, idx) => (
                               <li key={idx} className="leading-relaxed">
                                 {b}
@@ -1308,15 +1308,15 @@ Requirements:
                     >
                       Technical & Professional Competencies
                     </h2>
-                    <div className="space-y-0.5 text-[11px] text-slate-700">
+                    <div className="space-y-0.5 text-[11px] text-ink/90">
                       {resumeData.skills.languages && (
-                        <p><strong className="text-slate-900">Languages:</strong> {resumeData.skills.languages}</p>
+                        <p><strong className="text-ink">Languages:</strong> {resumeData.skills.languages}</p>
                       )}
                       {resumeData.skills.frameworks && (
-                        <p><strong className="text-slate-900">Frameworks:</strong> {resumeData.skills.frameworks}</p>
+                        <p><strong className="text-ink">Frameworks:</strong> {resumeData.skills.frameworks}</p>
                       )}
                       {resumeData.skills.toolsAndCloud && (
-                        <p><strong className="text-slate-900">Cloud & Tools:</strong> {resumeData.skills.toolsAndCloud}</p>
+                        <p><strong className="text-ink">Cloud & Tools:</strong> {resumeData.skills.toolsAndCloud}</p>
                       )}
                     </div>
                   </div>
@@ -1330,10 +1330,10 @@ Requirements:
                       >
                         Competitive Programming & Algorithmic Problem Solving
                       </h2>
-                      <div className="text-[11px] text-slate-700 flex flex-wrap gap-x-4 gap-y-1">
+                      <div className="text-[11px] text-ink/90 flex flex-wrap gap-x-4 gap-y-1">
                         {resumeData.competitiveProgramming.map(cp => (
                           <span key={cp.id}>
-                            <strong className="text-slate-900">{cp.platform}:</strong> {cp.handle}
+                            <strong className="text-ink">{cp.platform}:</strong> {cp.handle}
                             {cp.rating ? ` (${cp.rating})` : ''} {cp.badgeOrRank ? `[${cp.badgeOrRank}]` : ''}
                           </span>
                         ))}
@@ -1350,10 +1350,10 @@ Requirements:
                       >
                         Languages
                       </h2>
-                      <div className="text-[11px] text-slate-700 flex flex-wrap gap-x-4 gap-y-1">
+                      <div className="text-[11px] text-ink/90 flex flex-wrap gap-x-4 gap-y-1">
                         {resumeData.languages.map(l => (
                           <span key={l.id}>
-                            <strong className="text-slate-900">{l.name}:</strong> {l.level}
+                            <strong className="text-ink">{l.name}:</strong> {l.level}
                           </span>
                         ))}
                       </div>
@@ -1372,10 +1372,10 @@ Requirements:
                       <div className="space-y-1">
                         {resumeData.education.map(edu => (
                           <div key={edu.id} className="flex justify-between items-baseline text-[11px]">
-                            <span className="font-bold text-slate-900">
-                              {edu.degree} – <span className="font-normal text-slate-700">{edu.institution}</span>
+                            <span className="font-bold text-ink">
+                              {edu.degree} – <span className="font-normal text-ink/90">{edu.institution}</span>
                             </span>
-                            <span className="text-slate-500 font-mono">{edu.dates}</span>
+                            <span className="text-muted/80 font-mono">{edu.dates}</span>
                           </div>
                         ))}
                       </div>
@@ -1394,10 +1394,10 @@ Requirements:
                       {resumeData.projects.map(proj => (
                         <div key={proj.id} className="space-y-0.5 text-[11px]">
                           <div className="flex justify-between items-baseline">
-                            <span className="font-bold text-slate-900">{proj.name}</span>
-                            <span className="text-slate-500 text-[10px] font-mono">{proj.roleOrTech}</span>
+                            <span className="font-bold text-ink">{proj.name}</span>
+                            <span className="text-muted/80 text-[10px] font-mono">{proj.roleOrTech}</span>
                           </div>
-                          <ul className="list-disc list-outside pl-4 space-y-0.5 text-slate-700">
+                          <ul className="list-disc list-outside pl-4 space-y-0.5 text-ink/90">
                             {proj.bullets.map((b, idx) => (
                               <li key={idx}>{b}</li>
                             ))}
@@ -1416,7 +1416,7 @@ Requirements:
                       >
                         Certifications & Honors
                       </h2>
-                      <ul className="list-disc list-outside pl-4 space-y-0.5 text-[11px] text-slate-700">
+                      <ul className="list-disc list-outside pl-4 space-y-0.5 text-[11px] text-ink/90">
                         {resumeData.certifications.map((c, idx) => (
                           <li key={idx}>{c}</li>
                         ))}
@@ -1427,12 +1427,12 @@ Requirements:
               )}
 
               {/* RenderCV Typographic Guarantee Callout */}
-              <div className="p-4 bg-slate-100 rounded-2xl border border-slate-200 text-xs space-y-1.5 print:hidden">
-                <div className="flex items-center gap-2 text-slate-900 font-bold">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <div className="p-4 bg-soft rounded-2xl border border-line text-xs space-y-1.5 print:hidden">
+                <div className="flex items-center gap-2 text-ink font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-accent" />
                   RenderCV Typographic Integrity Guarantee
                 </div>
-                <p className="text-slate-600 leading-relaxed text-[11px]">
+                <p className="text-muted leading-relaxed text-[11px]">
                   Renders strictly single-column layout with unboxed contact lines. Compatible with Workday, Greenhouse, Lever, and Taleo parsing algorithms.
                 </p>
               </div>
@@ -1448,14 +1448,14 @@ Requirements:
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left 6 Cols: Job Description Input */}
             <div className="lg:col-span-6 space-y-5">
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="bg-paper rounded-2xl border border-line p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between border-b border-line pb-3">
                   <div>
-                    <h2 className="font-heading text-base font-bold text-slate-900 flex items-center gap-2">
-                      <Target className="w-4 h-4 text-emerald-600" />
+                    <h2 className="font-heading text-base font-bold text-ink flex items-center gap-2">
+                      <Target className="w-4 h-4 text-accent" />
                       Target Job Description
                     </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-muted/80 mt-0.5">
                       Paste the employer's posting to extract required keywords and calculate alignment.
                     </p>
                   </div>
@@ -1464,7 +1464,7 @@ Requirements:
                     onClick={() => setJobDescription(
                       `Seeking Senior React/Node Developer. Must have: TypeScript, AWS, Docker, GraphQL, Jest, CI/CD pipelines, and agile scrum experience.`
                     )}
-                    className="text-xs text-emerald-700 font-semibold hover:underline"
+                    className="text-xs text-accent font-semibold hover:underline"
                   >
                     Load Sample JD
                   </button>
@@ -1475,17 +1475,17 @@ Requirements:
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
                   placeholder="Paste full job description from LinkedIn, Indeed, or company careers page..."
-                  className="w-full text-xs font-mono p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 leading-relaxed"
+                  className="w-full text-xs font-mono p-3 bg-soft border border-line rounded-xl focus:bg-paper focus:outline-none focus:ring-2 focus:ring-emerald-500 leading-relaxed"
                 />
 
-                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
-                  <div className="text-xs text-emerald-950">
+                <div className="p-3 bg-soft border border-line rounded-xl flex items-center justify-between">
+                  <div className="text-xs text-success">
                     <span className="font-bold">Algorithmic Match Score:</span> {jobMatch.matchPercentage}% Alignment
                   </div>
                   <button
                     type="button"
                     onClick={() => onOpenOrder('boost', { resume: plainTextResume, jd: jobDescription })}
-                    className="text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+                    className="text-xs font-bold bg-success hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
                     Tailor For This Job ($25)
@@ -1496,25 +1496,25 @@ Requirements:
 
             {/* Right 6 Cols: Gap Analysis */}
             <div className="lg:col-span-6 space-y-5">
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-5">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <h3 className="font-heading text-base font-bold text-slate-900">
+              <div className="bg-paper rounded-2xl border border-line p-6 shadow-xs space-y-5">
+                <div className="flex items-center justify-between border-b border-line pb-3">
+                  <h3 className="font-heading text-base font-bold text-ink">
                     Keyword Gap Analysis (Resume Matcher)
                   </h3>
-                  <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="text-xs font-mono font-bold text-accent bg-soft px-2 py-0.5 rounded border border-line">
                     {jobMatch.matchedKeywords.length} Matched / {jobMatch.missingHardSkills.length} Missing
                   </span>
                 </div>
 
                 {/* Matched Keywords */}
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <h4 className="text-xs font-bold text-ink/90 uppercase tracking-wider flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
                     Keywords Evidenced in Your Resume ({jobMatch.matchedKeywords.length})
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {jobMatch.matchedKeywords.map((kw, i) => (
-                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-soft text-success border border-line">
                         {kw}
                       </span>
                     ))}
@@ -1522,17 +1522,17 @@ Requirements:
                 </div>
 
                 {/* Missing Skills */}
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <h4 className="text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                <div className="space-y-2 pt-2 border-t border-line">
+                  <h4 className="text-xs font-bold text-danger uppercase tracking-wider flex items-center gap-1.5">
+                    <AlertTriangle className="w-3.5 h-3.5 text-danger" />
                     Critical Skills Missing from Resume ({jobMatch.missingHardSkills.length})
                   </h4>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-muted/80">
                     If you have hands-on experience with these, incorporate them into your work experience bullets:
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {jobMatch.missingHardSkills.map((sk, i) => (
-                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200">
+                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-danger-soft text-rose-800 border border-danger/30">
                         + {sk}
                       </span>
                     ))}
@@ -1541,14 +1541,14 @@ Requirements:
 
                 {/* Recommended Bullets */}
                 {jobMatch.recommendedBullets.length > 0 && (
-                  <div className="space-y-2 pt-2 border-t border-slate-100">
-                    <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                  <div className="space-y-2 pt-2 border-t border-line">
+                    <h4 className="text-xs font-bold text-ink/90 uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                       Recommended Bullet Additions
                     </h4>
-                    <ul className="space-y-2 text-xs text-slate-700">
+                    <ul className="space-y-2 text-xs text-ink/90">
                       {jobMatch.recommendedBullets.map((rb, idx) => (
-                        <li key={idx} className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 leading-relaxed font-mono text-[11px]">
+                        <li key={idx} className="p-2.5 bg-soft rounded-lg border border-line leading-relaxed font-mono text-[11px]">
                           {rb}
                         </li>
                       ))}
@@ -1566,62 +1566,62 @@ Requirements:
         {activeTab === 'auditor' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-12 space-y-6">
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+              <div className="bg-paper rounded-2xl border border-line p-6 shadow-xs space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-4">
                   <div>
-                    <h2 className="font-heading text-lg font-bold text-slate-900 flex items-center gap-2">
-                      <SearchCheck className="w-5 h-5 text-emerald-600" />
+                    <h2 className="font-heading text-lg font-bold text-ink flex items-center gap-2">
+                      <SearchCheck className="w-5 h-5 text-accent" />
                       ATS Diagnostic Audit Report
                     </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-muted/80 mt-0.5">
                       Multi-vector audit analyzing metric density, action verb strength, layout safety, and contact clarity.
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <div className="text-2xl font-black font-mono text-emerald-700 leading-none">
+                      <div className="text-2xl font-black font-mono text-accent leading-none">
                         {atsAudit.score}/100
                       </div>
-                      <span className="text-[10px] text-slate-400 font-semibold uppercase">Overall Score</span>
+                      <span className="text-[10px] text-muted/60 font-semibold uppercase">Overall Score</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Score Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">Quantified Metrics</span>
-                    <span className="text-lg font-mono font-bold text-slate-900">{atsAudit.categoryScores.quantifiedMetrics}/100</span>
+                  <div className="p-3 bg-soft rounded-xl border border-line">
+                    <span className="text-[10px] text-muted/80 uppercase font-semibold block">Quantified Metrics</span>
+                    <span className="text-lg font-mono font-bold text-ink">{atsAudit.categoryScores.quantifiedMetrics}/100</span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">Action Verbs</span>
-                    <span className="text-lg font-mono font-bold text-slate-900">{atsAudit.categoryScores.actionVerbs}/100</span>
+                  <div className="p-3 bg-soft rounded-xl border border-line">
+                    <span className="text-[10px] text-muted/80 uppercase font-semibold block">Action Verbs</span>
+                    <span className="text-lg font-mono font-bold text-ink">{atsAudit.categoryScores.actionVerbs}/100</span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">ATS Readability</span>
-                    <span className="text-lg font-mono font-bold text-slate-900">{atsAudit.categoryScores.atsReadability}/100</span>
+                  <div className="p-3 bg-soft rounded-xl border border-line">
+                    <span className="text-[10px] text-muted/80 uppercase font-semibold block">ATS Readability</span>
+                    <span className="text-lg font-mono font-bold text-ink">{atsAudit.categoryScores.atsReadability}/100</span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">Skills Relevance</span>
-                    <span className="text-lg font-mono font-bold text-slate-900">{atsAudit.categoryScores.skillsRelevance}/100</span>
+                  <div className="p-3 bg-soft rounded-xl border border-line">
+                    <span className="text-[10px] text-muted/80 uppercase font-semibold block">Skills Relevance</span>
+                    <span className="text-lg font-mono font-bold text-ink">{atsAudit.categoryScores.skillsRelevance}/100</span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 col-span-2 md:col-span-1">
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">Formatting Safety</span>
-                    <span className="text-lg font-mono font-bold text-slate-900">{atsAudit.categoryScores.structureFormatting}/100</span>
+                  <div className="p-3 bg-soft rounded-xl border border-line col-span-2 md:col-span-1">
+                    <span className="text-[10px] text-muted/80 uppercase font-semibold block">Formatting Safety</span>
+                    <span className="text-lg font-mono font-bold text-ink">{atsAudit.categoryScores.structureFormatting}/100</span>
                   </div>
                 </div>
 
                 {/* Findings & Action Items */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-line">
                   <div className="space-y-3">
-                    <h3 className="text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                    <h3 className="text-xs font-bold text-danger uppercase tracking-wider flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5 text-danger" />
                       Critical Attention Needed ({atsAudit.criticalIssues.length})
                     </h3>
-                    <ul className="space-y-2 text-xs text-slate-700">
+                    <ul className="space-y-2 text-xs text-ink/90">
                       {atsAudit.criticalIssues.map((issue, idx) => (
-                        <li key={idx} className="p-2.5 bg-rose-50/70 border border-rose-200 rounded-lg flex items-start gap-2">
-                          <span className="text-rose-600 font-bold">•</span>
+                        <li key={idx} className="p-2.5 bg-danger-soft/70 border border-danger/30 rounded-lg flex items-start gap-2">
+                          <span className="text-danger font-bold">•</span>
                           <span>{issue}</span>
                         </li>
                       ))}
@@ -1629,14 +1629,14 @@ Requirements:
                   </div>
 
                   <div className="space-y-3">
-                    <h3 className="text-xs font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <h3 className="text-xs font-bold text-accent uppercase tracking-wider flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
                       Quick Wins & Verified Compliances ({atsAudit.quickWins.length})
                     </h3>
-                    <ul className="space-y-2 text-xs text-slate-700">
+                    <ul className="space-y-2 text-xs text-ink/90">
                       {atsAudit.quickWins.map((win, idx) => (
-                        <li key={idx} className="p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-lg flex items-start gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <li key={idx} className="p-2.5 bg-soft/70 border border-line rounded-lg flex items-start gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
                           <span>{win}</span>
                         </li>
                       ))}
@@ -1645,7 +1645,7 @@ Requirements:
                 </div>
 
                 {/* Consultation Upsell Callout */}
-                <div className="p-5 bg-slate-900 text-white rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="p-5 bg-ink text-white rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div>
                     <h4 className="font-heading font-bold text-sm">Want a Senior Developer to Guarantee 90%+ Score?</h4>
                     <p className="text-xs text-slate-300 mt-1 max-w-xl">
@@ -1655,7 +1655,7 @@ Requirements:
                   <button
                     type="button"
                     onClick={() => setIsConsultationModalOpen(true)}
-                    className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition-colors shrink-0 flex items-center gap-1.5"
+                    className="px-4 py-2 bg-soft0 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition-colors shrink-0 flex items-center gap-1.5"
                   >
                     <Zap className="w-3.5 h-3.5" />
                     Get 1-on-1 Review ($10)

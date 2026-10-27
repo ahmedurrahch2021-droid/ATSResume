@@ -1,6 +1,11 @@
 /**
  * Prerender public routes to static HTML after `vite build`.
  *
+ * This script is run by the `ats-prerender` plugin in vite.config.ts, which
+ * fires on every build, so a host that calls `vite build` directly still gets
+ * one real HTML file per route, with its own metadata. Do not move it back
+ * into an npm script — that is how the site previously shipped as a shell.
+ *
  * For each route in PRERENDER_ROUTES this writes dist/<path>/index.html.
  * The file is the built dist/index.html with:
  *   - the route's <title> and meta description,
@@ -66,7 +71,7 @@ function renderPage(route: PageRoute): string {
   if (!element) throw new Error(`No prerender element for route "${route}"`);
   return renderToString(
     <StaticRouter location={ROUTE_PATHS[route]}>
-      <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-emerald-600 selection:text-white">
+      <div className="min-h-screen flex flex-col bg-paper text-ink font-sans antialiased selection:bg-accent selection:text-white">
         <Navbar
           currentPage={route}
           setCurrentPage={noop}
@@ -90,16 +95,37 @@ function withHead(template: string, route: PageRoute, body: string): string {
   const meta = ROUTE_META[route];
   if (!meta) throw new Error(`No metadata for route "${route}"`);
 
-  const titleTag = `<title>${meta.title}</title>`;
-  const robotsTag = meta.noindex ? '<meta name="robots" content="noindex,follow" />' : '';
-  const canonicalTag = `<link rel="canonical" href="${SITE_ORIGIN}${ROUTE_PATHS[route]}" />`;
-  const descTag = `<meta name="description" content="${meta.description}" />`;
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const url = `${SITE_ORIGIN}${ROUTE_PATHS[route] === '/' ? '/' : ROUTE_PATHS[route]}`;
+
+  const titleTag = `<title>${esc(meta.title)}</title>`;
+  const robotsTag = meta.noindex
+    ? '<meta name="robots" content="noindex,follow" />'
+    : '<meta name="robots" content="index,follow,max-image-preview:large" />';
+  const canonicalTag = `<link rel="canonical" href="${url}" />`;
+  const descTag = `<meta name="description" content="${esc(meta.description)}" />`;
+
+  // Social crawlers do not run JavaScript, so OG/Twitter tags must be in the
+  // served HTML for every route, not just the home page.
+  const socialTags = [
+    `<meta property="og:site_name" content="ATS Resume Maker" />`,
+    `<meta property="og:title" content="${esc(meta.title)}" />`,
+    `<meta property="og:description" content="${esc(meta.description)}" />`,
+    `<meta property="og:url" content="${url}" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${esc(meta.title)}" />`,
+    `<meta name="twitter:description" content="${esc(meta.description)}" />`,
+  ].join('\n    ');
 
   let html = template;
   if (!/<title>[^<]*<\/title>/.test(html)) throw new Error('Template has no <title>');
   html = html.replace(/<title>[^<]*<\/title>/, titleTag);
   if (!/<meta name="description"[^>]*\/>/.test(html)) throw new Error('Template has no description meta');
   html = html.replace(/<meta name="description"[^>]*\/>/, descTag);
+
+  // The base template carries home-page social tags; replace them per route.
+  html = html.replace(/<meta property="og:title"[^>]*\/>/, `<meta property="og:title" content="${esc(meta.title)}" />`);
+  html = html.replace(/<meta property="og:description"[^>]*\/>/, `<meta property="og:description" content="${esc(meta.description)}" />`);
 
   const emptyRoot = '<div id="root"></div>';
   if (!html.includes(emptyRoot)) throw new Error('Template has no empty #root element');
@@ -109,7 +135,10 @@ function withHead(template: string, route: PageRoute, body: string): string {
   // FAQPage markup is only emitted for approved items on the FAQ page.
   const faqData = route === 'faq' ? faqPageJsonLd(FAQ_ITEMS) : null;
   const faqTag = faqData ? `<script type="application/ld+json">${JSON.stringify(faqData)}</script>` : '';
-  const extraHead = [canonicalTag, robotsTag, jsonLdTag, faqTag].filter(Boolean).map((t) => `    ${t}`).join('\n');
+  const extraHead = [canonicalTag, robotsTag, socialTags, jsonLdTag, faqTag]
+    .filter(Boolean)
+    .map((t) => `    ${t}`)
+    .join('\n');
   return html.replace('</head>', `${extraHead}\n  </head>`);
 }
 

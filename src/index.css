@@ -1,37 +1,296 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   Warm Paper — design tokens
+   Colour system from ATSresume-site. Structure, spacing and component
+   anatomy from Enhancv. Neither brand's assets are reproduced.
+   ------------------------------------------------------------------ */
+
 @theme {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --color-brand-emerald: #059669;
-  --color-brand-emerald-light: #10B981;
-  --color-brand-slate: #0F172A;
-  --color-brand-slate-muted: #64748B;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Rubik", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-bangla: "Noto Sans Bengali", "Inter", ui-sans-serif, sans-serif;
+
+  /* surfaces */
+  --color-paper: #fbfaf7;
+  --color-surface: #ffffff;
+  --color-soft: #f2f0e9;
+  --color-line: #e7e4dc;
+
+  /* text */
+  --color-ink: #20211f;
+  --color-muted: #62645f;
+  --color-neutral: #50514c;
+
+  /* action */
+  --color-accent: #8e533c;
+  --color-accent-hover: #6f4233;
+  --color-accent-soft: #f5e9e3;
+  --color-accent-line: #c5a99a;
+
+  /* status */
+  --color-success: #34614d;
+  --color-success-soft: #e9f0e9;
+  --color-warning: #8a6a2f;
+  --color-warning-soft: #f6efdf;
+  --color-danger: #8c3b32;
+  --color-danger-soft: #f7e8e5;
+
+  /* legacy aliases — kept so existing screens keep working */
+  --color-brand-emerald: #8e533c;
+  --color-brand-emerald-light: #a3654b;
+  --color-brand-slate: #20211f;
+  --color-brand-slate-muted: #62645f;
+
+  --radius-chip: 5px;
+  --radius-input: 6px;
+  --radius-btn: 8px;
+  --radius-card: 8px;
+  --radius-sheet: 12px;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-lift: 0 2px 8px rgba(32, 33, 31, 0.08);
+}
+
+:root {
+  --paper: #fbfaf7;
+  --surface: #ffffff;
+  --soft: #f2f0e9;
+  --line: #e7e4dc;
+  --ink: #20211f;
+  --muted: #62645f;
+  --accent: #8e533c;
+  --accent-hover: #6f4233;
+  --accent-soft: #f5e9e3;
+  --accent-line: #c5a99a;
+  --success: #34614d;
+  --danger: #8c3b32;
+  --max: 1200px;
+  --gutter: 24px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.625;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--ink);
 }
 
-/* Custom scrollbars and printing styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Bangla copy */
+:lang(bn), .font-bangla {
+  font-family: var(--font-bangla);
 }
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+
+/* Focus: visible on every interactive element, never removed. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
 }
+
+/* Scrollbars in the warm palette, not default slate. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--soft);
+}
+::-webkit-scrollbar-thumb {
+  background: #d8d3c7;
+  border-radius: 6px;
+  border: 2px solid var(--soft);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-line);
+}
+
+/* ------------------------------------------------------------------
+   Layout primitives
+   ------------------------------------------------------------------ */
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  @media (max-width: 640px) {
+    .container-page {
+      padding-inline: 16px;
+    }
+  }
+
+  .section {
+    padding-block: 80px;
+  }
+
+  @media (max-width: 768px) {
+    .section {
+      padding-block: 48px;
+    }
+  }
+
+  .section-soft {
+    background: var(--soft);
+    border-block: 1px solid var(--line);
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .lede {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 62ch;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-hover {
+    transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  }
+  .card-hover:hover {
+    border-color: var(--accent-line);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding-inline: 16px;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+    cursor: pointer;
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--soft);
+    border-color: var(--accent-line);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--soft);
+    color: var(--ink);
+  }
+
+  .field {
+    width: 100%;
+    height: 44px;
+    padding-inline: 12px;
+    background: var(--surface);
+    border: 1px solid var(--accent-line);
+    border-radius: var(--radius-input);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .field::placeholder {
+    color: #9a9b95;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(142, 83, 60, 0.15);
+  }
+
+  textarea.field {
+    height: auto;
+    min-height: 96px;
+    padding-block: 10px;
+    line-height: 1.6;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-chip);
+    background: var(--soft);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .chip-active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--line);
+    border: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Print: only the resume sheet reaches paper.
+   ------------------------------------------------------------------ */
 
 @media print {
   header, footer, nav, .print\:hidden {
@@ -50,6 +309,21 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     margin: 0 !important;
     width: 100% !important;
   }
+  .page-break {
+    break-after: page;
+  }
+  a[href]::after {
+    content: "";
+  }
 }
 
-
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
