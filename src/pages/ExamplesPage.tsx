@@ -183,7 +183,7 @@ export const ExamplesPage: React.FC<ExamplesPageProps> = ({ onSelectPlan }) => {
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-accent" />
                   <span className="font-heading font-bold text-sm text-success">
-                    AFTER — ATS Resume Maker Overhaul
+                    AFTER — ATS Resume Lab Overhaul
                   </span>
                 </div>
                 <span className="text-xs font-mono font-bold text-success bg-success-soft px-2 py-0.5 rounded">

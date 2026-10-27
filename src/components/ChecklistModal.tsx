@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { CHECKLIST_ITEMS } from '../data/mockData';
 import { X, CheckCircle2, Download, Mail, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 
@@ -29,18 +29,18 @@ export const ChecklistModal: React.FC<ChecklistModalProps> = ({ isOpen, onClose,
   };
 
   const handleDownload = () => {
-    const textContent = `ATS RESUME MAKER — 25-POINT ATS RESUME AUDIT CHECKLIST
+    const textContent = `ATS Resume Lab â€” 25-POINT ATS RESUME AUDIT CHECKLIST
 Used to review 500+ resumes by Senior Web Developers.
 
 ${CHECKLIST_ITEMS.map((item, idx) => `[ ] ${idx + 1}. [${item.category}] ${item.title}\n    ${item.description}\n`).join('\n')}
 
-Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours starting at $10!`;
+Visit ATS Resume Lab to get your resume professionally rebuilt in 24 hours starting at $10!`;
 
     const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'ATS-Resume-Maker-25-Point-ATS-Checklist.txt';
+    link.download = 'ATS-Resume-Lab-25-Point-ATS-Checklist.txt';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -163,7 +163,7 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
                         {item.id}. {item.title}
                       </span>
                       <span className="text-[10px] text-muted/60 uppercase">
-                        · {item.category}
+                        Â· {item.category}
                       </span>
                     </div>
                     <p className="text-xs text-muted mt-0.5">
@@ -192,7 +192,7 @@ Visit ATS Resume Maker to get your resume professionally rebuilt in 24 hours sta
               }}
               className="px-4 py-2 bg-accent hover:bg-accent text-white font-semibold text-xs rounded-lg transition-colors whitespace-nowrap shadow-sm"
             >
-              Build My Resume — $10
+              Build My Resume â€” $10
             </button>
           </div>
         </div>

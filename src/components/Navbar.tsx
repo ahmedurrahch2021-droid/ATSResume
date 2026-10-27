@@ -166,13 +166,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, userAccount, onSignO
             to={ROUTE_PATHS.home}
             onClick={closeAll}
             className="flex shrink-0 items-center gap-2.5"
-            aria-label="ATS Resume Maker — home"
+            aria-label="ATS Resume Lab — home"
           >
             <span className="grid h-8 w-8 place-items-center rounded-[7px] border border-accent-line bg-accent-soft text-[13px] font-semibold text-accent">
               AR
             </span>
             <span className="text-[15px] font-semibold tracking-tight text-ink">
-              ATS Resume <span className="font-normal text-muted">Maker</span>
+              ATS Resume <span className="font-normal text-muted">Lab</span>
             </span>
           </Link>
 

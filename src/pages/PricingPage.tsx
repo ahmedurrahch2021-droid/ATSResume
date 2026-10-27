@@ -234,7 +234,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 Are there any recurring monthly charges?
               </h4>
               <p className="text-xs text-muted leading-relaxed">
-                Zero. Unlike automated resume websites that trick you into a $29.99/month recurring charge after a $2 trial, ATS Resume Maker is 100% one-time flat fee. You only pay for the service you order.
+                Zero. Unlike automated resume websites that trick you into a $29.99/month recurring charge after a $2 trial, ATS Resume Lab is 100% one-time flat fee. You only pay for the service you order.
               </p>
             </div>
             <div className="space-y-1.5">

@@ -16,14 +16,14 @@ export const SITE_JSON_LD = {
     {
       '@type': 'Organization',
       '@id': ORGANIZATION_ID,
-      name: 'ATS Resume Maker',
+      name: 'ATS Resume Lab',
       url: `${SITE_ORIGIN}/`,
       email: 'ahmedur.rahch2021@gmail.com',
     },
     {
       '@type': 'WebSite',
       '@id': WEBSITE_ID,
-      name: 'ATS Resume Maker',
+      name: 'ATS Resume Lab',
       url: `${SITE_ORIGIN}/`,
       publisher: { '@id': ORGANIZATION_ID },
     },

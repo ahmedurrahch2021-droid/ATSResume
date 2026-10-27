@@ -1,8 +1,8 @@
-# ATS Resume Maker
+# ATS Resume Lab
 
 A resume and job-application workspace for candidates who want to know what actually happens to their file: what a parser extracts, what breaks, and what the job description asks for.
 
-Live at **https://atsresumemaker.ai.studio** (Google AI Studio).
+Live preview: **https://atsresumemaker.ai.studio** (Google AI Studio). Intended public domain: **https://atsresume.co.uk** — set in `SITE_ORIGIN` once DNS points there.
 
 ## What is in here
 
@@ -46,6 +46,24 @@ The host must serve the files in `dist/` as static files, not rewrite every path
 4. Re-publish the site, then verify a deep page (e.g. `/pricing`) serves a `<link rel="canonical">` with the new host.
 
 Keep the old host serving a 301 redirect to the new one for at least a year, so existing links and search results transfer instead of 404ing.
+
+## Hosting
+
+The output is static files. Any host that serves `dist/` as files works.
+
+**Cloudflare Pages** (recommended — free TLS, CDN edge in Dhaka, builds from GitHub):
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Node version | 20 or 22 |
+
+**Hostinger** (static/ Git deploy): build with `npm run build` and upload the contents of `dist/` to `public_html`.
+
+In both cases: **do not add a catch-all rewrite to `/index.html`**. That rule would replace every prerendered page with the shell and throw away the per-route titles and canonicals. Some "SPA hosting" presets add it by default — remove it.
+
+`dist/` is generated and gitignored; it must be built on every deploy, never committed.
 
 ## Honesty rules for this codebase
 

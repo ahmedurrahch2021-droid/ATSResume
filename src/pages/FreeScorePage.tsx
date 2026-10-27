@@ -745,7 +745,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 Algorithmic Evaluation
               </span>
               <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-                ATS Resume Maker’s Resume Checker forms its score with a two-tier system
+                ATS Resume Lab’s Resume Checker forms its score with a two-tier system
               </h2>
               <div className="space-y-4 text-muted text-sm sm:text-base leading-relaxed">
                 <p>
@@ -861,7 +861,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               Put your resume score to work
             </h2>
             <p className="text-sm sm:text-base text-muted leading-relaxed">
-              Checking is just step one. ATS Resume Maker covers every stage of the international hiring cycle: the rewrite, the cover letter, the job tracking, and the interview prep.
+              Checking is just step one. ATS Resume Lab covers every stage of the international hiring cycle: the rewrite, the cover letter, the job tracking, and the interview prep.
             </p>
 
             {/* Tab Buttons */}
@@ -996,7 +996,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     Keep your resume history, upgrade everything around it
                   </h3>
                   <p className="text-sm text-muted leading-relaxed">
-                    The file you just checked can immediately become your working draft. Upload an old Word file or paste your LinkedIn URL, and ATS Resume Maker parses your career history into modern format.
+                    The file you just checked can immediately become your working draft. Upload an old Word file or paste your LinkedIn URL, and ATS Resume Lab parses your career history into modern format.
                   </p>
                 </div>
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-3 text-xs">

@@ -1,6 +1,6 @@
 {
-  "name": "ATS Resume Maker",
-  "description": "ATS-verified resume optimization, authentic single-column templates, and 24-hour developer overhaul. Tested against Workday, Greenhouse, and Lever.",
+  "name": "ATS Resume Lab",
+  "description": "See what a parser extracts from your resume, what breaks, and what the job asks for. Single-column templates, a matching cover letter, and a human review when you want one.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

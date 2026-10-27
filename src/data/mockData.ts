@@ -92,7 +92,7 @@ export const RESUME_EXAMPLES: ExampleResume[] = [
       ]
     },
     after: {
-      title: 'Growth & Lifecycle Marketing Manager (ATS Resume Maker Version)',
+      title: 'Growth & Lifecycle Marketing Manager (ATS Resume Lab Version)',
       summary: 'Data-driven Growth Marketer with 4+ years spearheading multi-channel B2B customer acquisition. Engineered inbound funnels generating $1.8M in pipeline and cut Customer Acquisition Cost (CAC) by 28% through lifecycle email sequences and automated lead scoring.',
       experience: [
         'Spearheaded full-funnel inbound marketing campaigns across LinkedIn Ads and organic search, scaling MQL pipeline by +140% YoY and directly attributing $420K in closed-won ARR.',
@@ -133,7 +133,7 @@ export const RESUME_EXAMPLES: ExampleResume[] = [
       ]
     },
     after: {
-      title: 'Senior Backend Engineer — Distributed Systems (ATS Resume Maker Version)',
+      title: 'Senior Backend Engineer — Distributed Systems (ATS Resume Lab Version)',
       summary: 'Senior Backend Engineer with 5+ years building fault-tolerant microservices and high-throughput transaction pipelines. Architected distributed Node.js/PostgreSQL services handling 10M+ daily events at 99.99% uptime with sub-50ms p99 response times.',
       experience: [
         'Architected and deployed distributed event-driven payment engine using Node.js, TypeScript, and Redis, successfully processing $12M+ in monthly transactions with zero downtime.',
@@ -172,7 +172,7 @@ export const RESUME_EXAMPLES: ExampleResume[] = [
       ]
     },
     after: {
-      title: 'Business Operations & Data Analyst (ATS Resume Maker Version)',
+      title: 'Business Operations & Data Analyst (ATS Resume Lab Version)',
       summary: 'Analytical and results-oriented graduate in Economics & Data Analytics (GPA 3.8/4.0). Proficient in SQL, Python, and Tableau, with hands-on consulting capstone experience delivering supply chain recommendations that projected $45K in annual logistics savings.',
       experience: [
         'Led 4-person consulting capstone team evaluating regional supply chain logistics; cleaned and modeled 15,000+ shipping records using Python (Pandas) and SQL.',
@@ -195,7 +195,7 @@ export const TESTIMONIALS: Testimonial[] = [
     name: 'Sarah M.',
     role: 'Product Marketing Manager',
     companyTarget: 'Series B FinTech',
-    quote: 'I had sent out 60+ resumes over 2 months with zero responses. Within 10 days of uploading my ATS Resume Maker overhaul, I had 3 recruiter screening calls and signed an offer 3 weeks later.',
+    quote: 'I had sent out 60+ resumes over 2 months with zero responses. Within 10 days of uploading my ATS Resume Lab overhaul, I had 3 recruiter screening calls and signed an offer 3 weeks later.',
     metric: '3 interviews in 10 days',
     avatarSeed: 'sarah',
     packageUsed: 'Career Boost ($25)'
@@ -233,9 +233,9 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'faq-1',
     category: 'quality',
-    question: 'How is ATS Resume Maker different from Canva or free AI resume builders?',
+    question: 'How is ATS Resume Lab different from Canva or free AI resume builders?',
     directAnswer: 'Free builders give generic static templates with no target job alignment. Raw AI hallucinate experiences. We tailor your bullets to the exact target job description, then a senior developer personally edits every line for ATS compliance and impact.',
-    extendedAnswer: 'Template tools like Canva export decorative columns and graphic icons that Applicant Tracking Systems (ATS) like Workday, Taleo, and Greenhouse fail to parse. Raw ChatGPT or Claude prompts frequently fabricate job duties or use robotic filler words. ATS Resume Maker combines AI speed with human editorial judgment: we calibrate your exact achievements to what the hiring manager is searching for.'
+    extendedAnswer: 'Template tools like Canva export decorative columns and graphic icons that Applicant Tracking Systems (ATS) like Workday, Taleo, and Greenhouse fail to parse. Raw ChatGPT or Claude prompts frequently fabricate job duties or use robotic filler words. ATS Resume Lab combines AI speed with human editorial judgment: we calibrate your exact achievements to what the hiring manager is searching for.'
   },
   {
     id: 'faq-2',
@@ -442,7 +442,7 @@ export const ATS_CASE_STUDY_DATA = {
     recruiterScreeningCalls: 6,
     finalRoundInterviews: 3,
     offerLanded: '$82,000 Base + Equity at Series B Tech Scaleup',
-    timeToOffer: '18 days after ATS Resume Maker overhaul'
+    timeToOffer: '18 days after ATS Resume Lab overhaul'
   }
 };
 

@@ -108,7 +108,7 @@ function withHead(template: string, route: PageRoute, body: string): string {
   // Social crawlers do not run JavaScript, so OG/Twitter tags must be in the
   // served HTML for every route, not just the home page.
   const socialTags = [
-    `<meta property="og:site_name" content="ATS Resume Maker" />`,
+    `<meta property="og:site_name" content="ATS Resume Lab" />`,
     `<meta property="og:title" content="${esc(meta.title)}" />`,
     `<meta property="og:description" content="${esc(meta.description)}" />`,
     `<meta property="og:url" content="${url}" />`,
@@ -185,7 +185,7 @@ console.log(`Wrote sitemap.xml with ${indexable.length} URLs.`);
 writeFileSync(
   join(DIST, 'robots.txt'),
   [
-    '# Crawl rules for ATS Resume Maker. Sitemap lists the indexable public pages.',
+    '# Crawl rules for ATS Resume Lab. Sitemap lists the indexable public pages.',
     'User-agent: *',
     '# Transactional order form: not for search results and not worth crawling.',
     'Disallow: /order',

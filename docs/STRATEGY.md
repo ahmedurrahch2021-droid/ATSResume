@@ -1,4 +1,4 @@
-# ATS Resume Maker — Locked Product & Design Strategy
+# ATS Resume Lab — Locked Product & Design Strategy
 
 **Status:** locked. Implementation follows this document. If a decision changes, it changes here first.
 **Research base:** 44 verified sources (catalog v2) + 4 synthesis reports + master audit v2.

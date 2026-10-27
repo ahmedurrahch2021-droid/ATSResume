@@ -77,7 +77,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 <Sparkles className="w-4 h-4" />
               </div>
               <span className="font-heading font-black text-xl tracking-tight text-ink">
-                ATS <span className="text-accent">Resume Maker</span>
+                ATS <span className="text-accent">Resume Lab</span>
               </span>
             </div>
             <p className="text-xs text-muted/80 leading-relaxed">
@@ -216,7 +216,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
 
         {/* Bottom copyright line */}
         <div className="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted/80">
-          <p>© 2026 ATS Resume Maker. All rights reserved. ATS-verified resume templates & career optimization.</p>
+          <p>© 2026 ATS Resume Lab. All rights reserved. ATS-verified resume templates & career optimization.</p>
           <div className="flex items-center gap-4">
             <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Privacy Policy</Link>
             <span>·</span>

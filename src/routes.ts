@@ -50,48 +50,48 @@ export interface RouteMeta {
 
 export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
   home: {
-    title: 'ATS Resume Maker | Free ATS Resume Checker & Templates',
+    title: 'ATS Resume Lab | Free ATS Resume Checker & Templates',
     description: 'Free ATS resume checker with clear fixes, plus single-column resume templates. Check your resume before you apply.',
   },
   'free-resume-score': {
-    title: 'Free ATS Resume Checker | ATS Resume Maker',
+    title: 'Free ATS Resume Checker | ATS Resume Lab',
     description: 'Upload your resume and get a free ATS check with clear fixes for formatting, keywords and measurable results.',
   },
   templates: {
-    title: 'ATS Resume Templates | ATS Resume Maker',
+    title: 'ATS Resume Templates | ATS Resume Lab',
     description: 'Single-column resume templates designed to be readable by applicant tracking systems.',
   },
   examples: {
-    title: 'Resume Examples by Role | ATS Resume Maker',
+    title: 'Resume Examples by Role | ATS Resume Lab',
     description: 'Resume examples organised by role and experience level, with notes on what each one does well.',
   },
   pricing: {
-    title: 'Pricing | ATS Resume Maker',
+    title: 'Pricing | ATS Resume Lab',
     description: 'Simple resume review packages. See what each package includes before you order.',
   },
   'how-it-works': {
-    title: 'How It Works | ATS Resume Maker',
-    description: 'How ATS Resume Maker checks and improves your resume, step by step.',
+    title: 'How It Works | ATS Resume Lab',
+    description: 'How ATS Resume Lab checks and improves your resume, step by step.',
   },
   faq: {
-    title: 'Resume FAQ | ATS Resume Maker',
+    title: 'Resume FAQ | ATS Resume Lab',
     description: 'Answers to common questions about ATS-friendly resumes, PDFs, length and keywords.',
   },
   about: {
-    title: 'About | ATS Resume Maker',
-    description: 'Who we are and how ATS Resume Maker approaches resume checking.',
+    title: 'About | ATS Resume Lab',
+    description: 'Who we are and how ATS Resume Lab approaches resume checking.',
   },
   contact: {
-    title: 'Contact | ATS Resume Maker',
-    description: 'Get in touch with the ATS Resume Maker team about your resume or your order.',
+    title: 'Contact | ATS Resume Lab',
+    description: 'Get in touch with the ATS Resume Lab team about your resume or your order.',
   },
   'cover-letter': {
-    title: 'Free ATS Cover Letter Builder | ATS Resume Maker',
+    title: 'Free ATS Cover Letter Builder | ATS Resume Lab',
     description: 'Build recruiter-ready, ATS-matching cover letters with live preview, modular cards, and vector PDF export.',
   },
   suite: {
-    title: 'Resume Editor | ATS Resume Maker',
-    description: 'Edit and check your resume in the ATS Resume Maker editor.',
+    title: 'Resume Editor | ATS Resume Lab',
+    description: 'Edit and check your resume in the ATS Resume Lab editor.',
     noindex: true,
   },
 };

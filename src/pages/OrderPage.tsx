@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { PACKAGES } from '../data/mockData';
 import { OrderFormData, PricingPackage } from '../types';
 import { 
@@ -62,7 +62,7 @@ export const OrderPage: React.FC<OrderPageProps> = ({
     specificRequirements: '',
     tone: 'modern',
     pageLength: '2',
-    targetSalary: '$60K – $90K',
+    targetSalary: '$60K â€“ $90K',
     specialNotes: '',
     paymentMethod: 'visa'
   });
@@ -109,9 +109,9 @@ export const OrderPage: React.FC<OrderPageProps> = ({
   const handleDownloadIntakeReceipt = () => {
     const paymentNetworkName = 
       formData.paymentMethod === 'visa'
-        ? 'VISA DEBIT/CREDIT (Verified by Visa · 3D Secure 2.0)'
+        ? 'VISA DEBIT/CREDIT (Verified by Visa Â· 3D Secure 2.0)'
         : formData.paymentMethod === 'mastercard'
-        ? 'MASTERCARD (Mastercard Identity Check · SecureCode)'
+        ? 'MASTERCARD (Mastercard Identity Check Â· SecureCode)'
         : formData.paymentMethod === 'card'
         ? `${cardBrand.toUpperCase()} (3D Secure Certified)`
         : formData.paymentMethod === 'paypal'
@@ -124,7 +124,7 @@ export const OrderPage: React.FC<OrderPageProps> = ({
         : '';
 
     const content = `=====================================================
-ATS RESUME MAKER — OFFICIAL ORDER RECEIPT & INTAKE CONFIRMATION
+ATS Resume Lab â€” OFFICIAL ORDER RECEIPT & INTAKE CONFIRMATION
 Order Reference: ${orderId}
 Status: PENDING PAYMENT CONFIRMATION
 =====================================================
@@ -151,14 +151,14 @@ TARGET ROLE BRIEF:
 100% MONEY-BACK POLICY:
 If you are not satisfied after your free revision round, contact ahmedur.rahch2021@gmail.com for an immediate full refund.
 
-Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
+Delivered by: Lead Engineer & Resume Editor, ATS Resume Lab
 =====================================================`;
 
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ATS-Resume-Maker-Receipt-${orderId}.txt`;
+    a.download = `ATS-Resume-Lab-Receipt-${orderId}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -218,7 +218,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     </span>
                   )}
                   <span className="text-xs font-bold text-ink">
-                    · ${totalAmount}.00 USD Paid
+                    Â· ${totalAmount}.00 USD Paid
                   </span>
                 </div>
               </div>
@@ -316,7 +316,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
             Order Your Professional Resume Overhaul
           </h1>
           <p className="text-xs sm:text-sm text-muted mt-1">
-            Fill this out carefully — the more specific detail you provide, the higher your interview callback rate will be.
+            Fill this out carefully â€” the more specific detail you provide, the higher your interview callback rate will be.
           </p>
         </div>
 
@@ -353,7 +353,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     ? 'bg-accent text-white' 
                     : 'bg-soft text-muted/80'
                 }`}>
-                  {isCompleted ? '✓' : s.num}
+                  {isCompleted ? 'âœ“' : s.num}
                 </div>
                 <span className="hidden md:inline">{s.label}</span>
               </button>
@@ -426,9 +426,9 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
                     className="w-full p-2.5 text-xs sm:text-sm border border-line rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none"
                   >
-                    <option value="Morning (9 AM – 12 PM)">Morning (9 AM – 12 PM)</option>
-                    <option value="Afternoon (12 PM – 5 PM)">Afternoon (12 PM – 5 PM)</option>
-                    <option value="Evening (5 PM – 9 PM)">Evening (5 PM – 9 PM)</option>
+                    <option value="Morning (9 AM â€“ 12 PM)">Morning (9 AM â€“ 12 PM)</option>
+                    <option value="Afternoon (12 PM â€“ 5 PM)">Afternoon (12 PM â€“ 5 PM)</option>
+                    <option value="Evening (5 PM â€“ 9 PM)">Evening (5 PM â€“ 9 PM)</option>
                     <option value="Anytime">Anytime</option>
                   </select>
                 </div>
@@ -571,7 +571,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                   Step 3 of 5: Your Career Background & Experience
                 </h2>
                 <p className="text-xs text-muted/80 mt-0.5">
-                  Share your raw work history. Don't worry about perfect formatting — we rewrite it all.
+                  Share your raw work history. Don't worry about perfect formatting â€” we rewrite it all.
                 </p>
               </div>
 
@@ -639,7 +639,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                             : 'bg-soft text-ink/90 border-line hover:bg-soft'
                         }`}
                       >
-                        {isChecked ? '✓ ' : '+ '}
+                        {isChecked ? 'âœ“ ' : '+ '}
                         {sk}
                       </button>
                     );
@@ -726,7 +726,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-semibold text-ink/90">
-                    Paste the Job Description (Recommended) <span className="text-accent font-bold">★ High Impact</span>
+                    Paste the Job Description (Recommended) <span className="text-accent font-bold">â˜… High Impact</span>
                   </label>
                   <span className="text-[11px] text-muted/60">
                     Copy/paste from LinkedIn or job board
@@ -776,9 +776,9 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     className="w-full p-2 text-xs border border-line rounded-lg bg-paper"
                   >
                     <option value="Under $40K">Under $40K</option>
-                    <option value="$40K – $60K">$40K – $60K</option>
-                    <option value="$60K – $90K">$60K – $90K</option>
-                    <option value="$90K – $130K">$90K – $130K</option>
+                    <option value="$40K â€“ $60K">$40K â€“ $60K</option>
+                    <option value="$60K â€“ $90K">$60K â€“ $90K</option>
+                    <option value="$90K â€“ $130K">$90K â€“ $130K</option>
                     <option value="$130K+">$130K+</option>
                   </select>
                 </div>
@@ -851,7 +851,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                 <div className="pt-2 border-t border-line flex items-center justify-between">
                   <div>
                     <span className="font-heading font-bold text-base text-ink block">Total Due:</span>
-                    <span className="text-[11px] text-muted/80">One-time flat fee · Zero recurring bills</span>
+                    <span className="text-[11px] text-muted/80">One-time flat fee Â· Zero recurring bills</span>
                   </div>
                   <span className="font-heading text-2xl font-extrabold text-accent">
                     ${totalAmount}.00 USD
@@ -895,7 +895,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                         VISA
                       </span>
                     </div>
-                    <span className="text-[10px] text-muted/80 block">Verified by Visa · 3DS 2.0</span>
+                    <span className="text-[10px] text-muted/80 block">Verified by Visa Â· 3DS 2.0</span>
                   </button>
 
                   {/* Option 2: Mastercard */}
@@ -921,7 +921,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                         <span className="w-2.5 h-2.5 rounded-full bg-warning-soft0 inline-block opacity-90"></span>
                       </span>
                     </div>
-                    <span className="text-[10px] text-muted/80 block">Identity Check · SecureCode</span>
+                    <span className="text-[10px] text-muted/80 block">Identity Check Â· SecureCode</span>
                   </button>
 
                   {/* Option 3: PayPal */}
@@ -1112,7 +1112,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                                   setFormData(prev => ({ ...prev, paymentMethod: 'mastercard' }));
                                 }
                               }}
-                              placeholder="•••• •••• •••• ••••"
+                              placeholder="â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢"
                               className="w-full p-2.5 pl-3 pr-24 text-xs sm:text-sm font-mono border border-line rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none tracking-wider"
                             />
                             <div className="absolute right-2.5 top-2 flex items-center gap-1">
@@ -1158,7 +1158,7 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                       <div className="p-2.5 rounded-lg bg-soft border border-line flex items-center justify-between text-[11px] text-muted/80">
                         <span className="flex items-center gap-1.5 text-success font-medium">
                           <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-                          Encrypted token transaction · Card details are never stored on server
+                          Encrypted token transaction Â· Card details are never stored on server
                         </span>
                         <span className="text-muted/60 font-mono">SSL 256-Bit</span>
                       </div>
@@ -1175,12 +1175,12 @@ Delivered by: Lead Engineer & Resume Editor, ATS Resume Maker
                     <div className="flex flex-col sm:flex-row items-center gap-4 bg-paper p-4 rounded-xl border border-line">
                       <div className="w-24 h-24 bg-ink text-white rounded-lg flex flex-col items-center justify-center text-center p-2 shrink-0">
                         <span className="text-[10px] font-mono">UPI QR</span>
-                        <span className="font-bold text-xs text-success">₹{(totalAmount * 84).toLocaleString()}</span>
+                        <span className="font-bold text-xs text-success">â‚¹{(totalAmount * 84).toLocaleString()}</span>
                         <span className="text-[9px] text-muted/60">Scan to pay</span>
                       </div>
                       <div className="text-xs space-y-1.5 text-ink/90">
                         <p>UPI VPA: <strong className="font-mono text-ink">atsresumemaker@upi</strong></p>
-                        <p>Total INR: <strong>₹{(totalAmount * 84).toLocaleString()}</strong> (~${totalAmount} USD)</p>
+                        <p>Total INR: <strong>â‚¹{(totalAmount * 84).toLocaleString()}</strong> (~${totalAmount} USD)</p>
                         <button
                           type="button"
                           onClick={() => {

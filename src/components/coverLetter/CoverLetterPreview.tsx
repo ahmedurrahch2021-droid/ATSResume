@@ -208,7 +208,7 @@ export const CoverLetterPreview: React.FC<CoverLetterPreviewProps> = ({
           {/* Footer watermark/trust indicator */}
           <div className="border-t border-line pt-3 mt-8 flex justify-between items-center text-[10px] text-muted/60">
             <span>Standard ATS-Compliant Layout</span>
-            <span>Created with ATS Resume Maker</span>
+            <span>Created with ATS Resume Lab</span>
           </div>
         </div>
       </div>

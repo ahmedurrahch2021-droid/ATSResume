@@ -1,10 +1,10 @@
 # Architecture
 
-Source of truth for how ATS Resume Maker is built. Describes the code as it is on this branch. Where the code and this file disagree, fix one of them the same day.
+Source of truth for how ATS Resume Lab is built. Describes the code as it is on this branch. Where the code and this file disagree, fix one of them the same day.
 
 ## 1. Overview
 
-ATS Resume Maker is a client-only React single-page app that helps job seekers check and improve resumes for applicant tracking systems (ATS). It is sold as a free checker plus paid human-reviewed resume packages.
+ATS Resume Lab is a client-only React single-page app that helps job seekers check and improve resumes for applicant tracking systems (ATS). It is sold as a free checker plus paid human-reviewed resume packages.
 
 - **Live (AI Studio):** https://atsresumemaker.ai.studio
 - **Canonical origin in code:** `SITE_ORIGIN` in `src/routes.ts`

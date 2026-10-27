@@ -1,6 +1,6 @@
 # Database
 
-ATS Resume Maker has **no database and no server**. Nothing is stored on a server. This file documents the only persisted data (browser `localStorage`) and the in-memory data models, so changes to them are deliberate.
+ATS Resume Lab has **no database and no server**. Nothing is stored on a server. This file documents the only persisted data (browser `localStorage`) and the in-memory data models, so changes to them are deliberate.
 
 ## Conventions
 
