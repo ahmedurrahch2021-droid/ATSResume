@@ -292,6 +292,64 @@ h1, h2, h3, h4, h5, h6, .font-heading {
    Print: only the resume sheet reaches paper.
    ------------------------------------------------------------------ */
 
+/* Workspace: a quiet section rail, focused form, and an actual A4 canvas. */
+.workspace-container {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+.workspace-columns { display: grid; gap: 24px; align-items: start; }
+.workspace-form-pane, .workspace-preview-pane, .workspace-navigation { min-width: 0; }
+.workspace-preview-pane { background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.workspace-form-pane [id] { scroll-margin-top: 100px; }
+.resume-preview-container { position: relative; min-width: 0; max-width: 100%; overflow-x: auto; padding-bottom: 4px; }
+.resume-pages { display: grid; gap: 24px; }
+.resume-page-shell { position: relative; margin-inline: auto; flex: none; }
+.resume-document {
+  padding: var(--resume-padding, 60px);
+  color: #20211f;
+  background: #fff;
+  font-size: 14.6667px;
+  line-height: 1.4;
+  transform-origin: top left;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+.resume-measure { position: fixed; left: -12000px; top: 0; visibility: hidden; pointer-events: none; box-shadow: none; }
+.resume-block { padding: 0 0 4px; white-space: pre-wrap; overflow-wrap: anywhere; box-sizing: border-box; }
+.resume-block-name { font-size: 26.6667px; font-weight: 700; line-height: 1.15; color: var(--resume-accent); padding-bottom: 6px; }
+.resume-block-title { font-weight: 700; padding-bottom: 4px; }
+.resume-block-contact { font-size: 13.3333px; line-height: 1.4; padding-bottom: 3px; }
+.resume-block-heading { font-size: 16px; font-weight: 700; color: var(--resume-accent); padding-top: 12px; padding-bottom: 6px; }
+.resume-block-role { font-weight: 700; padding-top: 8px; padding-bottom: 4px; }
+.resume-block-detail { display: block; font-weight: 400; font-size: 13.3333px; line-height: 1.4; }
+.resume-block-bullet { position: relative; padding-left: 16px; }
+.resume-bullet-marker { position: absolute; left: 2px; }
+.resume-block-photo { padding: 8px 0; }
+.resume-block-photo img { display: block; width: 80px; height: 80px; object-fit: cover; }
+.resume-spacing-compact { line-height: 1.25; }
+.resume-empty-preview { color: #62645f; font-size: 14px; line-height: 1.6; }
+@media (min-width: 1024px) {
+  .workspace-columns { grid-template-columns: 180px minmax(320px, .9fr) minmax(0, 1.1fr); gap: 20px; }
+  .workspace-navigation { position: sticky; top: 96px; }
+  .workspace-form-pane, .workspace-preview-pane { max-height: calc(100vh - 104px); overflow-y: auto; scrollbar-gutter: stable; }
+  .workspace-form-pane { padding: 3px; }
+  .workspace-preview-pane { position: sticky; top: 88px; }
+  .workspace-form-pane [id] { scroll-margin-top: 20px; }
+}
+@media (min-width: 1280px) { .workspace-columns { grid-template-columns: 192px minmax(350px, .85fr) minmax(0, 1.15fr); gap: 24px; } }
+@media (max-width: 1023px) {
+  .workspace-mobile-hidden { display: none; }
+  .workspace-navigation { display: grid; gap: 12px; }
+}
+@media (max-width: 640px) {
+  .workspace-container { padding-inline: 16px; }
+  .workspace-columns { gap: 16px; }
+  .workspace-preview-pane { padding: 8px; }
+  .resume-workspace .field { font-size: 16px; }
+}
+
 @media print {
   header, footer, nav, .print\:hidden {
     display: none !important;

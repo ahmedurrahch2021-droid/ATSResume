@@ -30,37 +30,37 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
       <div className="border-b border-line/80 py-8 px-4 sm:px-6 lg:px-8 bg-soft/60">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex items-start gap-3.5">
-            <div className="p-2.5 rounded-xl bg-soft text-accent mt-0.5 border border-red-100 shrink-0">
+            <div className="p-2.5 rounded-xl bg-soft text-accent mt-0.5 border border-line shrink-0">
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-ink font-semibold text-sm">24-Hour Guaranteed Turnaround</h4>
+              <h4 className="text-ink font-semibold text-sm">Free tools you can act on</h4>
               <p className="text-xs text-muted/80 mt-1 leading-relaxed">
-                Personalized rewrite delivered in printable vector PDF & editable Word (.docx).
+                Check your file, edit the same draft and download an editable DOCX or a PDF.
               </p>
             </div>
           </div>
 
           <div className="flex items-start gap-3.5">
-            <div className="p-2.5 rounded-xl bg-soft text-accent mt-0.5 border border-red-100 shrink-0">
+            <div className="p-2.5 rounded-xl bg-soft text-accent mt-0.5 border border-line shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-ink font-semibold text-sm">100% Money-Back Guarantee</h4>
+              <h4 className="text-ink font-semibold text-sm">Your draft stays in your browser</h4>
               <p className="text-xs text-muted/80 mt-1 leading-relaxed">
-                Free revision rounds included. If our draft fails to earn interview callbacks, instant refund.
+                Local checking and editing require no upload to a server. You choose whether to share a file for human review.
               </p>
             </div>
           </div>
 
           <div className="flex items-start gap-3.5">
-            <div className="p-2.5 rounded-xl bg-soft text-accent mt-0.5 border border-red-100 shrink-0">
+            <div className="p-2.5 rounded-xl bg-soft text-accent mt-0.5 border border-line shrink-0">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-ink font-semibold text-sm">Senior Tech Recruiter & Dev QA</h4>
+              <h4 className="text-ink font-semibold text-sm">Specific findings, explained</h4>
               <p className="text-xs text-muted/80 mt-1 leading-relaxed">
-                Zero robotic AI hallucinations. Every resume passes Workday, Greenhouse, Taleo, and Lever.
+                See what triggered a finding and where to edit it. This tool does not predict interviews or employer decisions.
               </p>
             </div>
           </div>
@@ -81,19 +81,19 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               </span>
             </div>
             <p className="text-xs text-muted/80 leading-relaxed">
-              Algorithmic resume optimization, live printable vector PDF builder, and expert human review for global job markets.
+              Read your resume’s extracted text, improve the draft and prepare a clearer job application.
             </p>
-            <div className="p-2.5 rounded-xl bg-soft/70 border border-red-100 text-xs text-ink/90 space-y-1">
+            <div className="p-2.5 rounded-xl bg-soft/70 border border-line text-xs text-ink/90 space-y-1">
               <p className="font-semibold text-accent flex items-center gap-1.5">
                 <span>🇧🇩</span> Bangladesh Talent Initiative
               </p>
               <p className="text-[11px] text-muted">
-                100% Free Forever DIY builder, ATS scanner, and unlimited vector PDF downloads for all Bangladeshi job seekers.
+                Free checking, editing and downloads for Bangladeshi job seekers and applicants elsewhere.
               </p>
             </div>
             <div className="text-xs text-muted/80 space-y-0.5">
               <p className="font-medium text-ink/90">Founder Direct Support:</p>
-              <p>ahmedur.rahch2021@gmail.com · 24/7 Monitoring</p>
+              <p><a href="mailto:ahmedur.rahch2021@gmail.com" className="break-all hover:text-accent">ahmedur.rahch2021@gmail.com</a></p>
             </div>
           </div>
 
@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link to={ROUTE_PATHS['editor']} onClick={handleNavClick} className="text-accent font-bold hover:text-[#A71D2A] transition-colors flex items-center gap-1.5">
+                <Link to={ROUTE_PATHS['editor']} onClick={handleNavClick} className="text-accent font-bold hover:text-accent-hover transition-colors flex items-center gap-1.5">
                   <PenTool className="w-3.5 h-3.5" />
                   <span>Live CV Editor (Free PDF)</span>
                 </Link>
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               </li>
               <li>
                 <Link to={ROUTE_PATHS['free-resume-score']} onClick={handleNavClick} className="hover:text-ink transition-colors">
-                  Free ATS Resume Score Scanner
+                  Free Resume Checker
                 </Link>
               </li>
               <li>
@@ -173,12 +173,12 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 </Link>
               </li>
               <li>
-                <button onClick={onOpenChecklist} className="text-accent hover:text-[#A71D2A] font-semibold transition-colors">
-                  Download Free 25-Point Checklist
+                <button onClick={onOpenChecklist} className="text-accent hover:text-accent-hover font-semibold transition-colors">
+                  Open the Resume Checklist
                 </button>
               </li>
               <li>
-                <span className="text-muted/60">100% Privacy — Never Shared or Sold</span>
+                <span className="text-muted">Local tools · optional human review</span>
               </li>
             </ul>
           </div>
@@ -189,7 +189,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               1-on-1 Personalized Review
             </h5>
             <p className="text-xs text-muted/80 leading-relaxed">
-              Want a senior recruiter to overhaul your resume personally? Includes unlimited revisions.
+              Want help with the edits? Review the package scope and contact us to confirm availability before paying.
             </p>
             <div className="p-3 rounded-xl bg-paper border border-line space-y-2">
               <div className="flex items-center justify-between text-xs text-ink/90">
@@ -197,7 +197,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 <span className="font-bold text-accent">$10</span>
               </div>
               <div className="flex items-center justify-between text-xs text-ink/90">
-                <span>Career Boost (Most Popular)</span>
+                <span>Career Boost</span>
                 <span className="font-bold text-accent">$25</span>
               </div>
               <div className="flex items-center justify-between text-xs text-ink/90">
@@ -216,13 +216,13 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
 
         {/* Bottom copyright line */}
         <div className="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted/80">
-          <p>© 2026 ATS Resume Lab. All rights reserved. ATS-verified resume templates & career optimization.</p>
+          <p>© 2026 ATS Resume Lab. See what our reader sees.</p>
           <div className="flex items-center gap-4">
             <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Privacy Policy</Link>
             <span>·</span>
             <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Terms of Service</Link>
             <span>·</span>
-            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Money-Back Guarantee</Link>
+            <Link to={ROUTE_PATHS['contact']} onClick={handleNavClick} className="hover:text-ink">Order support</Link>
           </div>
         </div>
       </div>

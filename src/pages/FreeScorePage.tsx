@@ -1,7 +1,20 @@
-import React, { useState, useRef } from 'react';
-import { analyzeResumeText } from '../utils/atsScanner';
+import React, { useEffect, useState, useRef } from 'react';
 import { SAMPLE_WEAK_RESUMES, SAMPLE_JOB_DESCRIPTIONS } from '../data/mockData';
-import { AtsScanResult, PageRoute, DetailedCheckItem } from '../types';
+import { PageRoute } from '../types';
+import { extractTextFromFile, ExtractionError, type ExtractedDocument } from '../utils/fileExtractor';
+import { parseResumeText, type ParseReport } from '../utils/resumeParser';
+import { saveDraft, type ResumeDraft } from '../utils/resumeDraft';
+import { findingTarget, parseFieldTarget, type EditorTarget } from '../utils/resumeActions';
+import {
+  auditResume,
+  auditSummary,
+  evidenceGrade,
+  evidenceNote,
+  severityLabel,
+  type AuditReport,
+  type Finding,
+  type Severity,
+} from '../utils/resumeAudit';
 import { 
   SearchCheck, 
   Sparkles, 
@@ -36,209 +49,274 @@ import {
 interface FreeScorePageProps {
   onSelectPlan: (packageId: 'starter' | 'boost' | 'full', preloadedData?: { resume: string; jd: string }) => void;
   onNavigate?: (page: PageRoute) => void;
+  onOpenEditor?: (draft: ResumeDraft, target?: EditorTarget) => void;
 }
 
-export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNavigate }) => {
+export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNavigate, onOpenEditor }) => {
   const [resumeText, setResumeText] = useState<string>('');
   const [jobDescriptionText, setJobDescriptionText] = useState<string>('');
   const [isScanning, setIsScanning] = useState<boolean>(false);
-  const [scanResult, setScanResult] = useState<AtsScanResult | null>(null);
+  const [audit, setAudit] = useState<AuditReport | null>(null);
   const [inputMode, setInputMode] = useState<'upload' | 'paste'>('upload');
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [imported, setImported] = useState<ExtractedDocument | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [parseReport, setParseReport] = useState<ParseReport | null>(null);
+  const [draftSaved, setDraftSaved] = useState(false);
+  const [checkedDraft, setCheckedDraft] = useState<ResumeDraft | null>(null);
+  const [isExample, setIsExample] = useState(false);
   const [activeTab, setActiveTab] = useState<'builder' | 'cover-letter' | 'import' | 'tracker' | 'interview' | 'matching'>('builder');
-  const [selectedCheckCategory, setSelectedCheckCategory] = useState<string>('All');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const importGeneration = useRef(0);
+
+  useEffect(() => {
+    if (!audit) return;
+    const results = document.getElementById('scan-results');
+    results?.focus({ preventScroll: true });
+    results?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }, [audit]);
+
+  const openCheckedEditor = (target?: EditorTarget) => {
+    if (checkedDraft && onOpenEditor) onOpenEditor(checkedDraft, target);
+    else onNavigate?.('editor');
+  };
+
+  const resetResults = () => { setAudit(null); setParseReport(null); setCheckedDraft(null); setDraftSaved(false); };
+
+  /**
+   * Read the file the way a parser would: a real PDF text layer, a real DOCX
+   * body. If that is impossible (scanned PDF, legacy .doc, image-only file) we
+   * say so and refuse to scan noise.
+   */
+  const handleFile = async (file: File) => {
+    const generation = ++importGeneration.current;
+    setImportError(null);
+    setImported(null);
+    setParseReport(null);
+    setAudit(null);
+    setCheckedDraft(null);
+    setResumeText('');
+    setIsExample(false);
+    setDraftSaved(false);
+    setUploadedFileName(file.name);
+    setIsExtracting(true);
+
+    try {
+      const doc = await extractTextFromFile(file);
+      if (generation !== importGeneration.current) return;
+      setImported(doc);
+      setResumeText(doc.text);
+      setAudit(null);
+    } catch (err) {
+      if (generation !== importGeneration.current) return;
+      const message =
+        err instanceof ExtractionError
+          ? err.message
+          : 'That file could not be read. Try a PDF or DOCX exported from Word or Google Docs.';
+      setImportError(message);
+      setResumeText('');
+      setUploadedFileName(null);
+    } finally {
+      if (generation === importGeneration.current) setIsExtracting(false);
+    }
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    setUploadedFileName(file.name);
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      if (text) {
-        setResumeText(text);
-      }
-    };
-    reader.readAsText(file);
+    if (file) void handleFile(file);
+    e.target.value = '';
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
-    if (!file) return;
-    setUploadedFileName(file.name);
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      if (text) {
-        setResumeText(text);
-      }
-    };
-    reader.readAsText(file);
+    if (file) void handleFile(file);
   };
 
   const handleRunScan = () => {
+    if (isExtracting) return;
+    // No silent sample substitution: scanning a demo file and presenting the
+    // result as the user's resume is how a tool loses trust in one click.
     if (!resumeText.trim()) {
-      // Default to sample if user clicked without pasting
-      setResumeText(SAMPLE_WEAK_RESUMES.developer);
-      setJobDescriptionText(SAMPLE_JOB_DESCRIPTIONS.developer);
+      setImportError(
+        imported ? null : 'Add your resume first — upload a PDF or DOCX, or paste the text.',
+      );
+      return;
     }
+
     setIsScanning(true);
-    setTimeout(() => {
-      const textToScan = resumeText.trim() || SAMPLE_WEAK_RESUMES.developer;
-      const result = analyzeResumeText(textToScan, jobDescriptionText);
-      setScanResult(result);
+    setImportError(null);
+    try {
+      const report = auditResume({
+        text: resumeText,
+        jobDescription: jobDescriptionText,
+        structure: imported?.structure,
+        fileName: imported?.fileName ?? uploadedFileName ?? undefined,
+        fileSize: imported?.size,
+      });
+      const { resume, report: parseReportResult } = parseResumeText(resumeText);
+      setAudit(report);
+      setParseReport(parseReportResult);
+
+      // Keep the document for the editor. Same file, same text, same fields.
+      const draft: ResumeDraft = {
+        version: 1,
+        resume,
+        report: parseReportResult,
+        rawText: resumeText,
+        jobDescription: jobDescriptionText,
+        source: {
+          fileName: imported?.fileName ?? uploadedFileName ?? 'Pasted text',
+          kind: imported?.kind ?? 'text',
+          size: imported?.size ?? resumeText.length,
+          pages: imported?.structure.pages,
+          structure:
+            imported?.structure ?? {
+              tables: 0,
+              headers: 0,
+              footers: 0,
+              textBoxes: 0,
+              images: 0,
+              noTextLayer: false,
+            },
+          warnings: imported?.warnings ?? [],
+          importedAt: new Date().toISOString(),
+          origin: isExample ? 'example' : imported ? 'upload' : 'paste',
+        },
+      };
+      setCheckedDraft(draft);
+      setDraftSaved(saveDraft(draft));
+      setFindingFilter('all');
+    } catch (error) {
+      resetResults();
+      setImportError(`This document could not be checked: ${(error as Error).message}`);
+    } finally {
       setIsScanning(false);
-      // scroll to results
-      const resultsEl = document.getElementById('scan-results');
-      if (resultsEl) {
-        resultsEl.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 750);
+    }
   };
 
   const handleLoadSample = (sampleKey: 'marketing' | 'developer' | 'sales') => {
+    importGeneration.current++;
+    setIsExtracting(false);
+    setIsExample(true);
+    resetResults();
     setResumeText(SAMPLE_WEAK_RESUMES[sampleKey]);
     setJobDescriptionText(SAMPLE_JOB_DESCRIPTIONS[sampleKey]);
     setUploadedFileName(null);
+    setImported(null);
+    setImportError(null);
+    setParseReport(null);
     setInputMode('paste');
-    setScanResult(null);
+    setAudit(null);
   };
 
-  const getScoreColor = (score: number) => {
-    if (score < 50) return 'text-accent bg-soft border-line';
-    if (score < 75) return 'text-warning bg-warning-soft border-warning/30';
-    return 'text-accent bg-soft border-line';
-  };
+  const findings = audit ? [...audit.format, ...audit.content] : [];
+  const counts = audit ? auditSummary(audit) : { toFix: 0, toCheck: 0, passed: 0 };
 
-  // 27 checks definition grouped into 7 categories
+  const [findingFilter, setFindingFilter] = useState<'all' | Severity>('all');
+  const visibleFindings = findings.filter(
+    (f) => findingFilter === 'all' || f.severity === findingFilter,
+  );
+
   const categoriesList = [
     {
-      name: 'ATS essentials',
-      icon: <FileCheck className="w-5 h-5 text-accent" />,
+      name: 'File and contact',
+      icon: <FileCheck className="w-5 h-5 text-accent-soft" />,
       items: [
-        'File format and size',
-        'ATS-friendly design',
-        'Professional email address',
-        'Header links compliance',
-        'Resume file name',
-        'Dates and links consistency'
-      ]
+        'Tables, headers, footers, text boxes',
+        'Page count and file size',
+        'Email and phone readable in the body',
+        'City and country present',
+      ],
     },
     {
-      name: 'Resume sections',
-      icon: <Layers className="w-5 h-5 text-accent" />,
+      name: 'Structure',
+      icon: <Layers className="w-5 h-5 text-accent-soft" />,
       items: [
-        'Essential sections',
-        'Contact information',
-        'Section order'
-      ]
+        'Standard Experience / Education / Skills headings',
+        'Experience and education field mapping',
+        'Original text available for comparison',
+        'Text long enough to parse',
+      ],
     },
     {
       name: 'Content',
-      icon: <FileText className="w-5 h-5 text-accent" />,
+      icon: <FileText className="w-5 h-5 text-accent-soft" />,
       items: [
-        'ATS parse rate',
-        'Quantifying impact with metrics',
-        'Repetition of words and phrases',
+        'Bullets with a number or scale',
+        'Passive openers, quoted',
+        'Bullets long enough to be skipped',
+        'Repeated opening verbs',
+        'Summary length',
+      ],
+    },
+    {
+      name: 'Keywords',
+      icon: <Target className="w-5 h-5 text-accent-soft" />,
+      items: [
+        'Frequent job-posting terms',
+        'Terms absent, with the method stated',
+        'No density scoring',
+        'No synonym guessing',
+      ],
+    },
+    {
+      name: 'Not checked',
+      icon: <AlertTriangle className="w-5 h-5 text-accent-soft" />,
+      items: [
         'Spelling and grammar',
-        'Bullet length and consistency'
-      ]
+        'Claims and honesty',
+        'Culture fit',
+        'Whether you will be hired',
+      ],
     },
-    {
-      name: 'Job tailoring',
-      icon: <Target className="w-5 h-5 text-accent" />,
-      items: [
-        'Hard skills match',
-        'Soft skills match',
-        'Action verbs',
-        'Tailored job title'
-      ]
-    },
-    {
-      name: 'Recruiter red flags',
-      icon: <AlertTriangle className="w-5 h-5 text-accent" />,
-      items: [
-        'Resume credibility',
-        'Interview risk signals',
-        'Peer benchmarking',
-        'LinkedIn profile match'
-      ]
-    },
-    {
-      name: 'Bias & discrimination',
-      icon: <ShieldAlert className="w-5 h-5 text-accent" />,
-      items: [
-        'Age and date bias',
-        'Employment gaps'
-      ]
-    },
-    {
-      name: 'Seniority & impact',
-      icon: <Sparkles className="w-5 h-5 text-accent" />,
-      items: [
-        'Career progression',
-        'Skills evidence',
-        'Leadership signals'
-      ]
-    }
   ];
 
   // FAQ Accordion Data
   const faqs = [
     {
-      q: 'What is a resume checker?',
-      a: 'A resume checker is specialized software engineered to evaluate resumes against applicant tracking system (ATS) algorithms. It verifies parsability, checks for proper section formatting, scans for high-priority role keywords, flags passive language, and assesses whether your achievements contain quantified metrics (Google XYZ formula) that recruiters demand.'
+      q: 'What does this checker actually do?',
+      a: 'It reads the text inside your file the way a parser does, then reports what is there: which sections were found, how many bullets contain a number, which bullets use passive phrasing, whether your email sits in a header a parser may skip, and which frequent words from the job posting are missing. Each finding names the rule and shows the line that triggered it.'
     },
     {
-      q: 'How do I check my resume score?',
-      a: 'Simply upload your PDF, DOCX, or text resume above (optionally adding the target job posting). In seconds, our diagnostic engine evaluates your document across 27 specific criteria and returns an overall ATS score from 0 to 100 with actionable next steps.'
+      q: 'Why is there no score out of 100?',
+      a: 'We have not validated a score against real hiring outcomes or employer systems. Instead of implying that our own scale predicts success, we show counts, extracted fields and review prompts you can inspect.'
     },
     {
-      q: 'How do I improve my resume score?',
-      a: 'Focus on 4 high-leverage fixes: 1) Rewrite generic duties into quantified achievements using numbers and percentages; 2) Add core hard skills from the job description directly into context; 3) Replace passive duty phrases with active leadership verbs ("Architected", "Spearheaded"); 4) Use our clean Live CV Editor to generate an ATS-verified vector PDF.'
+      q: 'How do I fix what the report flags?',
+      a: 'Every finding includes the edit to make. Open the file in the editor to make those edits, or take the findings to whoever owns your resume. Nothing is changed automatically: the tool cannot know which number is true, and an invented metric is worse than no metric.'
     },
     {
-      q: 'How do I know my resume is ATS compliant?',
-      a: 'ATS compliance requires clean UTF-8 text flow, standard section titles ("Work Experience", "Education", "Skills"), clickable contact links, and no nested tables or floating textboxes that confuse parsers. Our checker simulates the exact parser output from Workday, Greenhouse, and Lever.'
+      q: 'Do you upload my resume anywhere?',
+      a: 'No. PDF, DOCX and text extraction runs in your browser. Your document is not sent to a server, and the draft kept for the editor is stored in your own browser storage so you can open the same document without uploading it again.'
     },
     {
-      q: 'What is a good ATS score?',
-      a: 'Any score above 80 indicates strong ATS parsability and high recruiter appeal. Scores below 50 indicate a severe risk of automated rejection due to missing keywords, passive duty language, or unquantified accomplishments.'
+      q: 'Can the checker read a scanned PDF?',
+      a: 'This checker does not run OCR. If we cannot find a usable text layer, we ask you for a text-based PDF or DOCX. Other systems may have OCR, so our result is not a verdict on every employer system.'
     },
     {
-      q: 'Can an ATS read PDFs?',
-      a: 'Yes! Modern applicant tracking systems (Greenhouse, Workday, Lever, Taleo) read vector PDFs with 100% fidelity. Vector PDFs ensure your formatting, fonts, and layout remain static across every platform. Our Live Editor generates clean vector PDFs.'
+      q: 'Does an ATS reject a resume because of a table or a missing keyword?',
+      a: 'Not by itself. Applicant tracking systems store and search applications. Automatic rejection comes from screening questions a company configured, such as work authorisation or a required licence. Formatting hurts you by making a field unreadable, not by triggering a rejection.'
     },
     {
-      q: 'How do I review my resume for errors?',
-      a: 'Use our dual-view inspection: test your document visually, then switch to the "What the ATS Reads" terminal view. This displays the raw plain text extracted by applicant tracking algorithms so you can spot scrambled sections or missing contact info.'
+      q: 'How does the keyword comparison work?',
+      a: 'When you paste a job posting, we take its most frequent terms of three or more characters, drop a fixed stopword list, and check whether each term appears in your resume. It is a word match, not a fit judgement. Repeating a term more often does not improve anything.'
     },
     {
-      q: 'What should I focus on when checking my resume?',
-      a: 'Avoid cliches like "hard worker" or "team player", never fabricate experience, proofread for passive voice, list measurable achievements over daily duties, and tailor your core keywords to each specific job application.'
+      q: 'What is deliberately not checked?',
+      a: 'Spelling and grammar, whether your claims are true, culture fit, and whether you will be hired. The first would need a dictionary we have not shipped; the rest cannot be measured from a document.'
     },
     {
-      q: 'Can I create a resume checklist?',
-      a: 'Yes. Our 25-Point ATS Checklist covers header compliance, experience formula, technical skill clustering, and recruiter eye-scan hierarchy. You can download the full checklist for free anytime from our platform.'
+      q: 'What is free and what costs money?',
+      a: 'Checking, the editor, the templates and the cover letter are free. Paid work is a person reading your file and writing back — currently $10 for a written review, $25 for a rewrite of one document, $35 for the full application set. The price is for the work, not for a higher score.'
     },
     {
-      q: 'Should I read my resume after writing it?',
-      a: 'Always step away for a few hours and re-read it from the perspective of an executive recruiter who spends 6 seconds on the first scan. Does your top fold prove immediate impact?'
+      q: 'Is my resume safe in the editor?',
+      a: 'Everything you type stays in your browser. There is no account requirement and no server copy. The download is a file on your machine, and you decide where it goes.'
     },
-    {
-      q: 'Does your resume checker serve other purposes?',
-      a: 'Yes. Beyond ATS scoring, it acts as a job description matching engine, a passive grammar cleaner, and a seniority progression evaluator.'
-    },
-    {
-      q: 'What’s the difference between the free and paid review plans?',
-      a: 'The free checker provides instant automated scoring, 27-check diagnostics, and the Live CV Builder. Our $10 to $25 paid plans provide a 1-on-1 human rewrite by a senior developer and technical recruiter with 24-hour turnaround and unlimited revisions.'
-    }
   ];
 
   return (
@@ -255,7 +333,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-soft border border-line text-accent text-xs font-bold uppercase tracking-wider">
                 <SearchCheck className="w-4 h-4" />
-                <span>Resume Checker · 27 Crucial Checks</span>
+                <span>Resume Checker · free · no account</span>
               </div>
 
               <h1 className="font-heading text-4xl sm:text-5xl font-black text-ink tracking-tight leading-[1.1]">
@@ -264,11 +342,12 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               </h1>
 
               <p className="text-base sm:text-lg text-muted leading-relaxed max-w-2xl">
-                A free and fast ATS resume checker doing <strong>27 crucial checks</strong> to ensure your resume’s content, layout, and keywords are technically compatible with enterprise applicant tracking systems and get you interview callbacks.
+                Upload the file you actually send. See the text and fields our reader can extract,
+                review specific findings, then open the same document in the free editor to make changes.
               </p>
 
               {/* Upload & Paste Control Box */}
-              <div className="bg-paper rounded-2xl border-2 border-dashed border-line hover:border-[#C82333] p-6 sm:p-8 transition-all shadow-sm space-y-5">
+              <div className="bg-paper rounded-2xl border-2 border-dashed border-line hover:border-accent-line p-6 sm:p-8 transition-all shadow-sm space-y-5">
                 <div className="flex items-center justify-between pb-3 border-b border-line">
                   <div className="flex items-center gap-2">
                     <button
@@ -296,50 +375,100 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </div>
 
                   <span className="text-xs text-muted/60 font-medium hidden sm:inline">
-                    100% Free · Instant Score
+                    Free · runs in your browser
                   </span>
                 </div>
 
                 {inputMode === 'upload' ? (
-                  <div
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()}
-                    className="cursor-pointer py-8 px-4 text-center rounded-xl bg-soft/70 hover:bg-soft/40 border border-line/80 transition-colors flex flex-col items-center justify-center space-y-3"
-                  >
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept=".pdf,.doc,.docx,.txt"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                    />
-                    <div className="w-12 h-12 rounded-xl bg-soft border border-line text-accent flex items-center justify-center shadow-xs">
-                      <Upload className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-ink">
-                        {uploadedFileName ? (
-                          <span className="text-accent font-mono">Loaded: {uploadedFileName}</span>
-                        ) : (
-                          <>Drop your resume here or <span className="text-accent underline">choose a file</span></>
-                        )}
-                      </p>
-                      <p className="text-xs text-muted/80 mt-1">
-                        PDF, DOCX & TXT. Max 2MB file size.
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="px-5 py-2.5 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-xl transition-all shadow-sm"
+                  <div className="space-y-3">
+                    <div
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={handleDrop}
+                      className="py-8 px-4 text-center rounded-xl bg-soft/70 border border-line/80 flex flex-col items-center justify-center space-y-3"
                     >
-                      {uploadedFileName ? 'Change Resume File' : 'Upload Your Resume'}
-                    </button>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".pdf,.docx,.txt,.md"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                      <div className="w-12 h-12 rounded-xl bg-soft border border-line text-accent flex items-center justify-center shadow-xs">
+                        <Upload className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-ink">
+                          {isExtracting ? (
+                            'Reading your file…'
+                          ) : uploadedFileName ? (
+                            <span className="text-accent font-mono">Loaded: {uploadedFileName}</span>
+                          ) : (
+                            <>Drop your resume here or <span className="text-accent underline">choose a file</span></>
+                          )}
+                        </p>
+                        <p className="text-xs text-muted/80 mt-1">
+                          PDF or DOCX. Up to 10 MB. Read in your browser — nothing is uploaded.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isExtracting}
+                      >
+                        {uploadedFileName ? 'Change Resume File' : 'Upload Your Resume'}
+                      </button>
+                    </div>
+
+                    {imported && (
+                      <div className="rounded-xl border border-line bg-surface p-3 text-xs text-muted">
+                        <p className="font-semibold text-ink">
+                          Read {imported.text.length.toLocaleString()} characters
+                          {imported.structure.pages ? ` from ${imported.structure.pages} page(s)` : ''}.
+                        </p>
+                        <p className="mt-1">
+                          {imported.structure.noTextLayer
+                            ? 'No text layer.'
+                            : 'Review the text our reader extracted below. Other parsers may read the file differently.'}
+                        </p>
+                        {(imported.structure.tables > 0 ||
+                          imported.structure.headers > 0 ||
+                          imported.structure.textBoxes > 0) && (
+                          <p className="mt-1 text-warning">
+                            Structure detected:{' '}
+                            {[
+                              imported.structure.tables > 0 &&
+                                `${imported.structure.tables} table(s)`,
+                              imported.structure.headers > 0 &&
+                                `${imported.structure.headers} header(s)`,
+                              imported.structure.textBoxes > 0 &&
+                                `${imported.structure.textBoxes} text box(es)`,
+                            ]
+                              .filter(Boolean)
+                              .join(' · ')}
+                          </p>
+                        )}
+                        {imported.warnings.map((w) => (
+                          <p key={w} className="mt-1 text-warning">
+                            {w}
+                          </p>
+                        ))}
+                        <details className="mt-3"><summary className="cursor-pointer min-h-11 py-2 font-medium text-accent">Review extracted text</summary><pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-words rounded-lg bg-soft p-3 text-xs">{imported.text}</pre></details>
+                        {imported.structure.outsideText && <details className="mt-2"><summary className="cursor-pointer min-h-11 py-2 font-medium text-accent">Review DOCX header / footer text</summary><pre className="mt-2 whitespace-pre-wrap break-words rounded-lg bg-soft p-3 text-xs">{imported.structure.outsideText}</pre></details>}
+                      </div>
+                    )}
+
+                    {importError && (
+                      <div role="alert" className="rounded-xl border border-danger/30 bg-danger-soft p-3 text-xs text-danger">
+                        <p className="font-semibold">We could not read that file</p>
+                        <p className="mt-1 leading-relaxed">{importError}</p>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                      <label htmlFor="checker-resume-text" className="text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                         <FileText className="w-4 h-4 text-accent" />
                         Paste Resume Content
                       </label>
@@ -348,19 +477,23 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       </span>
                     </div>
                     <textarea
+                      id="checker-resume-text"
                       rows={6}
                       value={resumeText}
-                      onChange={(e) => setResumeText(e.target.value)}
+                      onChange={(e) => { importGeneration.current++; setIsExtracting(false); setResumeText(e.target.value); setImported(null); setUploadedFileName(null); setIsExample(false); resetResults(); }}
                       placeholder="Paste your current resume content here (Experience, Education, Skills)..."
-                      className="w-full p-3.5 text-xs sm:text-sm font-mono border border-line rounded-xl focus:ring-2 focus:ring-[#C82333] focus:border-[#C82333] outline-none leading-relaxed"
+                      className="field font-mono"
                     />
                   </div>
                 )}
 
+                {inputMode === 'paste' && importError && <p role="alert" className="rounded-lg bg-danger-soft p-3 text-sm text-danger">{importError}</p>}
+                {isExample && <p className="text-xs text-warning">Fictional sample loaded. Upload or paste your own resume before checking it.</p>}
+
                 {/* Optional Target Job Description */}
                 <div className="space-y-1.5 pt-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
+                    <label htmlFor="checker-job-description" className="text-xs font-bold uppercase tracking-wider text-ink/90 flex items-center gap-1.5">
                       <Target className="w-3.5 h-3.5 text-accent" />
                       Target Job Description (Optional)
                     </label>
@@ -368,12 +501,13 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                       Enables Keyword Match
                     </span>
                   </div>
-                  <input
-                    type="text"
+                  <textarea
+                    id="checker-job-description"
+                    rows={3}
                     value={jobDescriptionText}
-                    onChange={(e) => setJobDescriptionText(e.target.value)}
-                    placeholder="Paste job posting text or key skills (e.g., React, TypeScript, GraphQL, AWS)..."
-                    className="w-full px-3.5 py-2.5 text-xs border border-line rounded-xl focus:ring-2 focus:ring-[#C82333] focus:border-[#C82333] outline-none"
+                    onChange={(e) => { setJobDescriptionText(e.target.value); resetResults(); }}
+                    placeholder="Paste the actual job posting…"
+                    className="field"
                   />
                 </div>
 
@@ -406,19 +540,19 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
                   <button
                     type="button"
-                    disabled={isScanning}
+                    disabled={isScanning || isExtracting}
                     onClick={handleRunScan}
-                    className="w-full sm:w-auto px-6 py-3 bg-accent hover:bg-accent/90 disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-red-500/20 flex items-center justify-center gap-2"
+                    className="btn btn-primary w-full sm:w-auto"
                   >
                     {isScanning ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Running 27 Checks...</span>
+                        <span>Reading your file…</span>
                       </>
                     ) : (
                       <>
                         <SearchCheck className="w-4 h-4" />
-                        <span>Run 27-Check ATS Scan</span>
+                        <span>Check my resume</span>
                       </>
                     )}
                   </button>
@@ -426,7 +560,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
                 <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-muted/80">
                   <Lock className="w-3.5 h-3.5 text-muted/60" />
-                  <span>We never share your data with 3rd parties or use it for AI model training.</span>
+                  <span>This check runs locally. The file is not sent to a server or an AI provider.</span>
                 </div>
               </div>
             </div>
@@ -438,51 +572,50 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 
                 <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-soft0" />
-                    <div className="w-3 h-3 rounded-full bg-warning-soft0" />
-                    <div className="w-3 h-3 rounded-full bg-soft0" />
+                    <div className="w-3 h-3 rounded-full bg-accent-soft" />
+                    <div className="w-3 h-3 rounded-full bg-warning-soft" />
+                    <div className="w-3 h-3 rounded-full bg-success-soft" />
                   </div>
-                  <span className="text-[11px] font-mono text-muted/60">ATS Engine v4.2</span>
+                  <span className="text-[11px] font-mono text-muted/60">sample finding</span>
                 </div>
 
                 <div className="mt-6 space-y-4">
                   <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
-                      <span className="text-slate-300">Parse Reliability Rate</span>
-                      <span className="text-success font-mono">98.4%</span>
+                      <span className="text-white/80">CNT-02 · numbers in bullets</span>
+                      <span className="text-accent-soft font-mono">check</span>
                     </div>
-                    <div className="w-full h-1.5 bg-neutral rounded-full mt-2 overflow-hidden">
-                      <div className="h-full bg-soft0 rounded-full w-[98%]" />
-                    </div>
+                    <p className="mt-2 text-[11px] text-slate-400 leading-relaxed">
+                      11 bullets, none containing a number, percentage, amount or scale.
+                    </p>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
-                      <span className="text-slate-300">Google XYZ Formula Density</span>
-                      <span className="text-[#F87171] font-mono">2 / 5 Found</span>
+                      <span className="text-slate-300">FMT-02 · header content</span>
+                      <span className="text-warning font-mono">check</span>
                     </div>
-                    <div className="w-full h-1.5 bg-neutral rounded-full mt-2 overflow-hidden">
-                      <div className="h-full bg-accent rounded-full w-[40%]" />
-                    </div>
+                    <p className="mt-2 text-[11px] text-slate-400 leading-relaxed">
+                      1 header part found. Check it for essential details and copy those into the body.
+                    </p>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
-                      <span className="text-slate-300">Enterprise ATS Tested</span>
-                      <span className="text-muted/60 text-[11px]">Workday · Greenhouse · Taleo · Lever</span>
+                      <span className="text-slate-300">What this check does not do</span>
+                      <span className="text-muted/60 text-[11px]">no rejection prediction</span>
                     </div>
                   </div>
 
                   <div className="pt-2 text-xs text-muted/60 leading-relaxed">
-                    "Most rejections happen before a human recruiter looks at your resume. Our dual-tier system tests machine parsing and recruiter impact."
+                    "This report describes what a parser and a reader can see in your file. It does
+                    not predict whether any employer will reject you."
                   </div>
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-muted/60">
-                  <span>5,363+ Scans Processed</span>
-                  <span className="text-amber-400 flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 fill-current" /> 4.5/5 Rating
-                  </span>
+                  <span>Checked in your browser · file never uploaded</span>
+                  <span className="text-muted/60">Findings only, no score</span>
                 </div>
               </div>
             </div>
@@ -490,307 +623,388 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
         </div>
       </section>
 
-      {/* 2. DYNAMIC SCAN RESULTS (if scan was run) */}
-      {scanResult && (
-        <section id="scan-results" className="py-12 bg-soft border-b border-line">
+      {/* 2. DYNAMIC AUDIT RESULTS (if a check was run) */}
+      {audit && (
+        <section id="scan-results" tabIndex={-1} aria-label="Resume check results" className="py-12 bg-soft border-b border-line scroll-mt-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-            {/* Main Score Card */}
-            <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-line">
-                <div className="flex items-center gap-5">
-                  <div className={`w-24 h-24 rounded-2xl border-2 flex flex-col items-center justify-center shrink-0 ${getScoreColor(scanResult.score)}`}>
-                    <span className="font-heading text-3xl font-extrabold">
-                      {scanResult.score}
-                    </span>
-                    <span className="text-[10px] uppercase font-bold tracking-wider">
-                      out of 100
-                    </span>
-                  </div>
+            {/* What the parser actually read */}
+            {parseReport && (
+              <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted/80">
-                      Overall ATS Readiness
-                    </span>
-                    <h3 className="font-heading text-xl font-bold text-ink mt-0.5">
-                      {scanResult.score < 50
-                        ? 'High Rejection Risk (75%+ Filtering Likelihood)'
-                        : scanResult.score < 75
-                        ? 'Average Rating (Needs Metric & Keyword Elevation)'
-                        : 'Strong Foundation (Ready for Executive Polish)'}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-muted mt-1 max-w-xl">
-                      {scanResult.summaryFeedback}
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-accent">
+                      Parse report
+                    </p>
+                    <h2 className="mt-2 font-heading text-xl sm:text-2xl font-bold text-ink">
+                      What we read from your file
+                    </h2>
+                    <p className="mt-2 text-sm text-muted leading-relaxed max-w-2xl">
+                      {parseReport.found} of {parseReport.total} tracked fields were mapped by our reader.
+                      Missing can mean absent or not recognised. Review the original text; optional fields
+                      are not required for every resume.
                     </p>
                   </div>
+                  {(onNavigate || onOpenEditor) && (
+                    <button
+                      type="button"
+                      onClick={() => openCheckedEditor()}
+                      className="btn btn-primary shrink-0"
+                    >
+                      Open in the editor
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+                  {parseReport.fields.map((field) => (
+                    <li
+                      key={field.key}
+                      className="flex items-start gap-2.5 rounded-lg border border-line bg-soft/50 px-3 py-2"
+                    >
+                      {field.found ? (
+                        <CheckCircle2 className="w-4 h-4 text-success shrink-0 mt-0.5" />
+                      ) : (
+                        <AlertTriangle className="w-4 h-4 text-warning shrink-0 mt-0.5" />
+                      )}
+                      <span className="min-w-0">
+                        <span className="block text-xs font-semibold text-ink">{field.label}</span>
+                        <span className="block text-[11px] text-muted truncate">
+                          {field.detail}
+                        </span>
+                      </span>
+                      {(onOpenEditor || onNavigate) && <button type="button" className="ml-auto shrink-0 min-h-11 rounded-btn px-2 text-xs font-medium text-accent hover:bg-accent-soft" onClick={() => openCheckedEditor(parseFieldTarget(field.key))}>Review {field.label.toLowerCase()}</button>}
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="mt-4 text-[11px] text-muted leading-relaxed">
+                  {draftSaved
+                    ? 'Saved in this browser only. The editor will open this same document, with the missing fields left blank rather than filled with placeholders.'
+                    : 'Browser storage is blocked, but you can still open this document in the editor in this tab. Download a backup before refreshing or closing it.'}
+                </p>
+              </div>
+            )}
+                        {/* What this document actually contains */}
+            <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm">
+              <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-accent">
+                    What is in the document
+                  </p>
+                  <h2 className="mt-2 font-heading text-2xl font-bold text-ink">
+                    {counts.toFix + counts.toCheck === 0
+                      ? 'No open prompts from these checks'
+                      : `${counts.toFix} thing${counts.toFix === 1 ? '' : 's'} to fix, ${counts.toCheck} to check`}
+                  </h2>
+                  <p className="mt-2 text-sm text-muted max-w-2xl leading-relaxed">
+                    Counts describe the extracted text. Review thresholds are local heuristics,
+                    not employer rules. The next step is to inspect each prompt and make an accurate edit.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                   {onNavigate && (
                     <button
+                      type="button"
                       onClick={() => onNavigate('editor')}
-                      className="px-5 py-3 bg-ink hover:bg-ink text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+                      className="btn btn-primary"
                     >
-                      <PenTool className="w-4 h-4 text-accent" />
-                      <span>Open in Live CV Editor (Free)</span>
+                      <PenTool className="w-4 h-4" />
+                      Open in the editor
                     </button>
                   )}
                   <button
+                    type="button"
                     onClick={() => onSelectPlan('starter', { resume: resumeText, jd: jobDescriptionText })}
-                    className="px-5 py-3 bg-accent hover:bg-accent/90 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-red-500/20 flex items-center justify-center gap-2"
+                    className="btn btn-secondary"
                   >
-                    <span>Fix With Senior Dev — From $10</span>
-                    <ArrowRight className="w-4 h-4" />
+                    Human review — from $10
                   </button>
                 </div>
               </div>
 
-              {/* 5 Category Metric Breakdown */}
-              <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                <div className="p-3.5 rounded-xl bg-soft border border-line">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-muted font-medium">Quantified Metrics</span>
-                    <span className="font-bold text-ink">{scanResult.categoryScores.quantifiedMetrics}%</span>
+              <dl className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {[
+                  { label: 'Words', value: audit.facts.words.toLocaleString() },
+                  { label: audit.structure?.pages ? 'PDF pages' : 'Pages (est.)', value: audit.structure?.pages ?? audit.facts.estimatedPages },
+                  { label: 'Bullets', value: audit.facts.bullets },
+                  {
+                    label: 'Bullets with a number',
+                    value: `${audit.facts.bulletsWithNumbers}/${audit.facts.bullets || 0}`,
+                  },
+                  {
+                    label: 'Sections found',
+                    value: `${audit.facts.sectionsFound.length}/${audit.facts.sectionsFound.length + audit.facts.sectionsMissing.length}`,
+                  },
+                  { label: 'Duty-style openers', value: audit.facts.passiveOpeners },
+                ].map((stat) => (
+                  <div key={stat.label} className="rounded-xl border border-line bg-soft/60 px-3 py-2.5">
+                    <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted">
+                      {stat.label}
+                    </dt>
+                    <dd className="mt-0.5 font-heading text-lg font-bold text-ink">{stat.value}</dd>
                   </div>
-                  <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-accent rounded-full" 
-                      style={{ width: `${scanResult.categoryScores.quantifiedMetrics}%` }} 
-                    />
-                  </div>
-                  <span className="text-[10px] text-muted/60 mt-1 block">
-                    {scanResult.quantifiedCount} quantified lines
-                  </span>
-                </div>
+                ))}
+              </dl>
 
-                <div className="p-3.5 rounded-xl bg-soft border border-line">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-muted font-medium">Action Verbs</span>
-                    <span className="font-bold text-ink">{scanResult.categoryScores.actionVerbs}%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-neutral rounded-full" 
-                      style={{ width: `${scanResult.categoryScores.actionVerbs}%` }} 
-                    />
-                  </div>
-                  <span className="text-[10px] text-muted/60 mt-1 block">
-                    {scanResult.strongVerbsCount} power verbs found
-                  </span>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-soft border border-line">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-muted font-medium">Keywords Match</span>
-                    <span className="font-bold text-ink">{scanResult.categoryScores.skillsRelevance}%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-warning-soft0 rounded-full" 
-                      style={{ width: `${scanResult.categoryScores.skillsRelevance}%` }} 
-                    />
-                  </div>
-                  <span className="text-[10px] text-muted/60 mt-1 block">
-                    {scanResult.detectedKeywords.length} core keywords
-                  </span>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-soft border border-line">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-muted font-medium">ATS Layout</span>
-                    <span className="font-bold text-ink">{scanResult.categoryScores.atsReadability}%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-accent rounded-full" 
-                      style={{ width: `${scanResult.categoryScores.atsReadability}%` }} 
-                    />
-                  </div>
-                  <span className="text-[10px] text-muted/60 mt-1 block">
-                    Clean plain-text parsing
-                  </span>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-soft border border-line">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-muted font-medium">Section Order</span>
-                    <span className="font-bold text-ink">{scanResult.categoryScores.structureFormatting}%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-accent rounded-full" 
-                      style={{ width: `${scanResult.categoryScores.structureFormatting}%` }} 
-                    />
-                  </div>
-                  <span className="text-[10px] text-muted/60 mt-1 block">
-                    Enterprise hierarchy
-                  </span>
-                </div>
-              </div>
+              <p className="mt-3 text-[11px] text-muted leading-relaxed">
+                Pages are estimated from word count at about 450 words per page. Your PDF viewer is
+                the authority on page count.
+              </p>
             </div>
 
-            {/* 27-Check Interactive Diagnostic Drawer */}
-            {scanResult.detailedChecks && (
-              <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-line">
-                  <div>
-                    <h3 className="font-heading text-lg font-bold text-ink">
-                      The 27 Crucial Checks Diagnostic Breakdown
-                    </h3>
-                    <p className="text-xs text-muted/80 mt-0.5">
-                      Status of your resume against all 27 automated and recruiter criteria.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1.5">
-                    {['All', 'ATS Essentials', 'Resume Sections', 'Content', 'Job Tailoring', 'Recruiter Red Flags', 'Bias & Discrimination', 'Seniority & Impact'].map((cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => setSelectedCheckCategory(cat)}
-                        className={`text-[11px] font-semibold px-2.5 py-1 rounded-md transition-colors ${
-                          selectedCheckCategory === cat
-                            ? 'bg-accent text-white shadow-xs'
-                            : 'bg-soft text-muted hover:bg-slate-200'
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
+            {/* Findings */}
+            <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-line">
+                <div>
+                  <h3 className="font-heading text-lg font-bold text-ink">Findings</h3>
+                  <p className="text-xs text-muted/80 mt-0.5">
+                    Each rule shows the evidence in your file that triggered it.
+                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {scanResult.detailedChecks
-                    .filter((chk) => selectedCheckCategory === 'All' || chk.category === selectedCheckCategory)
-                    .map((chk) => (
-                      <div
-                        key={chk.id}
-                        className={`p-3.5 rounded-xl border text-xs flex flex-col justify-between space-y-2 ${
-                          chk.status === 'pass'
-                            ? 'bg-soft/50 border-line text-ink'
-                            : chk.status === 'warning'
-                            ? 'bg-warning-soft/60 border-warning/30 text-ink'
-                            : 'bg-soft/60 border-line text-ink'
+                <div className="flex flex-wrap gap-1.5">
+                  {([
+                    { id: 'all', label: `All ${findings.length}` },
+                    { id: 'fix', label: `Fix ${counts.toFix}` },
+                    { id: 'check', label: `Check ${counts.toCheck}` },
+                    { id: 'pass', label: `Fine ${counts.passed}` },
+                  ] as Array<{ id: 'all' | Severity; label: string }>).map((tab) => (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setFindingFilter(tab.id)}
+                      aria-pressed={findingFilter === tab.id}
+                      className={`text-[11px] font-semibold px-2.5 py-1 rounded-md transition-colors ${
+                        findingFilter === tab.id
+                          ? 'bg-accent text-white shadow-xs'
+                          : 'bg-soft text-muted hover:bg-line'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {visibleFindings.length === 0 ? (
+                <p className="text-sm text-muted">Nothing in this category.</p>
+              ) : (
+                <ul className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
+                  {visibleFindings.map((finding: Finding) => {
+                    const grade = finding.sourceId ? evidenceGrade(finding.sourceId) : undefined;
+                    const note = finding.sourceId ? evidenceNote(finding.sourceId) : undefined;
+                    return (
+                      <li
+                        key={finding.id}
+                        className={`rounded-xl border p-4 text-xs space-y-2 ${
+                          finding.severity === 'fix'
+                            ? 'border-danger/25 bg-danger-soft/60'
+                            : finding.severity === 'check'
+                              ? 'border-warning/25 bg-warning-soft/60'
+                              : 'border-line bg-soft/40'
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <span className="font-bold text-ink flex items-center gap-1.5">
-                            {chk.status === 'pass' ? (
-                              <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
-                            ) : chk.status === 'warning' ? (
-                              <AlertTriangle className="w-4 h-4 text-warning shrink-0" />
+                          <span className="font-bold text-ink flex items-start gap-1.5">
+                            {finding.severity === 'pass' ? (
+                              <CheckCircle2 className="w-4 h-4 text-success shrink-0 mt-0.5" />
+                            ) : finding.severity === 'check' ? (
+                              <AlertTriangle className="w-4 h-4 text-warning shrink-0 mt-0.5" />
                             ) : (
-                              <X className="w-4 h-4 text-danger shrink-0" />
+                              <X className="w-4 h-4 text-danger shrink-0 mt-0.5" />
                             )}
-                            {chk.name}
+                            {finding.title}
                           </span>
-                          <span className="text-[10px] uppercase font-bold text-muted/60">
-                            {chk.category}
+                          <span className="shrink-0 text-[10px] font-mono uppercase font-bold text-muted/70">
+                            {finding.id}
                           </span>
                         </div>
-                        <p className="text-[11px] text-muted leading-relaxed">
-                          {chk.detail}
+
+                        <p className="text-[11px] text-ink/90 leading-relaxed">
+                          <strong className="font-semibold">In your file:</strong> {finding.evidence}
                         </p>
-                        {chk.recommendation && (
-                          <div className="pt-1 text-[10px] text-muted/80 border-t border-line/50">
-                            <strong>Tip:</strong> {chk.recommendation}
-                          </div>
+
+                        <p className="text-[11px] text-muted leading-relaxed">
+                          <strong className="font-semibold text-ink/80">
+                            {severityLabel[finding.severity]}:
+                          </strong>{' '}
+                          {finding.fix}
+                        </p>
+
+                        {finding.why && (
+                          <p className="text-[11px] text-muted/90 leading-relaxed">{finding.why}</p>
                         )}
-                      </div>
+
+                        {note && (
+                          <p className="text-[10px] text-muted/70 leading-relaxed border-t border-line/60 pt-2">
+                            {grade ? `Grade ${grade}. ` : ''}
+                            {note}
+                          </p>
+                        )}
+                        {finding.severity !== 'pass' && (onOpenEditor || onNavigate) && (
+                          <button type="button" className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-btn border border-accent-line bg-surface px-3 text-sm font-medium text-accent hover:bg-accent-soft" onClick={() => openCheckedEditor(findingTarget(finding))}>
+                            Fix in editor <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                          </button>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+
+            {/* Keyword coverage */}
+            <div className="bg-paper rounded-2xl border border-line p-6 sm:p-8 shadow-sm">
+              <h3 className="font-heading text-lg font-bold text-ink">Keyword coverage</h3>
+
+              {!audit.keywords.hasJobDescription ? (
+                <p className="mt-2 text-sm text-muted leading-relaxed max-w-2xl">
+                  Paste the job posting above to compare its vocabulary against your resume. We only
+                  run this when there is a posting to compare against — a keyword number without one
+                  means nothing.
+                </p>
+              ) : (
+                <>
+                  <p className="mt-2 text-sm text-muted leading-relaxed max-w-3xl">
+                    {audit.keywords.covered} of {audit.keywords.total} frequent job-posting terms
+                    appear in your resume. Matched terms are marked; the rest are candidates to check
+                    honestly, not words to stuff in.
+                  </p>
+
+                  <ul className="mt-4 flex flex-wrap gap-1.5">
+                    {audit.keywords.terms.map((term) => (
+                      <li
+                        key={term.term}
+                        className={`rounded-md border px-2 py-1 text-[11px] font-medium ${
+                          term.inResume
+                            ? 'border-success/30 bg-success-soft text-success'
+                            : 'border-line bg-soft text-muted'
+                        }`}
+                        title={term.inResume ? `${term.hits} occurrence(s)` : 'not found'}
+                      >
+                        {term.term}
+                        {term.inResume ? ` · ${term.hits}` : ''}
+                      </li>
                     ))}
-                </div>
-              </div>
-            )}
+                  </ul>
+
+                  <p className="mt-4 text-[11px] text-muted/80 leading-relaxed border-t border-line pt-3">
+                    {audit.keywords.method}
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </section>
       )}
 
-      {/* 3. TWO-TIER SCORING SYSTEM BREAKDOWN (Left/Right Section) */}
+            {/* 3. HOW THE CHECK WORKS — AND WHAT IT CANNOT TELL YOU */}
       <section className="py-16 sm:py-24 bg-paper border-b border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Visual Column */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="p-6 rounded-2xl bg-ink text-white space-y-5 border border-slate-800">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <span className="text-xs font-bold text-[#F87171] uppercase tracking-wider">
-                    Two-Tier ATS Scoring Architecture
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-5">
+              <div className="p-6 rounded-2xl bg-ink text-white space-y-4 border border-line">
+                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                  <span className="text-xs font-bold text-accent-soft uppercase tracking-wider">
+                    What we measure
                   </span>
-                  <span className="text-xs font-mono text-muted/60">Enterprise Standard</span>
+                  <span className="text-xs font-mono text-white/40">v1.0</span>
                 </div>
 
-                <div className="p-4 rounded-xl bg-ink/80 border border-slate-700/80 space-y-2">
-                  <div className="flex items-center gap-2 text-sm font-bold text-white">
-                    <span className="w-5 h-5 rounded-full bg-accent text-white flex items-center justify-center text-xs">1</span>
-                    <h4>Tier 1: Machine ATS Parsability</h4>
+                <div className="space-y-3">
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                    <h4 className="text-sm font-bold text-white">The text a parser receives</h4>
+                    <p className="mt-1 text-xs text-white/70 leading-relaxed">
+                      PDF text layer via pdf.js, DOCX body via mammoth, plain text as-is. If there is
+                      no text layer, we stop and say so instead of guessing.
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-300 leading-relaxed">
-                    Evaluates reverse-engineered parsers (Greenhouse, Lever, Workday) to verify that skills, dates, and sections are indexed cleanly into database fields without corrupting.
-                  </p>
-                </div>
 
-                <div className="p-4 rounded-xl bg-ink/80 border border-slate-700/80 space-y-2">
-                  <div className="flex items-center gap-2 text-sm font-bold text-white">
-                    <span className="w-5 h-5 rounded-full bg-accent text-white flex items-center justify-center text-xs">2</span>
-                    <h4>Tier 2: Recruiter Impact & Calibration</h4>
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                    <h4 className="text-sm font-bold text-white">The structure of the file</h4>
+                    <p className="mt-1 text-xs text-white/70 leading-relaxed">
+                      Tables, headers, footers, text boxes and images read from the DOCX package, and
+                      the page count from the PDF.
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-300 leading-relaxed">
-                    Detects quantifiable achievements (e.g. "30% growth", "$1.2M revenue"), active velocity verbs, and removes unconscious age or gap bias.
-                  </p>
+
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                    <h4 className="text-sm font-bold text-white">Counts you can verify</h4>
+                    <p className="mt-1 text-xs text-white/70 leading-relaxed">
+                      Words, bullets, bullets with a number, passive openers, quoted examples of each.
+                    </p>
+                  </div>
                 </div>
               </div>
+
+              <p className="mt-3 text-[11px] text-muted leading-relaxed">
+                Every rule in the report carries an id (FMT-01, CNT-03) and the evidence that fired
+                it. You can check our work against your own file.
+              </p>
             </div>
 
-            {/* Explanation Column */}
             <div className="lg:col-span-7 space-y-6">
               <span className="text-xs font-bold uppercase tracking-wider text-accent">
-                Algorithmic Evaluation
+                Limits, stated plainly
               </span>
               <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-                ATS Resume Lab’s Resume Checker forms its score with a two-tier system
+                There is no honest way to turn a resume into a score out of 100
               </h2>
               <div className="space-y-4 text-muted text-sm sm:text-base leading-relaxed">
                 <p>
-                  When applying for a job, your resume is first filtered by an applicant tracking system before it ever touches a recruiter’s screen. ATS software parses candidate data into a searchable database.
+                  We have not validated a numeric score against hiring outcomes or employer systems.
+                  We report extracted fields and specific review prompts instead. Other parsers can
+                  recognise headings or text that our reader misses.
                 </p>
                 <p>
-                  That’s why your interview callback rate depends on two distinct factors: <strong>how cleanly the ATS machine extracts your skills</strong>, and <strong>how compelling your quantifiable impact appears to the hiring manager</strong> who reviews the extracted profile.
+                  Applicant tracking systems store and search applications. Automatic rejection comes
+                  from screening questions a recruiter configured, such as work authorisation or a
+                  required licence — not from using a table or missing a keyword.
                 </p>
               </div>
 
-              <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-soft border border-line">
-                  <span className="text-xs font-bold text-ink block mb-1">
-                    1. Machine Parsability Proportion
-                  </span>
+                  <span className="text-xs font-bold text-ink block mb-1">What you get</span>
                   <p className="text-xs text-muted/80 leading-relaxed">
-                    We test against rules established from reverse-engineering Workday, Taleo, Greenhouse, and Lever.
+                    A list of findings with the line that triggered each one, and a specific edit.
                   </p>
                 </div>
                 <div className="p-4 rounded-xl bg-soft border border-line">
-                  <span className="text-xs font-bold text-ink block mb-1">
-                    2. Measurable Accomplishments
-                  </span>
+                  <span className="text-xs font-bold text-ink block mb-1">What you will not get</span>
                   <p className="text-xs text-muted/80 leading-relaxed">
-                    Flags vague duty claims ("Responsible for bugs") and elevates them with metrics ("Resolved 45+ critical bugs, reducing churn by 18%").
+                    A percentile, a pass/fail verdict, or a prediction about your application.
                   </p>
                 </div>
               </div>
+
+              <p className="text-[11px] text-muted/80 leading-relaxed border-t border-line pt-4">
+                Sources: Greenhouse's documented 2.5 MB parsing limit; published findings that headers
+                and footers are frequently skipped; a randomised field experiment on writing clarity
+                (about 8% higher hiring rate). Graded in our{' '}
+                <span className="font-medium text-ink">evidence register</span>, referenced by each rule
+                that relies on one.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. THE 27 CRUCIAL CHECKS (7 Categories Grid) */}
+      {/* 4. WHAT THE RULES COVER */}
       <section className="py-16 sm:py-24 bg-ink text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#F87171]">
-              Full Spectrum Inspection
+            <span className="text-xs font-bold uppercase tracking-wider text-accent-soft">
+              Rulebook
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
-              The AI-powered Resume Checker goes beyond typos and punctuation
+              What the check looks at
             </h2>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-              We check your resume against what both ATS software and senior tech recruiters inspect. The engine verifies 27 crucial factors across seven distinct categories:
+            <p className="text-sm sm:text-base text-white/70 leading-relaxed">
+              Two groups of rules. Format rules depend on the file you uploaded; content rules depend
+              only on the text. Nothing here involves a language model guessing at your intent.
             </p>
           </div>
 
@@ -798,21 +1012,19 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             {categoriesList.map((cat, idx) => (
               <div
                 key={idx}
-                className="p-6 rounded-2xl bg-ink/90 border border-slate-700/80 shadow-sm space-y-4"
+                className="p-6 rounded-2xl bg-white/5 border border-white/10 shadow-sm space-y-4"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-ink border border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     {cat.icon}
                   </div>
-                  <h3 className="font-heading font-bold text-base text-white">
-                    {cat.name}
-                  </h3>
+                  <h3 className="font-heading font-bold text-base text-white">{cat.name}</h3>
                 </div>
 
                 <ul className="space-y-2.5 pt-2">
                   {cat.items.map((item, itemIdx) => (
-                    <li key={itemIdx} className="flex items-center gap-2.5 text-xs text-slate-300">
-                      <div className="w-4 h-4 rounded bg-accent/20 border border-[#C82333]/50 text-[#F87171] flex items-center justify-center shrink-0">
+                    <li key={itemIdx} className="flex items-start gap-2.5 text-xs text-white/75">
+                      <div className="w-4 h-4 rounded bg-white/10 border border-white/15 text-accent-soft flex items-center justify-center shrink-0 mt-0.5">
                         <Check className="w-3 h-3" />
                       </div>
                       <span>{item}</span>
@@ -822,17 +1034,17 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               </div>
             ))}
 
-            {/* 7th Category Highlight Card */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#C82333] to-[#8E1724] text-white shadow-lg space-y-4 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-accent text-white shadow-lg space-y-4 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-red-200">
-                  Ready To Test Your Score?
+                <span className="text-[10px] uppercase font-bold tracking-wider text-white/70">
+                  Ready to check yours?
                 </span>
                 <h3 className="font-heading font-bold text-xl mt-1">
-                  Run all 27 checks on your resume right now
+                  Upload the file you actually send
                 </h3>
-                <p className="text-xs text-red-100 mt-2 leading-relaxed">
-                  No credit card required. Free vector PDF export and personalized task list included.
+                <p className="text-xs text-white/80 mt-2 leading-relaxed">
+                  Free, no account, read in your browser. You will see the extracted text before any
+                  finding is shown, so you can confirm we read the right document.
                 </p>
               </div>
 
@@ -841,27 +1053,28 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 onClick={() => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="w-full py-2.5 bg-paper text-accent font-bold text-xs rounded-xl hover:bg-soft transition-colors shadow-xs"
+                className="w-full py-2.5 bg-paper text-ink font-bold text-xs rounded-xl hover:bg-soft transition-colors shadow-xs"
               >
-                Upload & Scan My Resume Free
+                Check my resume
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. INTERACTIVE TABS: "Put your resume score to work" */}
+{/* 5. INTERACTIVE TABS: what to do after the check */}
       <section className="py-16 sm:py-24 bg-paper border-b border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-accent">
-              End-to-End Application Platform
+              After the check
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-              Put your resume score to work
+              Then make the changes
             </h2>
             <p className="text-sm sm:text-base text-muted leading-relaxed">
-              Checking is just step one. ATS Resume Lab covers every stage of the international hiring cycle: the rewrite, the cover letter, the job tracking, and the interview prep.
+              A finding you cannot act on is just criticism. The editor opens the same document you
+              checked, with the same fields, so the fix happens where the problem was found.
             </p>
 
             {/* Tab Buttons */}
@@ -898,28 +1111,30 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     Live Visual CV Builder
                   </span>
                   <h3 className="font-heading text-2xl font-bold text-ink">
-                    Turn diagnostic feedback into an interview-earning resume
+                    Fix the findings in the document itself
                   </h3>
                   <p className="text-sm text-muted leading-relaxed">
-                    Your report flags what to fix. Our Live CV Builder helps you fix it in real time, with custom color pickers, photo support, and vector PDF exports that pass Workday and Greenhouse parsers.
+                    Your report names the rule and the line. The editor opens the same file, with fields
+                    that could not be read left blank, so you can fill in what a parser missed and
+                    export a clean DOCX or PDF.
                   </p>
                   <ul className="space-y-2 text-xs text-ink/90">
                     <li className="flex items-center gap-2">
                       <Check className="w-4 h-4 text-accent" />
-                      <span>20+ specialized sections reviewed by senior technical recruiters</span>
+                      <span>Every resume section is editable, including ones the parser could not map</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <Check className="w-4 h-4 text-accent" />
-                      <span>Google XYZ formula suggestions that turn flat duties into measurable numbers</span>
+                      <span>XYZ prompts: what you accomplished, measured by what, by doing what</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <Check className="w-4 h-4 text-accent" />
-                      <span>One-click downloadable vector PDF with selectable plain text</span>
+                      <span>DOCX by default, PDF for humans, plain text to check it yourself</span>
                     </li>
                   </ul>
-                  {onNavigate && (
+                  {(onNavigate || onOpenEditor) && (
                     <button
-                      onClick={() => onNavigate('editor')}
+                      onClick={() => openCheckedEditor()}
                       className="mt-2 px-5 py-2.5 bg-accent hover:bg-accent/90 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2"
                     >
                       <PenTool className="w-4 h-4" />
@@ -930,8 +1145,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-3 font-mono text-xs">
                   <div className="flex items-center justify-between text-muted/60 pb-2 border-b">
-                    <span>Live Builder Preview</span>
-                    <span className="text-accent font-bold">100% ATS Safe</span>
+                    <span>Text a parser would read</span>
+                    <span className="text-accent font-bold">editable</span>
                   </div>
                   <p className="text-ink font-bold text-sm">SARAH CHEN · STAFF SYSTEMS ARCHITECT</p>
                   <p className="text-muted/80 text-[11px]">San Francisco, CA · sarah.chen@dev.io · linkedin.com/in/sarahchen</p>
@@ -1071,11 +1286,14 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 </div>
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
                   <div className="flex items-center justify-between text-xs font-bold pb-2 border-b">
-                    <span>Role Match Score</span>
-                    <span className="text-accent">89% Match</span>
+                    <span>Terms in the posting</span>
+                    <span className="text-accent">5 present · 2 absent</span>
                   </div>
-                  <p className="text-[11px] text-muted">Matched: React, TypeScript, GraphQL, Docker, Microservices</p>
-                  <p className="text-[11px] text-danger font-semibold">Missing: Kubernetes, Terraform</p>
+                  <p className="text-[11px] text-muted">Present: React, TypeScript, GraphQL, Docker, Microservices</p>
+                  <p className="text-[11px] text-danger font-semibold">Absent: Kubernetes, Terraform</p>
+                  <p className="text-[10px] text-muted/70 pt-1 border-t border-line">
+                    A word match, not a fit score.
+                  </p>
                 </div>
               </div>
             )}
@@ -1088,53 +1306,54 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-accent">
-              Senior Recruiter Intelligence
+              Evidence, graded
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-              Learn what happens to your resume after you hit apply
+              What is actually known about ATS parsing
             </h2>
             <p className="text-sm sm:text-base text-muted leading-relaxed">
-              Most ATS advice online is an outdated myth. Our senior developers and recruiters ran real tests on Workday, Lever, and Greenhouse—here is what actually works:
+              Most ATS advice repeats itself without a source. These are the claims we could trace to
+              a document, with the grade we gave each one.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                tag: 'CAREER RESEARCH',
-                title: 'Does the ATS Reject Your Resume? 25 Recruiters Explain What Really Happens',
-                readTime: '9 min read',
-                desc: 'We asked 25 enterprise tech recruiters whether ATS bots reject resumes automatically. Here is the truth behind the 75% filter myth.'
+                tag: 'MYTH · GRADE A',
+                title: '“75% of resumes are rejected by an ATS”',
+                readTime: 'traced to source',
+                desc: 'The most repeated number in this industry came from a 2011 vendor press release with no sample and no method. Rejection comes from screening questions, not resume text.'
               },
               {
-                tag: 'ATS TESTING',
-                title: 'Busting ATS Myths: Comprehensive Testing of Popular Resume Builders in 2026',
-                readTime: '13 min read',
-                desc: 'Testing double-column formats, vector PDFs, icons, and infographics across Workday, Lever, and Greenhouse ATS algorithms.'
+                tag: 'PARSING · GRADE B',
+                title: '43% of resumes carry at least one extraction error',
+                readTime: 'industry data',
+                desc: 'In published parsing data, 43% of resumes contain an extraction error. The information is not deleted — it lands in the wrong field, where a recruiter search will not find it.'
               },
               {
-                tag: 'RESUME ADVICE',
-                title: 'Creating an ATS-Friendly Resume in 2026: What Actually Works',
-                readTime: '25 min read',
-                desc: 'Step-by-step masterclass on keyword placement, Google XYZ formulas, standard section headers, and contact block formatting.'
+                tag: 'FORMAT · GRADE C',
+                title: 'Two-column layouts reduce field extraction',
+                readTime: 'directional',
+                desc: 'In batch tests, two-column PDFs extracted 67% of fields correctly against 89% for single-column DOCX. Treat the figures as directional; the direction is consistent.'
               },
               {
-                tag: 'COMMON ERRORS',
-                title: '20+ Resume Mistakes to Avoid (and How to Fix Them Like a Pro)',
-                readTime: '13 min read',
-                desc: 'From passive duty language like "responsible for" to unquantified accomplishments—how to spot subtle errors costing you callbacks.'
+                tag: 'LIMITS · GRADE A',
+                title: 'Greenhouse documents a 2.5 MB parsing limit',
+                readTime: 'vendor documentation',
+                desc: 'An image-heavy PDF can upload successfully and still be read as nothing. Compress it before you apply, not after.'
               },
               {
-                tag: 'KEYWORD STRATEGY',
-                title: 'Resume Keywords to Land Interviews and Get Hired',
-                readTime: '9 min read',
-                desc: 'How strategic keyword clustering and contextual evidence prevent keyword stuffing traps while maximizing parser scoring.'
+                tag: 'HEADERS · GRADE A',
+                title: 'Contact details in a header are frequently skipped',
+                readTime: 'vendor documentation',
+                desc: 'Headers and footers sit outside the main text flow. That is how candidates become nameless profiles in a database.'
               },
               {
-                tag: 'TAILORING GUIDE',
-                title: 'How to Tailor Your Resume to the Job Description in Under 5 Minutes',
-                readTime: '8 min read',
-                desc: 'Learn how to extract the top 10 required terms from a job ad and integrate them naturally into your professional summary.'
+                tag: 'WRITING · GRADE A',
+                title: 'Clearer writing raised hiring rates by about 8%',
+                readTime: 'randomised field experiment',
+                desc: 'Jobseekers given writing-clarity help were hired 8% more often, and employers did not rate their applications as weaker.'
               }
             ].map((article, idx) => (
               <div
@@ -1146,7 +1365,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     <span className="text-accent tracking-wider">{article.tag}</span>
                     <span className="text-muted/60">{article.readTime}</span>
                   </div>
-                  <h4 className="font-heading font-bold text-ink text-base leading-snug hover:text-accent transition-colors cursor-pointer">
+                  <h4 className="font-heading font-bold text-ink text-base leading-snug">
                     {article.title}
                   </h4>
                   <p className="text-xs text-muted/80 leading-relaxed">
@@ -1154,8 +1373,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-line flex items-center justify-between text-xs text-accent font-bold">
-                  <span>Read Full Research</span>
+                <div className="pt-3 border-t border-line flex items-center justify-between text-xs text-muted font-bold">
+                  <span>In our evidence register</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -1164,70 +1383,49 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
         </div>
       </section>
 
-      {/* 7. VERIFIED REVIEWS & SOCIAL PROOF */}
+            {/* 7. WHAT THIS TOOL DOES NOT CLAIM */}
       <section className="py-16 sm:py-24 bg-paper border-b border-line">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <div className="flex items-center justify-center gap-1 text-amber-400 mb-2">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-current" />
-              ))}
-            </div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">
+              No invented proof
+            </span>
             <h2 className="font-heading text-3xl font-bold text-ink">
-              Trusted by executives & senior professionals worldwide
+              You will not find testimonials here
             </h2>
-            <p className="text-xs sm:text-sm text-muted/80">
-              <strong>4.5 / 5</strong> average rating across 5,363+ candidates hired at Google, Stripe, Microsoft, and Amazon.
+            <p className="text-xs sm:text-sm text-muted leading-relaxed">
+              This product is new. There is no user count, no star rating and no success rate we can
+              honestly publish yet, so there is none on this page. When real reviews exist, they will
+              appear with the review they came from attached.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-soft border border-line space-y-4">
-              <div className="flex items-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-ink/90 italic leading-relaxed">
-                "Great tool for improving your CV. My initial score was 48 due to passive duties. After following the 27-point recommendations, callbacks jumped from 0 to 4 in two weeks."
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-5 rounded-2xl bg-soft border border-line space-y-2">
+              <h3 className="text-sm font-bold text-ink">What we measure</h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Your file: the extracted text, its structure, and named rules with quoted evidence.
               </p>
-              <div className="text-xs font-bold text-ink border-t pt-3">
-                Mark D. · Senior DevOps Engineer
-              </div>
             </div>
-
-            <div className="p-6 rounded-2xl bg-soft border border-line space-y-4">
-              <div className="flex items-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-ink/90 italic leading-relaxed">
-                "I spent hours on Canva trying to format everything. This checker told me Canva tables fail Workday parsing. Used the ATS Live Builder and got hired at a Fortune 500 company."
+            <div className="p-5 rounded-2xl bg-soft border border-line space-y-2">
+              <h3 className="text-sm font-bold text-ink">What we do not measure</h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Whether you will be hired, shortlisted or rejected. Nobody can measure that from a
+                document.
               </p>
-              <div className="text-xs font-bold text-ink border-t pt-3">
-                Rositsa K. · Product Marketing Manager
-              </div>
             </div>
-
-            <div className="p-6 rounded-2xl bg-soft border border-line space-y-4">
-              <div className="flex items-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-ink/90 italic leading-relaxed">
-                "Fast, accurate, and completely transparent about what applicant tracking software looks for. The Bangladesh talent initiative making it free forever is incredible."
+            <div className="p-5 rounded-2xl bg-soft border border-line space-y-2">
+              <h3 className="text-sm font-bold text-ink">Where the money goes</h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Checking, editing and downloads are free. Optional human review is priced separately,
+                with scope and availability confirmed before payment.
               </p>
-              <div className="text-xs font-bold text-ink border-t pt-3">
-                Carolyn T. · Full Stack Developer
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 8. COMPREHENSIVE 12-ITEM FAQ ACCORDION */}
+{/* 8. COMPREHENSIVE 12-ITEM FAQ ACCORDION */}
       <section className="py-16 sm:py-24 bg-soft border-b border-line">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="text-center space-y-2">
@@ -1273,10 +1471,11 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
       <section className="py-16 sm:py-20 bg-ink text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
-            Get your resume score now!
+            Check the file you actually send
           </h2>
           <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Upload your resume and you’ll get an instant personalized diagnostic report across all 27 crucial ATS and hiring manager checks.
+            You will see the extracted text first, then the findings with the line that triggered each
+            one. Free, no account, nothing uploaded.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -1284,24 +1483,24 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               onClick={() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="w-full sm:w-auto px-8 py-3.5 bg-accent hover:bg-accent/90 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2"
+              className="btn btn-primary w-full sm:w-auto"
             >
               <Upload className="w-4 h-4" />
-              <span>Scan My Resume Free (27 Checks)</span>
+              <span>Upload my resume</span>
             </button>
             {onNavigate && (
               <button
                 onClick={() => onNavigate('editor')}
                 className="w-full sm:w-auto px-8 py-3.5 bg-ink hover:bg-neutral text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
               >
-                <PenTool className="w-4 h-4 text-[#F87171]" />
+                <PenTool className="w-4 h-4 text-accent-soft" />
                 <span>Open Live CV Editor</span>
               </button>
             )}
           </div>
 
           <p className="text-xs text-muted/60 pt-2">
-            No signup required for instant scoring · 100% Free for all Bangladeshi candidates
+            No signup required for checking and editing · Free for Bangladeshi candidates and applicants elsewhere
           </p>
         </div>
       </section>

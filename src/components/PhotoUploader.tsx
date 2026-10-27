@@ -20,8 +20,12 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file (JPEG, PNG, WebP).');
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      alert('Please choose a JPEG or PNG image. These formats also work in the Word export.');
+      return;
+    }
+    if (file.size > 1024 * 1024) {
+      alert('Choose a photo under 1 MB to keep your document small.');
       return;
     }
 
@@ -61,7 +65,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             Professional Headshot Photo
           </h4>
           <p className="text-xs text-muted/80 mt-0.5">
-            Standard for European (Europass), Middle East, Asia, & International CVs.
+            Optional. Follow the employer’s instructions and the norms for the role and country.
           </p>
         </div>
         {photoUrl && (
@@ -89,7 +93,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
 
       {isAntiBiasMode && (
         <div className="mb-3 px-3 py-2 bg-warning-soft border border-warning/30 rounded text-xs text-warning">
-          <strong>US / UK Anti-Bias Notice:</strong> US, UK, and Canadian corporate ATS systems typically filter out resumes with headshots to prevent hiring bias. Switch to International Mode if applying in Europe, Gulf, or Asia.
+          <strong>US / UK preset:</strong> The photo is omitted from this document’s exports. It remains stored in your draft. This is a layout choice, not a claim that ATS software rejects photos.
         </div>
       )}
 
@@ -105,20 +109,21 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             />
           </div>
         ) : (
-          <div
+          <button
+            type="button"
             onClick={() => fileInputRef.current?.click()}
             className="w-20 h-20 rounded-full border-2 border-dashed border-line hover:border-slate-400 bg-paper flex flex-col items-center justify-center cursor-pointer transition-colors shrink-0 group text-center p-2"
           >
             <Camera className="w-5 h-5 text-muted/60 group-hover:text-muted mb-0.5" />
             <span className="text-[10px] text-muted/80 font-medium leading-tight">Upload Photo</span>
-          </div>
+          </button>
         )}
 
         <div className="flex-1 w-full space-y-2">
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/png,image/jpeg,image/webp"
+            accept="image/png,image/jpeg"
             onChange={handleFileChange}
             className="hidden"
           />
@@ -166,7 +171,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
             )}
           </div>
           <p className="text-[11px] text-muted/80">
-            Processed 100% locally in your browser. Never uploaded to third-party ad servers.
+            Kept in your browser and included in exports only when enabled.
           </p>
         </div>
       </div>

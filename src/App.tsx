@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -23,7 +23,9 @@ import { CoverLetterPage } from './pages/CoverLetterPage';
 import { UserAccount, INITIAL_GUEST_ACCOUNT } from './types/auth';
 import { AuthModal } from './components/AuthModal';
 import { useLocation, useNavigate } from 'react-router';
-import { ROUTE_PATHS, routeFromPath } from './routes';
+import { ROUTE_META, ROUTE_PATHS, routeFromPath } from './routes';
+import { type ResumeDraft } from './utils/resumeDraft';
+import { editorSearch, type EditorTarget } from './utils/resumeActions';
 
 export default function App() {
   const location = useLocation();
@@ -34,6 +36,15 @@ export default function App() {
   const [orderPackageId, setOrderPackageId] = useState<'starter' | 'boost' | 'full'>('boost');
   const [preloadedOrderData, setPreloadedOrderData] = useState<{ resume: string; jd: string } | undefined>(undefined);
   const [loadedTemplateResumeData, setLoadedTemplateResumeData] = useState<ResumeData | null>(null);
+  const [draftImport, setDraftImport] = useState<ResumeDraft | null>(null);
+
+  // Prerendered HTML carries the right title, but a client-side navigation
+  // would otherwise leave the previous route's title in the tab and in the
+  // history entry. Keep them in step.
+  useEffect(() => {
+    const meta = ROUTE_META[currentPage];
+    if (meta?.title) document.title = meta.title;
+  }, [currentPage]);
 
   // User Account state
   const [userAccount, setUserAccount] = useState<UserAccount>(() => {
@@ -65,8 +76,19 @@ export default function App() {
   };
 
   const handleNavigate = (route: PageRoute) => {
+    if (route === 'editor' || route === 'suite') {
+      setLoadedTemplateResumeData(null);
+      setDraftImport(null);
+    }
     navigate(ROUTE_PATHS[route]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenEditor = (draft: ResumeDraft, target?: EditorTarget) => {
+    setLoadedTemplateResumeData(null);
+    setDraftImport(draft);
+    navigate(`${ROUTE_PATHS.editor}${editorSearch(target)}`);
+    window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
   const handleOpenOrder = (
@@ -109,7 +131,9 @@ export default function App() {
             onOpenOrder={(pkg) => handleOpenOrder(pkg || 'starter')}
             onOpenInEditor={(templateData) => {
               setLoadedTemplateResumeData(templateData);
-              handleNavigate('suite');
+              setDraftImport(null);
+              navigate(ROUTE_PATHS.suite);
+              window.scrollTo({ top: 0, behavior: 'auto' });
             }}
           />
         )}
@@ -121,6 +145,8 @@ export default function App() {
             userAccount={userAccount}
             onOpenAuth={() => setAuthModalOpen(true)}
             initialResumeData={loadedTemplateResumeData}
+            draftImport={draftImport}
+            onConsumeInitialData={() => { setLoadedTemplateResumeData(null); setDraftImport(null); }}
           />
         )}
 
@@ -140,6 +166,7 @@ export default function App() {
           <FreeScorePage
             onSelectPlan={(pkg, preloaded) => handleOpenOrder(pkg, preloaded)}
             onNavigate={handleNavigate}
+            onOpenEditor={handleOpenEditor}
           />
         )}
 
@@ -204,4 +231,3 @@ export default function App() {
     </div>
   );
 }
-

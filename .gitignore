@@ -9,3 +9,6 @@ coverage/
 
 # Prerender spike output (not committed)
 dist-spike/
+
+# Local browser verification profiles and images
+.qa/

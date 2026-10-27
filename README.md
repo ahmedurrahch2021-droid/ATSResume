@@ -13,6 +13,10 @@ Live preview: **https://atsresumemaker.ai.studio** (Google AI Studio). Intended 
 | Route table, titles, canonical origin | `src/routes.ts` |
 | Prerender step (runs automatically) | `scripts/prerender.tsx` + `vite.config.ts` |
 | Static HTML output | `dist/` (generated, not committed) |
+| Checker → editor draft bridge | `src/utils/resumeDraft.ts` |
+| Editable sections, guided fixes, A4 preview | `src/pages/ResumeWorkspacePage.tsx` + `src/components/resume/` |
+| DOCX / PDF-print / TXT export | `src/utils/resumeExporter.ts` |
+| Optional AI architecture and provider research | `docs/AI_ASSISTANCE.md` |
 
 ## Commands
 
@@ -21,6 +25,7 @@ npm install
 npm run dev        # local dev server on :3000
 npm run build      # production build — prerenders every public route
 npm run lint       # tsc --noEmit
+npm run test:resume # import, audit, persistence and export regression checks
 npm run build:spa  # single-page shell only; do NOT deploy this output
 ```
 
@@ -45,7 +50,7 @@ The host must serve the files in `dist/` as static files, not rewrite every path
 3. Confirm `dist/robots.txt` and `dist/sitemap.xml` show the new host.
 4. Re-publish the site, then verify a deep page (e.g. `/pricing`) serves a `<link rel="canonical">` with the new host.
 
-Keep the old host serving a 301 redirect to the new one for at least a year, so existing links and search results transfer instead of 404ing.
+The owner will retire the AI Studio app when the replacement site is complete. There is no staging-host indexing change in this implementation.
 
 ## Hosting
 
@@ -57,7 +62,7 @@ The output is static files. Any host that serves `dist/` as files works.
 | --- | --- |
 | Build command | `npm run build` |
 | Output directory | `dist` |
-| Node version | 20 or 22 |
+| Node version | 22.18+ or 24 (verified locally on 24) |
 
 **Hostinger** (static/ Git deploy): build with `npm run build` and upload the contents of `dist/` to `public_html`.
 
@@ -71,3 +76,14 @@ In both cases: **do not add a catch-all rewrite to `/index.html`**. That rule wo
 - Every public numeric claim must trace to a row in `src/data/evidence.ts` with a source grade (A/B/C).
 - The checker reports findings, never a single ATS "score", and never predicts rejection.
 - ATS-safety statements describe parser behaviour, not hiring outcomes.
+
+## Current workspace behaviour
+
+- Imports are local. Selecting a finding opens its section in the same draft; examples are explicitly selected and labelled fictional.
+- Actual edits, the job description and document settings autosave locally. If storage fails, the in-memory handoff remains usable in the tab, with a session-only notice.
+- Missing parsed fields are not proof they were absent in the original file. Original body/header/footer text remains available for comparison.
+- Guided rewriting assembles user-supplied facts, previews the wording and supports undo. No AI provider is connected.
+- A4 pages are measured in the browser. DOCX is a valid Word package with paragraph/list content. Word can reflow; preview parity is not guaranteed.
+- Download the revised file and re-upload it to verify its actual extraction. Editing fields does not recheck the original file’s layout.
+
+For manual browser verification, `npx tsx scripts/qa-resume-fixtures.ts` and `npx tsx scripts/qa-resume-print.ts` generate **synthetic** files in `dist/_qa` after a build. Remove that directory before deploying; a fresh production build also clears it.

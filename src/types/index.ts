@@ -42,7 +42,7 @@ export interface ResumeProjectItem {
 export interface ResumeLanguageItem {
   id: string;
   name: string;
-  level: 'Native' | 'Fluent' | 'C2 (Mastery)' | 'C1 (Advanced)' | 'B2 (Upper Intermediate)' | 'B1 (Intermediate)' | 'A2' | 'A1';
+  level: '' | 'Native' | 'Fluent' | 'C2 (Mastery)' | 'C1 (Advanced)' | 'B2 (Upper Intermediate)' | 'B1 (Intermediate)' | 'A2' | 'A1';
 }
 
 export interface CompetitiveProgrammingItem {
@@ -101,6 +101,8 @@ export interface ResumeData {
   projects: ResumeProjectItem[];
   certifications: string[];
   customSections?: CustomSection[];
+  /** Imported text the user elects to keep outside the standard sections. */
+  additionalInformation?: string;
 }
 
 export interface JobMatchAnalysis {

@@ -4,6 +4,17 @@
 **Research base:** 44 verified sources (catalog v2) + 4 synthesis reports + master audit v2.
 **Design base:** Warm Paper palette (ATSresume-site) × Enhancv structural discipline. Colour comes from the first; layout, spacing, type and component anatomy from the second. Neither brand's assets are copied.
 
+### Implementation decisions — 28 October 2026 (supersede roadmap assumptions below)
+
+- The former score engine has been replaced by `resumeAudit.ts`. There is no 27-check pass guarantee, overall ATS score or hiring prediction.
+- The checker maps fields heuristically; “not recognised” is not the same as “absent from the document.” Original extracted text is available for manual correction.
+- `/suite` now restores the same local draft and job description, offers section-specific fix links, and never auto-loads a sample based on timezone. Samples remain explicit, fictional examples.
+- The free guided rewrite helper uses only facts supplied by the candidate. No remote AI is connected. Provider research and a limited opt-in pilot design are in `AI_ASSISTANCE.md`; fine-tuning is not required to start.
+- DOCX is an actual OPC package and the PDF path uses the browser print engine. A4 page measurement is implemented; identical pagination in Word is not claimed.
+- Public pricing remains the existing one-time $10 / $25 / $35 human-service packages, with availability and scope confirmed before payment. Proposed subscriptions, quotas, cloud accounts and payment integrations below are roadmap items, not shipped entitlements.
+- Country controls do not assert universal photo or biography requirements. Follow the particular employer or application portal; government forms are not interchangeable with corporate resumes.
+- The owner will delete the AI Studio app when the replacement is complete. No staging `noindex` change is requested.
+
 ---
 
 ## 0. The claim we are allowed to make

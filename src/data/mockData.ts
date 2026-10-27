@@ -12,16 +12,16 @@ export const PACKAGES: PricingPackage[] = [
     name: 'Resume Starter',
     price: 10,
     deliveryHours: 24,
-    description: 'Perfect for professionals needing a clean, ATS-compliant overhaul for a specific role.',
+    description: 'A written review and focused edits for one resume and one target role.',
     recommendedFor: 'Early to mid-level job seekers applying to standard roles',
     features: [
-      '1–2 Page ATS-Optimized Resume',
+      'Review of one resume, including 2–3 page documents',
       'Direct tailoring to 1 target job description',
-      'Action-driven bullet rewrites with quantified impact',
-      'Dual review: AI speed + developer human quality check',
-      'Guaranteed 24-hour turnaround',
+      'Bullet suggestions using facts you supply',
+      'Written notes from a human reviewer',
+      'Target delivery: 24 hours after scope is confirmed',
       '1 Free revision round included',
-      '100% money-back satisfaction guarantee',
+      'Agree the scope and revision terms before payment',
       'Delivered in PDF & fully editable Word (.docx)'
     ]
   },
@@ -30,18 +30,18 @@ export const PACKAGES: PricingPackage[] = [
     name: 'Career Boost',
     price: 25,
     deliveryHours: 24,
-    badge: 'MOST POPULAR',
+    badge: 'APPLICATION SET',
     popular: true,
-    description: 'Our flagship complete application toolkit for ambitious candidates aiming for high callback rates.',
+    description: 'Resume rewriting and matching application materials for a specific job.',
     recommendedFor: 'Career switchers & competitive corporate applicants',
     features: [
       'Everything in Resume Starter',
       'Custom-written matching Cover Letter (PDF)',
       'LinkedIn Profile Headline & About summary overhaul',
-      'ATS keyword frequency mapping matrix',
-      'Priority 24-hour delivery queue',
+      'Job-posting vocabulary review with explained edits',
+      'Delivery timing confirmed before payment',
       '1 Free revision round included',
-      '100% money-back guarantee',
+      'Facts and changes reviewed with you',
       'Delivered in PDF, DOCX + plain-text copy paste file'
     ]
   },
@@ -51,17 +51,17 @@ export const PACKAGES: PricingPackage[] = [
     price: 35,
     deliveryHours: 48,
     badge: 'MAX VALUE',
-    description: 'End-to-end personal branding and interview readiness suite for senior, tech, or executive roles.',
+    description: 'Application materials, LinkedIn wording and interview-preparation prompts.',
     recommendedFor: 'Senior professionals, leadership, and high-stakes transitions',
     features: [
       'Everything in Career Boost',
       'Complete LinkedIn Profile Optimization (Experience bullets + Skills)',
       '10 Tailored Interview Questions & STAR Response Framework',
-      'Executive 2-page structural layout',
+      'Document length adapted to relevant experience',
       'Direct developer consult notes on positioning',
-      '48-hour thorough delivery (or 12h rush optional)',
+      'Target delivery: 48 hours after scope is confirmed',
       '2 Free revision rounds included',
-      'Lifetime storage & future re-export'
+      'Editable files you can keep and re-export'
     ]
   }
 ];

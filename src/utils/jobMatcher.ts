@@ -36,14 +36,14 @@ export function analyzeJobMatch(
 
   if (cleanJd.trim().length < 40) {
     return {
-      matchPercentage: 45,
+      matchPercentage: 0,
       matchedKeywords: [],
       missingHardSkills: [],
       missingSoftSkills: [],
       recommendedBullets: [
-        'Paste a complete job description (at least 2-3 paragraphs) to see comprehensive keyword matches and missing requirements.'
+        'Paste a complete job description (two or three paragraphs) to compare its vocabulary with this draft.',
       ],
-      summaryFeedback: 'Job description is too brief to extract meaningful keyword frequency.'
+      summaryFeedback: 'Job description is too brief to extract terms from.',
     };
   }
 
@@ -102,41 +102,34 @@ export function analyzeJobMatch(
     }
   });
 
-  // 4. Calculate Match Percentage
+  // 4. Term coverage. This is the share of the terms we looked for that appear
+  // in the resume. It is not a fit score and the UI labels it as counts.
   const totalRelevantSkills = matchedKeywords.length + missingHardSkills.length + missingSoftSkills.length;
-  let matchPercentage = 60;
-  if (totalRelevantSkills > 0) {
-    matchPercentage = Math.round((matchedKeywords.length / totalRelevantSkills) * 100);
-    // Boundary clamp for realism
-    matchPercentage = Math.max(24, Math.min(97, matchPercentage));
-  }
+  const matchPercentage =
+    totalRelevantSkills > 0 ? Math.round((matchedKeywords.length / totalRelevantSkills) * 100) : 0;
 
-  // 5. Generate Recommended Bullets using Google XYZ Formula
+  // 5. Prompts, not invented bullets. We do not know your numbers, and a
+  // filled-in "32% throughput" would be a lie you then have to defend.
   const recommendedBullets: string[] = [];
   if (missingHardSkills.length > 0) {
-    const topMissing = missingHardSkills.slice(0, 2).map(s => s.toUpperCase()).join(' and ');
+    const topMissing = missingHardSkills.slice(0, 2).join(' and ');
     recommendedBullets.push(
-      `Engineered core services leveraging ${topMissing}, improving processing throughput by 32% and reducing latency across peak traffic periods.`
+      `If you have used ${topMissing}: rewrite one bullet to name it, then add the scale you worked at and the result that changed.`,
     );
   }
   if (missingSoftSkills.length > 0) {
-    const soft = missingSoftSkills[0];
     recommendedBullets.push(
-      `Fostered ${soft} across 4 cross-functional pods, standardizing deployment runbooks and accelerating project delivery by 20%.`
+      `If ${missingSoftSkills[0]} is part of your work, show it as an action with an outcome (who you coordinated, what shipped, what improved) rather than listing it as a trait.`,
     );
   }
   recommendedBullets.push(
-    `Spearheaded automated testing and reliability initiatives, cutting regression bug discovery time by 45% prior to production release.`
+    'Pick your three strongest bullets and add one number to each: volume, time saved, money moved, people managed, or error rate reduced.',
   );
 
-  let summaryFeedback = '';
-  if (matchPercentage >= 80) {
-    summaryFeedback = 'High Match Alignment! Your resume reflects strong keyword harmony with the core job listing requirements.';
-  } else if (matchPercentage >= 60) {
-    summaryFeedback = 'Moderate Match Alignment. You share foundation terms, but adding the missing high-frequency keywords below will substantially elevate your ATS ranking.';
-  } else {
-    summaryFeedback = 'Low Match Risk. The employer ATS is likely to filter this resume out due to missing critical tech and domain keywords found in their job posting.';
-  }
+  const summaryFeedback =
+    totalRelevantSkills === 0
+      ? 'No terms from our list appear in the posting.'
+      : `${matchedKeywords.length} of ${totalRelevantSkills} terms appear in both the posting and this resume.`;
 
   return {
     matchPercentage,
