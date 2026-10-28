@@ -109,7 +109,7 @@ The current Bun version 1 lockfile was generated and tested using Bun 1.3.14. A 
 - Cover letters start blank, import actual resume contact fields, and export genuine DOCX plus PDF printing/text. Fictional examples require explicit selection.
 - Local profile is not authentication. Contact and review inquiry forms prepare emails; subscriptions, server submission and checkout are not connected.
 - The full roadmap is not complete. Read `docs/QUALITY_REVIEW.md` before describing the product as launch-ready.
-- The owner-approved human-support model is implemented in the repository: free core worldwide; paid human help at ৳499/৳1,999/৳3,499 in Bangladesh or US$10/US$35/US$59 internationally. Pricing region carries into the inquiry and its email/downloaded quote.
+- The owner-approved human-support model is implemented in the repository: free core worldwide; paid human help at ৳499/৳1,499/৳1,999 in Bangladesh or US$10/US$35/US$59 internationally. Pricing region carries into the inquiry and its email/downloaded quote.
 - Email and WhatsApp `+8801748755209` support have a 24-hour reply policy, not a document-delivery guarantee. No paid AI, checkout or automatic message/file submission is connected. Public comments/reviews remain optional.
 - Domain/search migration, new 404 handling and a social-sharing image are deferred. See `docs/SOLO_LAUNCH_PLAN.md`; leave `SITE_ORIGIN` and indexing behaviour unchanged until the owner reopens that work.
 

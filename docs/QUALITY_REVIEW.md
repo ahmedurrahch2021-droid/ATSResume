@@ -26,7 +26,7 @@ The earlier statement that only deployment remained was incorrect. This review a
 
 ## Owner-approved launch scope update
 
-The owner's latest direction in `SOLO_LAUNCH_PLAN.md` is no-paid-AI, free core worldwide, paid human help in Bangladesh and other countries, email/WhatsApp support and voluntary feedback. The free-Bangladesh-human-evaluation proposal is superseded. Approved prices are ৳499/৳1,999/৳3,499 for Bangladesh and US$10/US$35/US$59 internationally. Replies are within 24 hours; document delivery is agreed separately. Remote AI, subscriptions, cloud accounts and automated checkout are not launch requirements.
+The owner's latest direction in `SOLO_LAUNCH_PLAN.md` is no-paid-AI, free core worldwide, paid human help in Bangladesh and other countries, email/WhatsApp support and voluntary feedback. The free-Bangladesh-human-evaluation proposal is superseded. Approved prices are ৳499/৳1,499/৳1,999 for Bangladesh (revised 29 October 2026) and US$10/US$35/US$59 internationally. Replies are within 24 hours; document delivery is agreed separately. Remote AI, subscriptions, cloud accounts and automated checkout are not launch requirements.
 
 The latest live check after the owner republished now shows the revised headline and native full-height menu. Targeted live checks passed at 375×812 and 667×375 landscape, including Pricing navigation and closing. This supersedes the old 72px-panel observation. The new regional-pricing/contact revision still needs publication and live verification; broader document/device sign-off remains open.
 

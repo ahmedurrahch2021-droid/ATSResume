@@ -19,11 +19,13 @@ Updated: 28 October 2026.
 
 ## Approved human-service prices and scope
 
+Bangladesh prices revised on 29 October 2026 at the owner's request to make human assistance more accessible to unemployed job seekers. The free core is available without purchasing a service.
+
 | Package | Scope | Bangladesh | International |
 | --- | --- | --- | --- |
 | Human Resume Review | Written review and focused edits; one resume, one role, one revision round | ৳499 BDT | US$10 |
-| Targeted Resume Rewrite | Rewrite one resume using supplied facts; one role, one revision round | ৳1,999 BDT | US$35 |
-| Application Kit | Targeted resume, one cover letter, LinkedIn headline/About wording; one role, two revision rounds | ৳3,499 BDT | US$59 |
+| Targeted Resume Rewrite | Rewrite one resume using supplied facts; one role, one revision round | ৳1,499 BDT | US$35 |
+| Application Kit | Targeted resume, one cover letter, LinkedIn headline/About wording; one role, two revision rounds | ৳1,999 BDT | US$59 |
 
 Ordinary two-/three-page resumes are included. The rewrite package does not include cover-letter or LinkedIn work; the kit does not promise full LinkedIn account management or interview coaching. Revision windows, cancellation/refund terms, eligibility and delivery dates are agreed before payment. No account or compulsory review is required to use the free core.
 

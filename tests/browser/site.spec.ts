@@ -201,7 +201,7 @@ test('review inquiry supports three pages and never asks for card details', asyn
 
 test('both regional catalogs display the approved prices and matching package scope', async ({ page }) => {
   await openPage(page, '/pricing');
-  for (const [region, prices] of [['international', ['US$10', 'US$35', 'US$59']], ['bangladesh', ['৳499', '৳1,999', '৳3,499']]] as const) {
+  for (const [region, prices] of [['international', ['US$10', 'US$35', 'US$59']], ['bangladesh', ['৳499', '৳1,499', '৳1,999']]] as const) {
     await page.getByLabel('Pricing region', { exact: true }).selectOption(region);
     for (const [index, name] of ['Human Resume Review', 'Targeted Resume Rewrite', 'Application Kit'].entries()) {
       const card = page.locator('#main-content section').filter({ has: page.getByRole('heading', { name, exact: true }) });

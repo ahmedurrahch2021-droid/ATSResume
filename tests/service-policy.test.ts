@@ -7,10 +7,10 @@ import { describePackagePrices, formatPackagePrice, packageAmount, rushQuoteNote
 test('approved human-service prices, scopes and revision rounds are not currency conversions', () => {
   assert.deepEqual(PACKAGES.map((pkg) => [pkg.name, pkg.bangladeshPrice, pkg.price, pkg.revisionRounds]), [
     ['Human Resume Review', 499, 10, 1],
-    ['Targeted Resume Rewrite', 1999, 35, 1],
-    ['Application Kit', 3499, 59, 2],
+    ['Targeted Resume Rewrite', 1499, 35, 1],
+    ['Application Kit', 1999, 59, 2],
   ]);
-  assert.equal(formatPackagePrice(PACKAGES[1], 'bangladesh'), '৳1,999');
+  assert.equal(formatPackagePrice(PACKAGES[1], 'bangladesh'), '৳1,499');
   assert.equal(formatPackagePrice(PACKAGES[2], 'international'), 'US$59');
   assert.match(describePackagePrices(PACKAGES[0]), /Bangladesh: ৳499 · International: US\$10/);
   assert.match(PACKAGES[1].features.join(' '), /Cover letter and LinkedIn wording are not included/);
