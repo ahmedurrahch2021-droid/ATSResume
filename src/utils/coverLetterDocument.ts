@@ -1,5 +1,6 @@
 import type { CoverLetterData } from '../types/coverLetter';
 import type { ResumeDocumentBlock } from './resumeDocument';
+import { isTargetCountry } from '../types/countryNorms';
 
 export function createEmptyCoverLetter(): CoverLetterData {
   return {
@@ -14,6 +15,7 @@ export function createEmptyCoverLetter(): CoverLetterData {
 export function isCoverLetterData(value: unknown): value is CoverLetterData {
   if (!value || typeof value !== 'object') return false;
   const data = value as CoverLetterData;
+  if (data.targetCountry !== undefined && !isTargetCountry(data.targetCountry)) return false;
   const isString = (item: unknown) => typeof item === 'string';
   if (!['id', 'title', 'date', 'salutation', 'opening', 'closing', 'signOff', 'accentColor'].every((key) => isString(data[key as keyof CoverLetterData]))) return false;
   if (!data.sender || !['fullName', 'jobTitle', 'email', 'phone', 'location'].every((key) => isString(data.sender[key as keyof CoverLetterData['sender']]))) return false;

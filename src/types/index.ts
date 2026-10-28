@@ -88,6 +88,7 @@ export interface ResumeData {
   drivingLicense?: string;
   remoteReadiness?: string;
   targetMarket?: TargetMarket;
+  targetCountry?: import('./countryNorms').TargetCountry;
   // Core sections
   experience: ResumeExperienceItem[];
   education: ResumeEducationItem[];

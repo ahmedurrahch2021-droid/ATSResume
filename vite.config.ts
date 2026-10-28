@@ -27,18 +27,15 @@ function prerenderPlugin(): Plugin {
       skip = config.mode === 'spa' || process.env.SKIP_PRERENDER === '1';
     },
     closeBundle() {
+      const cli = path.join(root, 'node_modules', 'tsx', 'dist', 'cli.mjs');
       if (skip) {
         console.warn('\n[prerender] skipped — this build is a single-page shell, not deployable as-is.\n');
-        return;
+      } else {
+        // Fails the build loudly rather than deploying a shell with no per-route HTML.
+        execFileSync(process.execPath, [cli, 'scripts/prerender.tsx'], { cwd: root, stdio: 'inherit' });
       }
-
-      const cli = path.join(root, 'node_modules', 'tsx', 'dist', 'cli.mjs');
-
-      // Fails the build loudly rather than deploying a shell with no per-route HTML.
-      execFileSync(process.execPath, [cli, 'scripts/prerender.tsx'], {
-        cwd: root,
-        stdio: 'inherit',
-      });
+      // AI Studio can invoke `vite build` directly. Always ship a runnable Node entrypoint too.
+      execFileSync(process.execPath, [cli, 'scripts/build-server.ts'], { cwd: root, stdio: 'inherit' });
     },
   };
 }

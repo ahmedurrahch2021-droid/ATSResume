@@ -214,7 +214,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
             <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-[12.5px] text-muted">
               <li className="inline-flex items-center gap-1.5">
                 <Lock className="h-3.5 w-3.5 text-success" aria-hidden="true" />
-                Files stay in your browser
+                Local file checking
               </li>
               <li className="inline-flex items-center gap-1.5">
                 <Check className="h-3.5 w-3.5 text-success" aria-hidden="true" />
@@ -600,7 +600,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
               Inspect your resume before you send it.
             </h2>
             <p className="mt-2 text-[13.5px] text-paper/70">
-              Free, no account, and your file never leaves your device.
+              Free local file checking, with no account required. Optional online coaching shares only the context you choose to send.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">

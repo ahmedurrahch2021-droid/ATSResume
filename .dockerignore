@@ -1,0 +1,12 @@
+node_modules
+.git
+.qa
+.aistudio
+dist
+dist-server
+.env*
+!.env.example
+*.log
+*.zip
+tests
+docs

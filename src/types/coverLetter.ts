@@ -20,6 +20,7 @@ export interface CoverLetterRecipient {
 }
 
 export interface CoverLetterData {
+  targetCountry?: import('./countryNorms').TargetCountry;
   id: string;
   title: string;
   sender: CoverLetterSender;

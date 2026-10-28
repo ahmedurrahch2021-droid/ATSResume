@@ -18,18 +18,21 @@ Live preview: **https://atsresumemaker.ai.studio** (Google AI Studio). Intended 
 | DOCX / PDF-print / TXT export | `src/utils/resumeExporter.ts` |
 | Four original layouts and preview generation | `src/data/resumeLayouts.ts` + `scripts/generate-template-previews.ts` |
 | Country/layout guidance and source scope | `docs/TEMPLATE_GUIDE.md` + `src/data/resumeSources.ts` |
-| Optional AI architecture and provider research | `docs/AI_ASSISTANCE.md` |
+| Optional Gemini coach and provider setup | `src/components/ai/SeniorDiagnosticPanel.tsx` + `server/geminiDiagnostic.ts` + `docs/AI_ASSISTANCE.md` |
+| Cloud Run / AI Studio startup and environment | `docs/DEPLOYMENT.md` + `Dockerfile` |
 | Release gaps and mobile/reliability audit | `docs/QUALITY_REVIEW.md` |
 | Owner-approved email-first solo launch and priorities | `docs/SOLO_LAUNCH_PLAN.md` |
 
 ## Commands
 
 ```bash
-npm install
+npm ci
 npm run dev        # local dev server on :3000
-npm run build      # production build — prerenders every public route
+npm run build      # frontend, prerendered routes and compiled Node server
+npm start          # production Express server on 0.0.0.0:$PORT (default 3000)
 npm run lint       # tsc --noEmit
 npm run test:resume # import, audit, persistence and export regression checks
+npm run test:server # API and compiled production-startup tests; build first
 npm run test:browser # production-browser tests; run npm run build first
 npm run previews:templates # refresh real gallery PNGs after changing paper styles or samples
 npm run build:spa  # single-page shell only; do NOT deploy this output
@@ -37,7 +40,7 @@ npm run build:spa  # single-page shell only; do NOT deploy this output
 
 ## How the build works
 
-`vite build` writes the bundle, then the `ats-prerender` plugin in `vite.config.ts` runs `scripts/prerender.tsx`. That step writes one real HTML file per public route into `dist/<path>/index.html`, each with its own `<title>`, description, canonical, `robots`, Open Graph and Twitter tags, plus JSON-LD.
+`vite build` writes the bundle, then the `ats-prerender` plugin in `vite.config.ts` runs `scripts/prerender.tsx`. That step writes one real HTML file per public route into `dist/<path>/index.html`, each with its own `<title>`, description, canonical, `robots`, Open Graph and Twitter tags, plus JSON-LD. It then runs `scripts/build-server.ts` to produce `dist-server/server.mjs`, resolving the local TypeScript imports at build time.
 
 Because the prerender step lives inside the Vite config, **any** build command produces crawlable output — `npm run build`, `vite build`, or a host's default build. It fails the build rather than shipping an empty `<div id="root">`.
 
@@ -45,7 +48,7 @@ Because the prerender step lives inside the Vite config, **any** build command p
 
 ## Deploying
 
-The host must serve the files in `dist/` as static files, not rewrite every path to `/index.html`. Any static host or CDN does this by default; a catch-all rewrite rule would discard the prerendered pages.
+For AI Studio / Cloud Run, use the included Dockerfile or build with `npm run build` and start with `npm start`. The production server binds to `0.0.0.0:${PORT}`, serves each prerendered route, handles `/api/gemini/*`, and exposes `/healthz`. Both `dist/` and `dist-server/` must be included in the runtime. See **[deployment instructions](docs/DEPLOYMENT.md)** for the resolved startup failure and exact environment settings.
 
 `SITE_ORIGIN` in `src/routes.ts` is the single source for canonical URLs, `sitemap.xml`, `robots.txt` and structured data. Moving to another domain is one line there, then a rebuild — there is no second place to update.
 
@@ -60,7 +63,7 @@ The owner will retire the AI Studio app when the replacement site is complete. T
 
 ## Hosting
 
-The output is static files. Any host that serves `dist/` as files works.
+The current full application uses the Node server described above. A static-only host can serve `dist/` for the local tools; online Gemini endpoints require the Node backend. Static hosts must serve existing route HTML before any SPA fallback.
 
 **Cloudflare Pages** (recommended — free TLS, CDN edge in Dhaka, builds from GitHub):
 
@@ -74,7 +77,7 @@ The output is static files. Any host that serves `dist/` as files works.
 
 In both cases: **do not add a catch-all rewrite to `/index.html`**. That rule would replace every prerendered page with the shell and throw away the per-route titles and canonicals. Some "SPA hosting" presets add it by default — remove it.
 
-`dist/` is generated and gitignored; it must be built on every deploy, never committed.
+`dist/` and `dist-server/` are generated and gitignored; build them on every deploy.
 
 ### Dependency lockfiles
 
@@ -94,11 +97,13 @@ The current Bun version 1 lockfile was generated and tested using Bun 1.3.14. A 
 - Imports are local. Selecting a finding opens its section in the same draft; examples are explicitly selected and labelled fictional.
 - Actual edits, the job description and document settings autosave locally. If storage fails, the in-memory handoff remains usable in the tab, with a session-only notice.
 - Missing parsed fields are not proof they were absent in the original file. Original body/header/footer text remains available for comparison.
-- Guided rewriting assembles user-supplied facts, previews the wording and supports undo. No AI provider is connected.
+- The local guided helper assembles user-supplied facts. An optional Gemini Writing Coach is integrated into the resume and cover-letter editors, with selected-field before/after review, stale-edit protection and last-edit undo/redo. Online use requires server configuration; otherwise labelled local guidance retains the original text.
+- Gemini can use the owner's free-tier project: configure a server-only `GEMINI_API_KEY` and `GEMINI_MODEL=gemini-3.8-flash`. Google controls the project's quota and tier; there is no paid-tier app flag. See `docs/DEPLOYMENT.md` for setup and the actual free-tier data/region terms.
 - A4 pages are measured in the browser. DOCX is a valid Word package with paragraph/list content. Word can reflow; preview parity is not guaranteed.
 - Four original layouts share the document model and paper styles. Gallery images come from the actual print renderer. Applying a layout keeps your existing career fields and target job; fictional sample replacement is an explicit action.
 - Optional photos sit top-right beside body-text contact details and are right-margin anchored in DOCX. Photos can still affect parsing; US/UK mode and Hide photo exclude them from document exports.
 - Twelve country cards open source-linked guidance, not automatic national requirements. The country page explains source scope and access limitations and links the original institutional examples.
+- The coach's country preference uses that reviewed guidance and preserves proper names and technical terms. Selecting a country does not automatically alter photo visibility, personal details or page length.
 - Download the revised file and re-upload it to verify its actual extraction. Editing fields does not recheck the original file’s layout.
 - The mobile menu uses a full-height native dialog with keyboard containment. The browser test suite covers phone, landscape, tablet and desktop widths.
 - Cover letters start blank, import actual resume contact fields, and export genuine DOCX plus PDF printing/text. Fictional examples require explicit selection.

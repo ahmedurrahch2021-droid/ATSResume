@@ -1,5 +1,6 @@
 import type { ResumeData, ResumeLayoutId, TargetMarket } from '../types';
 import { resumeLayout } from '../data/resumeLayouts';
+import { isTargetCountry } from '../types/countryNorms';
 
 export interface ResumeDocumentSettings {
   font: 'Arial' | 'Calibri' | 'Georgia';
@@ -51,6 +52,7 @@ export function isResumeData(value: unknown): value is ResumeData {
   const optionalStrings = ['github', 'photoUrl', 'photoShape', 'nationality', 'visaStatus', 'drivingLicense', 'remoteReadiness', 'additionalInformation'] as const;
   if (!optionalStrings.every((key) => data[key] === undefined || typeof data[key] === 'string')) return false;
   if (data.targetMarket !== undefined && !['global', 'us_uk', 'bangladesh'].includes(data.targetMarket)) return false;
+  if (data.targetCountry !== undefined && !isTargetCountry(data.targetCountry)) return false;
   if (data.photoShape !== undefined && !['circle', 'square', 'hidden'].includes(data.photoShape)) return false;
   if (!data.skills || !['languages', 'frameworks', 'toolsAndCloud', 'methodologies'].every((key) => typeof data.skills[key as keyof ResumeData['skills']] === 'string')) return false;
   if (!Array.isArray(data.experience) || !data.experience.every((item) => item && (['id', 'role', 'company', 'location', 'dates'] as const).every((key) => typeof item[key] === 'string') && Array.isArray(item.bullets) && item.bullets.every((text) => typeof text === 'string'))) return false;
@@ -65,6 +67,8 @@ export function isResumeData(value: unknown): value is ResumeData {
 
 /** One body-flow document model is shared by the preview, text checks and DOCX export. */
 export function getResumeDocumentBlocks(resume: ResumeData, market: TargetMarket = resume.targetMarket ?? 'global', layoutId: ResumeLayoutId = 'modern'): ResumeDocumentBlock[] {
+  // Country guidance alone must not remove supplied data; omission is an explicit document preset.
+  const omitPhoto = market === 'us_uk';
   const blocks: ResumeDocumentBlock[] = [];
   const add = (id: string, type: ResumeDocumentBlock['type'], text: string, detail?: string, keepWithNext?: boolean) => {
     if (text.trim() || detail?.trim()) blocks.push({ id, type, text: text.trim(), detail: detail?.trim(), keepWithNext });
@@ -76,8 +80,8 @@ export function getResumeDocumentBlocks(resume: ResumeData, market: TargetMarket
   add('title', 'title', resume.targetTitle, undefined, true);
   add('contact', 'contact', join([resume.email, resume.phone, resume.location]), undefined, true);
   add('links', 'contact', join([...new Set([resume.linkedin, resume.portfolio, resume.github].filter(Boolean))]));
-  add('work-rights', 'contact', join([resume.visaStatus, market !== 'us_uk' ? resume.nationality : undefined, resume.drivingLicense, resume.remoteReadiness]));
-  if (/^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(resume.photoUrl ?? '') && resume.photoShape !== 'hidden' && market !== 'us_uk') {
+  add('work-rights', 'contact', join([resume.visaStatus, !omitPhoto ? resume.nationality : undefined, resume.drivingLicense, resume.remoteReadiness]));
+  if (/^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(resume.photoUrl ?? '') && resume.photoShape !== 'hidden' && !omitPhoto) {
     const identity = blocks.splice(0);
     blocks.push({ id: 'identity', type: 'identity', text: '', children: identity, photo: resume.photoUrl, photoShape: resume.photoShape === 'circle' ? 'circle' : 'square', keepWithNext: true });
   }

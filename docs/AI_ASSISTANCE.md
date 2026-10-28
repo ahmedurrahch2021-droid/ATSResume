@@ -1,10 +1,23 @@
 # Optional AI assistance — implementation decision
 
-Status: **deferred; no provider connected**. Updated 28 October 2026.
+Status: **optional Gemini integration implemented; live provider/deployment setup is separate**. Updated 29 October 2026.
 
-The owner has chosen a solo-operator, email/WhatsApp human-review model rather than purchasing AI for the launch. Human assistance is paid in Bangladesh and other countries; core tools remain free. The approved direction is recorded in `SOLO_LAUNCH_PLAN.md`. The provider research and architecture below are retained for a possible future decision, not an instruction to connect an API or sell AI credits. Neither a free nor a paid remote AI integration is currently authorized.
+The subsequent AI Studio ZIP and integration request supersede the earlier deferral of optional AI implementation. The free core and paid email/WhatsApp human-service model in `SOLO_LAUNCH_PLAN.md` continues. Online coaching is a limited, explicitly requested convenience; there is no paid AI checkout or guaranteed provider quota.
 
-The core product is usable without an API: local file extraction → findings → the same draft in the editor → guided edits → DOCX/PDF/TXT export → check the new file. If remote AI is reconsidered later, it should assist with wording rather than replace this inspectable loop.
+The core product is usable without an API: local file extraction → findings → the same draft in the editor → guided edits → DOCX/PDF/TXT export → check the new file. Online AI assists with wording within this inspectable loop.
+
+## Implemented behaviour
+
+- The Writing Coach opens in both the resume workspace and Cover Letter Studio. The user chooses one summary, contribution bullet or letter paragraph. No AI request runs on import or on each keystroke.
+- `server/geminiDiagnostic.ts` uses the source registry in `resumeSources.ts` and the reviewed country-guide data via `targetCountries.ts`. Role context comes from the user's supplied title; the coach never assumes everyone is a senior technical candidate.
+- The prompt treats document text, job postings and conversation as untrusted data. Only the selected text and separately confirmed facts support factual claims. Metrics/XYZ are optional; qualitative outcomes are valid. There are no fixed national page counts, automatic photo/bio changes, invented ATS scores or interview guarantees.
+- The response is structured JSON. Type/length checks reject malformed results and detect added/changed numerical tokens or placeholders. These are limited guards, not complete factual verification. The original text always comes from the request.
+- Applying a suggestion updates only the selected current field. If it changed while a request was pending, apply is blocked. Last-edit undo and redo are available in the current editor session; browser reload retains the document, not the undo state.
+- Up to six conversation messages per document field are stored locally and disclosed as context for follow-ups. Missing browser storage keeps the current field's conversation in memory. Additional confirmed facts are separate from conversation memory and are cleared when the selected field changes.
+- Website startup is independent of Gemini. Missing configuration, errors, timeouts, failed response checks or exhausted quota return labelled guidance with the original text retained. When status indicates offline operation, the browser generates that guidance locally.
+- Server-side attempt/concurrency limits replace the ZIP's browser-only credit counter. They are per connection/instance and reset on restart; there is no durable global account quota in this pilot.
+
+Runtime configuration and Cloud Run instructions are in [`DEPLOYMENT.md`](DEPLOYMENT.md). The owner selected Gemini's free tier; a server-only `GEMINI_API_KEY` now enables the coach directly, without a paid-project flag. With no key, local guidance is available. Google controls the chosen project's tier, quotas and data terms. The `gemini-3.8-flash` endpoint, structured-output support and standard free-tier input/output were checked against [Google's model documentation](https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash) and [pricing](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.8-flash) on 29 October 2026. The model can be overridden with `GEMINI_MODEL`; actual project access and response quality have not been established by mocked tests. Unpaid-service personal-data and UK/EEA/Swiss restrictions remain as documented below.
 
 ## What “training it with our data” should mean initially
 
@@ -37,8 +50,8 @@ These are hosted services. Open-source/open-weight model licensing is a separate
 
 1. Keep ordinary checking and editing local. No AI call on upload or on each keystroke.
 2. The user explicitly requests an AI suggestion and sees which provider will receive which text. Update privacy wording to distinguish local tools from optional remote assistance. Human review is a separate sharing action too.
-3. A Cloudflare Worker/Pages Function or Hostinger backend holds the key in a server secret. Never place it in a `VITE_*` variable, public bundle, localStorage or Git.
-4. Enforce usage on the server: per-user daily limit, app-wide daily token budget, request size/output caps, timeouts and concurrency limits. Client-only counters are not enforcement.
+3. The Express/Cloud Run backend holds the key in a runtime server secret. Never place it in a `VITE_*` variable, public bundle, localStorage or Git.
+4. The current server enforces per-connection and per-instance attempt limits, request size/output caps, timeouts and concurrency. Durable per-user limits and an app-wide token budget require shared storage before a scaled entitlement is advertised. Client-only counters are not enforcement.
 5. Process the selected section rather than repeatedly sending the entire CV and research library. Cache reusable public guidance; avoid logging private prompts or returning provider credentials/errors.
 6. Handle quota exhaustion honestly: keep the draft and local helper available; show when AI can be retried. Do not manufacture a successful rewrite or cycle keys to evade quotas.
 7. Test factual preservation and usefulness on synthetic or explicitly authorised examples spanning Bangladesh, Gulf and other target roles. Track acceptance, corrections, latency and actual token usage before setting a public allowance.

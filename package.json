@@ -4,15 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
+    "dev": "tsx server.ts",
+    "start": "node dist-server/server.mjs",
     "build": "vite build",
     "build:spa": "vite build --mode spa",
     "build:prerender": "vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist server.js",
+    "clean": "node -e \"for (const p of ['dist', 'dist-server']) require('node:fs').rmSync(p, { recursive: true, force: true })\"",
     "lint": "tsc --noEmit",
     "test:resume": "tsx --test tests/resume-flow.test.ts tests/document-export.test.ts tests/service-policy.test.ts",
     "test:browser": "playwright test",
+    "test:server": "tsx --test tests/server.test.ts tests/server-startup.test.ts",
     "previews:templates": "tsx scripts/generate-template-previews.ts"
   },
   "dependencies": {

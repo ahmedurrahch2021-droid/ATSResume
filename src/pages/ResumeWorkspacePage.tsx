@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { ArrowRight, Check, Download, FileText, Plus, ScanSearch, ShieldCheck, Upload, X } from 'lucide-react';
+import { ArrowRight, Check, Download, FileText, Plus, ScanSearch, ShieldCheck, Sparkles, Upload, X } from 'lucide-react';
 import type { PageRoute, ResumeData, TargetMarket } from '../types';
 import type { UserAccount } from '../types/auth';
 import { ROUTE_PATHS } from '../routes';
@@ -18,6 +18,9 @@ import { PhotoUploader } from '../components/PhotoUploader';
 import { LinkedInSyncModal } from '../components/LinkedInSyncModal';
 import { PersonalConsultationModal } from '../components/PersonalConsultationModal';
 import { RESUME_LAYOUTS, resumeLayout } from '../data/resumeLayouts';
+import { SeniorDiagnosticPanel } from '../components/ai/SeniorDiagnosticPanel';
+import { TargetCountrySelect } from '../components/common/TargetCountrySelect';
+import { applyResumeCoachEdit, resumeCoachTargets } from '../utils/aiCoachTargets';
 
 export interface ResumeWorkspacePageProps {
   onNavigate: (route: PageRoute) => void;
@@ -62,6 +65,9 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
   const [copied, setCopied] = useState(false);
   const [linkedInOpen, setLinkedInOpen] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [coachOpen, setCoachOpen] = useState(false);
+  const resumeRef = useRef(resume);
+  resumeRef.current = resume;
   const formRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const importedId = useRef(initial.source.importedAt);
@@ -80,6 +86,8 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
   const selectedStillFlagged = openFindings.some((finding) => finding.id === selectedRule);
   const selectedFileRule = Boolean(selectedRule && /^FMT-0[1-5]$/.test(selectedRule));
   const sectionInfo = EDITOR_SECTIONS.find((item) => item.id === section)!;
+  const coachTargets = useMemo(() => resumeCoachTargets(resume), [resume]);
+  const coachDefaultId = section === 'experience' ? coachTargets.find((target) => target.id.startsWith('experience:'))?.id : section === 'projects' ? coachTargets.find((target) => target.id.startsWith('project:'))?.id : 'summary';
 
   const applyDraft = useCallback((draft: ResumeDraft) => {
     importedId.current = draft.source.importedAt;
@@ -189,12 +197,14 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
             <p className="mt-1 flex items-center gap-2 text-xs text-muted"><ShieldCheck className="w-4 h-4 text-success" aria-hidden="true" />{savedLocally ? 'Autosaved in this browser. No account required.' : 'Session only: browser storage was blocked. Download a backup before leaving.'}</p>
           </div>
           <div className="flex flex-wrap gap-2">
+            <button type="button" className="btn btn-secondary" onClick={() => setCoachOpen(true)}><Sparkles className="w-4 h-4" aria-hidden="true" />AI Writing Coach</button>
             <button type="button" className="btn btn-secondary" onClick={() => { setView('findings'); setSelectedRule(null); }}><ScanSearch className="w-4 h-4" aria-hidden="true" />Check draft <span className="text-xs text-muted">{counts.toFix + counts.toCheck}</span></button>
             <button type="button" className={`btn ${section === 'export' && view === 'build' ? 'btn-secondary' : 'btn-primary'}`} onClick={() => chooseSection('export')}><Download className="w-4 h-4" aria-hidden="true" />Download</button>
           </div>
         </div>
       </div>
       <div className="workspace-container pt-6 space-y-5">
+        <div className="flex flex-wrap items-end gap-3"><TargetCountrySelect compact value={resume.targetCountry ?? 'global'} onChange={(targetCountry) => setResume((current) => ({ ...current, targetCountry }))} /><p className="max-w-2xl text-xs text-muted">Guidance follows the target country and actual vacancy. This choice does not change your facts, photo or page length; document appearance remains under Layout & region.</p></div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-1 rounded-card border border-line bg-soft p-1" aria-label="Workspace views">
             {([['build', 'Edit resume'], ['keywords', 'Job terms'], ['findings', 'Findings']] as const).map(([id, label]) => <button key={id} type="button" aria-pressed={view === id} className={`min-h-11 rounded-btn px-4 text-sm font-medium ${view === id ? 'bg-surface text-ink shadow-card' : 'text-muted hover:text-ink'}`} onClick={() => setView(id)}>{label}</button>)}
@@ -227,9 +237,10 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
         </div>}
         {view === 'keywords' && <KeywordPanel audit={audit} jobDescription={jobDescription} onJobDescription={setJobDescription} onEdit={openEditorTarget} />}
         {view === 'findings' && <div className="space-y-8"><ResumeFindings audit={audit} onEdit={openEditorTarget} />{originalAudit && <details className="card p-5"><summary className="min-h-11 cursor-pointer text-sm font-medium">See the original file’s findings (kept separately)</summary><div className="mt-4"><ResumeFindings audit={originalAudit} onEdit={openEditorTarget} context="original" /></div></details>}<p className="text-sm text-muted">Layout checks for the upload are not re-verified by editing fields. Download the new file and upload it to the checker to inspect that file.</p></div>}
-        <div className="border-t border-line pt-6 flex flex-wrap items-center justify-between gap-4"><div><p className="text-sm font-medium">Free editing first. Optional second pair of eyes.</p><p className="mt-1 text-xs text-muted">You can fix, save and download without purchasing a review. AI assistance is not connected.</p></div><button type="button" className="btn btn-ghost" onClick={() => setReviewOpen(true)}>Human review options <ArrowRight className="w-4 h-4" aria-hidden="true" /></button></div>
+        <div className="border-t border-line pt-6 flex flex-wrap items-center justify-between gap-4"><div><p className="text-sm font-medium">Free editing first. Optional second pair of eyes.</p><p className="mt-1 text-xs text-muted">Fix, save and download for free. Optional online coaching sends the selected text to Gemini when requested and configured.</p></div><button type="button" className="btn btn-ghost" onClick={() => setReviewOpen(true)}>Human review options <ArrowRight className="w-4 h-4" aria-hidden="true" /></button></div>
       </div>
       <LinkedInSyncModal isOpen={linkedInOpen} onClose={() => setLinkedInOpen(false)} resumeData={resume} />
+      <SeniorDiagnosticPanel isOpen={coachOpen} onClose={() => setCoachOpen(false)} targets={coachTargets} contextId={`resume:${source.importedAt}`} defaultTargetId={coachDefaultId} targetRole={resume.targetTitle} targetCountry={resume.targetCountry ?? 'global'} onTargetCountryChange={(targetCountry) => setResume((current) => ({ ...current, targetCountry }))} jobDescription={jobDescription} flawsDetected={openFindings.slice(0, 8).map((finding) => `${finding.id}: ${finding.title}. ${finding.evidence}`)} onApplyFix={(id, originalText, newText) => { const next = applyResumeCoachEdit(resumeRef.current, id, originalText, newText); if (!next) return false; resumeRef.current = next; setResume(next); return true; }} />
       <PersonalConsultationModal isOpen={reviewOpen} onClose={() => setReviewOpen(false)} resumeData={resume} onProceedOrder={(pkg, notes, url) => onOpenOrder(pkg, { resume: text, jd: `${jobDescription}${url ? `\nJob URL: ${url}` : ''}${notes ? `\nNotes: ${notes}` : ''}` })} />
     </div>
   );
@@ -306,6 +317,7 @@ function DesignPanel({ resume, settings, onResume, onSettings }: { resume: Resum
        <div className="rounded-card border border-line bg-soft p-4 space-y-2"><p className="font-medium text-sm">Single-column body text</p><p className="text-sm text-muted">Standard headings and contact details in the body. The selected section order supplies the paper preview, DOCX and plain text. An optional photo is a separate image, not a text column.</p></div>
        <div className="space-y-2"><label htmlFor="resume-layout" className="block text-sm font-medium">Document layout</label><select id="resume-layout" className="field" value={settings.layout ?? 'modern'} onChange={(event) => onSettings({ ...resumeLayout(event.target.value).settings })}>{RESUME_LAYOUTS.map((layout) => <option key={layout.id} value={layout.id}>{layout.name}</option>)}</select><p className="text-xs text-muted">{resumeLayout(settings.layout).description} Choosing a layout sets its font, colour and spacing; your career details are kept.</p><a href={`${ROUTE_PATHS['country-guides']}#layout-${settings.layout ?? 'modern'}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm font-medium text-accent underline underline-offset-4">Layout features & sources <span className="sr-only">(opens in a new tab)</span></a></div>
       <div className="space-y-2"><label htmlFor="resume-market" className="block text-sm font-medium">Application region</label><select id="resume-market" className="field" value={resume.targetMarket ?? 'global'} onChange={(event) => onResume((current) => ({ ...current, targetMarket: event.target.value as TargetMarket }))}><option value="global">International / employer-specific</option><option value="bangladesh">Bangladesh</option><option value="us_uk">US / UK — omit photo</option></select><p className="text-xs text-muted">Region selection never changes your career details. The US / UK option omits the photo and nationality from the exported document. Other regions allow you to choose.</p></div>
+      <TargetCountrySelect value={resume.targetCountry ?? 'global'} onChange={(targetCountry) => onResume((current) => ({ ...current, targetCountry }))} label="Country guidance preference" />
       {resume.targetMarket === 'bangladesh' && <p className="rounded-card bg-soft border border-line p-3 text-xs text-muted">Corporate resumes and government application forms have different requirements. Follow the specific vacancy’s instructions; Teletalk form fields are not a universal corporate CV checklist.</p>}
       <div className="space-y-2"><label htmlFor="resume-font" className="block text-sm font-medium">Document font</label><select id="resume-font" className="field" value={settings.font} onChange={(event) => onSettings((current) => ({ ...current, font: event.target.value as ResumeDocumentSettings['font'] }))}>{['Arial', 'Calibri', 'Georgia'].map((font) => <option key={font}>{font}</option>)}</select></div>
       <div className="space-y-2"><label htmlFor="resume-spacing" className="block text-sm font-medium">Line spacing</label><select id="resume-spacing" className="field" value={settings.spacing} onChange={(event) => onSettings((current) => ({ ...current, spacing: event.target.value as ResumeDocumentSettings['spacing'] }))}><option value="standard">Standard</option><option value="compact">Compact</option></select><p className="text-xs text-muted">Two or three pages are supported. Keep necessary experience rather than shrinking the text to force one page.</p></div>

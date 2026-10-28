@@ -2,6 +2,22 @@
 
 Review date: 28 October 2026. Scope: the repository build, not a claim that the AI Studio deployment is current.
 
+## 29 October — Cloud Run and optional coach update
+
+The supplied AI Studio ZIP added an optional Gemini coach but started with `node server.ts`; its extensionless imports reproduced `ERR_MODULE_NOT_FOUND` before binding a port. The build now creates `dist-server/server.mjs`, with `npm start`, a multi-stage Dockerfile and a health route. The server binds `0.0.0.0:$PORT` and starts without an AI key.
+
+The coach now uses reviewed source/country context, selected-field application, stale-response protection and last-edit undo/redo in both editors. Offline/provider-error paths retain the original wording rather than replacing assistance with invented leadership or impact. Country guidance is separate from explicit document/photo controls. Requests use server attempt limits with the per-instance/restart limitation disclosed. Runtime configuration and exact verification scope are in `DEPLOYMENT.md` and `AI_ASSISTANCE.md`.
+
+The owner's subsequent request selects Gemini's free tier. The paid-project app gate was removed: a server-only key enables the coach, and Google's project tier/quotas govern its API use. The UI explains free-tier data handling, while the setup guide records the existing provider restrictions. No cloud billing or API project settings were changed by this source update.
+
+This update supersedes the historical “AI not connected” implementation status below. The core pricing, support and paused domain work are unaffected. Live Cloud Run publication and a real Gemini request require the operator's deployment/project configuration; local tests use synthetic data and mocked AI responses.
+
+**Verified:** TypeScript and the production build passed; all **25 document/parser/service-policy tests**, **11 server tests** and **50 browser tests** passed. The new browser cases cover both editors' selected-field application, empty letter openings, undo/redo, persistence and DOCX output; cancelled/stale requests; offline/blocked-storage operation; quota/malformed-response fallback; and dialog geometry/focus/accessibility. The production server also preserves the existing slash-free route URLs and country-guide fragments.
+
+A separate clean production-dependency install ran the compiled JavaScript from outside the repository on **0.0.0.0:3000**, with optional `tsx`/TypeScript peers excluded and native type stripping disabled. Health, prerendered route delivery and missing-key fallback passed. This was a Windows/Node 24 runtime check, not a Docker/Linux or live Cloud Run deployment. Reports are in ignored `.qa/browser-report-cloudrun-full.json` and `.qa/cloud-run-runtime-report.json`.
+
+**Free-tier follow-up:** TypeScript, a fresh production build, **12 server tests** and all **6 focused coach browser tests** passed after removing the paid-project gate. The additional compiled-startup test verifies that a runtime key enables the coach without a paid-tier flag. No real Gemini request or Google billing change was made. The focused browser report is `.qa/browser-report.json`.
+
 ## Verdict
 
 **The full planned ecosystem is not complete.** The free check → edit → export loop is implemented, but a successful TypeScript/build run does not establish responsive behaviour, accessibility, working integrations or launch readiness.
@@ -59,6 +75,7 @@ Run a fresh production build first:
 npm run lint
 npm run test:resume
 npm run build
+npm run test:server
 npm run test:browser
 npm audit
 ```
@@ -77,7 +94,7 @@ The scripts keep traces, results and screenshots in `.qa/`, excluded from Git. T
 4. **Template and regional breadth:** four genuinely distinct styles and twelve contextual, source-linked country guides are implemented. Nine layouts remain a roadmap goal. Region controls cover international/employer-specific, Bangladesh guidance and US/UK photo omission; the country guides are not twelve automatic national presets.
 5. **Content:** `/guides` and the planned 20 source-linked articles, Bangla UI/content and `hreflang`, OG image and a meaningful unknown-route/404 experience are outstanding.
 6. **Application ecosystem:** saved per-job versions, application tracker, interview-preparation workspace, deeper skills/title matching and fully linked Job Kit workflow remain roadmap items.
-7. **Remote services:** real authentication/cloud sync, optional opt-in AI, subscriptions/job alerts, server-side submission and payments are not connected. Keys, credentials or card details must never be handled by a pretend client-only flow.
+7. **Remote services:** the optional coach has a real server integration in this revision, with live provider configuration and durable scaled quotas still pending. Real authentication/cloud sync, subscriptions/job alerts, review-form submission and payments are not connected. Keys, credentials or card details must never be handled by a pretend client-only flow.
 8. **Broader importer QA:** continue testing authorised, representative PDF/DOCX files; investigate the previously noted real-PDF page-count discrepancy. Our mapper does not inspect every PDF layout or verify spelling, facts or qualifications.
 
 ## Mentor recommendation

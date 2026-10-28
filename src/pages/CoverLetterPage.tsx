@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Copy, Download, RotateCcw } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Copy, Download, RotateCcw, Sparkles } from 'lucide-react';
 import type { CoverLetterData } from '../types/coverLetter';
 import { COVER_LETTER_PRESETS } from '../data/coverLetterPresets';
 import { CoverLetterEditor } from '../components/coverLetter/CoverLetterEditor';
@@ -8,13 +8,16 @@ import { exportCoverLetterToVectorPdf, exportCoverLetterToWord, formatCoverLette
 import { createEmptyCoverLetter, isCoverLetterData } from '../utils/coverLetterDocument';
 import { loadDraft } from '../utils/resumeDraft';
 import { downloadBlob } from '../utils/resumeExporter';
+import { SeniorDiagnosticPanel } from '../components/ai/SeniorDiagnosticPanel';
+import { TargetCountrySelect } from '../components/common/TargetCountrySelect';
+import { applyLetterCoachEdit, letterCoachTargets } from '../utils/aiCoachTargets';
 
 const STORAGE_KEY = 'atsresume_cover_letter_data';
 
 export function CoverLetterPage() {
   const [letterData, setLetterData] = useState<CoverLetterData>(() => {
     try { const saved = localStorage.getItem(STORAGE_KEY); if (saved) { const data: unknown = JSON.parse(saved); if (isCoverLetterData(data)) return data; } } catch { /* Use an empty local draft. */ }
-    return createEmptyCoverLetter();
+    return { ...createEmptyCoverLetter(), targetCountry: loadDraft()?.resume.targetCountry ?? 'global' };
   });
   const [scale, setScale] = useState<number | 'fit'>('fit');
   const [mobileTab, setMobileTab] = useState<'edit' | 'preview'>('edit');
@@ -22,6 +25,9 @@ export function CoverLetterPage() {
   const [saved, setSaved] = useState(false);
   const [hasResumeData, setHasResumeData] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [coachOpen, setCoachOpen] = useState(false);
+  const letterRef = useRef(letterData);
+  letterRef.current = letterData;
   useEffect(() => { setHasResumeData(Boolean(loadDraft())); }, []);
   useEffect(() => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(letterData)); setSaved(true); } catch { setSaved(false); } }, [letterData]);
   const hasContent = Boolean(letterData.sender.fullName.trim() || letterData.opening.trim() || letterData.bodyParagraphs.some((text) => text.trim()));
@@ -34,7 +40,7 @@ export function CoverLetterPage() {
     const draft = loadDraft();
     if (!draft) { setMessage('No resume draft is available in this browser.'); return; }
     const resume = draft.resume;
-    setLetterData((current) => ({ ...current, sender: { fullName: resume.fullName, jobTitle: resume.targetTitle, email: resume.email, phone: resume.phone, location: resume.location, portfolioUrl: resume.portfolio, linkedInUrl: resume.linkedin } }));
+    setLetterData((current) => ({ ...current, targetCountry: resume.targetCountry ?? current.targetCountry, sender: { fullName: resume.fullName, jobTitle: resume.targetTitle, email: resume.email, phone: resume.phone, location: resume.location, portfolioUrl: resume.portfolio, linkedInUrl: resume.linkedin } }));
     setMessage('Contact fields copied from your resume draft. Review them before exporting.');
   };
   const downloadWord = async () => {
@@ -48,12 +54,14 @@ export function CoverLetterPage() {
         <div className="workspace-container py-6 space-y-4">
           <div><p className="eyebrow">Free cover letter builder</p><h1 className="mt-2 text-2xl sm:text-3xl">Write a letter for this application.</h1><p className="mt-2 text-sm text-muted">{saved ? 'Saved in this browser.' : 'Session only — download your text before leaving.'} {wordCount} words in the letter body.</p></div>
           <div className="flex flex-wrap gap-2">
+            <button type="button" className="btn btn-secondary" onClick={() => setCoachOpen(true)}><Sparkles className="h-4 w-4" aria-hidden="true" />AI Writing Coach</button>
             <button type="button" className="btn btn-secondary" disabled={!hasContent} onClick={async () => { try { await navigator.clipboard.writeText(formatCoverLetterPlainText(letterData)); setMessage('Letter text copied.'); } catch { setMessage('Clipboard access was blocked. Download a text file instead.'); } }}><Copy className="h-4 w-4" aria-hidden="true" />Copy text</button>
             <button type="button" className="btn btn-secondary" disabled={!hasContent} onClick={() => downloadBlob(new Blob([formatCoverLetterPlainText(letterData)], { type: 'text/plain;charset=utf-8' }), 'Cover-Letter.txt')}>Download TXT</button>
             <button type="button" className="btn btn-secondary" disabled={!hasContent || exporting} onClick={() => void downloadWord()}><Download className="h-4 w-4" aria-hidden="true" />{exporting ? 'Preparing…' : 'Word (.docx)'}</button>
             <button type="button" className="btn btn-primary" disabled={!hasContent} onClick={() => { exportCoverLetterToVectorPdf(letterData); setMessage('Choose A4 and Save as PDF in the print dialog. Review the page breaks and turn off browser headers and footers.'); }}>Print / Save PDF</button>
-            <button type="button" className="btn btn-ghost" onClick={() => { if (!hasContent || window.confirm('Clear this cover letter? Download the text first if you want to keep it.')) { setLetterData(createEmptyCoverLetter()); setMessage('Blank letter started.'); } }}><RotateCcw className="h-4 w-4" aria-hidden="true" />Start blank</button>
+            <button type="button" className="btn btn-ghost" onClick={() => { if (!hasContent || window.confirm('Clear this cover letter? Download the text first if you want to keep it.')) { setLetterData({ ...createEmptyCoverLetter(), id: `cl-${crypto.randomUUID()}`, targetCountry: letterData.targetCountry }); setMessage('Blank letter started.'); } }}><RotateCcw className="h-4 w-4" aria-hidden="true" />Start blank</button>
           </div>
+          <TargetCountrySelect compact value={letterData.targetCountry ?? 'global'} onChange={(targetCountry) => setLetterData((current) => ({ ...current, targetCountry }))} />
           {message && <p role="status" className="text-sm text-muted">{message}</p>}
           {letterData.id.startsWith('example-') && <p className="text-xs text-warning">This draft started from a fictional example. Verify every name, employer, claim and number.</p>}
           <div className="flex gap-2 lg:hidden" aria-label="Cover letter view">{(['edit', 'preview'] as const).map((tab) => <button key={tab} type="button" className={`btn flex-1 ${mobileTab === tab ? 'btn-secondary' : 'btn-ghost'}`} aria-pressed={mobileTab === tab} onClick={() => setMobileTab(tab)}>{tab === 'edit' ? 'Edit letter' : 'Preview letter'}</button>)}</div>
@@ -66,6 +74,7 @@ export function CoverLetterPage() {
           <div className="rounded-card border border-line bg-soft p-2 sm:p-4"><CoverLetterPreview data={letterData} scale={scale} /></div>
         </section>
       </div>
+      <SeniorDiagnosticPanel isOpen={coachOpen} onClose={() => setCoachOpen(false)} targets={letterCoachTargets(letterData)} contextId={`letter:${letterData.id}`} defaultTargetId="opening" targetRole={letterData.sender.jobTitle} targetCountry={letterData.targetCountry ?? 'global'} onTargetCountryChange={(targetCountry) => setLetterData((current) => ({ ...current, targetCountry }))} onApplyFix={(id, originalText, newText) => { const next = applyLetterCoachEdit(letterRef.current, id, originalText, newText); if (!next) return false; letterRef.current = next; setLetterData(next); setMessage('Coach edit applied to the selected field.'); return true; }} />
     </div>
   );
 }

@@ -234,7 +234,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'quality',
     question: 'What can I do for free?',
     directAnswer: 'Read a PDF, DOCX or text resume, inspect the extracted fields, edit the same draft and download your document without an account or a card.',
-    extendedAnswer: 'Job-posting vocabulary comparison and a cover letter builder are also available. The guided rewrite helper uses facts you provide. No AI provider or cloud sync is connected.'
+    extendedAnswer: 'Job-posting vocabulary comparison and a cover letter builder are also available. The local guided helper uses facts you provide. Optional Gemini coaching shares selected text and context when requested and configured, subject to server and provider limits. Cloud sync is not connected.'
   },
   {
     id: 'faq-2',

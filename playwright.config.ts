@@ -19,7 +19,8 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: process.env.PLAYWRIGHT_BASE_URL ? undefined : {
-    command: 'npm run preview -- --host 127.0.0.1 --port 4173 --strictPort',
+    command: 'npm start',
+    env: { PORT: '4173', NODE_ENV: 'production', GEMINI_API_KEY: '', GOOGLE_GENAI_API_KEY: '', GOOGLE_API_KEY: '' },
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
