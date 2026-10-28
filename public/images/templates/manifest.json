@@ -1,0 +1,31 @@
+{
+  "renderer": "Shared resume print renderer",
+  "width": 794,
+  "height": 1123,
+  "templates": [
+    {
+      "layout": "modern",
+      "sourceHash": "b1a986170cd987ff6055567d9dbe07902f7a3060df2295740bcdb740898bd5c1",
+      "image": "/images/templates/modern.png",
+      "previewPages": 1
+    },
+    {
+      "layout": "classic",
+      "sourceHash": "92ed136d1783f120f25e060d6670d74d1ba0bd2155e773cb43582e9e223d770b",
+      "image": "/images/templates/classic.png",
+      "previewPages": 1
+    },
+    {
+      "layout": "compact",
+      "sourceHash": "923b5b575f7c29d87c54d8987499891fc2b273358d9332610944a05d03c44df5",
+      "image": "/images/templates/compact.png",
+      "previewPages": 1
+    },
+    {
+      "layout": "graduate",
+      "sourceHash": "654b10aff830f5c5ede065c1c4b4ffad037f82015729e3babac68cd1e6b797b2",
+      "image": "/images/templates/graduate.png",
+      "previewPages": 1
+    }
+  ]
+}

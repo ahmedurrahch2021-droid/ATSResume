@@ -4,7 +4,7 @@
  */
 
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { PageRoute, ResumeData, type ServicePricingRegion } from './types';
+import { PageRoute, type ServicePricingRegion } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ChecklistModal } from './components/ChecklistModal';
@@ -30,6 +30,7 @@ const FaqPage = lazy(() => import('./pages/FaqPage').then((module) => ({ default
 const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })));
 const OrderPage = lazy(() => import('./pages/OrderPage').then((module) => ({ default: module.OrderPage })));
 const CoverLetterPage = lazy(() => import('./pages/CoverLetterPage').then((module) => ({ default: module.CoverLetterPage })));
+const CountryGuidesPage = lazy(() => import('./pages/CountryGuidesPage').then((module) => ({ default: module.CountryGuidesPage })));
 
 export default function App() {
   const location = useLocation();
@@ -41,7 +42,6 @@ export default function App() {
   const [orderUrgent, setOrderUrgent] = useState(false);
   const [orderPricingRegion, setOrderPricingRegion] = useState<ServicePricingRegion>('international');
   const [preloadedOrderData, setPreloadedOrderData] = useState<{ resume: string; jd: string } | undefined>(undefined);
-  const [loadedTemplateResumeData, setLoadedTemplateResumeData] = useState<ResumeData | null>(null);
   const [draftImport, setDraftImport] = useState<ResumeDraft | null>(null);
 
   // Prerendered HTML carries the right title, but a client-side navigation
@@ -53,7 +53,7 @@ export default function App() {
   }, [currentPage]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (!location.hash) window.scrollTo({ top: 0, behavior: 'instant' });
   }, [location.pathname]);
 
   // User Account state
@@ -91,7 +91,6 @@ export default function App() {
 
   const handleNavigate = (route: PageRoute) => {
     if (route === 'editor' || route === 'suite') {
-      setLoadedTemplateResumeData(null);
       setDraftImport(null);
     }
     navigate(ROUTE_PATHS[route]);
@@ -99,7 +98,6 @@ export default function App() {
   };
 
   const handleOpenEditor = (draft: ResumeDraft, target?: EditorTarget) => {
-    setLoadedTemplateResumeData(null);
     setDraftImport(draft);
     navigate(`${ROUTE_PATHS.editor}${editorSearch(target)}`);
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -150,9 +148,8 @@ export default function App() {
           <TemplatesPage
             onNavigate={handleNavigate}
             onOpenOrder={(pkg) => handleOpenOrder(pkg || 'starter')}
-            onOpenInEditor={(templateData) => {
-              setLoadedTemplateResumeData(templateData);
-              setDraftImport(null);
+            onOpenInEditor={(draft) => {
+              setDraftImport(draft);
               navigate(ROUTE_PATHS.suite);
               window.scrollTo({ top: 0, behavior: 'auto' });
             }}
@@ -165,9 +162,8 @@ export default function App() {
             onOpenOrder={(pkg, preloaded) => handleOpenOrder(pkg || 'starter', preloaded)}
             userAccount={userAccount}
             onOpenAuth={() => setAuthModalOpen(true)}
-            initialResumeData={loadedTemplateResumeData}
             draftImport={draftImport}
-            onConsumeInitialData={() => { setLoadedTemplateResumeData(null); setDraftImport(null); }}
+            onConsumeInitialData={() => setDraftImport(null)}
           />
         )}
 
@@ -220,6 +216,10 @@ export default function App() {
           <CoverLetterPage />
         )}
 
+        {currentPage === 'country-guides' && (
+          <CountryGuidesPage />
+        )}
+
         {currentPage === 'order' && (
           <OrderPage
             initialPackageId={orderPackageId}
@@ -229,6 +229,7 @@ export default function App() {
             onBackToPricing={() => handleNavigate('pricing')}
           />
         )}
+        <RouteAnchor hash={location.hash} />
         </Suspense>
         </PageErrorBoundary>
       </main>
@@ -256,4 +257,17 @@ export default function App() {
       />
     </div>
   );
+}
+
+/** Runs after a lazy page mounts, so new-tab country/layout links land at their section. */
+function RouteAnchor({ hash }: { hash: string }) {
+  useEffect(() => {
+    if (!hash) return;
+    const frame = requestAnimationFrame(() => {
+      try { document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView({ block: 'start', behavior: 'instant' }); }
+      catch { /* An invalid fragment must not prevent the page opening. */ }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hash]);
+  return null;
 }

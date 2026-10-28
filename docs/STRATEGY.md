@@ -21,6 +21,9 @@
 - Domain/DNS/HTTPS work, canonical/sitemap migration, a new 404 page and a social-sharing image are deferred at the owner's request. `SITE_ORIGIN` remains the AI Studio origin; no staging indexing change is authorized.
 - Compulsory public comments, testimonials, Trustpilot reviews and WhatsApp group membership must not unlock tools or assistance. Relevant private service-intake information may be required for a human evaluation.
 - Historical Pass/Pro, API quotas, cloud accounts and automated billing proposals below do not define the current launch scope. Do not add them without fresh owner approval.
+- The template revision implements four original document styles (`modern`, `classic`, `compact`, `graduate`), real renderer-generated PNG previews, a layout-only handoff that preserves the draft, and explicitly selected fictional samples. Nine styles remain a roadmap goal.
+- `/country-guides` provides twelve source-linked application profiles and four layout explanations. Recommendations are contextual; no automatic country-wide photo, biography or length requirements are imposed. Primary sources, review scope and access limits live in `resumeSources.ts` and `countryGuides.ts`.
+- An enabled photo is top-right in the browser/print identity block and right-margin anchored in DOCX. Contact details remain ordinary body text. MIT and Greenhouse flag photos as possible parsing problems; right alignment is not an ATS-safety certification. See `TEMPLATE_GUIDE.md`.
 
 ---
 
@@ -189,12 +192,12 @@ Mobile: 44px hamburger, full-height sheet, same five groups, CTA pinned bottom. 
 
 ### 4.1 Home
 
-1. **Hero** — H1: *"Your resume, read the way recruiters and software actually read it."* Sub: one line on parse + human + job fit. Primary CTA `Check my resume free`, secondary `See templates`. No signup. Right side: a live paper sheet with the check overlay.
+1. **Hero** — H1: *"See what our reader extracts. Make your resume clearer."* Primary CTA `Check my resume free`. Right side: the actual Modern Professional print-renderer preview, labelled as a fictional example.
 2. **Truth strip** — three short, sourced facts (43% parse-error rate; no auto-rejection on text; 6–7s human triage). Links to `/how-it-works`. This is the differentiation, placed above the fold-equivalent.
 3. **Job Kit** — four steps, one row, numbered.
 4. **Six pillars** — Build · Tailor · Check · Apply · Learn · Expert. Each one card, one link. Never list 20 features.
-5. **Template gallery** — 3 visible + "all 9". Each card shows engine badge (`ATS-safe` / `Designed`).
-6. **Country presets** — BD · Gulf · UK · US · EU. Flag + one-line rule (photo, length, personal fields).
+5. **Template gallery** — 3 visible + "all 4 layouts". Actual renderer-generated page images, useful style descriptions and explicit fictional-example labels.
+6. **Country guidance** — twelve cards with a suggested layout thumbnail, country/zone and a new-tab link to context and sources. No template-certification badges or automatic photo rules.
 7. **Proof** — evidence cards with source count and dates, not fake testimonials.
 8. **Pricing preview** — free core, paid human review.
 9. **FAQ** — 6 items, the myth questions first.
@@ -221,14 +224,18 @@ Mobile: 44px hamburger, full-height sheet, same five groups, CTA pinned bottom. 
 
 ### 4.4 Templates
 
-Nine templates in two engines:
+Four original layouts share the document model and paper CSS:
 
-| Engine | Count | Guarantee |
+| Layout | Distinction | Default type |
 |---|---|---|
-| **ATS-safe** | 6 | Single column, body-flow text, standard headings, no tables/text boxes/images, DOCX-native |
-| **Designed** | 3 | Still single-column text flow; typographic emphasis only; flagged as "not for strict parsers" |
+| Modern Professional | Left identity, restrained warm headings and rules | Arial, 11 pt body |
+| Classic Chronological | Centred identity, serif type, uppercase ruled headings | Georgia, 11 pt body |
+| Compact Professional | Black uppercase headings, no rules, closer spacing | Calibri, 11 pt body |
+| Education-first Graduate | Education before work history, clear sans-serif hierarchy | Calibri, 11 pt body |
 
-Each card: engine badge, best-for, page count, and a "why this is safe" line. No "ATS score 98%" badges — that is a fake metric.
+Every gallery card shows a first-page PNG from the actual print renderer, a full live preview, layout features and source links. `Use this layout` preserves the existing draft and job description. `Edit this example` loads labelled fictional content and confirms replacement when a draft exists. Sample DOCX/text/PDF actions remain free.
+
+The sources inform structure, not a claim that these are official Harvard/MIT/Imperial templates. Original institutional examples are linked at their publishers. There is no universal compatibility claim, ATS score or fabricated download count. Nine distinct styles remain future work.
 
 ### 4.5 Guides
 
@@ -302,28 +309,23 @@ Deterministic, in-browser, explainable. No "AI score."
 
 ---
 
-## 6. Country presets
+## 6. Country guidance and region controls
 
-Twelve presets, each changing: photo, personal fields, length, section names, spelling, date format, and file-type advice.
+The implemented twelve cards open `/country-guides#<country>` in a new tab. Each names a suggested original layout, application context, photo considerations, sources and evidence limits. The country's card never changes the user's fields. This supersedes the previous table of automatic photo/biography requirements.
 
-| Country | Photo | Personal fields | Length | Name | Notes |
-|---|---|---|---|---|---|
-| **Bangladesh** | Required, 300×300 JPEG | DOB, father, mother, NID, religion, blood group, marital status, full address | 2–3 | CV / Resume | Teletalk AllJobs standard; SSC/HSC detail expected [A-EV-09] |
-| **India** | Optional (govt: required) | DOB, address common | 1–2 | Resume / CV | Single-source flag [A-Country] |
-| **UAE** | Expected | Nationality, visa status | 2 | CV | Sponsorship logistics [A-EV-10] |
-| **Saudi Arabia** | Expected | Nationality, visa status | 2 | CV | Nitaqat/Saudization context [A-Country] |
-| **Qatar** | Expected | QID / visa status | 1–2 | CV | Single-source flag [A-Country] |
-| **United States** | **Omit** | None (city/state/ZIP only) | 1–2 | Resume | EEOC pre-offer guidance [A-EV-07] |
-| **United Kingdom** | **Omit** | None | 2 | CV | Equality Act 2010, blind screening [A-EV-08] |
-| **Canada** | **Omit** | None | 1–2 | Resume | Human rights codes [G4] |
-| **Australia** | **Omit** | Work rights statement | 2–3 | Resume | [A-Country] |
-| **Germany** | Expected (`Bewerbungsfoto`) | DOB traditional | 2 | Lebenslauf | Tabular; AGG applies [A-Country] |
-| **France** | Common, declining | — | 1 | CV | 1 page strongly preferred [A-Country] |
-| **Netherlands** | Optional, declining | — | 1–2 | CV | Direct tone [A-Country] |
+- **Bangladesh:** Bdjobs distinguishes a form-generated profile from a personalized uploaded resume. Government-form fields are not a corporate CV checklist.
+- **UAE:** NYU Abu Dhabi's student guide informs section and bullet choices. Its one-page and table advice is contextual, not national ATS policy.
+- **Saudi Arabia:** the ministry source establishes work-permit context, not a required photo or CV format.
+- **Qatar:** general career-service advice only; no Qatar-wide photo rule or page limit verified.
+- **US:** EEOC advises employers not to request applicant photos before an accepted offer; this is not a blanket legal prohibition on applicants sending one.
+- **UK:** National Careers Service supports readable type, headings and omitting age, birth date, marital status and nationality. Imperial supports relevant section ordering.
+- **Canada:** Job Bank advises omitting a photo and unnecessary personal details.
+- **Australia:** Queensland's simple 1–3 page guidance is contextual to the applicant and vacancy.
+- **France:** Service Public treats a photograph as optional and focuses on job relevance.
+- **Germany / Netherlands:** official references are supplied for further reading, with direct-access limitations disclosed. No local photo rule is inferred.
+- **India:** the public IIT Madras internship guide is a process-specific example. Its photo/logo and no-contact rules are not India-wide rules; private student archives are not republished.
 
-**Conflict handling.** Photo inclusion is jurisdiction-dependent, and the UI says so. Selecting US/UK/CA silently strips the photo block and shows a one-line reason with a source link. Selecting BD/Gulf adds it and explains why. We never pick a side silently.
-
-**Qatar and India are flagged single-source.** The UI labels them "limited sourcing" rather than presenting them as verified.
+The editor retains international/employer-specific, Bangladesh and US/UK controls. Only US/UK mode omits photo and nationality automatically, with an explanation. Photos remain optional elsewhere and can be hidden or removed. Source registry: `src/data/resumeSources.ts`. Reviewed wording: `src/data/countryGuides.ts`.
 
 ---
 
@@ -331,15 +333,17 @@ Twelve presets, each changing: photo, personal fields, length, section names, sp
 
 | Format | Requirement | Why |
 |---|---|---|
-| **DOCX** | Valid OPC zip: `[Content_Types].xml`, `_rels/.rels`, `word/document.xml`, `word/_rels/document.xml.rels`, styles, sectPr | Best parse fidelity; bypasses OCR coordinate scanning [D3] |
-| **PDF** | Real text layer, embedded fonts, `@page` via paged.js or print CSS | 89→84 vs DOCX on iCIMS direction; still required for humans [D3] |
-| **TXT** | Plain, plain-text test | Mirrors the free self-test the sources recommend [S30] |
+| **DOCX** | OPC package, editable paragraphs, actual lists, style-specific headings and optional right-margin photo anchor | Follow the vacancy's accepted file types; Word/Google Docs may reflow |
+| **PDF** | Browser print with A4 margins and a text layer; shared paper styling and measured page groups where current | Inspect the saved PDF and recheck its extracted text |
+| **TXT** | Current fields in the selected section order | Compare content without visual styling |
 
 Rules:
-- DOCX default for ATS submissions; PDF for email/human; both offered, with a one-line "which and why".
-- Fonts embedded so layout never reflows [H4].
-- Max output 2.5 MB (Greenhouse parity) [D1].
-- Page count must equal the paper preview. Verified in tests.
+- Offer both DOCX and PDF printing. Employer instructions take priority over generic file-format advice.
+- Browser fonts and Word substitution can differ. DOCX does not embed fonts; identical pagination across applications is not promised.
+- The DOCX writer enforces a 2.5 MB limit; photo input is capped at 1 MB and resized locally. Greenhouse documents its own parser limit; this is not a universal portal limit.
+- A4 measurement keeps heading/role groups together. Print CSS also keeps margins when falling back to automatic pagination.
+- Stale measured blocks must never overwrite current text or reintroduce a hidden photo. Tests cover this regression.
+- Contact details remain body text; only an enabled image is anchored. Photos can still affect parsing. Browser verification is not Word/Google Docs rendering sign-off.
 
 ---
 

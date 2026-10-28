@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import {
   AlertCircle,
   ArrowRight,
@@ -18,6 +19,8 @@ import { ATS_TEMPLATES, PACKAGES } from '../data/mockData';
 import { DELIVERY_POLICY, REPLY_POLICY } from '../data/servicePolicy';
 import { formatPackagePrice } from '../utils/servicePricing';
 import { EVIDENCE, MYTHS } from '../data/evidence';
+import { CountryGuideCards } from '../components/resume/CountryGuideCards';
+import { ROUTE_PATHS } from '../routes';
 
 interface HomePageProps {
   onNavigate: (page: PageRoute) => void;
@@ -29,60 +32,17 @@ interface HomePageProps {
 /* Paper preview: a document, not a web page                           */
 /* ------------------------------------------------------------------ */
 
-const ResumePaperMock: React.FC = () => (
-  <div className="relative">
-    <div className="rounded-[12px] border border-line bg-surface p-6 shadow-[0_8px_28px_rgba(32,33,31,0.08)] sm:p-7">
-      <div className="flex items-start justify-between gap-4 border-b border-line pb-4">
-        <div className="min-w-0">
-          <p className="text-[15px] font-semibold tracking-tight text-ink">Nusrat Jahan</p>
-          <p className="mt-0.5 text-[11px] text-muted">Product Analyst · Dhaka, Bangladesh</p>
-          <p className="mt-1 text-[10px] text-muted">
-            nusrat@email.com · +880 1XXX-XXXXXX · linkedin.com/in/nusrat
-          </p>
-        </div>
-        <div className="grid h-14 w-12 shrink-0 place-items-center rounded-[3px] border border-line bg-soft text-[8px] uppercase tracking-wider text-muted">
-          Photo
-        </div>
-      </div>
+const ResumePaperExample: React.FC = () => (
+  <div className="relative mx-auto max-w-[440px] pb-8">
+    <figure className="rounded-sheet border border-line bg-soft p-5">
+      <figcaption className="mb-3 text-xs text-muted">Our actual layout · fictional example</figcaption>
+      <img src="/images/templates/modern.png" width={794} height={1123} fetchPriority="high" alt="Modern Professional resume layout showing fictional software engineering experience" className="mx-auto w-full max-w-[340px] border border-line bg-surface shadow-card" />
+    </figure>
 
-      <div className="mt-4 space-y-3.5">
-        <div>
-          <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-accent">Experience</p>
-          <div className="mt-1.5 space-y-1">
-            <div className="h-[6px] w-[38%] rounded-full bg-ink/70" />
-            <div className="h-[5px] w-[62%] rounded-full bg-line" />
-            <div className="h-[5px] w-[92%] rounded-full bg-line" />
-            <div className="h-[5px] w-[80%] rounded-full bg-line" />
-          </div>
-        </div>
-        <div>
-          <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-accent">Education</p>
-          <div className="mt-1.5 space-y-1">
-            <div className="h-[5px] w-[70%] rounded-full bg-line" />
-            <div className="h-[5px] w-[54%] rounded-full bg-line" />
-          </div>
-        </div>
-        <div>
-          <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-accent">Skills</p>
-          <div className="mt-1.5 flex flex-wrap gap-1">
-            {['SQL', 'Python', 'Figma', 'A/B testing', 'Stakeholder comms'].map((s) => (
-              <span
-                key={s}
-                className="rounded-[3px] border border-line px-1.5 py-0.5 text-[8px] text-muted"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {/* Report card overlay */}
-    <div className="absolute -bottom-6 -left-4 w-[248px] rounded-[8px] border border-line bg-surface p-3 shadow-[0_10px_30px_rgba(32,33,31,0.12)] sm:-left-8">
+    <div className="absolute bottom-0 left-0 w-[248px] max-w-full rounded-card border border-line bg-surface p-3 shadow-lift">
       <div className="mb-2 flex items-center justify-between">
         <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted">
-          Readiness report
+          Inspect, then apply
         </span>
         <span className="rounded-[4px] bg-accent-soft px-1.5 py-0.5 text-[9px] font-medium text-accent">
           no score
@@ -91,15 +51,15 @@ const ResumePaperMock: React.FC = () => (
       <ul className="space-y-1.5">
         <li className="flex items-center gap-1.5 text-[10.5px] text-ink">
           <Check className="h-3 w-3 shrink-0 text-success" aria-hidden="true" />
-          Single column · text parses
+           Single-column body text
         </li>
         <li className="flex items-center gap-1.5 text-[10.5px] text-ink">
           <Check className="h-3 w-3 shrink-0 text-success" aria-hidden="true" />
-          Contact block inside body
+           Contact details in the body
         </li>
         <li className="flex items-center gap-1.5 text-[10.5px] text-ink">
           <AlertCircle className="h-3 w-3 shrink-0 text-warning" aria-hidden="true" />
-          2 bullets have no number
+           Recheck the downloaded file
         </li>
         <li className="flex items-center gap-1.5 text-[10.5px] text-ink">
           <AlertCircle className="h-3 w-3 shrink-0 text-warning" aria-hidden="true" />
@@ -208,21 +168,6 @@ const PILLARS = [
   },
 ];
 
-const COUNTRIES = [
-  { code: 'BD', name: 'Bangladesh', note: 'Government form ≠ corporate resume' },
-  { code: 'AE', name: 'UAE', note: 'Review work-authorisation instructions' },
-  { code: 'SA', name: 'Saudi Arabia', note: 'Review work-authorisation instructions' },
-  { code: 'QA', name: 'Qatar', note: 'Follow the application form' },
-  { code: 'GB', name: 'United Kingdom', note: 'US / UK preset omits photo' },
-  { code: 'US', name: 'United States', note: 'US / UK preset omits photo' },
-  { code: 'CA', name: 'Canada', note: 'Review employer-specific instructions' },
-  { code: 'AU', name: 'Australia', note: 'Include work rights only if relevant' },
-  { code: 'DE', name: 'Germany', note: 'Choose relevant personal details' },
-  { code: 'FR', name: 'France', note: 'Follow any stated page limit' },
-  { code: 'NL', name: 'Netherlands', note: 'Follow the vacancy’s instructions' },
-  { code: 'IN', name: 'India', note: 'Government and private roles differ' },
-];
-
 const FAQ_PREVIEW = [
   MYTHS[0],
   MYTHS[1],
@@ -230,7 +175,7 @@ const FAQ_PREVIEW = [
 ];
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onOpenChecklist }) => {
-  const previewTemplates = ATS_TEMPLATES.slice(0, 3);
+  const previewTemplates = ['modern', 'classic', 'graduate'].map((id) => ATS_TEMPLATES.find((template) => template.layout === id)!);
   const reviewPackages = PACKAGES.slice(0, 3);
 
   return (
@@ -283,7 +228,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
           </div>
 
           <div className="lg:pl-6">
-            <ResumePaperMock />
+             <ResumePaperExample />
           </div>
         </div>
       </section>
@@ -399,8 +344,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                 Single column, by design.
               </h2>
               <p className="mt-3 text-[14.5px] leading-relaxed text-muted">
-                Profession-specific fictional starters use the same document model as the editor.
-                Review the sample and replace it with your own facts.
+                 Four original layouts, informed by career-service guidance. These previews come
+                 from the actual print renderer—not a decorative mockup. Your existing facts stay intact when you choose a layout.
               </p>
             </div>
             <button
@@ -408,7 +353,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
               onClick={() => onNavigate('templates')}
               className="btn btn-secondary"
             >
-              All {ATS_TEMPLATES.length} starters
+               All {ATS_TEMPLATES.length} layouts
             </button>
           </div>
 
@@ -420,28 +365,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                 onClick={() => onNavigate('templates')}
                 className="card card-hover overflow-hidden text-left"
               >
-                <div className="flex h-[176px] items-center justify-center border-b border-line bg-soft p-6">
-                  <div className="h-full w-full max-w-[132px] rounded-[2px] bg-surface p-3 shadow-card">
-                    <div className="h-[7px] w-[58%] rounded-full bg-ink/60" />
-                    <div className="mt-1 h-[3px] w-[38%] rounded-full bg-line" />
-                    <div className="mt-3 space-y-1">
-                      <div className="h-[3px] w-[86%] rounded-full bg-line" />
-                      <div className="h-[3px] w-[78%] rounded-full bg-line" />
-                      <div className="h-[3px] w-[90%] rounded-full bg-line" />
-                      <div className="h-[3px] w-[64%] rounded-full bg-line" />
-                    </div>
-                    <div className="mt-3 space-y-1">
-                      <div className="h-[3px] w-[72%] rounded-full bg-line" />
-                      <div className="h-[3px] w-[84%] rounded-full bg-line" />
-                    </div>
-                  </div>
+                 <div className="border-b border-line bg-soft p-6">
+                   <img src={tpl.previewImage} width={794} height={1123} loading="lazy" decoding="async" alt={`First page of ${tpl.title} with fictional career details`} className="mx-auto w-full max-w-[218px] border border-line bg-surface shadow-card" />
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-2">
                     <span className="chip chip-active">
-                      Fictional starter
+                       Free layout
                     </span>
-                    <span className="text-[11.5px] text-muted">Editable length</span>
+                     <span className="text-[11.5px] text-muted">Fictional preview</span>
                   </div>
                   <h3 className="mt-3 text-[15px] font-semibold text-ink">{tpl.title}</h3>
                   <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-muted">
@@ -456,44 +388,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
 
       {/* ---------------- Countries ---------------- */}
       <section className="section border-y border-line bg-soft">
-        <div className="container-page grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div>
+         <div className="container-page space-y-8">
+           <div className="max-w-3xl">
             <p className="eyebrow">International application considerations</p>
             <h2 className="mt-3 text-[32px] font-semibold leading-tight tracking-[-0.02em] text-ink sm:text-[40px]">
               A resume is not the same document everywhere.
             </h2>
             <p className="mt-4 text-[14.5px] leading-relaxed text-muted">
               Follow the actual employer or application form rather than a blanket country rule.
-              The editor currently offers Bangladesh guidance, a US / UK photo-omission preset,
-              and an international option with personal fields you choose. Twelve automatic
-              country formats are not implemented yet.
+               Each country card links a suggested structure, photo guidance and sources in a new tab.
+               Some local evidence is limited; we say where. These are application guides, not twelve automatic country formats.
             </p>
-            <button
-              type="button"
-              onClick={() => onNavigate('suite')}
-              className="btn btn-primary mt-6"
-            >
-              Review layout and region
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </button>
+             <Link to={ROUTE_PATHS['country-guides']} className="btn btn-secondary mt-5">
+               Country & layout guides
+               <ArrowRight className="h-4 w-4" aria-hidden="true" />
+             </Link>
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2">
-            {COUNTRIES.map((c) => (
-              <div
-                key={c.code}
-                className="flex items-center gap-3 rounded-[6px] border border-line bg-surface px-3 py-2.5"
-              >
-                <span className="grid h-7 w-8 shrink-0 place-items-center rounded-[3px] border border-line bg-paper text-[10px] font-semibold tracking-wide text-accent">
-                  {c.code}
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-[12.5px] font-medium text-ink">{c.name}</span>
-                  <span className="block text-[11px] text-muted">{c.note}</span>
-                </span>
-              </div>
-            ))}
-          </div>
+           <CountryGuideCards />
         </div>
       </section>
 

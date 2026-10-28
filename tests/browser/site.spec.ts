@@ -4,7 +4,7 @@ import JSZip from 'jszip';
 import mammoth from 'mammoth';
 import { mkdir, readFile } from 'node:fs/promises';
 
-const ROUTES = ['/', '/resume-checker', '/resume-templates', '/resume-examples', '/pricing', '/how-it-works', '/faq', '/about', '/contact', '/cover-letter', '/suite', '/order'];
+const ROUTES = ['/', '/resume-checker', '/resume-templates', '/resume-examples', '/pricing', '/how-it-works', '/faq', '/about', '/contact', '/cover-letter', '/country-guides', '/suite', '/order'];
 const VIEWPORTS = [
   { width: 320, height: 568 }, { width: 375, height: 812 }, { width: 390, height: 844 },
   { width: 667, height: 375 }, { width: 768, height: 1024 }, { width: 1024, height: 768 }, { width: 1440, height: 900 },
@@ -113,7 +113,7 @@ test('mobile menu closes on backdrop and every link navigates', async ({ page })
   await trigger.click();
   await page.mouse.click(10, 150);
   await expect(menu).not.toBeVisible();
-  for (const href of ['/suite', '/resume-templates', '/cover-letter', '/resume-checker', '/how-it-works', '/resume-examples', '/faq', '/about', '/pricing']) {
+  for (const href of ['/suite', '/resume-templates', '/cover-letter', '/resume-checker', '/how-it-works', '/country-guides', '/resume-examples', '/faq', '/about', '/pricing']) {
     await trigger.click();
     await menu.locator(`nav a[href="${href}"]`).click();
     await expect(page).toHaveURL(new RegExp(`${href}$`));
@@ -279,7 +279,7 @@ test('template preview fits a phone and finance handoff has no injected tech car
   await openPage(page, '/resume-templates');
   await page.getByRole('button', { name: 'Finance & operations', exact: true }).click();
   await page.getByRole('button', { name: 'Preview', exact: true }).click();
-  const dialog = page.getByRole('dialog', { name: 'Corporate Finance & Operations' });
+  const dialog = page.getByRole('dialog', { name: 'Classic Chronological' });
   await expect(dialog).toBeVisible();
   await expect(dialog.locator('.resume-pages article').first()).toContainText('David K. Vance');
   await expect.poll(async () => dialog.locator('.resume-page-shell').first().evaluate((element) => element.getBoundingClientRect().width)).toBeLessThan(375);

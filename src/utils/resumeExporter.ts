@@ -1,5 +1,9 @@
 import type { ResumeData } from '../types';
 import { DEFAULT_DOCUMENT_SETTINGS, documentPlainText, getResumeDocumentBlocks, type ResumeDocumentBlock, type ResumeDocumentSettings } from './resumeDocument';
+import { resumeLayout } from '../data/resumeLayouts';
+import { RESUME_PAPER_CSS, resumePaperClass, resumePaperStyle } from './resumeStyles';
+import { photoCropXml } from './photoCrop';
+import { pagesForDocument } from './resumePagination';
 
 const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
@@ -22,13 +26,13 @@ export function downloadBlob(blob: Blob, filename: string): void {
   window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
-export function downloadResumeText(resume: ResumeData): void {
-  downloadBlob(new Blob([documentPlainText(resume)], { type: 'text/plain;charset=utf-8' }), `${resumeFilename(resume)}_resume.txt`);
+export function downloadResumeText(resume: ResumeData, settings: ResumeDocumentSettings = DEFAULT_DOCUMENT_SETTINGS): void {
+  downloadBlob(new Blob([documentPlainText(resume, settings)], { type: 'text/plain;charset=utf-8' }), `${resumeFilename(resume)}_resume.txt`);
 }
 
-/** Real OPC/DOCX package; no HTML file disguised as Word. All content is body-flow. */
+/** Real OPC/DOCX package. All text is in the body; only an enabled photo is anchored. */
 export async function buildResumeDocx(resume: ResumeData, settings: ResumeDocumentSettings = DEFAULT_DOCUMENT_SETTINGS, measuredPages?: ResumeDocumentBlock[][]): Promise<Uint8Array<ArrayBuffer>> {
-  return buildDocumentDocx(getResumeDocumentBlocks(resume), settings, measuredPages);
+  return buildDocumentDocx(getResumeDocumentBlocks(resume, resume.targetMarket ?? 'global', settings.layout), settings, measuredPages);
 }
 
 /** Shared paragraph/list package writer for resumes and cover letters. */
@@ -38,28 +42,55 @@ export async function buildDocumentDocx(blocks: ResumeDocumentBlock[], settings:
   const accent = /^#[0-9a-f]{6}$/i.test(settings.accent) ? settings.accent.slice(1) : '8e533c';
   const font = ['Arial', 'Calibri', 'Georgia', 'Courier New'].includes(settings.font) ? settings.font : 'Arial';
   const halfPoints = Math.round((settings.fontSize && settings.fontSize >= 8 && settings.fontSize <= 20 ? settings.fontSize : 11) * 2);
-  const pages = measuredPages?.length && measuredPages.flat().map((block) => block.id).join('|') === blocks.map((block) => block.id).join('|') ? measuredPages : [blocks];
+  const layout = settings.layout ? resumeLayout(settings.layout) : undefined;
+  const nameSize = (layout?.nameSize ?? 20) * 2;
+  const headingSize = (layout?.headingSize ?? 12) * 2;
+  const pages = pagesForDocument(blocks, measuredPages);
+  const compact = settings.spacing === 'compact';
+  const line = compact ? 300 : 336;
   let photoExtension = '';
-  const photo = blocks.find((block) => block.type === 'photo')?.text.match(/^data:image\/(jpeg|png);base64,([A-Za-z0-9+/=]+)$/);
+  const photoBlock = blocks.find((block) => block.type === 'identity' || block.type === 'photo');
+  const photoData = photoBlock?.photo ?? photoBlock?.text ?? '';
+  const photo = photoData.match(/^data:image\/(jpeg|png);base64,([A-Za-z0-9+/=]+)$/);
   if (photo) {
     photoExtension = photo[1] === 'jpeg' ? 'jpg' : 'png';
     zip.file(`word/media/photo.${photoExtension}`, photo[2], { base64: true });
   }
   const run = (text: string) => `<w:r><w:t xml:space="preserve">${escapeDocumentText(text)}</w:t></w:r>`;
-  const paragraph = (block: ResumeDocumentBlock) => {
+  const drawing = (anchored: boolean) => {
+    if (!photoExtension) return '';
+    const picture = `<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="0" name="Optional resume photo"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rIdPhoto"/>${photoCropXml(photoData)}<a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="762000" cy="762000"/></a:xfrm><a:prstGeom prst="${photoBlock?.photoShape === 'circle' ? 'ellipse' : 'rect'}"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic>`;
+    return `<w:r><w:drawing>${anchored ? `<wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="0"><wp:simplePos x="0" y="0"/><wp:positionH relativeFrom="margin"><wp:align>right</wp:align></wp:positionH><wp:positionV relativeFrom="paragraph"><wp:posOffset>0</wp:posOffset></wp:positionV><wp:extent cx="762000" cy="762000"/><wp:wrapNone/><wp:docPr id="1" name="Optional resume photo"/>${picture}</wp:anchor>` : `<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="762000" cy="762000"/><wp:docPr id="1" name="Optional resume photo"/>${picture}</wp:inline>`}</w:drawing></w:r>`;
+  };
+  const paragraph = (block: ResumeDocumentBlock, identity = false, attachPhoto = false, pageBreakBefore = false): string => {
+    if (block.type === 'identity') {
+      const children = block.children?.length ? block.children : [{ id: 'photo-anchor', type: 'paragraph' as const, text: '' }];
+      const minimumTextHeight = children.reduce((height, child) => height + (child.type === 'name' ? (layout?.nameSize ?? 20) * 1.15 + 5.25 : child.type === 'contact' ? 11 * 1.4 + 2.25 : 11 * (compact ? 1.25 : 1.4) + (child.type === 'title' ? 3.75 : 3)), 0);
+      const remaining = Math.max(0, 72 - minimumTextHeight);
+      return children.map((child, index) => paragraph({ ...child, keepWithNext: true }, true, index === 0, pageBreakBefore && index === 0)).join('') + (remaining > 0 ? `<w:p><w:pPr><w:keepNext/><w:spacing w:before="0" w:after="0" w:line="${Math.ceil(remaining * 20)}" w:lineRule="exact"/></w:pPr></w:p>` : '');
+    }
     if (block.type === 'photo') {
       if (!photoExtension) return '';
-      return `<w:p><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="762000" cy="762000"/><wp:docPr id="1" name="Resume photo"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="0" name="Resume photo"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rIdPhoto"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="762000" cy="762000"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>`;
+      return `<w:p>${drawing(false)}</w:p>`;
     }
-    const style = block.type === 'name' ? 'ResumeName' : block.type === 'heading' ? 'Heading1' : block.type === 'role' || block.type === 'title' ? 'ResumeRole' : block.type === 'contact' ? 'ResumeContact' : 'Normal';
+    const style = block.type === 'name' ? 'ResumeName' : block.type === 'heading' ? 'Heading1' : block.type === 'role' ? 'ResumeRole' : block.type === 'title' ? 'ResumeTitle' : block.type === 'contact' ? 'ResumeContact' : 'Normal';
     const list = block.type === 'bullet' ? '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="1"/></w:numPr>' : '';
-    const text = `${block.text}${block.detail ? ` | ${block.detail}` : ''}`;
-    return `<w:p><w:pPr><w:pStyle w:val="${style}"/>${block.keepWithNext ? '<w:keepNext/>' : ''}${list}</w:pPr>${text.split('\n').map((line, index) => `${index ? '<w:r><w:br/></w:r>' : ''}${run(line)}`).join('')}</w:p>`;
+    const alignment = identity ? '<w:ind w:right="1680"/><w:jc w:val="left"/>' : layout?.centredIdentity && ['name', 'title', 'contact'].includes(block.type) && ['name', 'title', 'contact', 'links', 'work-rights'].includes(block.id) ? '<w:jc w:val="center"/>' : '';
+    const detail = block.detail ? `<w:r><w:br/></w:r><w:r><w:rPr><w:b w:val="0"/><w:sz w:val="${halfPoints}"/><w:color w:val="20211f"/></w:rPr><w:t xml:space="preserve">${escapeDocumentText(block.detail)}</w:t></w:r>` : '';
+    return `<w:p><w:pPr><w:pStyle w:val="${style}"/>${block.keepWithNext ? '<w:keepNext/>' : ''}<w:keepLines/>${pageBreakBefore ? '<w:pageBreakBefore/>' : ''}${list}${alignment}</w:pPr>${attachPhoto ? drawing(true) : ''}${block.text.split('\n').map((line, index) => `${index ? '<w:r><w:br/></w:r>' : ''}${run(line)}`).join('')}${detail}</w:p>`;
   };
   const xmlStart = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-  const body = pages.map((page, index) => `${index ? '<w:p><w:r><w:br w:type="page"/></w:r></w:p>' : ''}${page.map(paragraph).join('')}`).join('');
-  zip.file('word/document.xml', `${xmlStart}<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="907" w:right="907" w:bottom="907" w:left="907" w:header="0" w:footer="0"/></w:sectPr></w:body></w:document>`);
-  zip.file('word/styles.xml', `${xmlStart}<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}" w:eastAsia="${font}" w:cs="${font}"/><w:sz w:val="${halfPoints}"/><w:szCs w:val="${halfPoints}"/><w:color w:val="20211f"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="${settings.spacing === 'compact' ? '288' : '336'}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="paragraph" w:styleId="ResumeName"><w:name w:val="Resume Name"/><w:basedOn w:val="Normal"/><w:rPr><w:b/><w:sz w:val="40"/><w:color w:val="${accent}"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="ResumeRole"><w:name w:val="Resume Role"/><w:basedOn w:val="Normal"/><w:rPr><w:b/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="ResumeContact"><w:name w:val="Contact"/><w:basedOn w:val="Normal"/><w:rPr><w:sz w:val="20"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="180" w:after="80"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:sz w:val="24"/><w:color w:val="${accent}"/></w:rPr></w:style></w:styles>`);
+  const body = pages.map((page, pageIndex) => page.map((block, blockIndex) => paragraph(block, false, false, pageIndex > 0 && blockIndex === 0)).join('')).join('');
+  zip.file('word/document.xml', `${xmlStart}<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="900" w:right="900" w:bottom="900" w:left="900" w:header="0" w:footer="0"/></w:sectPr></w:body></w:document>`);
+  zip.file('word/styles.xml', `${xmlStart}<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}" w:eastAsia="${font}" w:cs="${font}"/><w:sz w:val="${halfPoints}"/><w:szCs w:val="${halfPoints}"/><w:color w:val="20211f"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="${line}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>
+    <w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>
+    <w:style w:type="paragraph" w:styleId="ResumeName"><w:name w:val="Resume Name"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="105" w:line="276" w:lineRule="auto"/></w:pPr><w:rPr><w:b/><w:sz w:val="${nameSize}"/><w:color w:val="${accent}"/></w:rPr></w:style>
+    <w:style w:type="paragraph" w:styleId="ResumeTitle"><w:name w:val="Resume Title"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="75"/></w:pPr><w:rPr><w:b/></w:rPr></w:style>
+    <w:style w:type="paragraph" w:styleId="ResumeRole"><w:name w:val="Resume Role"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:before="${compact ? 75 : 105}" w:after="60"/></w:pPr><w:rPr><w:b/></w:rPr></w:style>
+    <w:style w:type="paragraph" w:styleId="ResumeContact"><w:name w:val="Contact"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="45" w:line="336" w:lineRule="auto"/></w:pPr></w:style>
+    <w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/>${layout?.headingRule ? `<w:pBdr><w:bottom w:val="single" w:sz="5" w:space="0" w:color="${accent}"/></w:pBdr>` : ''}<w:spacing w:before="${compact ? 150 : 195}" w:after="${compact ? 60 : 90}"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/>${layout?.headingCaps ? '<w:caps/>' : ''}<w:color w:val="${accent}"/><w:sz w:val="${headingSize}"/></w:rPr></w:style>
+  </w:styles>`);
   zip.file('word/numbering.xml', `${xmlStart}<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="0"><w:multiLevelType w:val="singleLevel"/><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="bullet"/><w:lvlText w:val="•"/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="240"/></w:tabs><w:ind w:left="240" w:hanging="180"/></w:pPr></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num></w:numbering>`);
   zip.file('_rels/.rels', `${xmlStart}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
   zip.file('word/_rels/document.xml.rels', `${xmlStart}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdNumbering" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>${photoExtension ? `<Relationship Id="rIdPhoto" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/photo.${photoExtension}"/>` : ''}</Relationships>`);
@@ -75,12 +106,14 @@ export async function downloadResumeDocx(resume: ResumeData, settings: ResumeDoc
 }
 
 export function buildResumePrintHtml(resume: ResumeData, settings: ResumeDocumentSettings, measuredPages?: ResumeDocumentBlock[][]): string {
-  const blocks = getResumeDocumentBlocks(resume);
-  const pages = measuredPages?.length && measuredPages.flat().map((block) => block.id).join('|') === blocks.map((block) => block.id).join('|') ? measuredPages : [blocks];
-  const accent = /^#[0-9a-f]{6}$/i.test(settings.accent) ? settings.accent : '#8e533c';
-  const font = ['Arial', 'Calibri', 'Georgia'].includes(settings.font) ? settings.font : 'Arial';
-  const render = (block: ResumeDocumentBlock) => block.type === 'photo' ? `<div class="block photo"><img alt="Resume photo" src="${escapeDocumentText(block.text)}"></div>` : `<div class="block ${block.type}">${block.type === 'bullet' ? '<span class="marker">•</span>' : ''}${escapeDocumentText(block.text).replace(/\n/g, '<br>')}${block.detail ? `<span class="detail">${escapeDocumentText(block.detail)}</span>` : ''}</div>`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeDocumentText(resume.fullName || 'Resume')}</title><style>@page{size:A4;margin:0}*{box-sizing:border-box}body{margin:0;color:#20211f;background:white;font-family:${font},sans-serif;font-size:11pt;line-height:${settings.spacing === 'compact' ? '1.25' : '1.4'}}.page{width:210mm;min-height:297mm;padding:15.875mm;break-after:page}.page:last-child{break-after:auto}.block{padding:0 0 4px;white-space:pre-wrap;overflow-wrap:anywhere;break-inside:avoid}.name{font-size:20pt;font-weight:bold;line-height:1.15;color:${accent};padding-bottom:6px;break-after:avoid}.title{font-weight:bold;padding-bottom:4px;break-after:avoid}.contact{font-size:10pt;line-height:1.4;padding-bottom:3px}.heading{font-size:12pt;font-weight:bold;color:${accent};padding-top:12px;padding-bottom:6px;break-after:avoid}.role{font-weight:bold;padding-top:8px;padding-bottom:4px;break-after:avoid}.detail{display:block;font-weight:normal;font-size:10pt;line-height:1.4}.bullet{padding-left:16px;position:relative}.marker{position:absolute;left:2px}.photo{padding:8px 0}.photo img{width:80px;height:80px;object-fit:cover}.compact .block{padding-bottom:2px}</style></head><body>${pages.map((page) => `<article class="page">${page.map(render).join('')}</article>`).join('')}</body></html>`;
+  const blocks = getResumeDocumentBlocks(resume, resume.targetMarket ?? 'global', settings.layout);
+  const pages = pagesForDocument(blocks, measuredPages);
+  const render = (block: ResumeDocumentBlock): string => block.type === 'identity'
+    ? `<div class="resume-identity" data-block-id="${escapeDocumentText(block.id)}"><div class="resume-identity-text">${(block.children ?? []).map(render).join('')}</div><img class="resume-identity-photo" alt="Optional resume photo" src="${escapeDocumentText(block.photo ?? '')}" style="border-radius:${block.photoShape === 'circle' ? '50%' : '0'}"></div>`
+    : block.type === 'photo' ? `<div class="resume-block-photo"><img alt="Resume photo" src="${escapeDocumentText(block.text)}"></div>`
+    : `<div class="resume-block resume-block-${block.type}" data-block-id="${escapeDocumentText(block.id)}">${block.type === 'bullet' ? '<span class="resume-bullet-marker">•</span>' : ''}<span>${escapeDocumentText(block.text).replace(/\n/g, '<br>')}</span>${block.detail ? `<span class="resume-block-detail">${escapeDocumentText(block.detail)}</span>` : ''}</div>`;
+  const style = Object.entries(resumePaperStyle(settings)).map(([key, value]) => `${key}:${value}`).join(';');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeDocumentText(resume.fullName || 'Resume')}</title><style>@page{size:A4;margin:15.875mm}body{margin:0;background:white}.page{width:210mm;min-height:297mm;break-after:page}.page:last-child{break-after:auto}${RESUME_PAPER_CSS}@media print{.page{width:auto;min-height:0;padding:0}}</style></head><body>${pages.map((page) => `<article class="page ${resumePaperClass(settings)}" style="${style}">${page.map(render).join('')}</article>`).join('')}</body></html>`;
 }
 
 /** The browser supplies the PDF text layer. No popup or external rendering service. */

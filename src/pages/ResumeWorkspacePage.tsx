@@ -5,11 +5,11 @@ import type { PageRoute, ResumeData, TargetMarket } from '../types';
 import type { UserAccount } from '../types/auth';
 import { ROUTE_PATHS } from '../routes';
 import { checkBioDataClutter, extractTextFromFile, purgeBioDataClutter, type ExtractedDocument } from '../utils/fileExtractor';
-import { formatResumeAsPlainText, parseResumeText, SAMPLE_RESUMES } from '../utils/resumeParser';
-import { loadDraft, saveDraft, type ResumeDraft, type DraftSource } from '../utils/resumeDraft';
+import { parseResumeText, SAMPLE_RESUMES } from '../utils/resumeParser';
+import { draftForResume, loadDraft, saveDraft, type ResumeDraft, type DraftSource } from '../utils/resumeDraft';
 import { auditResume, auditSummary, type AuditReport } from '../utils/resumeAudit';
 import { EDITOR_SECTIONS, editorSearch, findingTarget, firstBulletForFinding, isEditorSection, type EditorSection, type EditorTarget } from '../utils/resumeActions';
-import { createEmptyResume, DEFAULT_DOCUMENT_SETTINGS, hasResumeContent, isResumeData, type ResumeDocumentSettings } from '../utils/resumeDocument';
+import { createEmptyResume, documentPlainText, hasResumeContent, isResumeData, normalizeDocumentSettings, type ResumeDocumentSettings } from '../utils/resumeDocument';
 import { downloadBlob, downloadResumeDocx, downloadResumeText, printResume, resumeFilename } from '../utils/resumeExporter';
 import { ResumeSectionForm } from '../components/resume/ResumeSectionForm';
 import { ResumePreview, type ResumeLayout } from '../components/resume/ResumePreview';
@@ -17,6 +17,7 @@ import { FindingCard, ResumeFindings } from '../components/resume/ResumeFindings
 import { PhotoUploader } from '../components/PhotoUploader';
 import { LinkedInSyncModal } from '../components/LinkedInSyncModal';
 import { PersonalConsultationModal } from '../components/PersonalConsultationModal';
+import { RESUME_LAYOUTS, resumeLayout } from '../data/resumeLayouts';
 
 export interface ResumeWorkspacePageProps {
   onNavigate: (route: PageRoute) => void;
@@ -26,12 +27,6 @@ export interface ResumeWorkspacePageProps {
   initialResumeData?: ResumeData | null;
   draftImport?: ResumeDraft | null;
   onConsumeInitialData?: () => void;
-}
-
-function draftForResume(resume: ResumeData, origin: DraftSource['origin'] = 'blank'): ResumeDraft {
-  const rawText = origin === 'blank' ? '' : formatResumeAsPlainText(resume);
-  return { version: 1, resume, rawText, report: parseResumeText(rawText).report, jobDescription: '', settings: DEFAULT_DOCUMENT_SETTINGS,
-    source: { fileName: origin === 'example' || origin === 'template' ? 'Fictional example' : 'New resume', kind: 'text', size: rawText.length, structure: { tables: 0, headers: 0, footers: 0, textBoxes: 0, images: 0, noTextLayer: false }, warnings: [], importedAt: new Date().toISOString(), origin } };
 }
 
 export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData, draftImport, onConsumeInitialData }: ResumeWorkspacePageProps) {
@@ -49,7 +44,7 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
   const [originalJobDescription, setOriginalJobDescription] = useState(initial.jobDescription ?? '');
   const [importReport, setImportReport] = useState(initial.report);
   const [jobDescription, setJobDescription] = useState(initial.jobDescription ?? '');
-  const [settings, setSettings] = useState<ResumeDocumentSettings>(initial.settings ?? DEFAULT_DOCUMENT_SETTINGS);
+  const [settings, setSettings] = useState<ResumeDocumentSettings>(() => normalizeDocumentSettings(initial.settings));
   const [section, setSection] = useState<EditorSection>(() => { const value = new URLSearchParams(location.search).get('section'); return isEditorSection(value) ? value : 'contact'; });
   const [view, setView] = useState<'build' | 'keywords' | 'findings'>('build');
   const [mobilePane, setMobilePane] = useState<'edit' | 'preview'>('edit');
@@ -74,7 +69,7 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
   const layoutRef = useRef<ResumeLayout>({ pages: [], oversized: false });
   const [pageCount, setPageCount] = useState(1);
 
-  const text = useMemo(() => formatResumeAsPlainText(resume), [resume]);
+  const text = useMemo(() => documentPlainText(resume, settings), [resume, settings]);
   const audit = useMemo(() => auditResume({ text, jobDescription }), [text, jobDescription]);
   const counts = auditSummary(audit);
   const originalAudit = useMemo(() => originalText ? auditResume({ text: originalText, jobDescription: originalJobDescription, structure: source.structure, fileSize: source.size, fileName: source.fileName }) : null, [originalText, source, originalJobDescription]);
@@ -89,7 +84,7 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
   const applyDraft = useCallback((draft: ResumeDraft) => {
     importedId.current = draft.source.importedAt;
     setResume(draft.resume); setSource(draft.source); setOriginalText(draft.rawText); setImportReport(draft.report);
-    setJobDescription(draft.jobDescription ?? ''); setOriginalJobDescription(draft.jobDescription ?? ''); setSettings(draft.settings ?? DEFAULT_DOCUMENT_SETTINGS);
+    setJobDescription(draft.jobDescription ?? ''); setOriginalJobDescription(draft.jobDescription ?? ''); setSettings(normalizeDocumentSettings(draft.settings));
     setDismissedNotice(false); setSelectedRule(null); setSection('contact'); setView('build'); setMobilePane('edit'); setImportError(''); setShowImport(false);
   }, []);
 
@@ -148,7 +143,7 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
         const restored = JSON.parse(await file.text());
         if (!isResumeData(restored)) throw new Error('This is not a supported resume JSON backup.');
         if (generation !== importGeneration.current) return;
-      const draft = draftForResume(restored, 'paste'); draft.source.fileName = file.name; applyDraft(draft);
+      const draft = draftForResume(restored, 'paste', settings); draft.source.fileName = file.name; applyDraft(draft);
       navigate(`${ROUTE_PATHS.editor}?section=contact`, { replace: true });
       } else {
         const extracted = await extractTextFromFile(file);
@@ -162,7 +157,7 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
 
   const loadExample = (key: keyof typeof SAMPLE_RESUMES) => {
     if (hasResumeContent(resume) && !window.confirm('Replace this draft with a fictional example? Download a backup first if you want to keep it.')) return;
-    applyDraft(draftForResume(structuredClone(SAMPLE_RESUMES[key]), 'example'));
+    applyDraft(draftForResume(structuredClone(SAMPLE_RESUMES[key]), 'example', settings));
     navigate(ROUTE_PATHS.editor, { replace: true });
   };
   const startBlank = () => {
@@ -172,9 +167,10 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
     navigate(ROUTE_PATHS.editor, { replace: true });
   };
   const onLayout = useCallback((layout: ResumeLayout) => { layoutRef.current = layout; setPageCount(layout.pages.length); }, []);
+  const measuredPages = () => !layoutRef.current.oversized && layoutRef.current.settingsKey === JSON.stringify(settings) ? layoutRef.current.pages : undefined;
   const exportDocx = async () => {
     setExporting(true); setExportError('');
-    try { await downloadResumeDocx(resume, settings, layoutRef.current.oversized ? undefined : layoutRef.current.pages); }
+    try { await downloadResumeDocx(resume, settings, measuredPages()); }
     catch (error) { setExportError((error as Error).message); }
     finally { setExporting(false); }
   };
@@ -219,7 +215,7 @@ export function ResumeWorkspacePage({ onNavigate, onOpenOrder, initialResumeData
               <ResumeSectionForm section={section} resume={resume} onChange={setResume} />
               {section === 'design' && <DesignPanel resume={resume} settings={settings} onResume={setResume} onSettings={setSettings} />}
               {section === 'source' && <OriginalTextPanel text={originalText} source={source} onKeepText={(value) => { setResume((current) => ({ ...current, additionalInformation: [current.additionalInformation, value].filter(Boolean).join('\n\n') })); chooseSection('extras'); }} />}
-              {section === 'export' && <ExportPanel hasContent={hasResumeContent(resume)} exporting={exporting} error={exportError} onDocx={exportDocx} onPdf={() => printResume(resume, settings, layoutRef.current.oversized ? undefined : layoutRef.current.pages)} onText={() => downloadResumeText(resume)} onJson={() => downloadBlob(new Blob([JSON.stringify(resume, null, 2)], { type: 'application/json' }), `${resumeFilename(resume)}_resume.json`)} onCopy={copyText} copied={copied} onRecheck={() => onNavigate('free-resume-score')} />}
+               {section === 'export' && <ExportPanel hasContent={hasResumeContent(resume)} exporting={exporting} error={exportError} onDocx={exportDocx} onPdf={() => printResume(resume, settings, measuredPages())} onText={() => downloadResumeText(resume, settings)} onJson={() => downloadBlob(new Blob([JSON.stringify(resume, null, 2)], { type: 'application/json' }), `${resumeFilename(resume)}_resume.json`)} onCopy={copyText} copied={copied} onRecheck={() => onNavigate('free-resume-score')} />}
               {sectionFindings.length > 0 && section !== 'export' && <div className="border-t border-line pt-5"><p className="text-xs text-muted mb-3">Current prompts for this section — not an employer verdict:</p><ul className="space-y-3">{sectionFindings.map((finding) => <FindingCard key={finding.id} finding={finding} />)}</ul></div>}
             </section>
           </div>
@@ -307,12 +303,13 @@ function WorkspaceNavigation({ section, findings, onSelect, onLinkedIn, onCoverL
 function DesignPanel({ resume, settings, onResume, onSettings }: { resume: ResumeData; settings: ResumeDocumentSettings; onResume: React.Dispatch<React.SetStateAction<ResumeData>>; onSettings: React.Dispatch<React.SetStateAction<ResumeDocumentSettings>> }) {
   return (
     <div className="space-y-6">
-      <div className="rounded-card border border-line bg-soft p-4 space-y-2"><p className="font-medium text-sm">Single-column document</p><p className="text-sm text-muted">Standard section headings and contact details in the body. The same fields supply the paper preview, DOCX and plain-text export.</p></div>
+       <div className="rounded-card border border-line bg-soft p-4 space-y-2"><p className="font-medium text-sm">Single-column body text</p><p className="text-sm text-muted">Standard headings and contact details in the body. The selected section order supplies the paper preview, DOCX and plain text. An optional photo is a separate image, not a text column.</p></div>
+       <div className="space-y-2"><label htmlFor="resume-layout" className="block text-sm font-medium">Document layout</label><select id="resume-layout" className="field" value={settings.layout ?? 'modern'} onChange={(event) => onSettings({ ...resumeLayout(event.target.value).settings })}>{RESUME_LAYOUTS.map((layout) => <option key={layout.id} value={layout.id}>{layout.name}</option>)}</select><p className="text-xs text-muted">{resumeLayout(settings.layout).description} Choosing a layout sets its font, colour and spacing; your career details are kept.</p><a href={`${ROUTE_PATHS['country-guides']}#layout-${settings.layout ?? 'modern'}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm font-medium text-accent underline underline-offset-4">Layout features & sources <span className="sr-only">(opens in a new tab)</span></a></div>
       <div className="space-y-2"><label htmlFor="resume-market" className="block text-sm font-medium">Application region</label><select id="resume-market" className="field" value={resume.targetMarket ?? 'global'} onChange={(event) => onResume((current) => ({ ...current, targetMarket: event.target.value as TargetMarket }))}><option value="global">International / employer-specific</option><option value="bangladesh">Bangladesh</option><option value="us_uk">US / UK — omit photo</option></select><p className="text-xs text-muted">Region selection never changes your career details. The US / UK option omits the photo and nationality from the exported document. Other regions allow you to choose.</p></div>
       {resume.targetMarket === 'bangladesh' && <p className="rounded-card bg-soft border border-line p-3 text-xs text-muted">Corporate resumes and government application forms have different requirements. Follow the specific vacancy’s instructions; Teletalk form fields are not a universal corporate CV checklist.</p>}
       <div className="space-y-2"><label htmlFor="resume-font" className="block text-sm font-medium">Document font</label><select id="resume-font" className="field" value={settings.font} onChange={(event) => onSettings((current) => ({ ...current, font: event.target.value as ResumeDocumentSettings['font'] }))}>{['Arial', 'Calibri', 'Georgia'].map((font) => <option key={font}>{font}</option>)}</select></div>
       <div className="space-y-2"><label htmlFor="resume-spacing" className="block text-sm font-medium">Line spacing</label><select id="resume-spacing" className="field" value={settings.spacing} onChange={(event) => onSettings((current) => ({ ...current, spacing: event.target.value as ResumeDocumentSettings['spacing'] }))}><option value="standard">Standard</option><option value="compact">Compact</option></select><p className="text-xs text-muted">Two or three pages are supported. Keep necessary experience rather than shrinking the text to force one page.</p></div>
-      <div className="space-y-2"><label htmlFor="resume-accent" className="block text-sm font-medium">Heading colour</label><div className="flex items-center gap-3"><input id="resume-accent" type="color" className="h-11 w-14 rounded-input border border-line bg-surface p-1" value={settings.accent} onChange={(event) => onSettings((current) => ({ ...current, accent: event.target.value }))} /><span className="text-sm font-mono text-muted">{settings.accent}</span><button type="button" className="btn btn-ghost" onClick={() => onSettings((current) => ({ ...current, accent: DEFAULT_DOCUMENT_SETTINGS.accent }))}>Reset</button></div></div>
+       <div className="space-y-2"><label htmlFor="resume-accent" className="block text-sm font-medium">Heading colour</label><div className="flex items-center gap-3"><input id="resume-accent" type="color" className="h-11 w-14 rounded-input border border-line bg-surface p-1" value={settings.accent} onChange={(event) => onSettings((current) => ({ ...current, accent: event.target.value }))} /><span className="text-sm font-mono text-muted">{settings.accent}</span><button type="button" className="btn btn-ghost" onClick={() => onSettings((current) => ({ ...current, accent: resumeLayout(current.layout).settings.accent }))}>Reset</button></div><p className="text-xs text-muted">Keep strong contrast on white paper and check the document at 100% zoom.</p></div>
       <PhotoUploader photoUrl={resume.photoUrl} photoShape={resume.photoShape} isAntiBiasMode={resume.targetMarket === 'us_uk'} onUpdatePhoto={(photoUrl, photoShape) => onResume((current) => ({ ...current, photoUrl, photoShape }))} />
       {(['nationality', 'drivingLicense', 'remoteReadiness'] as const).map((key) => <div key={key} className="space-y-2"><label htmlFor={`resume-${key}`} className="block text-sm font-medium">{key === 'nationality' ? 'Nationality (optional)' : key === 'drivingLicense' ? 'Driving licence (optional)' : 'Remote-work details (optional)'}</label><input id={`resume-${key}`} className="field" value={resume[key] ?? ''} onChange={(event) => onResume((current) => ({ ...current, [key]: event.target.value }))} /></div>)}
     </div>

@@ -1,19 +1,34 @@
-import type { ResumeData, TargetMarket } from '../types';
+import type { ResumeData, ResumeLayoutId, TargetMarket } from '../types';
+import { resumeLayout } from '../data/resumeLayouts';
 
 export interface ResumeDocumentSettings {
   font: 'Arial' | 'Calibri' | 'Georgia';
   accent: string;
   spacing: 'standard' | 'compact';
+  layout?: ResumeLayoutId;
 }
 
-export const DEFAULT_DOCUMENT_SETTINGS: ResumeDocumentSettings = { font: 'Arial', accent: '#8e533c', spacing: 'standard' };
+export const DEFAULT_DOCUMENT_SETTINGS: ResumeDocumentSettings = { layout: 'modern', font: 'Arial', accent: '#8e533c', spacing: 'standard' };
+
+export function normalizeDocumentSettings(value?: Partial<ResumeDocumentSettings>): ResumeDocumentSettings {
+  const defaults = resumeLayout(value?.layout).settings;
+  return {
+    layout: defaults.layout,
+    font: value && ['Arial', 'Calibri', 'Georgia'].includes(value.font ?? '') ? value.font! : defaults.font,
+    accent: /^#[0-9a-f]{6}$/i.test(value?.accent ?? '') ? value!.accent! : defaults.accent,
+    spacing: value?.spacing === 'compact' || value?.spacing === 'standard' ? value.spacing : defaults.spacing,
+  };
+}
 
 export interface ResumeDocumentBlock {
   id: string;
-  type: 'name' | 'title' | 'contact' | 'heading' | 'role' | 'paragraph' | 'bullet' | 'photo';
+  type: 'name' | 'title' | 'contact' | 'heading' | 'role' | 'paragraph' | 'bullet' | 'photo' | 'identity';
   text: string;
   detail?: string;
   keepWithNext?: boolean;
+  children?: ResumeDocumentBlock[];
+  photo?: string;
+  photoShape?: 'circle' | 'square';
 }
 
 export function createEmptyResume(): ResumeData {
@@ -35,6 +50,8 @@ export function isResumeData(value: unknown): value is ResumeData {
   if (!strings.every((key) => typeof data[key] === 'string')) return false;
   const optionalStrings = ['github', 'photoUrl', 'photoShape', 'nationality', 'visaStatus', 'drivingLicense', 'remoteReadiness', 'additionalInformation'] as const;
   if (!optionalStrings.every((key) => data[key] === undefined || typeof data[key] === 'string')) return false;
+  if (data.targetMarket !== undefined && !['global', 'us_uk', 'bangladesh'].includes(data.targetMarket)) return false;
+  if (data.photoShape !== undefined && !['circle', 'square', 'hidden'].includes(data.photoShape)) return false;
   if (!data.skills || !['languages', 'frameworks', 'toolsAndCloud', 'methodologies'].every((key) => typeof data.skills[key as keyof ResumeData['skills']] === 'string')) return false;
   if (!Array.isArray(data.experience) || !data.experience.every((item) => item && (['id', 'role', 'company', 'location', 'dates'] as const).every((key) => typeof item[key] === 'string') && Array.isArray(item.bullets) && item.bullets.every((text) => typeof text === 'string'))) return false;
   if (!Array.isArray(data.education) || !data.education.every((item) => item && (['id', 'degree', 'institution', 'location', 'dates'] as const).every((key) => typeof item[key] === 'string') && (item.gpa === undefined || typeof item.gpa === 'string'))) return false;
@@ -47,7 +64,7 @@ export function isResumeData(value: unknown): value is ResumeData {
 }
 
 /** One body-flow document model is shared by the preview, text checks and DOCX export. */
-export function getResumeDocumentBlocks(resume: ResumeData, market: TargetMarket = resume.targetMarket ?? 'global'): ResumeDocumentBlock[] {
+export function getResumeDocumentBlocks(resume: ResumeData, market: TargetMarket = resume.targetMarket ?? 'global', layoutId: ResumeLayoutId = 'modern'): ResumeDocumentBlock[] {
   const blocks: ResumeDocumentBlock[] = [];
   const add = (id: string, type: ResumeDocumentBlock['type'], text: string, detail?: string, keepWithNext?: boolean) => {
     if (text.trim() || detail?.trim()) blocks.push({ id, type, text: text.trim(), detail: detail?.trim(), keepWithNext });
@@ -60,7 +77,10 @@ export function getResumeDocumentBlocks(resume: ResumeData, market: TargetMarket
   add('contact', 'contact', join([resume.email, resume.phone, resume.location]), undefined, true);
   add('links', 'contact', join([...new Set([resume.linkedin, resume.portfolio, resume.github].filter(Boolean))]));
   add('work-rights', 'contact', join([resume.visaStatus, market !== 'us_uk' ? resume.nationality : undefined, resume.drivingLicense, resume.remoteReadiness]));
-  if (resume.photoUrl?.startsWith('data:image/') && resume.photoShape !== 'hidden' && market !== 'us_uk') add('photo', 'photo', resume.photoUrl);
+  if (/^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(resume.photoUrl ?? '') && resume.photoShape !== 'hidden' && market !== 'us_uk') {
+    const identity = blocks.splice(0);
+    blocks.push({ id: 'identity', type: 'identity', text: '', children: identity, photo: resume.photoUrl, photoShape: resume.photoShape === 'circle' ? 'circle' : 'square', keepWithNext: true });
+  }
   if (resume.summary.trim()) { heading('summary-heading', 'Professional Summary'); add('summary', 'paragraph', resume.summary); }
 
   const experience = resume.experience.filter((role) => role.role || role.company || role.dates || role.bullets.some((text) => text.trim()));
@@ -117,11 +137,24 @@ export function getResumeDocumentBlocks(resume: ResumeData, market: TargetMarket
     heading('additional-heading', 'Additional Information');
     resume.additionalInformation.split('\n').forEach((text, index) => add(`additional-${index}`, 'paragraph', text));
   }
+  if (resumeLayout(layoutId).educationFirst) {
+    const educationStart = blocks.findIndex((block) => block.id === 'education-heading');
+    const experienceStart = blocks.findIndex((block) => block.id === 'experience-heading');
+    if (educationStart >= 0 && experienceStart >= 0 && educationStart > experienceStart) {
+      const nextSection = blocks.findIndex((block, index) => index > educationStart && block.type === 'heading');
+      const educationBlocks = blocks.splice(educationStart, (nextSection < 0 ? blocks.length : nextSection) - educationStart);
+      blocks.splice(experienceStart, 0, ...educationBlocks);
+    }
+  }
   return blocks;
 }
 
-export function documentPlainText(resume: ResumeData): string {
-  return getResumeDocumentBlocks(resume)
+export function flattenDocumentBlocks(blocks: ResumeDocumentBlock[]): ResumeDocumentBlock[] {
+  return blocks.flatMap((block) => block.type === 'identity' ? flattenDocumentBlocks(block.children ?? []) : [block]);
+}
+
+export function documentPlainText(resume: ResumeData, settings: ResumeDocumentSettings = DEFAULT_DOCUMENT_SETTINGS): string {
+  return flattenDocumentBlocks(getResumeDocumentBlocks(resume, resume.targetMarket ?? 'global', settings.layout))
     .filter((block) => block.type !== 'photo')
     .map((block) => `${block.type === 'heading' ? '\n' : ''}${block.type === 'bullet' ? '• ' : ''}${block.type === 'heading' ? block.text.toUpperCase() : block.text}${block.detail ? ` | ${block.detail}` : ''}`)
     .join('\n').trim();

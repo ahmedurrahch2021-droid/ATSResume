@@ -37,6 +37,7 @@ import { FaqPage } from '../src/pages/FaqPage';
 import { ContactPage } from '../src/pages/ContactPage';
 import { SuitePage } from '../src/pages/SuitePage';
 import { CoverLetterPage } from '../src/pages/CoverLetterPage';
+import { CountryGuidesPage } from '../src/pages/CountryGuidesPage';
 import { Navbar } from '../src/components/Navbar';
 import { Footer } from '../src/components/Footer';
 import { INITIAL_GUEST_ACCOUNT } from '../src/types/auth';
@@ -57,6 +58,7 @@ const ELEMENTS: Record<PageRoute, React.ReactElement | null> = {
   faq: <FaqPage onSelectPlan={noop} onNavigateContact={noop} />,
   contact: <ContactPage onSelectPlan={noop} />,
   'cover-letter': <CoverLetterPage />,
+  'country-guides': <CountryGuidesPage />,
   suite: <SuitePage onNavigate={noop} onOpenOrder={noop} />,
   // Not prerendered: order is transactional; editor is the same page as suite.
   order: null,

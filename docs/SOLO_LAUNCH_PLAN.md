@@ -4,6 +4,8 @@ Updated: 28 October 2026.
 
 **Status:** the revised prices, package scopes and contact policy are approved by the owner and implemented in the repository. Validation passed: 38 browser tests, 19 document/parser/service-policy tests, TypeScript, the production build with 11 prerendered routes, and zero known vulnerabilities from `npm audit`. Publication and live verification of this revision are separate. The existing menu/homepage update is now observed live. This document supersedes the earlier subscription/AI-first and free-Bangladesh-human-evaluation proposals.
 
+**Template/country follow-up:** four original styles, real preview images and twelve source-linked country profiles are now implemented. The expanded suite passed 44 browser tests, 25 document/parser/service tests, TypeScript and a build with 12 prerendered routes. Five focused browser checks also passed after final visual polish. See `QUALITY_REVIEW.md` for verification scope and `TEMPLATE_GUIDE.md` for sources and photo/export behaviour. Live publication and Word/Google Docs visual inspection remain separate checks.
+
 ## Approved direction
 
 - Keep local checking, editing, guided fact-based wording, cover-letter editing and downloads free worldwide.
@@ -67,8 +69,8 @@ Verify the AI Studio project/branch and actual publish action. Do not assume tha
 
 The original full-product vision is still larger than the first launch:
 
-1. Nine genuinely distinct resume layouts, not nine labels for one layout. Preview and exports must share each implemented document style.
-2. Twelve source-linked regional guidance profiles. Employer/application instructions take priority; government-form biography requirements are not blanket corporate-CV rules.
+1. Nine genuinely distinct resume layouts remain the broader goal. Four original styles now share the document model and renderer-generated previews; see `TEMPLATE_GUIDE.md`.
+2. Twelve source-linked regional guidance profiles are implemented at `/country-guides`, with explicit evidence limits. Employer/application instructions take priority; these do not constitute twelve automatic national templates.
 3. A guides hub and the planned source-linked articles, prioritising Bangladesh, Gulf applications, file checks and practical edits.
 4. Bangla content and interface support, including readable document output and appropriate language metadata.
 5. Saved per-job versions, a local-first application tracker and a guided interview-preparation workspace based on supplied facts. These do not require AI or cloud accounts.

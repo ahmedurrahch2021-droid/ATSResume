@@ -158,6 +158,11 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </h5>
             <ul className="space-y-2 text-xs">
               <li>
+                <Link to={ROUTE_PATHS['country-guides']} onClick={handleNavClick} className="hover:text-ink transition-colors">
+                  Country & layout guidance with sources
+                </Link>
+              </li>
+              <li>
                 <Link to={ROUTE_PATHS['how-it-works']} onClick={handleNavClick} className="hover:text-ink transition-colors">
                   How The 4-Step Process Works
                 </Link>

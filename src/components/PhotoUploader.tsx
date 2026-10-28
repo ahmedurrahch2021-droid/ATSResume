@@ -1,5 +1,7 @@
-import React, { useRef } from 'react';
-import { Camera, Trash2, Sliders, Check, Eye, EyeOff } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Camera, Trash2 } from 'lucide-react';
+import { prepareResumePhoto } from '../utils/prepareResumePhoto';
+import { ROUTE_PATHS } from '../routes';
 
 interface PhotoUploaderProps {
   photoUrl?: string;
@@ -15,29 +17,21 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
   isAntiBiasMode = false
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState('');
+  const [processing, setProcessing] = useState(false);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (!file) return;
-
-    if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      alert('Please choose a JPEG or PNG image. These formats also work in the Word export.');
-      return;
-    }
-    if (file.size > 1024 * 1024) {
-      alert('Choose a photo under 1 MB to keep your document small.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      onUpdatePhoto(result, photoShape === 'hidden' ? 'circle' : photoShape);
-    };
-    reader.readAsDataURL(file);
+    setError(''); setProcessing(true);
+    try { onUpdatePhoto(await prepareResumePhoto(file), photoShape === 'hidden' ? 'circle' : photoShape); }
+    catch (cause) { setError((cause as Error).message); }
+    finally { setProcessing(false); }
   };
 
   const handleRemove = () => {
+    setError('');
     onUpdatePhoto(undefined, 'hidden');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -57,124 +51,20 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
   };
 
   return (
-    <div className="bg-soft border border-line rounded-lg p-4">
-      <div className="flex items-center justify-between mb-3">
-        <div>
-          <h4 className="text-sm font-semibold text-ink flex items-center gap-1.5">
-            <Camera className="w-4 h-4 text-ink/90" />
-            Professional Headshot Photo
-          </h4>
-          <p className="text-xs text-muted/80 mt-0.5">
-            Optional. Follow the employer’s instructions and the norms for the role and country.
-          </p>
-        </div>
-        {photoUrl && (
-          <button
-            type="button"
-            onClick={handleToggleVisibility}
-            className={`text-xs px-2.5 py-1 rounded border font-medium flex items-center gap-1 transition-colors ${
-              photoShape === 'hidden'
-                ? 'bg-warning-soft text-warning border-warning/30'
-                : 'bg-paper text-ink/90 border-line hover:bg-soft'
-            }`}
-          >
-            {photoShape === 'hidden' ? (
-              <>
-                <EyeOff className="w-3.5 h-3.5" /> Hidden from Export
-              </>
-            ) : (
-              <>
-                <Eye className="w-3.5 h-3.5" /> Visible
-              </>
-            )}
-          </button>
-        )}
-      </div>
-
-      {isAntiBiasMode && (
-        <div className="mb-3 px-3 py-2 bg-warning-soft border border-warning/30 rounded text-xs text-warning">
-          <strong>US / UK preset:</strong> The photo is omitted from this document’s exports. It remains stored in your draft. This is a layout choice, not a claim that ATS software rejects photos.
-        </div>
-      )}
-
-      <div className="flex flex-col sm:flex-row items-center gap-4">
-        {photoUrl ? (
-          <div className="relative group shrink-0">
-            <img
-              src={photoUrl}
-              alt="Professional Headshot"
-              className={`w-20 h-20 object-cover border-2 border-line shadow-sm ${
-                photoShape === 'circle' ? 'rounded-full' : 'rounded-md'
-              } ${photoShape === 'hidden' ? 'opacity-40 grayscale' : ''}`}
-            />
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-20 h-20 rounded-full border-2 border-dashed border-line hover:border-slate-400 bg-paper flex flex-col items-center justify-center cursor-pointer transition-colors shrink-0 group text-center p-2"
-          >
-            <Camera className="w-5 h-5 text-muted/60 group-hover:text-muted mb-0.5" />
-            <span className="text-[10px] text-muted/80 font-medium leading-tight">Upload Photo</span>
-          </button>
-        )}
-
-        <div className="flex-1 w-full space-y-2">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/png,image/jpeg"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="text-xs bg-paper hover:bg-soft text-ink font-medium px-3 py-1.5 rounded border border-line shadow-sm transition-colors"
-            >
-              {photoUrl ? 'Change Image' : 'Select Image (JPEG / PNG)'}
-            </button>
-
-            {photoUrl && (
-              <>
-                <div className="flex items-center gap-1 bg-paper border border-line rounded p-0.5">
-                  <button
-                    type="button"
-                    onClick={() => handleToggleShape('circle')}
-                    className={`px-2 py-1 text-xs rounded font-medium transition-colors ${
-                      photoShape === 'circle' ? 'bg-ink text-white' : 'text-muted hover:bg-soft'
-                    }`}
-                  >
-                    Circle
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleToggleShape('square')}
-                    className={`px-2 py-1 text-xs rounded font-medium transition-colors ${
-                      photoShape === 'square' ? 'bg-ink text-white' : 'text-muted hover:bg-soft'
-                    }`}
-                  >
-                    Square
-                  </button>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleRemove}
-                  className="text-xs text-danger hover:text-danger hover:bg-danger-soft px-2.5 py-1.5 rounded transition-colors flex items-center gap-1"
-                >
-                  <Trash2 className="w-3.5 h-3.5" /> Remove
-                </button>
-              </>
-            )}
-          </div>
-          <p className="text-[11px] text-muted/80">
-            Kept in your browser and included in exports only when enabled.
-          </p>
+    <div className="rounded-card border border-line bg-soft p-4 space-y-4">
+      <div><h4 className="flex items-center gap-2 text-sm font-semibold"><Camera className="h-4 w-4" aria-hidden="true" />Optional resume photo</h4><p className="mt-2 text-xs leading-relaxed text-muted">Placed at the top right, beside your body-text contact details. Photos can cause parsing problems even when right-aligned. Follow the particular employer’s instructions.</p></div>
+      {isAntiBiasMode && <p className="rounded-input border border-warning/30 bg-warning-soft p-3 text-xs text-warning"><strong>US / UK preset:</strong> The photo is omitted from this document’s exports, but remains stored in your draft. This is not a claim that every ATS rejects photos.</p>}
+      <div className="flex flex-col items-start gap-4 sm:flex-row">
+        {photoUrl && <img src={photoUrl} width={80} height={80} alt="Your selected resume photo" className={`h-20 w-20 shrink-0 border border-line object-cover ${photoShape === 'circle' ? 'rounded-full' : ''} ${isAntiBiasMode || photoShape === 'hidden' ? 'opacity-50 grayscale' : ''}`} />}
+        <div className="min-w-0 flex-1 space-y-3">
+          <input ref={fileInputRef} type="file" accept="image/png,image/jpeg" aria-label="Choose an optional resume photo" disabled={processing} onChange={(event) => void handleFileChange(event)} className="hidden" />
+          <button type="button" className="btn btn-secondary" disabled={processing} aria-busy={processing} onClick={() => fileInputRef.current?.click()}>{processing ? 'Preparing image…' : photoUrl ? 'Change photo' : 'Select JPEG / PNG'}</button>
+          {photoUrl && <><p className="text-xs font-medium text-muted">{isAntiBiasMode ? 'Omitted in US / UK mode' : photoShape === 'hidden' ? 'Hidden from document exports' : 'Enabled in preview and document exports'}</p><div className="flex flex-wrap gap-2"><button type="button" className="btn btn-secondary" disabled={isAntiBiasMode || processing} aria-pressed={photoShape !== 'hidden' && !isAntiBiasMode} onClick={handleToggleVisibility}>{photoShape === 'hidden' ? 'Show photo' : 'Hide photo'}</button>{(['circle', 'square'] as const).map((shape) => <button key={shape} type="button" disabled={processing} aria-pressed={photoShape === shape} className={`btn ${photoShape === shape ? 'btn-secondary' : 'btn-ghost'}`} onClick={() => handleToggleShape(shape)}>{shape === 'circle' ? 'Circle' : 'Square'}</button>)}<button type="button" className="btn btn-ghost text-danger" disabled={processing} onClick={handleRemove}><Trash2 className="h-4 w-4" aria-hidden="true" />Remove photo</button></div></>}
         </div>
       </div>
+      {error && <p role="alert" className="text-sm text-danger">{error}</p>}
+      <p className="text-xs leading-relaxed text-muted">Up to 1 MB. Centre-cropped and resized in your browser; no photo upload to a server. Inspect the DOCX in Word or Google Docs because an anchored image can move when edited.</p>
+      <a href={`${ROUTE_PATHS['country-guides']}#photo-guidance`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm font-medium text-accent underline underline-offset-4">Photo guidance & sources <span className="sr-only">(opens in a new tab)</span></a>
     </div>
   );
 };

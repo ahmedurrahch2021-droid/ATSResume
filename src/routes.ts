@@ -15,6 +15,7 @@ export const ROUTE_PATHS: Record<PageRoute, string> = {
   about: '/about',
   contact: '/contact',
   'cover-letter': '/cover-letter',
+  'country-guides': '/country-guides',
   order: '/order',
   suite: '/suite',
   // The editor and the suite are the same page in App.tsx, so they share one URL.
@@ -59,7 +60,7 @@ export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
   },
   templates: {
     title: 'ATS Resume Templates | ATS Resume Lab',
-    description: 'Single-column resume templates designed to be readable by applicant tracking systems.',
+    description: 'Four free resume layouts with real previews, editable DOCX and source-linked design notes. Apply a layout without replacing your career details.',
   },
   examples: {
     title: 'Resume Examples by Role | ATS Resume Lab',
@@ -89,6 +90,10 @@ export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
     title: 'Free Cover Letter Builder | ATS Resume Lab',
     description: 'Write a cover letter using your own experience, import resume contact details and download DOCX, text or PDF.',
   },
+  'country-guides': {
+    title: 'Country CV Guidance & Template Sources | ATS Resume Lab',
+    description: 'Compare country-specific application considerations, photo choices and original resume layouts, with career-service sources and clear evidence limits.',
+  },
   suite: {
     title: 'Resume Editor | ATS Resume Lab',
     description: 'Edit and check your resume in the ATS Resume Lab editor.',
@@ -108,5 +113,6 @@ export const PRERENDER_ROUTES: PageRoute[] = [
   'about',
   'contact',
   'cover-letter',
+  'country-guides',
   'suite',
 ];

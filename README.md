@@ -16,6 +16,8 @@ Live preview: **https://atsresumemaker.ai.studio** (Google AI Studio). Intended 
 | Checker → editor draft bridge | `src/utils/resumeDraft.ts` |
 | Editable sections, guided fixes, A4 preview | `src/pages/ResumeWorkspacePage.tsx` + `src/components/resume/` |
 | DOCX / PDF-print / TXT export | `src/utils/resumeExporter.ts` |
+| Four original layouts and preview generation | `src/data/resumeLayouts.ts` + `scripts/generate-template-previews.ts` |
+| Country/layout guidance and source scope | `docs/TEMPLATE_GUIDE.md` + `src/data/resumeSources.ts` |
 | Optional AI architecture and provider research | `docs/AI_ASSISTANCE.md` |
 | Release gaps and mobile/reliability audit | `docs/QUALITY_REVIEW.md` |
 | Owner-approved email-first solo launch and priorities | `docs/SOLO_LAUNCH_PLAN.md` |
@@ -29,6 +31,7 @@ npm run build      # production build — prerenders every public route
 npm run lint       # tsc --noEmit
 npm run test:resume # import, audit, persistence and export regression checks
 npm run test:browser # production-browser tests; run npm run build first
+npm run previews:templates # refresh real gallery PNGs after changing paper styles or samples
 npm run build:spa  # single-page shell only; do NOT deploy this output
 ```
 
@@ -93,6 +96,9 @@ The current Bun version 1 lockfile was generated and tested using Bun 1.3.14. A 
 - Missing parsed fields are not proof they were absent in the original file. Original body/header/footer text remains available for comparison.
 - Guided rewriting assembles user-supplied facts, previews the wording and supports undo. No AI provider is connected.
 - A4 pages are measured in the browser. DOCX is a valid Word package with paragraph/list content. Word can reflow; preview parity is not guaranteed.
+- Four original layouts share the document model and paper styles. Gallery images come from the actual print renderer. Applying a layout keeps your existing career fields and target job; fictional sample replacement is an explicit action.
+- Optional photos sit top-right beside body-text contact details and are right-margin anchored in DOCX. Photos can still affect parsing; US/UK mode and Hide photo exclude them from document exports.
+- Twelve country cards open source-linked guidance, not automatic national requirements. The country page explains source scope and access limitations and links the original institutional examples.
 - Download the revised file and re-upload it to verify its actual extraction. Editing fields does not recheck the original file’s layout.
 - The mobile menu uses a full-height native dialog with keyboard containment. The browser test suite covers phone, landscape, tablet and desktop widths.
 - Cover letters start blank, import actual resume contact fields, and export genuine DOCX plus PDF printing/text. Fictional examples require explicit selection.

@@ -1,7 +1,8 @@
 import type { ResumeData } from '../types';
 import type { DocumentKind, DocumentStructure } from './fileExtractor';
 import type { ParseReport } from './resumeParser';
-import { isResumeData, type ResumeDocumentSettings } from './resumeDocument';
+import { DEFAULT_DOCUMENT_SETTINGS, documentPlainText, isResumeData, normalizeDocumentSettings, type ResumeDocumentSettings } from './resumeDocument';
+import { parseResumeText } from './resumeParser';
 
 /**
  * The draft is the bridge between "check my resume" and "edit my resume".
@@ -44,11 +45,20 @@ const MAX_RAW_TEXT = 200_000;
 let sessionDraft: ResumeDraft | null = null;
 let storageWasCleared = false;
 
+export function draftForResume(resume: ResumeData, origin: DraftSource['origin'] = 'blank', settings: ResumeDocumentSettings = DEFAULT_DOCUMENT_SETTINGS): ResumeDraft {
+  const rawText = origin === 'blank' ? '' : documentPlainText(resume, settings);
+  return {
+    version: 1, resume, rawText, report: parseResumeText(rawText).report, jobDescription: '', settings: normalizeDocumentSettings(settings),
+    source: { fileName: origin === 'example' || origin === 'template' ? 'Fictional example' : 'New resume', kind: 'text', size: rawText.length, structure: { tables: 0, headers: 0, footers: 0, textBoxes: 0, images: 0, noTextLayer: false }, warnings: [], importedAt: new Date().toISOString(), origin },
+  };
+}
+
 export function saveDraft(draft: Omit<ResumeDraft, 'version' | 'rawText'> & { rawText: string }): boolean {
   const payload: ResumeDraft = {
     ...draft,
     version: 1,
     rawText: draft.rawText.slice(0, MAX_RAW_TEXT),
+    settings: normalizeDocumentSettings(draft.settings),
     updatedAt: new Date().toISOString(),
   };
   sessionDraft = payload;
@@ -72,7 +82,7 @@ export function loadDraft(): ResumeDraft | null {
     if (parsed?.version !== 1 || !isResumeData(parsed.resume) || typeof parsed.rawText !== 'string') return null;
     if (!parsed.source || typeof parsed.source.fileName !== 'string' || !parsed.source.structure || !Array.isArray(parsed.source.warnings)) return null;
     if (!parsed.report || !Array.isArray(parsed.report.fields) || !parsed.report.fields.every((field) => field && typeof field.label === 'string' && typeof field.found === 'boolean')) return null;
-    sessionDraft = parsed;
+    sessionDraft = { ...parsed, settings: normalizeDocumentSettings(parsed.settings) };
     return sessionDraft;
   } catch {
     return null;

@@ -12,7 +12,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "test:resume": "tsx --test tests/resume-flow.test.ts tests/document-export.test.ts tests/service-policy.test.ts",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "previews:templates": "tsx scripts/generate-template-previews.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

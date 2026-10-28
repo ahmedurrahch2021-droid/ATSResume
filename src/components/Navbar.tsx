@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ChevronDown,
   FileText,
+  Globe,
   LayoutTemplate,
   Mail,
   Menu,
@@ -50,7 +51,7 @@ const GROUPS: NavGroup[] = [
     items: [
       {
         label: 'Resume editor',
-        description: 'Live A4 canvas, country presets, DOCX and PDF export.',
+        description: 'Live A4 canvas, layout and region controls, DOCX and PDF export.',
         route: 'suite' as PageRoute,
         icon: <FileText className="h-4 w-4" />,
       },
@@ -90,6 +91,12 @@ const GROUPS: NavGroup[] = [
     id: 'learn',
     label: 'Learn',
     items: [
+      {
+        label: 'Country & layout guides',
+        description: 'Application context, photo choices and template sources.',
+        route: 'country-guides',
+        icon: <Globe className="h-4 w-4" aria-hidden="true" />,
+      },
       {
         label: 'Resume examples',
         description: 'Illustrative before-and-after wording by role.',

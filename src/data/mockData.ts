@@ -476,19 +476,20 @@ export const ATS_PIPELINE_STEPS = [
 export const ATS_TEMPLATES: ResumeTemplate[] = [
   {
     id: 'tech-core',
-    title: 'Software Engineering Core ATS',
+    title: 'Modern Professional',
     category: 'tech',
     categoryLabel: 'Tech & Engineering',
-    recommendedFor: 'Frontend, Full-Stack, Backend, DevOps & Mobile Engineers',
-    architecture: 'Single-Column · Table-Free',
-    compatibility: 'Workday, Greenhouse, Taleo, Lever',
-    format: 'Clean Single-Column · UTF-8 Validated',
-    previewImage: ATS_IMAGES.templatePreview,
+    recommendedFor: 'A clear, spacious resume; shown with a software engineering example',
+    layout: 'modern',
+    sourceIds: ['mit-ats', 'imperial-cv', 'greenhouse-parse'],
+    architecture: 'Single-column body text',
+    format: 'Arial · 11 pt body · open spacing',
+    previewImage: '/images/templates/modern.png',
     highlightPoints: [
-      'Standardized "Technical Skills" matrix prioritized for Boolean parsing',
-      'Accomplishment bullets formatted according to Google XYZ impact formula',
-      'Zero unparseable graphic skill bars or multi-column layout glitches',
-      'Fully editable .DOCX format + pre-formatted print-ready PDF layout'
+      'Left-aligned name and contact details in the document body',
+      'Restrained warm headings and fine section rules',
+      'Work experience before education; skills stay as readable text',
+      'Editable DOCX, PDF printing and plain text; supports multiple pages'
     ],
     sampleContent: {
       name: 'Alex R. Chen',
@@ -523,19 +524,20 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
   },
   {
     id: 'product-growth',
-    title: 'Product & Growth Leadership',
+    title: 'Compact Professional',
     category: 'product',
     categoryLabel: 'Product & Growth',
-    recommendedFor: 'Product Managers, Growth Leads, PMMs & Scrum Masters',
-    architecture: 'Executive Single-Column',
-    compatibility: 'Workday, Greenhouse, Taleo, Lever',
-    format: 'Executive Single-Column · High Impact',
-    previewImage: ATS_IMAGES.verifiedResume,
+    recommendedFor: 'Relevant, longer career histories; shown with a product management example',
+    layout: 'compact',
+    sourceIds: ['mit-ats', 'imperial-cv', 'qld-resume'],
+    architecture: 'Single-column body text',
+    format: 'Calibri · 11 pt body · compact spacing',
+    previewImage: '/images/templates/compact.png',
     highlightPoints: [
-      'Tailored for Enterprise Workday and Greenhouse keyword algorithms',
-      'Strong metric placement (ARR, retention rates, activation lifts)',
-      'Clean horizontal dividing rules with 100% text parser readability',
-      'Instant free download in plain text, Microsoft Word, and PDF'
+      'Black text, uppercase headings and no decorative rules',
+      'Closer spacing without reducing the 11 pt body text',
+      'Work experience before education, followed by skills',
+      'Continues onto another page when your relevant experience needs it'
     ],
     sampleContent: {
       name: 'Maya Lin, MBA',
@@ -569,19 +571,20 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
   },
   {
     id: 'finance-ops',
-    title: 'Corporate Finance & Operations',
+    title: 'Classic Chronological',
     category: 'finance',
     categoryLabel: 'Finance & Operations',
-    recommendedFor: 'Financial Analysts, FP&A Managers, Operations Directors',
-    architecture: 'Standard Single-Column Layout',
-    compatibility: 'Taleo, SAP SuccessFactors, Workday',
-    format: 'Strict Corporate Single-Column · Taleo Optimized',
-    previewImage: ATS_IMAGES.templatePreview,
+    recommendedFor: 'A traditional typographic style; shown with a finance and operations example',
+    layout: 'classic',
+    sourceIds: ['harvard-bullet', 'mit-ats', 'greenhouse-parse'],
+    architecture: 'Single-column body text',
+    format: 'Georgia · 11 pt body · fine rules',
+    previewImage: '/images/templates/classic.png',
     highlightPoints: [
-      'Engineered for conservative corporate ATS environments (Taleo, SAP SuccessFactors)',
-      'Standardized financial terminology clusters and GAAP / IFRS keywords',
-      'Tabular numeral alignment and clean line-break hierarchy',
-      'One-click download in Microsoft Word (.docx) and PDF'
+      'Centred identity, serif type and uppercase section headings',
+      'Fine section rules with all contact text in the body',
+      'Role, employer and dates grouped above contribution bullets',
+      'Optional photo moves identity text left and places the image at the right'
     ],
     sampleContent: {
       name: 'David K. Vance, CPA',
@@ -615,24 +618,26 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
   },
   {
     id: 'early-career',
-    title: 'Early Career & Recent Graduate',
+    title: 'Education-first Graduate',
     category: 'entry',
     categoryLabel: 'Entry Level & Graduate',
-    recommendedFor: 'Fresh College Graduates, Career Switchers, Interns',
-    architecture: '1-Page Chronological Single-Column',
-    compatibility: 'Workday, Greenhouse, Lever, Taleo',
-    format: '1-Page Layout · Early Career',
-    previewImage: ATS_IMAGES.verifiedResume,
+    recommendedFor: 'Students and recent graduates whose education is more relevant than their work history',
+    layout: 'graduate',
+    sourceIds: ['harvard-bullet', 'imperial-cv', 'uk-cv'],
+    architecture: 'Education-first single column',
+    format: 'Calibri · 11 pt body · education first',
+    previewImage: '/images/templates/graduate.png',
     highlightPoints: [
-      'Tailored specifically to overcome lack of 10+ years experience with project framing',
-      'Education and technical coursework elevated to pass entry-level ATS degree filters',
-      'A compact one-page layout that keeps the most relevant details easy to scan',
-      'Instant free download in Microsoft Word (.docx) and PDF'
+      'Education before work experience in preview, DOCX and plain text',
+      'Clear headings, black text and familiar sans-serif type',
+      'Course projects remain projects, separate from employment',
+      'A useful starting order; the vacancy determines any page limit'
     ],
     sampleContent: {
       name: 'Jordan Miller',
+      targetTitle: 'Graduate Software Developer',
       contact: 'Austin, TX · (555) 789-0123 · jordan.miller@email.com · linkedin.com/in/jordanmiller-tech',
-      summary: 'Recent Computer Science graduate with strong foundational training in data structures, algorithms, and full-stack web development. Completed 2 intensive engineering internships and 3 production-grade open-source capstone applications.',
+      summary: 'Computer Science graduate with experience building web applications during an engineering internship and a university capstone. Used React, Node.js and PostgreSQL to develop interfaces, test features and document APIs.',
       skills: ['Python', 'JavaScript (ES6+)', 'React', 'HTML5/CSS3', 'SQL (PostgreSQL)', 'Git / GitHub', 'REST APIs', 'Agile Principles'],
       experience: [
         {
@@ -644,17 +649,16 @@ export const ATS_TEMPLATES: ResumeTemplate[] = [
             'Wrote 30+ unit tests using Jest, catching 6 critical bugs prior to production staging deployment.',
             'Documented internal API endpoints in Swagger/Postman, reducing onboarding ramp time for new engineering interns by 40%.'
           ]
-        },
-        {
-          role: 'Capstone Project Lead (Full Stack)',
-          company: 'University Engineering Lab · Austin, TX',
-          dates: '01/2023 – 05/2023',
-          bullets: [
-            'Designed and deployed full-stack campus event reservation app with PostgreSQL backend and authentication, serving 850 student accounts.',
-            'Integrated Stripe test payments and automated email notifications via SendGrid webhook triggers.'
-          ]
         }
       ],
+      projects: [{
+        name: 'Campus event reservation app — course project',
+        roleOrTech: 'React, Node.js, PostgreSQL · Jan – May 2023',
+        bullets: [
+          'Built event booking and authentication features with a student project team.',
+          'Integrated test payments and email notifications in a demonstration environment.'
+        ]
+      }],
       education: 'B.S. in Computer Science · University of Texas at Austin (Graduated May 2024 · Dean’s List)',
       certifications: ['Meta Front-End Developer Professional Certificate (Coursera)']
     }

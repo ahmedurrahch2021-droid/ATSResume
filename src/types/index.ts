@@ -11,6 +11,7 @@ export type PageRoute =
   | 'faq' 
   | 'contact' 
   | 'cover-letter'
+  | 'country-guides'
   | 'order';
 
 export interface ResumeExperienceItem {
@@ -115,21 +116,23 @@ export interface JobMatchAnalysis {
   summaryFeedback: string;
 }
 
+export type ResumeLayoutId = 'modern' | 'classic' | 'compact' | 'graduate';
+
 export interface ResumeTemplate {
   id: string;
   title: string;
   category: 'tech' | 'product' | 'finance' | 'entry' | 'creative';
   categoryLabel: string;
   recommendedFor: string;
-  atsScore?: number;
-  downloadCount?: string;
+  layout: ResumeLayoutId;
+  sourceIds: string[];
   architecture?: string;
-  compatibility?: string;
   format: string;
-  previewImage?: string;
+  previewImage: string;
   highlightPoints: string[];
   sampleContent: {
     name: string;
+    targetTitle?: string;
     contact: string;
     summary: string;
     skills: string[];
@@ -140,6 +143,7 @@ export interface ResumeTemplate {
       bullets: string[];
     }[];
     education: string;
+    projects?: Omit<ResumeProjectItem, 'id'>[];
     certifications?: string[];
   };
 }
