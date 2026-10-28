@@ -43,6 +43,8 @@ The main JavaScript file is now approximately 368 KB / 117 KB gzip, compared wit
 
 The service tests verify both regional price catalogs, matching package scopes/revision rounds, pricing-to-inquiry selection restoration after reload, BDT/USD amounts in downloaded briefs and email drafts, the owner-confirmed WhatsApp URL, the 24-hour reply distinction and small-phone human-help dialog focus. Browser tests inspect WhatsApp link targets; they do not send real customer messages or confirm that the recipient account is active.
 
+The subsequent GitHub sync commit `519b69f` changed dependency lockfiles. Its npm lock omitted required parser/router/test packages and reverted `body-parser`; these entries were reconciled with the existing manifest and the tested `1.20.9` patch. A clean `npm ci --ignore-scripts --prefer-offline`, TypeScript, all 19 document/parser/service tests and a full production rebuild passed. The resulting application bundle matches the one used by the 38 passing browser tests. The synced Bun dependency graph is retained with corrected project metadata and `body-parser`; a frozen Bun install is not signed off because the installed Bun 1.3.14 does not support that lockfile's version 2 format.
+
 Run a fresh production build first:
 
 ```text
