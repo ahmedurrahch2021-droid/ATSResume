@@ -4,7 +4,7 @@ import { ArrowRight, BookOpen, ImageOff } from 'lucide-react';
 import { COUNTRY_GUIDES } from '../data/countryGuides';
 import { ATS_TEMPLATES } from '../data/mockData';
 import { RESUME_LAYOUTS, resumeLayout } from '../data/resumeLayouts';
-import { SOURCE_REVIEW_DATE } from '../data/resumeSources';
+import { RESUME_SOURCES, SOURCE_REVIEW_DATE } from '../data/resumeSources';
 import { SourceLinks } from '../components/resume/SourceLinks';
 import { ROUTE_PATHS } from '../routes';
 
@@ -67,6 +67,13 @@ export function CountryGuidesPage() {
 
         <section className="card p-5 sm:p-6" aria-labelledby="original-reference-title">
           <div className="flex items-start gap-3"><BookOpen className="mt-1 h-5 w-5 shrink-0 text-accent" aria-hidden="true" /><div className="min-w-0"><h2 id="original-reference-title" className="text-xl">Want to see the published institutional examples?</h2><p className="mt-2 text-sm text-muted">Harvard’s page links its original Word, accessible Word and Google Docs versions. Imperial and NYU Abu Dhabi provide further CV guidance and examples. These stay on their publishers’ sites; we have not republished them as our templates.</p><SourceLinks ids={['harvard-bullet', 'imperial-cv', 'nyuad-cv']} /></div></div>
+        </section>
+
+        <section id="source-library" className="card scroll-mt-24 p-5 sm:p-7" aria-labelledby="source-library-title">
+          <p className="eyebrow">Open the original documents</p>
+          <h2 id="source-library-title" className="mt-3 text-2xl sm:text-3xl">Research & guidance source library</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">University career guidance, ATS-provider documentation, writing research and public employment resources inform different parts of this tool. Each entry explains its scope. References are not endorsements; further-reading entries were not used to establish a rule.</p>
+          <div className="mt-6"><SourceLinks ids={RESUME_SOURCES.map((source) => source.id)} detailed /></div>
         </section>
       </div>
     </div>

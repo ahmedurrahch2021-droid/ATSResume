@@ -59,6 +59,39 @@ Free-tier technical support does not change [Google's terms](https://ai.google.d
 
 The pilot's server counters enforce 10 attempts per connection per UTC day and 100 attempts per instance, with a 10-second connection cooldown and two concurrent requests. `AI_CLIENT_DAILY_LIMIT` and `AI_INSTANCE_DAILY_LIMIT` configure the daily counts. Counters reset on restart and are not shared between instances. They are not a durable worldwide per-person entitlement; use shared counters and an identified client before promising such an allowance at scale.
 
+### Values for AI Studio's environment prompt
+
+| Name | Initial value | Type |
+| --- | --- | --- |
+| `GEMINI_API_KEY` | The owner's Gemini API key | Server secret |
+| `GEMINI_MODEL` | `gemini-3.8-flash` | Ordinary optional configuration |
+| `AI_CLIENT_DAILY_LIMIT` | `10` | Ordinary optional configuration |
+| `AI_INSTANCE_DAILY_LIMIT` | `100` | Ordinary optional configuration |
+
+AI Studio may label every value as a “Secret value”; the model and limit fields still take the literal values above. They also have code defaults. Missing optional values alone do not explain a failed provider request. Neither a model name nor an app allowance grants Google quota.
+
+### Troubleshooting a configured coach that returns local guidance
+
+After syncing and publishing this revision, make one synthetic request, for example “Assisted with organizing inventory records in Excel.” A response with `isFallback: true` is local guidance, even when HTTP status is 200. Check its `fallbackReason` or the coach's **Help reference**. `GET /api/gemini/status` only checks configuration and app counters; rechecking it does not validate the key with Google.
+
+| Help reference | Meaning / operator action |
+| --- | --- |
+| `not-configured` | Add the server-only key to the published runtime and publish a new revision. |
+| `invalid-key` | Google rejected the key. Check that the correct active key is supplied to the server runtime. |
+| `permission-denied` | Check project/API access, key restrictions and Google's location/access requirements. |
+| `model-unavailable` | Check the literal `GEMINI_MODEL` value and the model's availability to the key's project. |
+| `invalid-request` | Google rejected request settings. Check the model's supported structured-output/thinking settings and the server revision. |
+| `provider-quota` | Check the Google project's request/token limits and current usage. The site's remaining app attempts do not override Google's quota. |
+| `timeout` / `provider-unavailable` | Retry later and check Google's service status. The app does not automatically retry or spend repeated attempts. |
+| `invalid-response` | Output was malformed or did not pass wording/number checks. The original remains available; this is not a key diagnosis. |
+| `daily-limit` | App attempts are exhausted for the connection or shared instance. The displayed app reset is 00:00 UTC; restarts also reset these non-durable counters. |
+| `cooldown` / `server-busy` | Wait for the displayed retry interval. These are local capacity controls. |
+| `network` | The browser could not reach a usable coach endpoint. Confirm the Express server is deployed, rather than only static assets. |
+
+Cloud Run logs can be filtered for `gemini-coach-fallback`. Each structured entry contains a fixed `reason` and, if available, numeric `providerStatus`. Raw provider errors, document text and credentials are not logged. Sharing the help-reference code is sufficient for an initial support inquiry; do not put an API key into feedback or Git.
+
+The homepage now includes the research carousel and private feedback section. Source/provenance details and the send-it-yourself feedback flow are in [`RESEARCH_REFERENCES.md`](RESEARCH_REFERENCES.md). Publication remains the owner's AI Studio sync workflow after the repository push.
+
 ## Verification commands
 
 ```text
@@ -74,3 +107,5 @@ The server tests launch the compiled production entrypoint from another director
 Verified on 29 October 2026: TypeScript, production build, **25 document/parser/service tests**, **11 server tests** and **50 browser tests** passed. A clean production-dependency installation was also copied outside the repository, with optional `tsx`/TypeScript peers excluded and Node's native type stripping disabled. The compiled entrypoint started on **`0.0.0.0:3000`**; health, prerendered routes and the missing-key guidance response passed. That check ran on Windows/Node 24; Docker and Cloud Run were not available in this session, so it is not a Linux container or live deployment result.
 
 After the owner's free-tier configuration request, TypeScript and the production rebuild passed again, along with **12 server tests** (including key-only activation without a paid flag) and all **6 focused coach browser tests**. The earlier 50-test full browser report is preserved at `.qa/browser-report-cloudrun-full.json`; the focused follow-up is `.qa/browser-report.json`.
+
+Research/feedback/diagnostics follow-up on 29 October: TypeScript, the production rebuild, **25 document/parser/service tests** and **14 server tests** passed. The full browser sweep passed 54 of 55 cases and found a homepage link-label accessibility issue. After correcting it, **8 targeted checks passed**, including that homepage baseline and the affected research/feedback/coach flows. Current reports and visual-review scope are recorded at the top of `QUALITY_REVIEW.md`. These are repository checks; the owner publishes by syncing the pushed source into AI Studio.

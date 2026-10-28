@@ -20,6 +20,8 @@ import { DELIVERY_POLICY, REPLY_POLICY } from '../data/servicePolicy';
 import { formatPackagePrice } from '../utils/servicePricing';
 import { EVIDENCE, MYTHS } from '../data/evidence';
 import { CountryGuideCards } from '../components/resume/CountryGuideCards';
+import { ResearchCarousel } from '../components/home/ResearchCarousel';
+import { FeedbackSection } from '../components/home/FeedbackSection';
 import { ROUTE_PATHS } from '../routes';
 
 interface HomePageProps {
@@ -232,6 +234,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
           </div>
         </div>
       </section>
+
+      <ResearchCarousel />
 
       {/* ---------------- Truth strip ---------------- */}
       <section className="border-b border-line bg-soft">
@@ -591,6 +595,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
           </div>
         </div>
       </section>
+
+      <FeedbackSection />
 
       {/* ---------------- Final CTA ---------------- */}
       <section className="border-t border-line bg-ink">

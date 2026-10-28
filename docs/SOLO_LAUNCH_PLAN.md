@@ -1,15 +1,15 @@
 # Solo-operator launch plan — ATS Resume Lab
 
-Updated: 28 October 2026.
+Updated: 29 October 2026.
 
-**Status:** the revised prices, package scopes and contact policy are approved by the owner and implemented in the repository. Validation passed: 38 browser tests, 19 document/parser/service-policy tests, TypeScript, the production build with 11 prerendered routes, and zero known vulnerabilities from `npm audit`. Publication and live verification of this revision are separate. The existing menu/homepage update is now observed live. This document supersedes the earlier subscription/AI-first and free-Bangladesh-human-evaluation proposals.
+**Status:** the free core, approved regional prices and paid human-help policy are implemented. Revised prices and six targeted checker/edit/export/inquiry/source flows were verified on the published site on 29 October 2026. The new research carousel, private feedback and coach diagnostics await the owner's next AI Studio sync/publication. Current verification scope is in `QUALITY_REVIEW.md`. This document supersedes the earlier subscription/AI-first and free-Bangladesh-human-evaluation proposals.
 
 **Template/country follow-up:** four original styles, real preview images and twelve source-linked country profiles are now implemented. The expanded suite passed 44 browser tests, 25 document/parser/service tests, TypeScript and a build with 12 prerendered routes. Five focused browser checks also passed after final visual polish. See `QUALITY_REVIEW.md` for verification scope and `TEMPLATE_GUIDE.md` for sources and photo/export behaviour. Live publication and Word/Google Docs visual inspection remain separate checks.
 
 ## Approved direction
 
 - Keep local checking, editing, guided fact-based wording, cover-letter editing and downloads free worldwide.
-- Do not purchase or connect a paid AI service. Remote AI is deferred; the existing guided helper is rule-based, not an AI or grammar engine.
+- Optional Gemini wording help uses the owner's selected free-tier project. Keep the initial app caps at 10 attempts per connection and 100 per server instance; Google's shared quota can be lower. Local guidance remains available. Runtime setup and provider terms are documented in `DEPLOYMENT.md` and `AI_ASSISTANCE.md`.
 - Human resume evaluation, rewriting and application kits are paid services in Bangladesh and other countries. There is no free human-review entitlement or account quota.
 - Charge for clearly scoped human assistance, not access to the free core.
 - Operate support through email and WhatsApp `+8801748755209`. Reply to messages within 24 hours. Document-delivery dates are agreed separately before payment.
@@ -41,12 +41,12 @@ No service promises a perfect CV, universal ATS compatibility, factual backgroun
 
 | Priority | Work remaining | Acceptance condition |
 | --- | --- | --- |
-| 1 | Verify each published application revision | The current headline and full-height menu are now observed live. Publish and verify the new regional pricing/contact revision separately; deep routes and exported files still need a full deployed-flow sign-off. |
+| 1 | Verify each published application revision | Revised prices and six targeted core flows passed live checks on 29 October. After the next sync/publication, verify the research logos, private feedback and one synthetic Gemini request with its new help-reference diagnostics. |
 | 2 | Keep the approved service policy consistent | Repository Home, Pricing, Contact, FAQs, review inquiry and editor human-help links now distinguish free tools from paid human help in both regions. No free-Bangladesh human entitlement, old subscription or AI entitlement is advertised. |
 | 3 | Complete the email-led evaluation handoff | A user can prepare a brief with their target role and main question, then choose to send it and attach a CV from their email app. Opening a mailto link is never reported as receipt or acceptance. |
 | 4 | Establish the owner's service operation | Inbox labels or a private queue record track requested, awaiting details, accepted, reviewed and closed items. The owner confirms availability, scope and timing manually. Do not show invented live queue counts. |
 | 5 | Publish source and policy pages | Public research URLs and caveats are inspectable. Privacy, retention/deletion, service scope, revision/cancellation/refund terms and feedback-publication consent reflect actual operations. FAQ links are not substitutes for policy pages. |
-| 6 | Add optional feedback | Use an email-first flow initially, with separate publication permission. A genuine comment may be added manually with a date and optional display name. No sample testimonials, reward-for-review, selective positive invitations or private CV details. A stored review form needs spam controls and moderation before it is advertised as connected. |
+| 6 | Collect optional feedback | Implemented at `/#feedback`, with a link in every footer. Visitors prepare an editable private comment, then send it themselves by email or WhatsApp; copying is also available. No database, browser-storage persistence, automatic attachment, public posting or delivery claim. Publishing received feedback requires separate permission. See `RESEARCH_REFERENCES.md`. |
 | 7 | Complete document and device QA | Resolve the previously recorded real-PDF extraction/page-count discrepancy. Exercise check → edit → export → re-import on real iPhone/Android devices and inspect two-/three-page documents in Word and Google Docs. Record browser reflow differences instead of promising identical pagination. |
 | Deferred | Domain and search basics | Paused by the owner: custom-domain DNS/HTTPS, canonical/sitemap migration, new 404 handling and social-sharing image. Keep the AI Studio origin and existing indexing behaviour unchanged. |
 
@@ -67,6 +67,8 @@ Checked on 28 October 2026:
 
 Verify the AI Studio project/branch and actual publish action. Do not assume that a repository sync or uploading `dist/` is the correct deployment action for this host.
 
+29 October follow-up: the revised prices are now live, and six targeted browser flows passed. A synthetic Gemini request still returned local fallback despite `configured: true`; the new diagnostic codes are intended to identify the cause after publication. The owner will sync/publish the repository changes themselves.
+
 ## Broader ecosystem — after the first release
 
 The original full-product vision is still larger than the first launch:
@@ -78,7 +80,7 @@ The original full-product vision is still larger than the first launch:
 5. Saved per-job versions, a local-first application tracker and a guided interview-preparation workspace based on supplied facts. These do not require AI or cloud accounts.
 6. Better supported vocabulary/skills comparison without invented qualifications or an employer ATS score.
 
-Remote AI, account/cloud sync, subscriptions, job alerts and automated chat/payment integrations are deferred conveniences, not conditions for completing the honest solo-operator release. Retain working features; mark future features as planned or unavailable rather than silently deleting them.
+Optional Gemini is implemented as a limited writing coach; live provider access remains to be verified. Account/cloud sync, subscriptions, job alerts and automated payments remain deferred conveniences. Retain working features; mark future features as planned or unavailable rather than silently deleting them.
 
 ## Owner details still needed
 
@@ -86,4 +88,4 @@ Remote AI, account/cloud sync, subscriptions, job alerts and automated chat/paym
 - Available legitimate payment method, receipt process and cancellation/refund terms for paid human services in both regions.
 - Final reviewer availability before accepting document-delivery commitments. The owner has confirmed a 24-hour initial-reply policy; no daily support-hours restriction has been inferred.
 
-Confirmed contacts are `ahmedur.rahch2021@gmail.com` and WhatsApp `+8801748755209`. No account, AI provider, payment route, retention period or further privacy promise is inferred.
+Confirmed contacts are `ahmedur.rahch2021@gmail.com` and WhatsApp `+8801748755209`. Gemini is the owner's selected optional AI provider. No cloud account, payment route, retention period or further privacy promise is inferred.

@@ -4,6 +4,7 @@ import { once } from 'node:events';
 import { createApp } from '../server/app';
 import { CoachLimits } from '../server/coachLimits';
 import { createDiagnosticService, diagnosticSystemInstruction, validateDiagnosticRequest, validateModelSuggestion } from '../server/geminiDiagnostic';
+import type { CoachFailureEvent } from '../server/geminiFailure';
 import { localCoachGuidance } from '../src/utils/aiGuidance';
 import { applyLetterCoachEdit, applyResumeCoachEdit, letterCoachTargets, resumeCoachTargets } from '../src/utils/aiCoachTargets';
 import { createEmptyCoverLetter } from '../src/utils/coverLetterDocument';
@@ -24,6 +25,7 @@ test('missing configuration and offline guidance preserve facts and software spe
   const result = await local.run(input);
   assert.equal(result.suggestedText, input.currentText);
   assert.equal(result.isFallback, true);
+  assert.equal(result.fallbackReason, 'not-configured');
   assert.doesNotMatch(result.suggestedText, /Spearheaded|measurable business impact|programme/);
   assert.equal(localCoachGuidance(request).originalText, request.currentText);
 });
@@ -53,6 +55,50 @@ test('provider failures and malformed output return labelled guidance without in
     return '{}';
   } }).run(request);
   assert.equal(result.isFallback, true);
+  assert.equal(result.fallbackReason, 'timeout');
+});
+
+test('Google access, quota and request failures expose only a safe reason and HTTP status', async () => {
+  const secret = 'PRIVATE_PROMPT_AND_CREDENTIAL_SENTINEL';
+  const cases: { error: unknown; expected: CoachFailureEvent }[] = [
+    { error: { status: 400, message: JSON.stringify({ error: { code: 400, status: 'INVALID_ARGUMENT', message: secret, details: [{ reason: 'API_KEY_INVALID' }] } }) }, expected: { reason: 'invalid-key', providerStatus: 400 } },
+    { error: { status: 401, message: secret }, expected: { reason: 'invalid-key', providerStatus: 401 } },
+    { error: { status: 403, message: secret }, expected: { reason: 'permission-denied', providerStatus: 403 } },
+    { error: { status: 400, message: `User location is not supported for the API. ${secret}` }, expected: { reason: 'permission-denied', providerStatus: 400 } },
+    { error: { status: 404, message: secret }, expected: { reason: 'model-unavailable', providerStatus: 404 } },
+    { error: { status: 400, message: `The model is not supported for generateContent. ${secret}` }, expected: { reason: 'model-unavailable', providerStatus: 400 } },
+    { error: { status: 429, message: secret }, expected: { reason: 'provider-quota', providerStatus: 429 } },
+    { error: { status: 400, message: `Invalid request setting. ${secret}` }, expected: { reason: 'invalid-request', providerStatus: 400 } },
+    { error: { status: 503, message: secret }, expected: { reason: 'provider-unavailable', providerStatus: 503 } },
+    { error: { status: 504, message: secret }, expected: { reason: 'timeout', providerStatus: 504 } },
+    { error: new Error(secret), expected: { reason: 'provider-unavailable' } },
+  ];
+  for (const { error, expected } of cases) {
+    const events: CoachFailureEvent[] = [];
+    const service = createDiagnosticService({ generate: async () => { throw error; }, onFailure: (event) => events.push(event) });
+    const result = await service.run(request);
+    assert.equal(result.fallbackReason, expected.reason);
+    assert.equal(result.suggestedText, request.currentText);
+    assert.equal(result.isFallback, true);
+    assert.deepEqual(events, [expected]);
+    assert.doesNotMatch(JSON.stringify({ result, events }), new RegExp(secret));
+  }
+});
+
+test('rejected wording is distinguished from provider failures and cancelled requests are not logged', async () => {
+  const events: CoachFailureEvent[] = [];
+  const result = await createDiagnosticService({
+    generate: async () => JSON.stringify({ suggestedText: 'Led 50 staff and saved 35%.', rationale: 'Unverified change.', clarifyingQuestion: null }),
+    onFailure: (event) => events.push(event),
+  }).run(request);
+  assert.equal(result.fallbackReason, 'invalid-response');
+  assert.equal(result.suggestedText, request.currentText);
+  assert.deepEqual(events, [{ reason: 'invalid-response' }]);
+  const controller = new AbortController();
+  const pending = createDiagnosticService({ generate: async () => new Promise<string>(() => {}), onFailure: (event) => events.push(event) }).run(request, controller.signal);
+  controller.abort();
+  assert.equal((await pending).suggestedText, request.currentText);
+  assert.equal(events.length, 1, 'Closing a request must not be reported as a Google outage.');
 });
 
 test('country instructions use reviewed guidance without compulsory metrics or blanket page rules', () => {
@@ -68,12 +114,12 @@ test('server limits enforce concurrency, cooldown and shared capacity without br
   const now = Date.UTC(2026, 9, 28, 12);
   const first = limits.acquire('connection-a', now);
   assert.equal(first.allowed, true);
-  assert.equal(limits.acquire('connection-b', now).allowed, false);
+  assert.equal(limits.acquire('connection-b', now).reason, 'server-busy');
   first.release(); first.release();
-  assert.equal(limits.acquire('connection-a', now + 500).allowed, false);
+  assert.equal(limits.acquire('connection-a', now + 500).reason, 'cooldown');
   const second = limits.acquire('connection-a', now + 1001); second.release();
   assert.equal(second.allowed, true);
-  assert.equal(limits.acquire('connection-a', now + 3000).allowed, false);
+  assert.equal(limits.acquire('connection-a', now + 3000).reason, 'daily-limit');
   const third = limits.acquire('connection-b', now + 3000); third.release();
   assert.equal(third.allowed, true);
   assert.equal(limits.acquire('connection-c', now + 5000).allowed, false);
@@ -97,7 +143,11 @@ test('API validation, unavailable AI and rate limits do not stop the website', a
   const denied = await post(request);
   assert.equal(denied.status, 429);
   assert.ok(denied.headers.get('retry-after'));
-  assert.equal((await denied.json()).isFallback, true);
+  const fallback = await denied.json();
+  assert.equal(fallback.isFallback, true);
+  assert.equal(fallback.fallbackReason, 'daily-limit');
+  assert.equal(fallback.retryAfterSeconds, Number(denied.headers.get('retry-after')));
+  assert.equal(fallback.usage.remaining, 0);
   assert.equal(calls, 1);
   assert.equal((await fetch(`${url}/healthz`)).status, 200);
   assert.equal((await fetch(`${url}/api/missing`)).status, 404);

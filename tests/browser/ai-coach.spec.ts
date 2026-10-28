@@ -6,10 +6,11 @@ import { createEmptyResume } from '../../src/utils/resumeDocument';
 import { createEmptyCoverLetter } from '../../src/utils/coverLetterDocument';
 import { draftForResume, type ResumeDraft } from '../../src/utils/resumeDraft';
 import type { DiagnosticRequest, DiagnosticResponse } from '../../src/types/ai';
+import { COACH_FALLBACK_MESSAGES } from '../../src/utils/aiGuidance';
 
 const ORIGINAL = 'Assisted with reconciling 20 supplier invoices.';
 const SUGGESTED = 'Helped reconcile 20 supplier invoices.';
-const usage = { remaining: 9, limit: 10, resetAt: '2026-10-30T00:00:00.000Z', scope: 'server-instance' };
+const usage = { remaining: 9, limit: 10, resetAt: new Date(Date.now() + 86_400_000).toISOString(), scope: 'server-instance' };
 const coach = (page: Page) => page.getByRole('dialog', { name: 'AI Writing Coach', exact: true });
 const fixture = () => draftForResume({ ...createEmptyResume(), fullName: 'Mina Rahman', email: 'mina@example.com', targetTitle: 'Accounts Assistant', targetCountry: 'uk',
   summary: 'I support the accounts team with supplier records.',
@@ -165,24 +166,67 @@ test('offline guidance stays local and remains usable when browser storage is bl
   expect(posts).toBe(0);
 });
 
-test('quota exhaustion and malformed responses retain the selected text', async ({ page }) => {
+test('pilot exhaustion keeps local guidance usable; rechecking restores online attempts', async ({ page }) => {
   await mockStatus(page);
   let calls = 0;
   await page.route('**/api/gemini/diagnose', async (route) => {
     const input = route.request().postDataJSON() as DiagnosticRequest;
-    if (++calls === 1) await route.fulfill({ status: 429, headers: { 'Retry-After': '60' }, json: { ...responseFor(input, input.currentText), isFallback: true, message: 'This server’s coach allowance is temporarily unavailable.', usage: { ...usage, remaining: 0 } } });
+    if (++calls === 1) await route.fulfill({ status: 429, headers: { 'Retry-After': '60' }, json: { ...responseFor(input, input.currentText), isFallback: true, fallbackReason: 'daily-limit', message: COACH_FALLBACK_MESSAGES['daily-limit'], usage: { ...usage, remaining: 0 } } });
     else await route.fulfill({ contentType: 'text/html', body: '<html>upstream error</html>' });
   });
   const draft = await seedResume(page);
   await openCoach(page);
   const panel = coach(page);
-  for (const message of ['coach allowance is temporarily unavailable', 'online coach could not be reached']) {
-    await panel.getByRole('button', { name: 'Make this clearer', exact: true }).click();
-    await expect(panel).toContainText(message);
+  await panel.getByRole('button', { name: 'Make this clearer', exact: true }).click();
+  await expect(panel).toContainText(COACH_FALLBACK_MESSAGES['daily-limit']);
+  await expect(panel.getByRole('button', { name: 'Request writing help', exact: true })).toBeDisabled();
+  await panel.getByRole('button', { name: 'Use local guidance', exact: true }).click();
+  await expect(panel).toContainText('no AI request was sent');
+  expect(calls).toBe(1);
+  expect(new URL((await panel.getByRole('link', { name: 'WhatsApp for personal help' }).getAttribute('href'))!).searchParams.get('text')).toContain('Coach help reference: daily-limit');
+  await expect(panel.getByLabel('Review and edit the wording')).toHaveValue(draft.resume.summary);
+  await expect(panel.getByRole('button', { name: 'Apply to selected field', exact: true })).toBeDisabled();
+  await panel.getByRole('button', { name: 'Recheck coach configuration', exact: true }).click();
+  await expect(panel.getByRole('button', { name: 'Request writing help', exact: true })).toBeEnabled();
+  await panel.getByRole('button', { name: 'Request writing help', exact: true }).click();
+  await expect(panel).toContainText('The online coach could not be reached');
+  await expect(panel.getByLabel('Review and edit the wording')).toHaveValue(draft.resume.summary);
+  expect(calls).toBe(2);
+  expect((await savedResume(page)).resume).toEqual(draft.resume);
+});
+
+test('provider failures explain the cause and human-help drafts contain no candidate text', async ({ page }) => {
+  await mockStatus(page);
+  const reasons = ['model-unavailable', 'provider-quota', 'provider-unavailable'] as const;
+  let calls = 0;
+  await page.route('**/api/gemini/diagnose', async (route) => {
+    const input = route.request().postDataJSON() as DiagnosticRequest;
+    const reason = reasons[calls++];
+    await route.fulfill({ status: reason === 'provider-unavailable' ? 503 : 200, json: { ...responseFor(input, input.currentText), isFallback: true, fallbackReason: reason, message: COACH_FALLBACK_MESSAGES[reason], usage } });
+  });
+  const draft = await seedResume(page);
+  await openCoach(page);
+  const panel = coach(page);
+  await panel.getByLabel('Additional facts you can confirm (optional)').fill('PRIVATE_CONFIRMED_FACT');
+  for (const reason of reasons) {
+    await panel.getByRole('button', { name: 'Request writing help', exact: true }).click();
+    await expect(panel).toContainText(COACH_FALLBACK_MESSAGES[reason]);
     await expect(panel.getByLabel('Review and edit the wording')).toHaveValue(draft.resume.summary);
     await expect(panel.getByRole('button', { name: 'Apply to selected field', exact: true })).toBeDisabled();
+    const whatsapp = new URL((await panel.getByRole('link', { name: 'WhatsApp for personal help' }).getAttribute('href'))!);
+    const email = new URL((await panel.getByRole('link', { name: 'Email for personal help' }).getAttribute('href'))!);
+    expect(whatsapp.origin + whatsapp.pathname).toBe('https://wa.me/8801748755209');
+    expect(email.pathname).toBe('ahmedur.rahch2021@gmail.com');
+    const message = whatsapp.searchParams.get('text');
+    expect(message).toContain(`Coach help reference: ${reason}`);
+    expect(email.searchParams.get('body')).toBe(message);
+    for (const privateValue of [draft.resume.summary, draft.resume.fullName, draft.resume.email, 'PRIVATE_CONFIRMED_FACT']) expect(message).not.toContain(privateValue);
   }
-  expect((await savedResume(page)).resume).toEqual(draft.resume);
+  await expect(panel).toContainText('Human review and rewriting are separately paid');
+  await expect(panel).toContainText('within 24 hours');
+  await panel.getByRole('link', { name: 'See human-help prices', exact: true }).click();
+  await expect(page).toHaveURL(/\/pricing$/);
+  await expect(coach(page)).toHaveCount(0);
 });
 
 test('coach dialog fits phone, landscape and desktop, contains focus and passes the accessibility baseline', async ({ page }) => {
@@ -205,6 +249,6 @@ test('coach dialog fits phone, landscape and desktop, contains focus and passes 
     await expect(trigger).toBeFocused();
   }
   await openCoach(page, false);
-  const result = await new AxeBuilder({ page }).include('dialog[open]').withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  const result = await new AxeBuilder({ page }).include('dialog[open]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   expect(result.violations.filter((violation) => ['serious', 'critical'].includes(violation.impact ?? '')).map((violation) => ({ id: violation.id, nodes: violation.nodes.map((node) => node.target) }))).toEqual([]);
 });

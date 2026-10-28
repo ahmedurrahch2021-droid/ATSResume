@@ -2,7 +2,8 @@ import type { DiagnosticRequest, DiagnosticResponse } from '../src/types/ai';
 import { isTargetCountry } from '../src/types/countryNorms';
 import { getCountryProfile } from '../src/data/targetCountries';
 import { sourcesFor } from '../src/data/resumeSources';
-import { localCoachGuidance } from '../src/utils/aiGuidance';
+import { coachFallback, localCoachGuidance } from '../src/utils/aiGuidance';
+import { classifyGeminiFailure, logCoachFailure, type CoachFailureEvent } from './geminiFailure';
 
 export type GenerateSuggestion = (systemInstruction: string, content: string, signal: AbortSignal) => Promise<string>;
 
@@ -49,16 +50,19 @@ export function validateModelSuggestion(value: unknown, request: DiagnosticReque
   return { originalText: request.currentText, suggestedText: result.suggestedText, rationale: result.rationale, clarifyingQuestion: result.clarifyingQuestion as string | null, sourceIds: getCountryProfile(request.countryNorm).sourceIds, isFallback: false };
 }
 
-export function createDiagnosticService(options: { apiKey?: string; model?: string; timeoutMs?: number; generate?: GenerateSuggestion } = {}) {
+export function createDiagnosticService(options: { apiKey?: string; model?: string; timeoutMs?: number; generate?: GenerateSuggestion; onFailure?: (event: CoachFailureEvent) => void } = {}) {
   const key = options.apiKey?.trim();
+  const model = options.model?.trim() || 'gemini-3.8-flash';
   const configured = Boolean(options.generate || (key && key !== 'MY_GEMINI_API_KEY'));
+  const reportFailure = options.onFailure ?? logCoachFailure;
   let client: import('@google/genai').GoogleGenAI | undefined;
   const generate: GenerateSuggestion = options.generate ?? (async (systemInstruction, contents, signal) => {
     // Import and construct only on an explicit AI request; optional AI cannot prevent HTTP startup.
-    const { GoogleGenAI } = await import('@google/genai');
+    const { GoogleGenAI, ThinkingLevel } = await import('@google/genai');
     client ??= new GoogleGenAI({ apiKey: key });
-    const response = await client.models.generateContent({ model: options.model || 'gemini-3.8-flash', contents, config: {
-      systemInstruction, responseMimeType: 'application/json', temperature: 0.2, maxOutputTokens: 1536, abortSignal: signal,
+    const response = await client.models.generateContent({ model, contents, config: {
+      systemInstruction, responseMimeType: 'application/json', temperature: 0.2, maxOutputTokens: 2048, abortSignal: signal,
+      ...(model.replace(/^models\//, '') === 'gemini-3.8-flash' ? { thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } } : {}),
       responseJsonSchema: { type: 'object', properties: { suggestedText: { type: 'string' }, rationale: { type: 'string' }, clarifyingQuestion: { type: ['string', 'null'] } }, required: ['suggestedText', 'rationale', 'clarifyingQuestion'], additionalProperties: false },
     } });
     return response.text ?? '';
@@ -66,20 +70,29 @@ export function createDiagnosticService(options: { apiKey?: string; model?: stri
   return {
     configured,
     async run(request: DiagnosticRequest, cancelled?: AbortSignal): Promise<DiagnosticResponse> {
-      if (!configured) return localCoachGuidance(request, 'Gemini is not configured on this server. Local writing guidance is available.');
+      if (!configured) return coachFallback(request, 'not-configured');
       const timeout = AbortSignal.timeout(options.timeoutMs ?? 20_000);
       const signal = cancelled ? AbortSignal.any([timeout, cancelled]) : timeout;
+      let onAbort: (() => void) | undefined;
       try {
         const abort = new Promise<never>((_, reject) => {
+          onAbort = () => reject(signal.reason);
           if (signal.aborted) reject(signal.reason);
-          else signal.addEventListener('abort', () => reject(signal.reason), { once: true });
+          else signal.addEventListener('abort', onAbort, { once: true });
         });
         const response = await Promise.race([generate(diagnosticSystemInstruction(request), JSON.stringify(request), signal), abort]);
-        const result = validateModelSuggestion(JSON.parse(response), request);
-        return result ?? localCoachGuidance(request, 'The AI response did not pass the response checks. Your original text is retained.');
-      } catch {
-        // Do not log private prompts, provider responses, credentials or raw provider exceptions.
-        return localCoachGuidance(request, 'Gemini could not return a usable suggestion. Your text is retained; local guidance is shown.');
+        let result: DiagnosticResponse | null = null;
+        try { result = validateModelSuggestion(JSON.parse(response), request); } catch { /* Malformed model output is not a provider-access diagnosis. */ }
+        if (result) return result;
+        reportFailure({ reason: 'invalid-response' });
+        return coachFallback(request, 'invalid-response');
+      } catch (error) {
+        if (cancelled?.aborted && !timeout.aborted) return localCoachGuidance(request, 'This writing request was cancelled. Your text is retained.');
+        const failure: CoachFailureEvent = timeout.aborted ? { reason: 'timeout' } : classifyGeminiFailure(error);
+        reportFailure(failure);
+        return coachFallback(request, failure.reason);
+      } finally {
+        if (onAbort) signal.removeEventListener('abort', onAbort);
       }
     },
   };

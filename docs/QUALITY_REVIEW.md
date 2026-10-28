@@ -2,6 +2,18 @@
 
 Review date: 28 October 2026. Scope: the repository build, not a claim that the AI Studio deployment is current.
 
+## 29 October — research, private feedback and coach availability
+
+- Added eight official publisher identities directly below the homepage hero, with source-specific benefits, document links and the explicit **references, not endorsements** label. The carousel supports native scrolling, keyboard controls, visible position and reduced motion. NBER working paper 30886 is now in the shared source registry; the full source library is available from the carousel/footer, and the method page opens its relevant Greenhouse/NBER documents. Provenance is in `RESEARCH_REFERENCES.md`.
+- Added voluntary private feedback at `/#feedback` and a footer link on every page. The form prepares editable Bangla/English email/WhatsApp drafts, provides copying/manual-copy fallback, invalidates stale drafts and never claims delivery. It does not submit a comment to a database, persist it in browser storage or attach document/coach content.
+- Kept the 10-connection / 100-instance daily pilot defaults. Google access/model/quota/request/timeout errors now return fixed help-reference codes; logs contain only those codes and optional provider HTTP status. The coach shows app reset/limit context, has explicit local guidance and includes a generic email/WhatsApp human-help handoff with paid-service scope. Gemini 3.8 Flash uses supported low thinking and a bounded output budget.
+
+**Verified:** TypeScript, a production build with all 12 prerendered routes, **25 document/parser/service tests** and **14 server tests** passed. The 55-test browser sweep passed 54 cases and caught one homepage label-in-name accessibility issue: a custom link label did not include all visible card text. Native link naming and a screen-reader source-title/new-tab hint fixed it. After the fix and rebuild, all **8 focused follow-up tests** passed, including the full homepage accessibility baseline, carousel keyboard/resizing/source links, both feedback flows, quota recovery, private human handoff and coach-dialog accessibility. The focused axe checks include WCAG 2.1 A label-in-name coverage.
+
+Desktop and 375px renderings of the research cards, feedback draft and human-help panel were visually inspected. All nine logo files loaded; all eight source URLs returned HTTP 200. Browser cases verify correct destinations with intercepted external pages and do not send email/WhatsApp messages. Gemini response/error cases use synthetic data and mocked provider behavior; a working live Gemini response still requires the owner's next AI Studio sync/publication and project configuration.
+
+Reports: `.qa/browser-report-research-feedback-initial.json` records the full sweep; `.qa/browser-report.json` and `.qa/research-feedback-followup-results/` record the eight passing follow-ups. Visual captures are in `.qa/previews/research-feedback/`. The AI Studio origin remains `https://atsresumemaker.ai.studio`.
+
 ## 29 October — Cloud Run and optional coach update
 
 The supplied AI Studio ZIP added an optional Gemini coach but started with `node server.ts`; its extensionless imports reproduced `ERR_MODULE_NOT_FOUND` before binding a port. The build now creates `dist-server/server.mjs`, with `npm start`, a multi-stage Dockerfile and a health route. The server binds `0.0.0.0:$PORT` and starts without an AI key.

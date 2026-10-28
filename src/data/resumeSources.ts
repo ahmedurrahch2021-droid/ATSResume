@@ -32,6 +32,11 @@ export const RESUME_SOURCES: ResumeSource[] = [
     scope: 'Vendor-documented parsing problems include photos, graphics, columns, tables, header/footer contact details and files over 2.5 MB. This describes Greenhouse, not every ATS.', status: 'reviewed',
   },
   {
+    id: 'nber-writing', publisher: 'National Bureau of Economic Research', title: 'Algorithmic Writing Assistance on Jobseekers’ Resumes Increases Hires',
+    url: 'https://www.nber.org/papers/w30886',
+    scope: 'Working paper 30886 reports a randomized writing-assistance experiment in an online labor market. It supports attention to writing quality, not an ATS score, a guarantee, or a measured hiring outcome for ATS Resume Lab. Added and reviewed 29 October 2026.', status: 'reviewed',
+  },
+  {
     id: 'uk-cv', publisher: 'UK National Careers Service', title: 'How to write a CV',
     url: 'https://nationalcareers.service.gov.uk/careers-advice/cv-sections',
     scope: 'Clear fonts at least 11 pt, headings and bullets, relevant education/experience, and omitting age, birth date, marital status and nationality.', status: 'reviewed',

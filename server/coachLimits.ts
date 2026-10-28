@@ -1,4 +1,4 @@
-import type { CoachUsage } from '../src/types/ai';
+import type { CoachFallbackReason, CoachUsage } from '../src/types/ai';
 
 /** Bounded, server-side per-instance limits. Restarts reset them; not a global per-person entitlement. */
 export class CoachLimits {
@@ -16,12 +16,13 @@ export class CoachLimits {
     this.reset(now);
     return { limit: this.daily, remaining: Math.max(0, Math.min(this.daily - (this.clients.get(client)?.count ?? 0), this.totalDaily - this.total)), resetAt: new Date(Date.parse(`${this.day}T00:00:00Z`) + 86_400_000).toISOString(), scope: 'server-instance' };
   }
-  acquire(client: string, now = Date.now()): { allowed: boolean; retryAfter: number; usage: CoachUsage; release: () => void } {
+  acquire(client: string, now = Date.now()): { allowed: boolean; retryAfter: number; reason?: CoachFallbackReason; usage: CoachUsage; release: () => void } {
     const usage = this.usage(client, now);
     const record = this.clients.get(client);
     let released = false;
-    const retryAfter = usage.remaining <= 0 ? Math.ceil((Date.parse(usage.resetAt) - now) / 1000) : this.active >= this.concurrency ? 10 : record && now - record.last < this.cooldownMs ? Math.ceil((this.cooldownMs - now + record.last) / 1000) : 0;
-    if (retryAfter || (!record && this.clients.size >= 1000)) return { allowed: false, retryAfter: retryAfter || 60, usage, release: () => {} };
+    if (usage.remaining <= 0) return { allowed: false, reason: 'daily-limit', retryAfter: Math.ceil((Date.parse(usage.resetAt) - now) / 1000), usage, release: () => {} };
+    if (this.active >= this.concurrency || (!record && this.clients.size >= 1000)) return { allowed: false, reason: 'server-busy', retryAfter: 10, usage, release: () => {} };
+    if (record && now - record.last < this.cooldownMs) return { allowed: false, reason: 'cooldown', retryAfter: Math.ceil((this.cooldownMs - now + record.last) / 1000), usage, release: () => {} };
     this.clients.set(client, { count: (record?.count ?? 0) + 1, last: now });
     this.total++; this.active++;
     return { allowed: true, retryAfter: 0, usage: this.usage(client, now), release: () => { if (!released) { this.active--; released = true; } } };

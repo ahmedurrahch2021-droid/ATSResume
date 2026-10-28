@@ -184,6 +184,16 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 </Link>
               </li>
               <li>
+                <Link to={`${ROUTE_PATHS.home}#feedback`} className="font-semibold text-accent hover:text-accent-hover transition-colors">
+                  Leave private feedback
+                </Link>
+              </li>
+              <li>
+                <Link to={`${ROUTE_PATHS['country-guides']}#source-library`} className="hover:text-ink transition-colors">
+                  Research source library
+                </Link>
+              </li>
+              <li>
                 <button onClick={onOpenChecklist} className="text-accent hover:text-accent-hover font-semibold transition-colors">
                   Open the Resume Checklist
                 </button>

@@ -14,6 +14,9 @@ export interface DiagnosticRequest {
   history?: CoachTurn[];
 }
 export interface CoachUsage { remaining: number; limit: number; resetAt: string; scope: 'server-instance' }
+export type CoachFallbackReason = 'not-configured' | 'invalid-key' | 'permission-denied' | 'model-unavailable'
+  | 'invalid-request' | 'provider-quota' | 'provider-unavailable' | 'timeout' | 'invalid-response'
+  | 'daily-limit' | 'cooldown' | 'server-busy' | 'network';
 export interface DiagnosticResponse {
   originalText: string;
   suggestedText: string;
@@ -23,5 +26,7 @@ export interface DiagnosticResponse {
   isFallback: boolean;
   message?: string;
   usage?: CoachUsage;
+  fallbackReason?: CoachFallbackReason;
+  retryAfterSeconds?: number;
 }
 export interface CoachTarget { id: string; label: string; text: string; sectionType: DiagnosticSection }

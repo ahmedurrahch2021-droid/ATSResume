@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { createHmac, randomBytes } from 'node:crypto';
 import { createDiagnosticService, validateDiagnosticRequest } from './geminiDiagnostic';
 import { CoachLimits } from './coachLimits';
-import { localCoachGuidance } from '../src/utils/aiGuidance';
+import { coachFallback } from '../src/utils/aiGuidance';
 import { PRERENDER_ROUTES, ROUTE_PATHS } from '../src/routes';
 
 export function createApp(options: { distPath?: string; service?: ReturnType<typeof createDiagnosticService>; limits?: CoachLimits } = {}) {
@@ -34,12 +34,12 @@ export function createApp(options: { distPath?: string; service?: ReturnType<typ
     const permit = limits.acquire(clientId(req.ip));
     if (!permit.allowed) {
       res.setHeader('Retry-After', String(permit.retryAfter));
-      res.status(429).json({ ...localCoachGuidance(request, 'This server’s coach allowance is temporarily unavailable. Local guidance remains available.'), usage: permit.usage }); return;
+      res.status(429).json({ ...coachFallback(request, permit.reason ?? 'server-busy'), retryAfterSeconds: permit.retryAfter, usage: permit.usage }); return;
     }
     const controller = new AbortController();
     res.on('close', () => { if (!res.writableEnded) controller.abort(); });
     try { res.json({ ...await service.run(request, controller.signal), usage: permit.usage }); }
-    catch { if (!res.headersSent && !res.destroyed) res.status(503).json(localCoachGuidance(request, 'Online coaching is temporarily unavailable. Your text is retained.')); }
+    catch { if (!res.headersSent && !res.destroyed) res.status(503).json({ ...coachFallback(request, 'provider-unavailable'), usage: permit.usage }); }
     finally { permit.release(); }
   });
   app.use('/api', (_req, res) => res.status(404).json({ error: 'API route not found.' }));
