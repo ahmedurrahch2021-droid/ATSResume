@@ -4,6 +4,9 @@ import { Link } from 'react-router';
 import { ROUTE_PATHS } from '../routes';
 import { ShieldCheck, Clock, CheckCircle2, FileDown, Sparkles, PenTool, HelpCircle, TrendingUp } from 'lucide-react';
 import { EmailSubscriptionBox } from './EmailSubscriptionBox';
+import { PACKAGES } from '../data/mockData';
+import { REPLY_POLICY, SERVICE_CONTACT } from '../data/servicePolicy';
+import { formatPackagePrice } from '../utils/servicePricing';
 
 interface FooterProps {
   setCurrentPage: (page: PageRoute) => void;
@@ -93,7 +96,10 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </div>
             <div className="text-xs text-muted space-y-0.5">
               <p className="font-medium text-ink/90">Founder Direct Support:</p>
-              <p><a href="mailto:ahmedur.rahch2021@gmail.com" className="break-all hover:text-accent">ahmedur.rahch2021@gmail.com</a></p>
+              <p><a href={`mailto:${SERVICE_CONTACT.email}`} className="break-all hover:text-accent">{SERVICE_CONTACT.email}</a></p>
+              <p><a href={SERVICE_CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" className="break-all hover:text-accent">WhatsApp: {SERVICE_CONTACT.whatsappDisplay}</a></p>
+              <p>{REPLY_POLICY}</p>
+              <p>Document delivery is agreed separately.</p>
             </div>
           </div>
 
@@ -139,7 +145,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               </li>
               <li>
                 <Link to={ROUTE_PATHS['pricing']} onClick={handleNavClick} className="hover:text-ink transition-colors">
-                  Pricing Plans ($10 / $25 / $35)
+                  Human-help prices (BDT / USD)
                 </Link>
               </li>
             </ul>
@@ -189,21 +195,10 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               1-on-1 Personalized Review
             </h5>
             <p className="text-xs text-muted leading-relaxed">
-              Want help with the edits? Review the package scope and contact us to confirm availability before paying.
+              Human help is paid in Bangladesh and other countries. Review the scope and confirm availability before paying.
             </p>
             <div className="p-3 rounded-xl bg-paper border border-line space-y-2">
-              <div className="flex items-center justify-between text-xs text-ink/90">
-                <span>Starter 1-on-1 Review</span>
-                <span className="font-bold text-accent">$10</span>
-              </div>
-              <div className="flex items-center justify-between text-xs text-ink/90">
-                <span>Career Boost</span>
-                <span className="font-bold text-accent">$25</span>
-              </div>
-              <div className="flex items-center justify-between text-xs text-ink/90">
-                <span>Full Career + LinkedIn</span>
-                <span className="font-bold text-accent">$35</span>
-              </div>
+              {PACKAGES.map((pkg) => <div key={pkg.id} className="space-y-1 text-xs text-ink"><p className="font-medium">{pkg.name}</p><p className="text-muted">Bangladesh <span className="font-semibold text-accent">{formatPackagePrice(pkg, 'bangladesh')}</span> · International <span className="font-semibold text-accent">{formatPackagePrice(pkg, 'international')}</span></p></div>)}
             </div>
             <button
               onClick={() => onOpenOrder('boost')}

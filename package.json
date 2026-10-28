@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test:resume": "tsx --test tests/resume-flow.test.ts tests/document-export.test.ts",
+    "test:resume": "tsx --test tests/resume-flow.test.ts tests/document-export.test.ts tests/service-policy.test.ts",
     "test:browser": "playwright test"
   },
   "dependencies": {

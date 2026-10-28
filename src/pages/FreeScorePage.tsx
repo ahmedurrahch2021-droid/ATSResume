@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { SAMPLE_WEAK_RESUMES, SAMPLE_JOB_DESCRIPTIONS } from '../data/mockData';
+import { PACKAGES, SAMPLE_WEAK_RESUMES, SAMPLE_JOB_DESCRIPTIONS } from '../data/mockData';
+import { describePackagePrices } from '../utils/servicePricing';
 import { PageRoute } from '../types';
 import { extractTextFromFile, ExtractionError, type ExtractedDocument } from '../utils/fileExtractor';
 import { parseResumeText, type ParseReport } from '../utils/resumeParser';
@@ -311,7 +312,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       q: 'What is free and what costs money?',
-      a: 'Checking, the editor, the templates and the cover letter are free. Paid work is a person reading your file and writing back — currently $10 for a written review, $25 for a rewrite of one document, $35 for the full application set. The price is for the work, not for a higher score.'
+      a: `Checking, the editor, templates and the cover letter builder are free worldwide. Human help is paid in Bangladesh and other countries: ${PACKAGES.map((pkg) => `${pkg.name} — ${describePackagePrices(pkg)}`).join('; ')}. You pay for the person’s work, not a higher score.`
     },
     {
       q: 'Is my resume safe in the editor?',

@@ -18,6 +18,7 @@ Live preview: **https://atsresumemaker.ai.studio** (Google AI Studio). Intended 
 | DOCX / PDF-print / TXT export | `src/utils/resumeExporter.ts` |
 | Optional AI architecture and provider research | `docs/AI_ASSISTANCE.md` |
 | Release gaps and mobile/reliability audit | `docs/QUALITY_REVIEW.md` |
+| Owner-approved email-first solo launch and priorities | `docs/SOLO_LAUNCH_PLAN.md` |
 
 ## Commands
 
@@ -91,5 +92,8 @@ In both cases: **do not add a catch-all rewrite to `/index.html`**. That rule wo
 - Cover letters start blank, import actual resume contact fields, and export genuine DOCX plus PDF printing/text. Fictional examples require explicit selection.
 - Local profile is not authentication. Contact and review inquiry forms prepare emails; subscriptions, server submission and checkout are not connected.
 - The full roadmap is not complete. Read `docs/QUALITY_REVIEW.md` before describing the product as launch-ready.
+- The owner-approved human-support model is implemented in the repository: free core worldwide; paid human help at ৳499/৳1,999/৳3,499 in Bangladesh or US$10/US$35/US$59 internationally. Pricing region carries into the inquiry and its email/downloaded quote.
+- Email and WhatsApp `+8801748755209` support have a 24-hour reply policy, not a document-delivery guarantee. No paid AI, checkout or automatic message/file submission is connected. Public comments/reviews remain optional.
+- Domain/search migration, new 404 handling and a social-sharing image are deferred. See `docs/SOLO_LAUNCH_PLAN.md`; leave `SITE_ORIGIN` and indexing behaviour unchanged until the owner reopens that work.
 
 For manual browser verification, `npx tsx scripts/qa-resume-fixtures.ts` and `npx tsx scripts/qa-resume-print.ts` generate **synthetic** files in `dist/_qa` after a build. Remove that directory before deploying; a fresh production build also clears it.

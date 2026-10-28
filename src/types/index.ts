@@ -144,12 +144,17 @@ export interface ResumeTemplate {
   };
 }
 
+export type ServicePricingRegion = 'bangladesh' | 'international';
+
 export interface PricingPackage {
   id: 'starter' | 'boost' | 'full';
   name: string;
   price: number;
+  /** Fixed Bangladesh price in BDT, not an automatic USD conversion. */
+  bangladeshPrice: number;
+  revisionRounds: 1 | 2;
   badge?: string;
-  deliveryHours: number;
+  deliveryHours?: number;
   description: string;
   features: string[];
   recommendedFor: string;
@@ -213,6 +218,7 @@ export interface OrderFormData {
   preferredTime: string;
   referralSource: string;
   packageId: 'starter' | 'boost' | 'full';
+  pricingRegion: ServicePricingRegion;
   urgentDelivery: boolean;
   currentRole: string;
   workExperience: string;

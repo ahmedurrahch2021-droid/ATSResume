@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowRight, Copy, Mail } from 'lucide-react';
+import { ArrowRight, Copy, Mail, MessageCircle } from 'lucide-react';
+import { DELIVERY_POLICY, REPLY_POLICY, SERVICE_CONTACT } from '../data/servicePolicy';
 
-const CONTACT_EMAIL = 'ahmedur.rahch2021@gmail.com';
+const CONTACT_EMAIL = SERVICE_CONTACT.email;
 
 interface ContactPageProps { onSelectPlan: (packageId: 'starter' | 'boost' | 'full') => void }
 
@@ -16,11 +17,12 @@ export function ContactPage({ onSelectPlan }: ContactPageProps) {
   return (
     <div className="section bg-soft">
       <div className="container-page max-w-5xl space-y-8">
-        <div className="max-w-2xl"><p className="eyebrow">Contact</p><h1 className="mt-3 text-3xl sm:text-4xl">Let’s talk about your application.</h1><p className="mt-4 text-muted">Ask about the tools, a review package or an existing inquiry. Messages are handled by email.</p></div>
+        <div className="max-w-2xl"><p className="eyebrow">Contact</p><h1 className="mt-3 text-3xl sm:text-4xl">Let’s talk about your application.</h1><p className="mt-4 text-muted">Ask about the tools, a paid human-help package or an existing inquiry. Contact us by email or WhatsApp.</p><p className="mt-3 text-sm text-muted">{REPLY_POLICY} {DELIVERY_POLICY}</p></div>
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
           <aside className="card min-w-0 p-5 space-y-5">
             <div><h2 className="text-lg">Direct email</h2><a href={`mailto:${CONTACT_EMAIL}`} className="mt-2 inline-block break-all text-sm text-accent underline underline-offset-4">{CONTACT_EMAIL}</a></div>
-            <p className="text-sm text-muted">For paid review, confirm availability, delivery timing, revision terms and payment arrangements before paying.</p>
+            <div className="space-y-2"><h2 className="text-lg">WhatsApp support</h2><a href={SERVICE_CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" className="btn btn-secondary max-w-full"><MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />Message on WhatsApp</a><p className="text-sm text-muted">{SERVICE_CONTACT.whatsappDisplay}</p><p className="text-xs text-muted">Opening WhatsApp does not send this form or your resume. You choose what to share.</p></div>
+            <p className="text-sm text-muted">Human help is paid for Bangladesh and other countries. Confirm availability, delivery timing, revision terms and payment arrangements before paying. The core tools remain free.</p>
             <button type="button" className="btn btn-secondary w-full" onClick={() => onSelectPlan('starter')}>Prepare a review inquiry <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" /></button>
           </aside>
           <section className="card min-w-0 p-5 sm:p-6">

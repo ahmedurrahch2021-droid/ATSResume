@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { PageRoute } from '../types';
 import { ATS_TEMPLATES, PACKAGES } from '../data/mockData';
+import { DELIVERY_POLICY, REPLY_POLICY } from '../data/servicePolicy';
+import { formatPackagePrice } from '../utils/servicePricing';
 import { EVIDENCE, MYTHS } from '../data/evidence';
 
 interface HomePageProps {
@@ -559,9 +561,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
             </h2>
             <p className="mt-4 text-[14.5px] leading-relaxed text-muted">
               Building, checking, matching and exporting cost us almost nothing, so they cost you
-              nothing. When a human rewrites your resume, you pay for their hours — once, with no
-              subscription.
+              nothing. Human review and rewriting are paid services in Bangladesh and other
+              countries — once, with no subscription.
             </p>
+            <p className="mt-3 text-sm text-muted">{REPLY_POLICY} {DELIVERY_POLICY}</p>
           </div>
 
           <div className="mt-10 grid gap-4 lg:grid-cols-4">
@@ -597,16 +600,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                 ].join(' ')}
               >
                 <div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[13px] font-medium text-muted">{pkg.name}</span>
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <span className="min-w-0 text-[13px] font-medium text-muted">{pkg.name}</span>
                     {pkg.badge && <span className="chip chip-active">{pkg.badge}</span>}
                   </div>
-                  <p className="mt-4 font-heading text-[28px] font-semibold text-ink">
-                    ${pkg.price}
-                    <span className="ml-1 font-sans text-[12px] font-normal text-muted">once</span>
-                  </p>
+                  <dl className="mt-4 space-y-2"><div><dt className="text-xs text-muted">Bangladesh · BDT</dt><dd className="font-heading text-[26px] font-semibold text-ink">{formatPackagePrice(pkg, 'bangladesh')}</dd></div><div><dt className="text-xs text-muted">International · USD</dt><dd className="font-heading text-[22px] font-semibold text-ink">{formatPackagePrice(pkg, 'international')}</dd></div></dl>
                   <p className="mt-1 text-[12.5px] text-muted">
-                    Human review · timing confirmed before payment
+                    One-time · delivery agreed before payment
                   </p>
                   <ul className="mt-4 space-y-2 text-[13px] text-ink">
                     {pkg.features.slice(1, 5).map((f) => (
@@ -625,7 +625,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                     pkg.popular ? 'btn-primary' : 'btn-secondary',
                   ].join(' ')}
                 >
-                  Choose {pkg.name}
+                  Inquire about {pkg.name}
                 </button>
               </div>
             ))}

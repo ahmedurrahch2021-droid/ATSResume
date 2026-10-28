@@ -4,7 +4,7 @@
  */
 
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { PageRoute, ResumeData } from './types';
+import { PageRoute, ResumeData, type ServicePricingRegion } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ChecklistModal } from './components/ChecklistModal';
@@ -39,6 +39,7 @@ export default function App() {
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
   const [orderPackageId, setOrderPackageId] = useState<'starter' | 'boost' | 'full'>('boost');
   const [orderUrgent, setOrderUrgent] = useState(false);
+  const [orderPricingRegion, setOrderPricingRegion] = useState<ServicePricingRegion>('international');
   const [preloadedOrderData, setPreloadedOrderData] = useState<{ resume: string; jd: string } | undefined>(undefined);
   const [loadedTemplateResumeData, setLoadedTemplateResumeData] = useState<ResumeData | null>(null);
   const [draftImport, setDraftImport] = useState<ResumeDraft | null>(null);
@@ -108,11 +109,15 @@ export default function App() {
     packageId: 'starter' | 'boost' | 'full' = 'boost',
     preloadedData?: { resume: string; jd: string },
     urgent = false,
+    pricingRegion: ServicePricingRegion = 'international',
   ) => {
     setOrderPackageId(packageId);
     setPreloadedOrderData(preloadedData);
     setOrderUrgent(urgent);
-    navigate(ROUTE_PATHS.order);
+    setOrderPricingRegion(pricingRegion);
+    const selection = new URLSearchParams({ package: packageId, region: pricingRegion });
+    if (urgent) selection.set('urgent', 'true');
+    navigate(`${ROUTE_PATHS.order}?${selection}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -168,7 +173,7 @@ export default function App() {
 
         {currentPage === 'pricing' && (
           <PricingPage
-            onSelectPlan={(pkg, urgent) => handleOpenOrder(pkg, undefined, urgent)}
+            onSelectPlan={(pkg, urgent, region) => handleOpenOrder(pkg, undefined, urgent, region)}
           />
         )}
 
@@ -219,6 +224,7 @@ export default function App() {
           <OrderPage
             initialPackageId={orderPackageId}
             initialUrgent={orderUrgent}
+            initialPricingRegion={orderPricingRegion}
             preloadedData={preloadedOrderData}
             onBackToPricing={() => handleNavigate('pricing')}
           />

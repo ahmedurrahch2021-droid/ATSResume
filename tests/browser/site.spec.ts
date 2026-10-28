@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import JSZip from 'jszip';
 import mammoth from 'mammoth';
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 
 const ROUTES = ['/', '/resume-checker', '/resume-templates', '/resume-examples', '/pricing', '/how-it-works', '/faq', '/about', '/contact', '/cover-letter', '/suite', '/order'];
 const VIEWPORTS = [
@@ -33,6 +33,18 @@ async function openPage(page: Page, route: string) {
 async function expectNoPageOverflow(page: Page) {
   const size = await page.evaluate(() => ({ width: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(size.content, 'Horizontal page scrolling is not allowed; document zoom stays inside its own viewport.').toBeLessThanOrEqual(size.width + 1);
+}
+
+async function completeRequiredInquiry(page: Page) {
+  await page.getByLabel('Full name (required)', { exact: true }).fill('Mina Rahman');
+  await page.getByLabel('Email (required)', { exact: true }).fill('mina@example.com');
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await page.getByLabel('Experience, projects or training (required)', { exact: true }).fill('Reconciled supplier invoices for a local business.');
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await page.getByLabel('Target role (required)', { exact: true }).fill('Accounts Officer');
+  await page.getByLabel('Preferred length', { exact: true }).selectOption('3');
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
 }
 
 for (const viewport of VIEWPORTS) {
@@ -131,6 +143,9 @@ test('desktop disclosure menus are keyboard navigable and remain on screen', asy
 
 test('contact prepares an email; it never reports a message as delivered', async ({ page }) => {
   await openPage(page, '/contact');
+  await expect(page.locator('#main-content')).toContainText('within 24 hours');
+  await expect(page.locator('#main-content')).toContainText('not a document-delivery deadline');
+  await expect(page.locator('#main-content').getByRole('link', { name: 'Message on WhatsApp', exact: true })).toHaveAttribute('href', 'https://wa.me/8801748755209');
   await page.getByLabel('Your name', { exact: true }).fill('Mina Rahman');
   await page.getByLabel('Reply email', { exact: true }).fill('mina@example.com');
   await page.getByLabel('Message', { exact: true }).fill('Could you confirm review availability?');
@@ -159,13 +174,13 @@ test('local profile needs no credentials and remains a local utility', async ({ 
 
 test('review inquiry supports three pages and never asks for card details', async ({ page }) => {
   await openPage(page, '/pricing');
-  await page.getByLabel('Request 12-hour delivery (+$10)').check();
-  await page.getByRole('button', { name: 'Inquire about Resume Starter' }).click();
-  await expect(page).toHaveURL(/\/order$/);
+  await page.getByLabel('Request 12-hour delivery (+US$10)').check();
+  await page.getByRole('button', { name: 'Inquire about Human Resume Review' }).click();
+  await expect(page).toHaveURL(/\/order(?:\?.*)?$/);
   await page.getByLabel('Full name (required)', { exact: true }).fill('Mina Rahman');
   await page.getByLabel('Email (required)', { exact: true }).fill('mina@example.com');
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
-  await expect(page.getByLabel('Request 12-hour delivery (+$10)')).toBeChecked();
+  await expect(page.getByLabel('Request 12-hour delivery (+US$10)')).toBeChecked();
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await page.getByLabel('Experience, projects or training (required)', { exact: true }).fill('Reconciled supplier invoices for a local business.');
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
@@ -182,6 +197,82 @@ test('review inquiry supports three pages and never asks for card details', asyn
   expect(content).toContain('not an order or receipt');
   expect(content).not.toContain('Total Paid');
   await expectNoPageOverflow(page);
+});
+
+test('both regional catalogs display the approved prices and matching package scope', async ({ page }) => {
+  await openPage(page, '/pricing');
+  for (const [region, prices] of [['international', ['US$10', 'US$35', 'US$59']], ['bangladesh', ['৳499', '৳1,999', '৳3,499']]] as const) {
+    await page.getByLabel('Pricing region', { exact: true }).selectOption(region);
+    for (const [index, name] of ['Human Resume Review', 'Targeted Resume Rewrite', 'Application Kit'].entries()) {
+      const card = page.locator('#main-content section').filter({ has: page.getByRole('heading', { name, exact: true }) });
+      await expect(card.locator('.text-4xl')).toHaveText(prices[index]);
+    }
+    await expectNoPageOverflow(page);
+  }
+  const rewrite = page.locator('#main-content section').filter({ has: page.getByRole('heading', { name: 'Targeted Resume Rewrite', exact: true }) });
+  await expect(rewrite).toContainText('Cover letter and LinkedIn wording are not included');
+  const kit = page.locator('#main-content section').filter({ has: page.getByRole('heading', { name: 'Application Kit', exact: true }) });
+  await expect(kit).toContainText('One matching cover letter');
+  await expect(kit).toContainText('Two revision rounds included');
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await mkdir('.qa/previews', { recursive: true });
+  await page.screenshot({ path: '.qa/previews/bangladesh-pricing-desktop.png', fullPage: true });
+});
+
+test('Bangladesh review selection survives reload and quotes ৳499 in the brief and email', async ({ page }) => {
+  await openPage(page, '/pricing');
+  await page.getByLabel('Pricing region', { exact: true }).selectOption('bangladesh');
+  await page.getByRole('button', { name: 'Inquire about Human Resume Review' }).click();
+  await expect(page).toHaveURL(/region=bangladesh/);
+  await page.reload();
+  await expect(page.getByLabel('Pricing region', { exact: true })).toHaveValue('bangladesh');
+  await completeRequiredInquiry(page);
+  const brief = page.getByLabel('Your inquiry brief');
+  await expect(brief).toHaveValue(/Human Resume Review — ৳499 BDT/);
+  await expect(brief).toHaveValue(/Pricing region: Bangladesh/);
+  await expect(brief).toHaveValue(/Revision rounds: 1/);
+  await expect(brief).toHaveValue(/Preferred length: 3 pages/);
+  const emailUrl = new URL((await page.getByRole('link', { name: 'Open email app', exact: true }).getAttribute('href'))!);
+  expect(emailUrl.searchParams.get('body')).toContain('৳499 BDT, Bangladesh pricing');
+  await expect(page.locator('#main-content').getByRole('link', { name: 'Message on WhatsApp', exact: true })).toHaveAttribute('href', 'https://wa.me/8801748755209');
+  const downloading = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download brief', exact: true }).click();
+  const download = await downloading;
+  const text = await readFile((await download.path())!, 'utf8');
+  expect(text).toContain('৳499 BDT');
+  expect(text).not.toContain('Total Paid');
+  await expectNoPageOverflow(page);
+});
+
+for (const [name, price, rounds] of [['Targeted Resume Rewrite', 'US$35', 1], ['Application Kit', 'US$59', 2]] as const) {
+  test(`international ${name} inquiry uses ${price} and the correct revisions`, async ({ page }) => {
+    await openPage(page, '/pricing');
+    await page.getByLabel('Pricing region', { exact: true }).selectOption('international');
+    await page.getByRole('button', { name: `Inquire about ${name}`, exact: true }).click();
+    await completeRequiredInquiry(page);
+    await expect(page.getByLabel('Your inquiry brief')).toHaveValue(new RegExp(`${name} — US\\$${price.slice(3)} USD`));
+    await expect(page.getByLabel('Your inquiry brief')).toHaveValue(new RegExp(`Revision rounds: ${rounds}`));
+    await expect(page.locator('#main-content')).toContainText('Nothing has been submitted or charged');
+  });
+}
+
+test('human-help dialog fits a small phone, shows both currencies and contains keyboard focus', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await openPage(page, '/suite');
+  const trigger = page.getByRole('button', { name: 'Human review options', exact: true });
+  await trigger.click();
+  const dialog = page.getByRole('dialog', { name: 'A second pair of eyes', exact: true });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('Bangladesh: ৳499 · International: US$10');
+  await expect(dialog).toContainText('within 24 hours');
+  expect((await dialog.boundingBox())!.width).toBeLessThan(320);
+  await dialog.getByRole('button', { name: 'View order details', exact: true }).focus();
+  await page.keyboard.press('Tab');
+  expect(await page.evaluate(() => !!document.activeElement?.closest('dialog[open]'))).toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(dialog).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+  await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
 
 test('template preview fits a phone and finance handoff has no injected tech career data', async ({ page }) => {

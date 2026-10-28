@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { ROUTE_PATHS } from '../routes';
+import { PACKAGES } from '../data/mockData';
+import { DELIVERY_POLICY, REPLY_POLICY, SERVICE_CONTACT } from '../data/servicePolicy';
+import { describePackagePrices } from '../utils/servicePricing';
 
 interface AboutPageProps { onSelectPlan: (packageId: 'starter' | 'boost' | 'full') => void }
 
@@ -14,6 +17,6 @@ export function AboutPage({ onSelectPlan }: AboutPageProps) {
       <section className="card p-5"><h2 className="text-xl">Local does not mean a cloud backup</h2><p className="mt-3 text-sm text-muted">Browser storage can be cleared or blocked. Keep a downloaded backup. If you email a resume for human review, that is a separate sharing action you choose.</p></section>
       <section className="card p-5"><h2 className="text-xl">No invented track record</h2><p className="mt-3 text-sm text-muted">There are no verified user counts, callback rates or customer testimonials published here. The product should be judged by the changes and documents you can inspect.</p></section>
     </div>
-    <section className="card p-5 space-y-3"><h2 className="text-xl">Optional human help</h2><p className="text-sm text-muted">Review packages are $10, $25 and $35 USD, paid once. Confirm the reviewer, scope, availability, delivery and revision terms by email before paying.</p><button type="button" className="btn btn-secondary" onClick={() => onSelectPlan('starter')}>Prepare a review inquiry</button><p className="text-sm"><a href="mailto:ahmedur.rahch2021@gmail.com" className="break-all text-accent underline">ahmedur.rahch2021@gmail.com</a></p></section>
+    <section className="card p-5 space-y-3"><h2 className="text-xl">Optional paid human help</h2><p className="text-sm text-muted">Human services are paid in Bangladesh and other countries. The core tools remain free. Confirm scope, availability and terms before paying.</p><ul className="space-y-2 text-sm text-muted">{PACKAGES.map((pkg) => <li key={pkg.id}><span className="font-medium text-ink">{pkg.name}</span> — {describePackagePrices(pkg)}</li>)}</ul><p className="text-sm text-muted">{REPLY_POLICY} {DELIVERY_POLICY}</p><button type="button" className="btn btn-secondary" onClick={() => onSelectPlan('starter')}>Prepare a review inquiry</button><p className="text-sm"><a href={`mailto:${SERVICE_CONTACT.email}`} className="break-all text-accent underline">{SERVICE_CONTACT.email}</a></p><p className="text-sm"><a href={SERVICE_CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" className="text-accent underline">WhatsApp {SERVICE_CONTACT.whatsappDisplay}</a></p></section>
   </div></div>;
 }

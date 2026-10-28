@@ -1,8 +1,10 @@
 # Optional AI assistance — implementation decision
 
-Status: **proposal; no provider connected**. Updated 28 October 2026.
+Status: **deferred; no provider connected**. Updated 28 October 2026.
 
-The core product is usable without an API: local file extraction → findings → the same draft in the editor → guided edits → DOCX/PDF/TXT export → check the new file. AI should help with wording after this loop works.
+The owner has chosen a solo-operator, email/WhatsApp human-review model rather than purchasing AI for the launch. Human assistance is paid in Bangladesh and other countries; core tools remain free. The approved direction is recorded in `SOLO_LAUNCH_PLAN.md`. The provider research and architecture below are retained for a possible future decision, not an instruction to connect an API or sell AI credits. Neither a free nor a paid remote AI integration is currently authorized.
+
+The core product is usable without an API: local file extraction → findings → the same draft in the editor → guided edits → DOCX/PDF/TXT export → check the new file. If remote AI is reconsidered later, it should assist with wording rather than replace this inspectable loop.
 
 ## What “training it with our data” should mean initially
 

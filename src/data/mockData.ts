@@ -1,4 +1,6 @@
 import { PricingPackage, ExampleResume, Testimonial, FaqItem, ResumeTemplate } from '../types';
+import { DELIVERY_POLICY, REPLY_POLICY, SERVICE_CONTACT } from './servicePolicy';
+import { describePackagePrices } from '../utils/servicePricing';
 
 export const ATS_IMAGES = {
   verifiedResume: '/images/ats_verified_resume_showcase_1792524530590.jpg',
@@ -9,59 +11,55 @@ export const ATS_IMAGES = {
 export const PACKAGES: PricingPackage[] = [
   {
     id: 'starter',
-    name: 'Resume Starter',
+    name: 'Human Resume Review',
     price: 10,
-    deliveryHours: 24,
+    bangladeshPrice: 499,
+    revisionRounds: 1,
     description: 'A written review and focused edits for one resume and one target role.',
     recommendedFor: 'Early to mid-level job seekers applying to standard roles',
     features: [
-      'Review of one resume, including 2–3 page documents',
-      'Direct tailoring to 1 target job description',
-      'Bullet suggestions using facts you supply',
-      'Written notes from a human reviewer',
-      'Target delivery: 24 hours after scope is confirmed',
-      '1 Free revision round included',
-      'Agree the scope and revision terms before payment',
-      'Delivered in PDF & fully editable Word (.docx)'
+      'Written review of one resume, including 2–3 page documents',
+      'Focused edits for one target role',
+      'Suggestions using only facts you supply',
+      'One revision round included',
+      'Written notes and editable document updates',
+      'Scope, delivery date and terms confirmed before payment'
     ]
   },
   {
     id: 'boost',
-    name: 'Career Boost',
-    price: 25,
-    deliveryHours: 24,
-    badge: 'APPLICATION SET',
+    name: 'Targeted Resume Rewrite',
+    price: 35,
+    bangladeshPrice: 1999,
+    revisionRounds: 1,
     popular: true,
-    description: 'Resume rewriting and matching application materials for a specific job.',
+    description: 'Rewrite one resume using your supplied facts for one target role.',
     recommendedFor: 'Career switchers & competitive corporate applicants',
     features: [
-      'Everything in Resume Starter',
-      'Custom-written matching Cover Letter (PDF)',
-      'LinkedIn Profile Headline & About summary overhaul',
-      'Job-posting vocabulary review with explained edits',
-      'Delivery timing confirmed before payment',
-      '1 Free revision round included',
-      'Facts and changes reviewed with you',
-      'Delivered in PDF, DOCX + plain-text copy paste file'
+      'Rewrite of one resume, including 2–3 page documents',
+      'Tailoring to one target role and job posting',
+      'Preserve the facts, titles, dates and achievements you supply',
+      'One revision round included',
+      'Editable DOCX, PDF and plain-text files',
+      'Cover letter and LinkedIn wording are not included'
     ]
   },
   {
     id: 'full',
-    name: 'Full Career Package',
-    price: 35,
-    deliveryHours: 48,
-    badge: 'MAX VALUE',
-    description: 'Application materials, LinkedIn wording and interview-preparation prompts.',
-    recommendedFor: 'Senior professionals, leadership, and high-stakes transitions',
+    name: 'Application Kit',
+    price: 59,
+    bangladeshPrice: 3499,
+    revisionRounds: 2,
+    badge: 'APPLICATION SET',
+    description: 'A targeted resume, one cover letter and LinkedIn headline/About wording for one role.',
+    recommendedFor: 'Applicants who need a coordinated set of application materials',
     features: [
-      'Everything in Career Boost',
-      'Complete LinkedIn Profile Optimization (Experience bullets + Skills)',
-      '10 Tailored Interview Questions & STAR Response Framework',
-      'Document length adapted to relevant experience',
-      'Direct developer consult notes on positioning',
-      'Target delivery: 48 hours after scope is confirmed',
-      '2 Free revision rounds included',
-      'Editable files you can keep and re-export'
+      'Targeted resume rewrite for one role',
+      'One matching cover letter',
+      'LinkedIn headline and About wording',
+      'Two revision rounds included',
+      'Editable document files you can keep',
+      'Scope, delivery date and terms confirmed before payment'
     ]
   }
 ];
@@ -241,16 +239,16 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'faq-2',
     category: 'delivery',
-    question: 'How fast will I receive my finished resume?',
-    directAnswer: 'For human review, confirm a delivery date by email before paying. Starter and Boost target 24 hours after scope confirmation; the Full package targets 48 hours.',
-    extendedAnswer: 'A requested 12-hour option adds $10 if availability is confirmed. It is a request, not an automatic guarantee. Free editor downloads do not require a review order.'
+    question: 'How quickly will you reply, and when will my documents be ready?',
+    directAnswer: REPLY_POLICY,
+    extendedAnswer: `${DELIVERY_POLICY} An urgent-delivery request is subject to availability and an agreed fee. Free editor downloads do not require a human-review order.`
   },
   {
     id: 'faq-3',
     category: 'pricing',
     question: 'What if I am not satisfied with my resume?',
     directAnswer: 'Agree revision, cancellation and refund terms in writing before paying for human review.',
-    extendedAnswer: 'Starter and Boost include one revision round; Full includes two. The revision window and scope are confirmed by email. The website does not issue automatic refunds.'
+    extendedAnswer: 'Human Resume Review and Targeted Resume Rewrite include one revision round; Application Kit includes two. The revision window and scope are confirmed before payment. The website does not issue automatic refunds.'
   },
   {
     id: 'faq-4',
@@ -264,7 +262,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'revisions',
     question: 'Where is my resume stored?',
     directAnswer: 'Checking and editing happen in your browser. The resume draft is saved in browser storage when available; it is not a cloud backup.',
-    extendedAnswer: 'Storage can be blocked or cleared, so keep a downloaded backup. Optional human review requires you to choose to email your information. Online sign-in and email subscriptions are not connected.'
+    extendedAnswer: 'Storage can be blocked or cleared, so keep a downloaded backup. Choosing to email or message a file for human help shares it outside these local tools. Online sign-in and email subscriptions are not connected.'
   },
   {
     id: 'faq-6',
@@ -276,9 +274,9 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'faq-7',
     category: 'pricing',
-    question: 'How do I pay for my order?',
-    directAnswer: 'Online payment is not available yet. To place an order, email ahmedur.rahch2021@gmail.com and we will arrange payment with you.',
-    extendedAnswer: 'We will update this answer when online checkout opens.'
+    question: 'Is human help paid in Bangladesh too, and how do I arrange it?',
+    directAnswer: 'Yes. Human review, rewriting and application kits are paid services in Bangladesh and other countries. Checking, editing and downloads remain free worldwide.',
+    extendedAnswer: `${PACKAGES.map((pkg) => `${pkg.name} — ${describePackagePrices(pkg)}`).join('; ')}. These are one-time prices, not subscriptions. Online checkout is not connected. Contact ${SERVICE_CONTACT.email} or WhatsApp ${SERVICE_CONTACT.whatsappDisplay} to confirm scope, availability, delivery, terms and payment arrangements.`
   },
   {
     id: 'faq-8',

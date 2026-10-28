@@ -8,6 +8,14 @@ Review date: 28 October 2026. Scope: the repository build, not a claim that the 
 
 The earlier statement that only deployment remained was incorrect. This review adds browser-level acceptance tests and separates actual capabilities from roadmap items.
 
+## Owner-approved launch scope update
+
+The owner's latest direction in `SOLO_LAUNCH_PLAN.md` is no-paid-AI, free core worldwide, paid human help in Bangladesh and other countries, email/WhatsApp support and voluntary feedback. The free-Bangladesh-human-evaluation proposal is superseded. Approved prices are ৳499/৳1,999/৳3,499 for Bangladesh and US$10/US$35/US$59 internationally. Replies are within 24 hours; document delivery is agreed separately. Remote AI, subscriptions, cloud accounts and automated checkout are not launch requirements.
+
+The latest live check after the owner republished now shows the revised headline and native full-height menu. Targeted live checks passed at 375×812 and 667×375 landscape, including Pricing navigation and closing. This supersedes the old 72px-panel observation. The new regional-pricing/contact revision still needs publication and live verification; broader document/device sign-off remains open.
+
+Domain/DNS/HTTPS, canonical/sitemap migration, new 404 handling and the social-sharing image are deferred at the owner's request. Do not treat those paused items as work authorized in this revision.
+
 ## Defects addressed in this review
 
 | Defect | Change |
@@ -20,7 +28,7 @@ The earlier statement that only deployment remained was incorrect. This review a
 | Contact “Message Received” without delivery | Prepare/copy/open an email draft. No delivery claim; sending happens in the user’s email app. |
 | Newsletter “dispatched” without sending an email | Direct checklist download, no email required. Future subscriptions are explicitly not connected. |
 | Inactive checkout still asked for card/CVV information | Five-step review inquiry with a downloadable brief and mailto action. No card entry, payment success, order ID or receipt. |
-| Pricing and other pages promised unverified outcomes | Existing one-time $10/$25/$35 scope retained; availability and terms confirmed before payment. No fake guarantees, customer results or ATS scores. |
+| Pricing and other pages promised unverified outcomes | Initial review removed false guarantees; the subsequent owner-approved regional prices and scopes are documented above. Availability, delivery and terms are confirmed before payment. |
 | Template handoff injected unrelated tech projects | Copies only the selected fictional sample’s fields. No fallback portfolio, invented degree dates, certifications or methodologies. Confirmation before replacing an existing draft. |
 | Cover letter loaded a fictional candidate automatically | New drafts are blank. Examples remain explicit, labelled choices; existing valid saved drafts are retained. Contact import reads the real resume draft. |
 | Cover-letter Word export was HTML named `.doc` | Actual DOCX package, shared paragraph/list writer, A4 print document and escaped text. Word pagination is not guaranteed to match the browser. |
@@ -29,9 +37,11 @@ The earlier statement that only deployment remained was incorrect. This review a
 
 ## Acceptance checks
 
-Latest production-build run: **33/33 browser tests passed**, **15/15 document/parser tests passed**, TypeScript passed, all **11 routes prerendered**, and `npm audit` reported **0 known vulnerabilities**. The layout sweep covers **84 route/viewport combinations** (12 routes × 7 sizes).
+Latest regional-pricing/contact production-build run: **38/38 browser tests passed**, **19/19 document/parser/service-policy tests passed**, TypeScript passed, all **11 routes prerendered**, and `npm audit` reported **0 known vulnerabilities**. The layout sweep covers **84 route/viewport combinations** (12 routes × 7 sizes).
 
-The main JavaScript file changed from approximately 715 KB / 202 KB gzip to 366 KB / 116 KB gzip. That is a bundle-size reduction, not a measured loading-time guarantee. PDF and DOCX libraries still load when those tools are used.
+The main JavaScript file is now approximately 368 KB / 117 KB gzip, compared with approximately 715 KB / 202 KB gzip before route splitting. That is a bundle-size reduction, not a measured loading-time guarantee. PDF and DOCX libraries still load when those tools are used.
+
+The service tests verify both regional price catalogs, matching package scopes/revision rounds, pricing-to-inquiry selection restoration after reload, BDT/USD amounts in downloaded briefs and email drafts, the owner-confirmed WhatsApp URL, the 24-hour reply distinction and small-phone human-help dialog focus. Browser tests inspect WhatsApp link targets; they do not send real customer messages or confirm that the recipient account is active.
 
 Run a fresh production build first:
 
