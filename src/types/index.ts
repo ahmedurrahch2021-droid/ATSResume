@@ -224,7 +224,7 @@ export interface OrderFormData {
   targetIndustry: string;
   specificRequirements: string;
   tone: 'professional' | 'modern' | 'creative';
-  pageLength: '1' | '2';
+  pageLength: '1' | '2' | '3';
   targetSalary: string;
   specialNotes: string;
   paymentMethod: 'visa' | 'mastercard' | 'paypal' | 'upi' | 'card';

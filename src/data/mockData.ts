@@ -190,6 +190,7 @@ export const RESUME_EXAMPLES: ExampleResume[] = [
   }
 ];
 
+// Legacy fictional content, not verified customers. Never publish as testimonials.
 export const TESTIMONIALS: Testimonial[] = [
   {
     name: 'Sarah M.',
@@ -233,44 +234,44 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'faq-1',
     category: 'quality',
-    question: 'How is ATS Resume Lab different from Canva or free AI resume builders?',
-    directAnswer: 'Free builders give generic static templates with no target job alignment. Raw AI hallucinate experiences. We tailor your bullets to the exact target job description, then a senior developer personally edits every line for ATS compliance and impact.',
-    extendedAnswer: 'Template tools like Canva export decorative columns and graphic icons that Applicant Tracking Systems (ATS) like Workday, Taleo, and Greenhouse fail to parse. Raw ChatGPT or Claude prompts frequently fabricate job duties or use robotic filler words. ATS Resume Lab combines AI speed with human editorial judgment: we calibrate your exact achievements to what the hiring manager is searching for.'
+    question: 'What can I do for free?',
+    directAnswer: 'Read a PDF, DOCX or text resume, inspect the extracted fields, edit the same draft and download your document without an account or a card.',
+    extendedAnswer: 'Job-posting vocabulary comparison and a cover letter builder are also available. The guided rewrite helper uses facts you provide. No AI provider or cloud sync is connected.'
   },
   {
     id: 'faq-2',
     category: 'delivery',
     question: 'How fast will I receive my finished resume?',
-    directAnswer: 'Most packages are delivered directly to your inbox within 24 hours of payment confirmation. Full Career packages deliver in 48 hours, or 12 hours if rush delivery is selected.',
-    extendedAnswer: 'Because our workflow uses AI for initial alignment and a human developer for deep editing, we do not require the 7 to 10 business day turnaround of traditional $250 agencies. If you have an urgent deadline tonight, our optional $10 Rush Add-on guarantees delivery within 12 hours.'
+    directAnswer: 'For human review, confirm a delivery date by email before paying. Starter and Boost target 24 hours after scope confirmation; the Full package targets 48 hours.',
+    extendedAnswer: 'A requested 12-hour option adds $10 if availability is confirmed. It is a request, not an automatic guarantee. Free editor downloads do not require a review order.'
   },
   {
     id: 'faq-3',
     category: 'pricing',
     question: 'What if I am not satisfied with my resume?',
-    directAnswer: 'Every order includes one free revision round. If you are still not satisfied after it, contact us before you accept the final draft and we will discuss the next steps with you.',
-    extendedAnswer: 'Email ahmedur.rahch2021@gmail.com with your order details. Refund terms are confirmed with you in writing when you get in touch.'
+    directAnswer: 'Agree revision, cancellation and refund terms in writing before paying for human review.',
+    extendedAnswer: 'Starter and Boost include one revision round; Full includes two. The revision window and scope are confirmed by email. The website does not issue automatic refunds.'
   },
   {
     id: 'faq-4',
     category: 'ats',
     question: 'Will my new resume pass automated ATS scanners?',
-    directAnswer: 'No resume can be guaranteed to pass every automated scanner, because each employer configures its system differently. We build single-column, text-based layouts, which are generally easier for applicant tracking systems to read, and we match keywords to the job description you send us.',
-    extendedAnswer: 'Applicant Tracking Systems commonly struggle with text boxes, nested multi-column tables, images and non-standard heading tags. We deliver ATS-friendly layouts as both PDF and editable Microsoft Word (.docx) files, so you can check the text yourself.'
+    directAnswer: 'There is no universal ATS pass mark. This reader reports what it extracted and flags review prompts; it cannot see an employer’s configuration or predict an interview.',
+    extendedAnswer: 'The editor produces single-column body text. Download the actual file and upload it for another extraction check. Other parsers can read it differently, and successful extraction is not proof of suitability for a role.'
   },
   {
     id: 'faq-5',
     category: 'revisions',
-    question: 'What if I need adjustments or have feedback on the draft?',
-    directAnswer: 'Every package includes at least one free round of revisions within 7 days of delivery. Just reply to your delivery email with your requested tweaks.',
-    extendedAnswer: 'Need to add a certification you just passed? Want to adjust the tone to sound slightly more conservative? Simply reply to our email with your notes and we will send the revised file within 12 to 24 hours.'
+    question: 'Where is my resume stored?',
+    directAnswer: 'Checking and editing happen in your browser. The resume draft is saved in browser storage when available; it is not a cloud backup.',
+    extendedAnswer: 'Storage can be blocked or cleared, so keep a downloaded backup. Optional human review requires you to choose to email your information. Online sign-in and email subscriptions are not connected.'
   },
   {
     id: 'faq-6',
     category: 'quality',
     question: 'Can you help if I am switching careers or have employment gaps?',
-    directAnswer: 'Yes. Career transitions and gaps are where human review shines most. We reframe your transferable achievements and skills rather than highlighting chronology.',
-    extendedAnswer: 'In our order questionnaire, you can specify your transition goals or gap reasons. We use hybrid functional-chronological techniques that emphasize transferable hard skills, quantifiable wins, and industry certifications.'
+    directAnswer: 'You can include projects, training and transferable work in the free editor, or discuss those needs in a human-review inquiry.',
+    extendedAnswer: 'Keep dates and job titles accurate. A change in wording must not turn a project into employment or invent qualifications. The same applies to sample achievements and suggested metrics.'
   },
   {
     id: 'faq-7',
@@ -283,27 +284,27 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: 'faq-8',
     category: 'delivery',
     question: 'What file formats will I receive?',
-    directAnswer: 'You receive both a crisp, print-ready ATS-compliant PDF and a fully editable Microsoft Word (.docx) file.',
-    extendedAnswer: 'This allows you to either submit the PDF immediately or make minor personal tweaks on your computer down the road for future applications.'
+    directAnswer: 'The resume editor offers editable DOCX, browser Print / Save as PDF, plain text and a JSON field backup. The cover letter builder offers DOCX, PDF printing and text.',
+    extendedAnswer: 'Follow the employer’s file instructions. Word may reflow differently from the browser preview. Review every exported page and check the extracted text before sending it.'
   }
 ];
 
 export const CHECKLIST_ITEMS = [
-  { id: 1, category: 'ATS Architecture', title: 'Single-Column Layout', description: 'No multi-column tables or text boxes that scramble ATS reading order.' },
+  { id: 1, category: 'ATS Architecture', title: 'Simple reading order', description: 'Review the extracted text from your exported document. A single-column layout reduces the layout choices you need to check.' },
   { id: 2, category: 'ATS Architecture', title: 'Standard Section Headings', description: 'Uses recognized headers: "Work Experience", "Education", "Skills".' },
-  { id: 3, category: 'ATS Architecture', title: 'System-Friendly Fonts', description: 'Clean sans-serif fonts (Inter, Arial, Calibri) without embedded raster glyphs.' },
-  { id: 4, category: 'Content & Impact', title: 'The 40% Numbers Rule', description: 'At least 40% of all bullet points contain quantifiable numbers or percentages.' },
-  { id: 5, category: 'Content & Impact', title: 'Zero "Responsible For"', description: 'Replaces passive duty statements with active leadership verbs.' },
-  { id: 6, category: 'Content & Impact', title: 'The Google XYZ Formula', description: 'Accomplished [X], as measured by [Y], by doing [Z].' },
-  { id: 7, category: 'Keyword Calibration', title: 'Target Job Description Alignment', description: 'Core technical and domain keywords from the target JD appear at least twice.' },
+  { id: 3, category: 'ATS Architecture', title: 'Readable document fonts', description: 'Check the document at 100% zoom. Avoid shrinking the type to force everything onto one page.' },
+  { id: 4, category: 'Content & Impact', title: 'Supported outcomes', description: 'Use accurate numbers when you have them. Qualitative results are valid; never invent a metric to satisfy a percentage rule.' },
+  { id: 5, category: 'Content & Impact', title: 'Specific contributions', description: 'Explain what you actually did. Replace a vague duty statement where a more specific, accurate example is available.' },
+  { id: 6, category: 'Content & Impact', title: 'Action, method and result', description: 'Try describing the action, how you did it and the outcome. This is a writing prompt, not a required formula.' },
+  { id: 7, category: 'Keyword Calibration', title: 'Relevant job terminology', description: 'Use the employer’s terminology where it accurately describes your experience. Repetition is not an objective.' },
   { id: 8, category: 'Keyword Calibration', title: 'Hard Skills Cluster', description: 'Categorized skills section (e.g. Tools, Frameworks, Languages) for rapid skimming.' },
   { id: 9, category: 'Header & Contact', title: 'Clickable Clean Links', description: 'Clean LinkedIn and GitHub links without long tracking query strings.' },
-  { id: 10, category: 'Header & Contact', title: 'Zero Unnecessary Personal Data', description: 'No photo, no physical street address, and no marital status.' },
+  { id: 10, category: 'Header & Contact', title: 'Relevant personal details', description: 'Follow the specific country, employer and application instructions for photos and personal fields. A government form and a corporate resume may ask for different details.' },
   { id: 11, category: 'Formatting', title: 'Consistent Date Formats', description: 'Uniform date structures (e.g., "Jan 2022 – Present") across all entries.' },
-  { id: 12, category: 'Formatting', title: 'Page Length Discipline', description: 'Usually 1 page for under 5 years of experience, and usually 2 pages for 5 or more years. Some senior, academic or technical roles need more. Any length should stay tight and relevant.' },
+  { id: 12, category: 'Formatting', title: 'Relevant length', description: 'Keep relevant experience and remove repetition. Two or three pages are supported; follow any page limit in the vacancy.' },
   { id: 13, category: 'Grammar & Tone', title: 'Tense Consistency', description: 'Past tense for previous jobs, present tense for current active employment.' },
-  { id: 14, category: 'Grammar & Tone', title: 'Zero First-Person Pronouns', description: 'No "I", "me", "my", or "our" anywhere in professional summaries or bullets.' },
-  { id: 15, category: 'Final Polish', title: 'PDF & DOCX Tested', description: 'File size under 500KB with clean searchable text selection.' }
+  { id: 14, category: 'Grammar & Tone', title: 'Clear, concise wording', description: 'Read each sentence aloud and remove unnecessary words. Check that the wording still accurately represents your role.' },
+  { id: 15, category: 'Final Polish', title: 'Review the exported file', description: 'Open the actual PDF or DOCX, inspect each page and recheck the extracted text. Follow the application portal’s file type and size limits.' }
 ];
 
 export const SAMPLE_WEAK_RESUMES = {
@@ -394,6 +395,7 @@ Requirements:
 - Solution-selling methodology (MEDDPICC).`
 };
 
+// Legacy fictional illustration, not a measured customer outcome or parser test.
 export const ATS_CASE_STUDY_DATA = {
   candidate: 'Elena Vance',
   background: 'Customer Support Lead with 4.5 years experience & 98.2% CSAT',

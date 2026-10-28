@@ -17,6 +17,7 @@ Live preview: **https://atsresumemaker.ai.studio** (Google AI Studio). Intended 
 | Editable sections, guided fixes, A4 preview | `src/pages/ResumeWorkspacePage.tsx` + `src/components/resume/` |
 | DOCX / PDF-print / TXT export | `src/utils/resumeExporter.ts` |
 | Optional AI architecture and provider research | `docs/AI_ASSISTANCE.md` |
+| Release gaps and mobile/reliability audit | `docs/QUALITY_REVIEW.md` |
 
 ## Commands
 
@@ -26,6 +27,7 @@ npm run dev        # local dev server on :3000
 npm run build      # production build — prerenders every public route
 npm run lint       # tsc --noEmit
 npm run test:resume # import, audit, persistence and export regression checks
+npm run test:browser # production-browser tests; run npm run build first
 npm run build:spa  # single-page shell only; do NOT deploy this output
 ```
 
@@ -85,5 +87,9 @@ In both cases: **do not add a catch-all rewrite to `/index.html`**. That rule wo
 - Guided rewriting assembles user-supplied facts, previews the wording and supports undo. No AI provider is connected.
 - A4 pages are measured in the browser. DOCX is a valid Word package with paragraph/list content. Word can reflow; preview parity is not guaranteed.
 - Download the revised file and re-upload it to verify its actual extraction. Editing fields does not recheck the original file’s layout.
+- The mobile menu uses a full-height native dialog with keyboard containment. The browser test suite covers phone, landscape, tablet and desktop widths.
+- Cover letters start blank, import actual resume contact fields, and export genuine DOCX plus PDF printing/text. Fictional examples require explicit selection.
+- Local profile is not authentication. Contact and review inquiry forms prepare emails; subscriptions, server submission and checkout are not connected.
+- The full roadmap is not complete. Read `docs/QUALITY_REVIEW.md` before describing the product as launch-ready.
 
 For manual browser verification, `npx tsx scripts/qa-resume-fixtures.ts` and `npx tsx scripts/qa-resume-print.ts` generate **synthetic** files in `dist/_qa` after a build. Remove that directory before deploying; a fresh production build also clears it.

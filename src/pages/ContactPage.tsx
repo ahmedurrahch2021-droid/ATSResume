@@ -1,208 +1,49 @@
 import React, { useState } from 'react';
-import { 
-  Mail, 
-  Clock, 
-  MessageSquare, 
-  CheckCircle2, 
-  ShieldCheck, 
-  ArrowRight,
-  Send
-} from 'lucide-react';
+import { ArrowRight, Copy, Mail } from 'lucide-react';
 
-interface ContactPageProps {
-  onSelectPlan: (packageId: 'starter' | 'boost' | 'full') => void;
-}
+const CONTACT_EMAIL = 'ahmedur.rahch2021@gmail.com';
 
-export const ContactPage: React.FC<ContactPageProps> = ({ onSelectPlan }) => {
+interface ContactPageProps { onSelectPlan: (packageId: 'starter' | 'boost' | 'full') => void }
+
+export function ContactPage({ onSelectPlan }: ContactPageProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState('Pricing');
+  const [subject, setSubject] = useState('Question about packages');
   const [message, setMessage] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email && message) {
-      setSubmitted(true);
-    }
-  };
+  const [draft, setDraft] = useState<{ subject: string; body: string } | null>(null);
+  const [copyMessage, setCopyMessage] = useState('');
 
   return (
-    <div className="min-h-screen bg-soft py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-10">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent bg-accent-soft px-3 py-1 rounded-md border border-accent-line">
-            <MessageSquare className="w-3.5 h-3.5" />
-            Direct Developer Support
-          </div>
-          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-            Got Questions? Let's Talk.
-          </h1>
-          <p className="text-base text-muted leading-relaxed">
-            Need advice choosing between Starter and Career Boost? Have an urgent deadline tonight? Send a message and we'll reply directly.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Info Side Panel */}
-          <div className="md:col-span-1 space-y-4">
-            <div className="bg-[#0F172A] text-white p-6 rounded-2xl shadow-md space-y-6">
-              <div>
-                <h3 className="font-heading font-bold text-base text-white">
-                  Direct Inquiries
-                </h3>
-                <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                  Every message goes straight to the engineering and resume review desk.
-                </p>
+    <div className="section bg-soft">
+      <div className="container-page max-w-5xl space-y-8">
+        <div className="max-w-2xl"><p className="eyebrow">Contact</p><h1 className="mt-3 text-3xl sm:text-4xl">Let’s talk about your application.</h1><p className="mt-4 text-muted">Ask about the tools, a review package or an existing inquiry. Messages are handled by email.</p></div>
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+          <aside className="card min-w-0 p-5 space-y-5">
+            <div><h2 className="text-lg">Direct email</h2><a href={`mailto:${CONTACT_EMAIL}`} className="mt-2 inline-block break-all text-sm text-accent underline underline-offset-4">{CONTACT_EMAIL}</a></div>
+            <p className="text-sm text-muted">For paid review, confirm availability, delivery timing, revision terms and payment arrangements before paying.</p>
+            <button type="button" className="btn btn-secondary w-full" onClick={() => onSelectPlan('starter')}>Prepare a review inquiry <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" /></button>
+          </aside>
+          <section className="card min-w-0 p-5 sm:p-6">
+            <h2 className="text-xl">Prepare your message</h2>
+            <p className="mt-2 mb-5 text-sm text-muted">This form prepares an email for you. It does not send a message through the website.</p>
+            <form className="space-y-4" onSubmit={(event) => { event.preventDefault(); setDraft({ subject, body: `Name: ${name}\nReply email: ${email}\n\n${message}` }); setCopyMessage(''); }}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2"><label htmlFor="contact-name" className="text-sm font-medium">Your name</label><input id="contact-name" autoComplete="name" required className="field" value={name} onChange={(event) => { setName(event.target.value); setDraft(null); }} /></div>
+                <div className="space-y-2"><label htmlFor="contact-email" className="text-sm font-medium">Reply email</label><input id="contact-email" type="email" autoComplete="email" required className="field" value={email} onChange={(event) => { setEmail(event.target.value); setDraft(null); }} /></div>
               </div>
-
-              <div className="space-y-4 text-xs">
-                <div className="flex items-start gap-3">
-                  <Mail className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
-                  <div>
-                    <span className="text-muted/60 block text-[11px]">Direct Email</span>
-                    <a href="mailto:ahmedur.rahch2021@gmail.com" className="font-medium text-white hover:text-blue-300 transition-colors">
-                      ahmedur.rahch2021@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Clock className="w-4 h-4 text-success mt-0.5 shrink-0" />
-                  <div>
-                    <span className="text-muted/60 block text-[11px]">Avg Response Time</span>
-                    <span className="font-medium text-white">Under 2 hours</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <ShieldCheck className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
-                  <div>
-                    <span className="text-muted/60 block text-[11px]">Satisfaction Guarantee</span>
-                    <span className="font-medium text-white">100% money-back policy</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-800 text-[11px] text-muted/60">
-                Operating 7 days a week: 9:00 AM – 9:00 PM EST.
-              </div>
-            </div>
-
-            <div className="bg-paper p-5 rounded-2xl border border-line shadow-xs space-y-2">
-              <span className="text-xs font-bold text-ink block">
-                Ready to submit an order right away?
-              </span>
-              <p className="text-xs text-muted leading-relaxed">
-                You do not need to email first. You can place your order directly through our secure questionnaire:
-              </p>
-              <button
-                onClick={() => onSelectPlan('starter')}
-                className="w-full mt-2 py-2 bg-soft0 hover:bg-accent text-slate-950 font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5"
-              >
-                <span>Order Resume Starter ($10)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Form Main Area */}
-          <div className="md:col-span-2 bg-paper p-6 sm:p-8 rounded-2xl border border-line shadow-sm">
-            {!submitted ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <h3 className="font-heading font-bold text-lg text-ink mb-2">
-                  Send A Message
-                </h3>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-ink/90">Your Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Jane Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full p-2.5 text-xs sm:text-sm border border-line rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-ink/90">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="jane@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-2.5 text-xs sm:text-sm border border-line rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-ink/90">Inquiry Subject</label>
-                  <select
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    className="w-full p-2.5 text-xs sm:text-sm border border-line rounded-lg bg-paper focus:ring-2 focus:ring-blue-500 outline-none"
-                  >
-                    <option value="Pricing">Question about packages ($15 / $25 / $35)</option>
-                    <option value="Delivery">Turnaround timing / 12-hour urgent rush inquiry</option>
-                    <option value="Custom">Custom package for leadership / multi-industry roles</option>
-                    <option value="ATS">ATS compatibility question for specific ATS software</option>
-                    <option value="Other">Other question</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-ink/90">Message / Questions</label>
-                  <textarea
-                    rows={5}
-                    required
-                    placeholder="Tell us what role you are targeting or what questions you have..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="w-full p-3 text-xs sm:text-sm border border-line rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-y"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-accent hover:bg-accent text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Send Message to Developer Desk</span>
-                </button>
-              </form>
-            ) : (
-              <div className="p-8 text-center space-y-4">
-                <div className="w-14 h-14 bg-success-soft text-accent rounded-full flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <h3 className="font-heading font-bold text-xl text-ink">
-                  Message Received!
-                </h3>
-                <p className="text-xs sm:text-sm text-muted max-w-md mx-auto leading-relaxed">
-                  Thanks <strong>{name || 'there'}</strong>. We have received your inquiry regarding <em>"{subject}"</em>. Our team will review and reply to <strong>{email}</strong> within 2 hours.
-                </p>
-                <div className="pt-4">
-                  <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setMessage('');
-                    }}
-                    className="text-xs font-semibold text-accent hover:underline"
-                  >
-                    Send another message
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+              <div className="space-y-2"><label htmlFor="contact-subject" className="text-sm font-medium">Subject</label><select id="contact-subject" className="field" value={subject} onChange={(event) => { setSubject(event.target.value); setDraft(null); }}>{['Question about packages', 'Delivery availability', 'Existing inquiry', 'Resume checker or editor issue', 'Other question'].map((option) => <option key={option}>{option}</option>)}</select></div>
+              <div className="space-y-2"><label htmlFor="contact-message" className="text-sm font-medium">Message</label><textarea id="contact-message" rows={6} required className="field" value={message} onChange={(event) => { setMessage(event.target.value); setDraft(null); }} /></div>
+              <button type="submit" className="btn btn-primary">Prepare email <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
+            </form>
+            {draft && <div className="mt-6 space-y-3 border-t border-line pt-5">
+              <p role="status" className="text-sm font-medium">Your email draft is ready. Send it from your email app to contact us.</p>
+              <label htmlFor="contact-draft" className="block text-sm">Message to send</label><textarea id="contact-draft" className="field" rows={6} readOnly value={draft.body} />
+              <div className="flex flex-wrap gap-2"><a className="btn btn-secondary" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}`}><Mail className="h-4 w-4" aria-hidden="true" />Open email app</a><button type="button" className="btn btn-ghost" onClick={async () => { try { await navigator.clipboard.writeText(`${draft.subject}\n\n${draft.body}`); setCopyMessage('Message copied. Paste it into an email.'); } catch { setCopyMessage('Select and copy the text above, then email it to the address shown.'); } }}><Copy className="h-4 w-4" aria-hidden="true" />Copy message</button></div>
+              <p role="status" className="text-xs text-muted">{copyMessage || 'If no email app opens, copy the message and use your usual email service. The website cannot confirm delivery.'}</p>
+            </div>}
+          </section>
         </div>
       </div>
     </div>
   );
-};
+}

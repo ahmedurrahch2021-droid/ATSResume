@@ -32,7 +32,7 @@
   /* status */
   --color-success: #34614d;
   --color-success-soft: #e9f0e9;
-  --color-warning: #8a6a2f;
+  --color-warning: #7b5c24;
   --color-warning-soft: #f6efdf;
   --color-danger: #8c3b32;
   --color-danger-soft: #f7e8e5;
@@ -73,6 +73,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  scroll-padding-top: 88px;
 }
 
 body {
@@ -89,7 +90,6 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: var(--font-heading);
   letter-spacing: -0.02em;
   font-weight: 600;
-  color: var(--ink);
 }
 
 /* Bangla copy */
@@ -108,6 +108,8 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   background: var(--accent-soft);
   color: var(--ink);
 }
+.skip-link { position: fixed; top: 8px; left: 16px; z-index: 120; padding: 12px 16px; background: var(--paper); color: var(--ink); border: 1px solid var(--accent-line); border-radius: 8px; transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
 
 /* Scrollbars in the warm palette, not default slate. */
 ::-webkit-scrollbar {
@@ -195,14 +197,15 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    height: 44px;
+    min-height: 44px;
     padding-inline: 16px;
     border-radius: var(--radius-btn);
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 600;
-    line-height: 1;
-    white-space: nowrap;
+    line-height: 1.4;
+    padding-block: 10px;
+    white-space: normal;
     transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
     cursor: pointer;
   }
@@ -289,8 +292,57 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 
 /* ------------------------------------------------------------------
-   Print: only the resume sheet reaches paper.
+   Navigation: use the dialog top layer, not a fixed child of a filter.
    ------------------------------------------------------------------ */
+.mobile-nav-dialog {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: min(100%, 380px);
+  max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: -4px 0 24px rgb(32 33 31 / 12%);
+}
+.mobile-nav-dialog::backdrop { background: rgb(32 33 31 / 45%); }
+.mobile-nav-layout { display: flex; flex-direction: column; height: 100%; }
+.mobile-nav-heading { padding-top: env(safe-area-inset-top, 0px); }
+.mobile-nav-content { display: flex; flex: 1; flex-direction: column; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.mobile-nav-content nav { flex: 1; }
+.mobile-nav-actions { position: sticky; bottom: 0; flex-shrink: 0; padding-bottom: max(20px, env(safe-area-inset-bottom, 0px)); }
+.mobile-nav-content { scroll-padding-block: 16px 152px; }
+@media (max-height: 480px) { .mobile-nav-actions { position: static; } }
+.site-modal {
+  margin: auto;
+  padding: 0;
+  width: calc(100% - 32px);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sheet);
+  background: var(--paper);
+  color: var(--ink);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.site-modal::backdrop { background: rgb(32 33 31 / 50%); }
+.site-modal[open] { display: flex; flex-direction: column; }
+.site-modal > :first-child { flex-shrink: 0; }
+.modal-content { min-height: 0; overflow-y: auto; }
+.document-preview-container { position: relative; width: 100%; min-width: 0; max-width: 100%; overflow: auto; }
+.document-page-shell { position: relative; margin-inline: auto; }
+@media (min-width: 1024px) { .cover-letter-workspace .document-preview-container { max-height: calc(100dvh - 220px); } }
+@media (max-width: 767px) {
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]), select, textarea) { font-size: 16px; min-height: 44px; }
+  :where(button, [role="button"]) { min-height: 44px; }
+  footer a { display: inline-flex; min-height: 44px; align-items: center; }
+}
 
 /* Workspace: a quiet section rail, focused form, and an actual A4 canvas. */
 .workspace-container {

@@ -35,7 +35,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </div>
             <div>
               <h4 className="text-ink font-semibold text-sm">Free tools you can act on</h4>
-              <p className="text-xs text-muted/80 mt-1 leading-relaxed">
+              <p className="text-xs text-muted mt-1 leading-relaxed">
                 Check your file, edit the same draft and download an editable DOCX or a PDF.
               </p>
             </div>
@@ -47,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </div>
             <div>
               <h4 className="text-ink font-semibold text-sm">Your draft stays in your browser</h4>
-              <p className="text-xs text-muted/80 mt-1 leading-relaxed">
+              <p className="text-xs text-muted mt-1 leading-relaxed">
                 Local checking and editing require no upload to a server. You choose whether to share a file for human review.
               </p>
             </div>
@@ -59,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             </div>
             <div>
               <h4 className="text-ink font-semibold text-sm">Specific findings, explained</h4>
-              <p className="text-xs text-muted/80 mt-1 leading-relaxed">
+              <p className="text-xs text-muted mt-1 leading-relaxed">
                 See what triggered a finding and where to edit it. This tool does not predict interviews or employer decisions.
               </p>
             </div>
@@ -80,7 +80,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 ATS <span className="text-accent">Resume Lab</span>
               </span>
             </div>
-            <p className="text-xs text-muted/80 leading-relaxed">
+            <p className="text-xs text-muted leading-relaxed">
               Read your resume’s extracted text, improve the draft and prepare a clearer job application.
             </p>
             <div className="p-2.5 rounded-xl bg-soft/70 border border-line text-xs text-ink/90 space-y-1">
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
                 Free checking, editing and downloads for Bangladeshi job seekers and applicants elsewhere.
               </p>
             </div>
-            <div className="text-xs text-muted/80 space-y-0.5">
+            <div className="text-xs text-muted space-y-0.5">
               <p className="font-medium text-ink/90">Founder Direct Support:</p>
               <p><a href="mailto:ahmedur.rahch2021@gmail.com" className="break-all hover:text-accent">ahmedur.rahch2021@gmail.com</a></p>
             </div>
@@ -133,7 +133,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               </li>
               <li>
                 <Link to={ROUTE_PATHS['examples']} onClick={handleNavClick} className="text-muted hover:text-ink transition-colors flex items-center gap-1.5 font-medium">
-                  <TrendingUp className="w-3.5 h-3.5 text-muted/80" />
+                  <TrendingUp className="w-3.5 h-3.5 text-muted" aria-hidden="true" />
                   <span>Resume Examples & Before/After</span>
                 </Link>
               </li>
@@ -158,7 +158,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               </li>
               <li>
                 <Link to={ROUTE_PATHS['about']} onClick={handleNavClick} className="hover:text-ink transition-colors">
-                  About Senior Developer Founder
+                  About ATS Resume Lab
                 </Link>
               </li>
               <li>
@@ -188,7 +188,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
             <h5 className="text-xs uppercase font-bold text-ink tracking-wider">
               1-on-1 Personalized Review
             </h5>
-            <p className="text-xs text-muted/80 leading-relaxed">
+            <p className="text-xs text-muted leading-relaxed">
               Want help with the edits? Review the package scope and contact us to confirm availability before paying.
             </p>
             <div className="p-3 rounded-xl bg-paper border border-line space-y-2">
@@ -209,18 +209,18 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenChecklist,
               onClick={() => onOpenOrder('boost')}
               className="w-full py-2.5 bg-accent hover:bg-accent/90 text-white font-semibold text-xs rounded-xl transition-all shadow-sm active:scale-[0.99]"
             >
-              Order 1-on-1 Human Overhaul
+              Prepare a review inquiry
             </button>
           </div>
         </div>
 
         {/* Bottom copyright line */}
-        <div className="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted/80">
+        <div className="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
           <p>© 2026 ATS Resume Lab. See what our reader sees.</p>
-          <div className="flex items-center gap-4">
-            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Privacy Policy</Link>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Storage & privacy FAQ</Link>
             <span>·</span>
-            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Terms of Service</Link>
+            <Link to={ROUTE_PATHS['faq']} onClick={handleNavClick} className="hover:text-ink">Review terms FAQ</Link>
             <span>·</span>
             <Link to={ROUTE_PATHS['contact']} onClick={handleNavClick} className="hover:text-ink">Order support</Link>
           </div>

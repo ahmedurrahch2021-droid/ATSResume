@@ -29,9 +29,9 @@ export interface EvidenceItem {
 export const EVIDENCE: EvidenceItem[] = [
   {
     id: 'EV-REJECT',
-    claim: 'ATS software does not auto-reject a resume because of its text, keywords or formatting.',
+    claim: 'Vendor documentation describes configurable automatic rejection through screening-question answers.',
     publicWording:
-      'Applicant tracking systems do not reject you for using a table or missing a keyword. Automatic rejection comes from screening questions a recruiter configured, such as work authorisation or a required licence.',
+      'Some ATS documentation describes automatic rejection through configured screening questions, such as work authorisation or a required licence. This checker does not inspect those settings or predict application outcomes.',
     grade: 'A',
     refs: ['S23', 'S39', 'MYTHS-C4'],
     usedIn: ['/how-it-works', '/resume-checker', '/faq', '/guides'],
@@ -47,18 +47,19 @@ export const EVIDENCE: EvidenceItem[] = [
   },
   {
     id: 'EV-PARSE-ERRORS',
-    claim: '43% of real-world resumes contain at least one parsing error.',
+    claim: 'A vendor-published parsing estimate reports 43% with at least one error.',
     publicWording:
-      'In industry parsing data, 43% of resumes contain at least one extraction error. The information is not deleted — it lands in the wrong field, where a recruiter search will never find it.',
-    grade: 'B',
+      'A vendor-published estimate reported at least one parsing error in 43% of resumes. Treat it as context for inspecting extraction, not a measured error rate for this tool or all hiring systems.',
+    grade: 'C',
     refs: ['S19', 'S31', 'PARSING-D2'],
     usedIn: ['/', '/resume-checker', '/how-it-works'],
+    caveat: 'Vendor estimate; not an independently validated accuracy test of ATS Resume Lab.',
   },
   {
     id: 'EV-COLUMNS',
     claim: 'Two-column layouts measurably reduce field extraction accuracy.',
     publicWording:
-      'In published batch tests, two-column PDFs extracted 67% of fields correctly against 89% for single-column DOCX. Treat the exact figures as directional; the direction is consistent across parsers.',
+      'Commercial batch tests compare field extraction from two-column PDF and single-column DOCX. Because both layout and file format change, the comparison is directional and does not isolate a column effect.',
     grade: 'C',
     refs: ['AUDIT-EV-05', 'PARSING-D1', 'PARSING-D3'],
     usedIn: ['/resume-templates', '/resume-checker', '/guides/two-column-resume'],
@@ -77,7 +78,7 @@ export const EVIDENCE: EvidenceItem[] = [
     id: 'EV-OUTSIDE-DOC',
     claim: 'Contact details stored in a document header or footer are frequently skipped.',
     publicWording:
-      'Headers and footers live outside the main text flow. Parsers often skip them, which is how candidates end up as nameless profiles in a database.',
+      'Some parsers have limitations with document headers and footers. Review the extracted text and copy essential contact details into the body. A header part alone does not prove information was lost.',
     grade: 'A',
     refs: ['PARSING-D1', 'S5'],
     usedIn: ['/resume-checker', '/resume-templates'],
@@ -86,7 +87,7 @@ export const EVIDENCE: EvidenceItem[] = [
     id: 'EV-TITLES',
     claim: '40.8% of job titles in a 1.8M-profile audit did not match a standard occupational title.',
     publicWording:
-      'Job titles vary wildly — "Software Engineer" alone appears in more than 2,000 spellings. Matching by exact title loses candidates, which is why we normalise titles before comparing.',
+      'Job-title variation can make exact-word matching incomplete. This tool’s keyword coverage is vocabulary overlap, not a validated occupational-title classifier.',
     grade: 'B',
     refs: ['PARSING-D2'],
     usedIn: ['/job-match', '/how-it-works'],
@@ -123,7 +124,7 @@ export const EVIDENCE: EvidenceItem[] = [
     id: 'EV-PHOTO-UK',
     claim: 'UK practice is blind CV screening under the Equality Act 2010.',
     publicWording:
-      'UK recruiters increasingly screen blind: no photo, no date of birth, no name-first shortlisting. Our UK preset follows that.',
+      'The US / UK preset omits the photo and nationality. It does not remove your name or claim to implement every employer’s blind-screening process.',
     grade: 'A',
     refs: ['AUDIT-EV-08', 'AUDIT-Country-UK'],
     usedIn: ['/suite', '/guides/photo-on-resume'],
@@ -132,7 +133,7 @@ export const EVIDENCE: EvidenceItem[] = [
     id: 'EV-BD',
     claim: 'Bangladeshi state recruitment portals require a photo and biographical fields.',
     publicWording:
-      'Bangladesh is the opposite of the US and UK. Teletalk AllJobs specifies a 300×300 JPEG photo and biographical fields including parental names, date of birth and national ID. Our Bangladesh preset includes them, because omitting them would fail the application.',
+      'Some Teletalk government applications request a photo and biographical fields. Follow the actual notice and form; those fields are not universal requirements for a Bangladeshi corporate resume.',
     grade: 'A',
     refs: ['AUDIT-EV-09', 'NORMS-3'],
     usedIn: ['/', '/suite', '/guides/bangladesh-cv'],
@@ -141,7 +142,7 @@ export const EVIDENCE: EvidenceItem[] = [
     id: 'EV-GULF',
     claim: 'Gulf employers need nationality and visa status for sponsorship.',
     publicWording:
-      'In the UAE and Saudi Arabia, nationality and visa status are hiring logistics, not curiosity: the employer sponsors your permit. Our Gulf presets include them.',
+      'Visa and work-authorisation details may matter for Gulf applications. The editor allows optional visa and nationality fields; there is no separate automated Gulf preset connected yet.',
     grade: 'B',
     refs: ['AUDIT-EV-10', 'AUDIT-Country-UAE'],
     usedIn: ['/suite', '/guides/gulf-cv'],
@@ -168,7 +169,7 @@ export const EVIDENCE: EvidenceItem[] = [
     id: 'EV-ONET',
     claim: 'O*NET and ESCO publish open occupational and skills taxonomies.',
     publicWording:
-      'Title and skill matching uses O*NET and ESCO, both open under CC BY 4.0, rather than a guess about what your job title means.',
+      'O*NET and ESCO provide public occupational and skills taxonomies. They are not connected to the current keyword-coverage tool.',
     grade: 'A',
     refs: ['PARSING-E1', 'PARSING-E2'],
     usedIn: ['/how-it-works', '/job-match'],
@@ -180,7 +181,7 @@ export const MYTHS: { claim: string; verdict: 'false' | 'misleading'; correction
     claim: '75% of resumes are rejected by an ATS before a human sees them.',
     verdict: 'false',
     correction:
-      'Traced to a 2011 press release by a vendor that closed in 2013. No methodology was ever published. Rejections come from screening questions, not from resume text.',
+      'The widely repeated figure is traced to a vendor press release without a published validation method. It does not establish a universal ATS rejection rate or this product’s accuracy.',
     refs: ['AUDIT-EV-01'],
   },
   {
@@ -199,9 +200,9 @@ export const MYTHS: { claim: string; verdict: 'false' | 'misleading'; correction
   },
   {
     claim: 'A two-column designer template is modern and ATS-friendly.',
-    verdict: 'false',
+    verdict: 'misleading',
     correction:
-      'Two-column PDFs merge text across columns in coordinate-based parsers. Single-column remains the safe default.',
+      'Some coordinate-based readers can mix text across columns. A single-column document is a simpler starting point, but the exported text still needs checking and parsers can differ.',
     refs: ['PARSING-D1', 'AUDIT-Myth-4'],
   },
 ];

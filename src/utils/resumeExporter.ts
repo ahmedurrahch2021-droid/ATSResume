@@ -28,11 +28,16 @@ export function downloadResumeText(resume: ResumeData): void {
 
 /** Real OPC/DOCX package; no HTML file disguised as Word. All content is body-flow. */
 export async function buildResumeDocx(resume: ResumeData, settings: ResumeDocumentSettings = DEFAULT_DOCUMENT_SETTINGS, measuredPages?: ResumeDocumentBlock[][]): Promise<Uint8Array<ArrayBuffer>> {
+  return buildDocumentDocx(getResumeDocumentBlocks(resume), settings, measuredPages);
+}
+
+/** Shared paragraph/list package writer for resumes and cover letters. */
+export async function buildDocumentDocx(blocks: ResumeDocumentBlock[], settings: Omit<ResumeDocumentSettings, 'font'> & { font: string; fontSize?: number } = DEFAULT_DOCUMENT_SETTINGS, measuredPages?: ResumeDocumentBlock[][]): Promise<Uint8Array<ArrayBuffer>> {
   const JSZip = (await import('jszip')).default;
   const zip = new JSZip();
   const accent = /^#[0-9a-f]{6}$/i.test(settings.accent) ? settings.accent.slice(1) : '8e533c';
-  const font = ['Arial', 'Calibri', 'Georgia'].includes(settings.font) ? settings.font : 'Arial';
-  const blocks = getResumeDocumentBlocks(resume);
+  const font = ['Arial', 'Calibri', 'Georgia', 'Courier New'].includes(settings.font) ? settings.font : 'Arial';
+  const halfPoints = Math.round((settings.fontSize && settings.fontSize >= 8 && settings.fontSize <= 20 ? settings.fontSize : 11) * 2);
   const pages = measuredPages?.length && measuredPages.flat().map((block) => block.id).join('|') === blocks.map((block) => block.id).join('|') ? measuredPages : [blocks];
   let photoExtension = '';
   const photo = blocks.find((block) => block.type === 'photo')?.text.match(/^data:image\/(jpeg|png);base64,([A-Za-z0-9+/=]+)$/);
@@ -54,7 +59,7 @@ export async function buildResumeDocx(resume: ResumeData, settings: ResumeDocume
   const xmlStart = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
   const body = pages.map((page, index) => `${index ? '<w:p><w:r><w:br w:type="page"/></w:r></w:p>' : ''}${page.map(paragraph).join('')}`).join('');
   zip.file('word/document.xml', `${xmlStart}<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="907" w:right="907" w:bottom="907" w:left="907" w:header="0" w:footer="0"/></w:sectPr></w:body></w:document>`);
-  zip.file('word/styles.xml', `${xmlStart}<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}" w:eastAsia="${font}" w:cs="${font}"/><w:sz w:val="22"/><w:szCs w:val="22"/><w:color w:val="20211f"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="${settings.spacing === 'compact' ? '288' : '336'}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="paragraph" w:styleId="ResumeName"><w:name w:val="Resume Name"/><w:basedOn w:val="Normal"/><w:rPr><w:b/><w:sz w:val="40"/><w:color w:val="${accent}"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="ResumeRole"><w:name w:val="Resume Role"/><w:basedOn w:val="Normal"/><w:rPr><w:b/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="ResumeContact"><w:name w:val="Contact"/><w:basedOn w:val="Normal"/><w:rPr><w:sz w:val="20"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="180" w:after="80"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:sz w:val="24"/><w:color w:val="${accent}"/></w:rPr></w:style></w:styles>`);
+  zip.file('word/styles.xml', `${xmlStart}<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}" w:eastAsia="${font}" w:cs="${font}"/><w:sz w:val="${halfPoints}"/><w:szCs w:val="${halfPoints}"/><w:color w:val="20211f"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="${settings.spacing === 'compact' ? '288' : '336'}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="paragraph" w:styleId="ResumeName"><w:name w:val="Resume Name"/><w:basedOn w:val="Normal"/><w:rPr><w:b/><w:sz w:val="40"/><w:color w:val="${accent}"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="ResumeRole"><w:name w:val="Resume Role"/><w:basedOn w:val="Normal"/><w:rPr><w:b/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="ResumeContact"><w:name w:val="Contact"/><w:basedOn w:val="Normal"/><w:rPr><w:sz w:val="20"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="180" w:after="80"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:sz w:val="24"/><w:color w:val="${accent}"/></w:rPr></w:style></w:styles>`);
   zip.file('word/numbering.xml', `${xmlStart}<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="0"><w:multiLevelType w:val="singleLevel"/><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="bullet"/><w:lvlText w:val="•"/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="240"/></w:tabs><w:ind w:left="240" w:hanging="180"/></w:pPr></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num></w:numbering>`);
   zip.file('_rels/.rels', `${xmlStart}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
   zip.file('word/_rels/document.xml.rels', `${xmlStart}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdNumbering" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>${photoExtension ? `<Relationship Id="rIdPhoto" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/photo.${photoExtension}"/>` : ''}</Relationships>`);
@@ -80,8 +85,12 @@ export function buildResumePrintHtml(resume: ResumeData, settings: ResumeDocumen
 
 /** The browser supplies the PDF text layer. No popup or external rendering service. */
 export function printResume(resume: ResumeData, settings: ResumeDocumentSettings, pages?: ResumeDocumentBlock[][]): void {
+  printDocumentHtml(buildResumePrintHtml(resume, settings, pages), 'Resume PDF print document');
+}
+
+export function printDocumentHtml(html: string, title: string): void {
   const frame = document.createElement('iframe');
-  frame.title = 'Resume PDF print document';
+  frame.title = title;
   frame.setAttribute('aria-hidden', 'true');
   frame.setAttribute('sandbox', 'allow-same-origin allow-modals');
   frame.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;height:1123px;border:0;';
@@ -92,7 +101,7 @@ export function printResume(resume: ResumeData, settings: ResumeDocumentSettings
     printWindow.focus();
     printWindow.print();
   };
-  frame.srcdoc = buildResumePrintHtml(resume, settings, pages);
+  frame.srcdoc = html;
   document.body.appendChild(frame);
   window.setTimeout(() => frame.remove(), 120_000);
 }

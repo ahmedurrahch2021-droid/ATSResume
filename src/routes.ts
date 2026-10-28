@@ -86,8 +86,8 @@ export const ROUTE_META: Partial<Record<PageRoute, RouteMeta>> = {
     description: 'Get in touch with the ATS Resume Lab team about your resume or your order.',
   },
   'cover-letter': {
-    title: 'Free ATS Cover Letter Builder | ATS Resume Lab',
-    description: 'Build recruiter-ready, ATS-matching cover letters with live preview, modular cards, and vector PDF export.',
+    title: 'Free Cover Letter Builder | ATS Resume Lab',
+    description: 'Write a cover letter using your own experience, import resume contact details and download DOCX, text or PDF.',
   },
   suite: {
     title: 'Resume Editor | ATS Resume Lab',

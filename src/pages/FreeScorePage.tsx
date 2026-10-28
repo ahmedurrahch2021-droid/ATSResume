@@ -299,7 +299,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
     },
     {
       q: 'Does an ATS reject a resume because of a table or a missing keyword?',
-      a: 'Not by itself. Applicant tracking systems store and search applications. Automatic rejection comes from screening questions a company configured, such as work authorisation or a required licence. Formatting hurts you by making a field unreadable, not by triggering a rejection.'
+      a: 'Some vendor documentation describes automatic rejection through configured screening answers. This tool cannot inspect an employer’s settings. Its findings concern the text it extracted, not whether an application will be rejected.'
     },
     {
       q: 'How does the keyword comparison work?',
@@ -374,7 +374,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     </button>
                   </div>
 
-                  <span className="text-xs text-muted/60 font-medium hidden sm:inline">
+                  <span className="text-xs text-muted font-medium hidden sm:inline">
                     Free · runs in your browser
                   </span>
                 </div>
@@ -406,7 +406,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                             <>Drop your resume here or <span className="text-accent underline">choose a file</span></>
                           )}
                         </p>
-                        <p className="text-xs text-muted/80 mt-1">
+                        <p className="text-xs text-muted mt-1">
                           PDF or DOCX. Up to 10 MB. Read in your browser — nothing is uploaded.
                         </p>
                       </div>
@@ -472,7 +472,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                         <FileText className="w-4 h-4 text-accent" />
                         Paste Resume Content
                       </label>
-                      <span className="text-xs text-muted/60">
+                      <span className="text-xs text-muted">
                         {resumeText.trim().split(/\s+/).filter(Boolean).length} words
                       </span>
                     </div>
@@ -514,7 +514,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 {/* Action Bar & Quick Samples */}
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-muted/80 font-medium">Or try sample:</span>
+                    <span className="text-[11px] text-muted font-medium">Or try sample:</span>
                     <button
                       type="button"
                       onClick={() => handleLoadSample('developer')}
@@ -558,8 +558,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </button>
                 </div>
 
-                <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-muted/80">
-                  <Lock className="w-3.5 h-3.5 text-muted/60" />
+                <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-muted">
+                  <Lock className="w-3.5 h-3.5 text-muted" aria-hidden="true" />
                   <span>This check runs locally. The file is not sent to a server or an AI provider.</span>
                 </div>
               </div>
@@ -576,7 +576,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     <div className="w-3 h-3 rounded-full bg-warning-soft" />
                     <div className="w-3 h-3 rounded-full bg-success-soft" />
                   </div>
-                  <span className="text-[11px] font-mono text-muted/60">sample finding</span>
+                  <span className="text-[11px] font-mono text-white/70">sample finding</span>
                 </div>
 
                 <div className="mt-6 space-y-4">
@@ -593,7 +593,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span className="text-slate-300">FMT-02 · header content</span>
-                      <span className="text-warning font-mono">check</span>
+                      <span className="text-accent-soft font-mono">check</span>
                     </div>
                     <p className="mt-2 text-[11px] text-slate-400 leading-relaxed">
                       1 header part found. Check it for essential details and copy those into the body.
@@ -603,19 +603,19 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   <div className="p-3.5 rounded-xl bg-ink/80 border border-slate-700/60">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span className="text-slate-300">What this check does not do</span>
-                      <span className="text-muted/60 text-[11px]">no rejection prediction</span>
+                      <span className="text-white/70 text-[11px]">no rejection prediction</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 text-xs text-muted/60 leading-relaxed">
+                  <div className="pt-2 text-xs text-white/70 leading-relaxed">
                     "This report describes what a parser and a reader can see in your file. It does
                     not predict whether any employer will reject you."
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-muted/60">
+                <div className="mt-6 pt-4 border-t border-line/30 flex items-center justify-between text-xs text-white/70">
                   <span>Checked in your browser · file never uploaded</span>
-                  <span className="text-muted/60">Findings only, no score</span>
+                  <span className="text-white/70">Findings only, no score</span>
                 </div>
               </div>
             </div>
@@ -759,7 +759,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-line">
                 <div>
                   <h3 className="font-heading text-lg font-bold text-ink">Findings</h3>
-                  <p className="text-xs text-muted/80 mt-0.5">
+                  <p className="text-xs text-muted mt-0.5">
                     Each rule shows the evidence in your file that triggered it.
                   </p>
                 </div>
@@ -817,7 +817,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                             )}
                             {finding.title}
                           </span>
-                          <span className="shrink-0 text-[10px] font-mono uppercase font-bold text-muted/70">
+                          <span className="shrink-0 text-[10px] font-mono uppercase font-bold text-muted">
                             {finding.id}
                           </span>
                         </div>
@@ -834,11 +834,11 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                         </p>
 
                         {finding.why && (
-                          <p className="text-[11px] text-muted/90 leading-relaxed">{finding.why}</p>
+                          <p className="text-[11px] text-muted leading-relaxed">{finding.why}</p>
                         )}
 
                         {note && (
-                          <p className="text-[10px] text-muted/70 leading-relaxed border-t border-line/60 pt-2">
+                          <p className="text-[10px] text-muted leading-relaxed border-t border-line/60 pt-2">
                             {grade ? `Grade ${grade}. ` : ''}
                             {note}
                           </p>
@@ -890,7 +890,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     ))}
                   </ul>
 
-                  <p className="mt-4 text-[11px] text-muted/80 leading-relaxed border-t border-line pt-3">
+                  <p className="mt-4 text-[11px] text-muted leading-relaxed border-t border-line pt-3">
                     {audit.keywords.method}
                   </p>
                 </>
@@ -910,7 +910,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   <span className="text-xs font-bold text-accent-soft uppercase tracking-wider">
                     What we measure
                   </span>
-                  <span className="text-xs font-mono text-white/40">v1.0</span>
+                  <span className="text-xs font-mono text-white/70">Local checks</span>
                 </div>
 
                 <div className="space-y-3">
@@ -959,28 +959,28 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   recognise headings or text that our reader misses.
                 </p>
                 <p>
-                  Applicant tracking systems store and search applications. Automatic rejection comes
-                  from screening questions a recruiter configured, such as work authorisation or a
-                  required licence — not from using a table or missing a keyword.
+                  Some ATS documentation describes automatic rejection through screening answers
+                  an employer configured. This tool cannot see those settings or establish how
+                  your application will be handled.
                 </p>
               </div>
 
               <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-soft border border-line">
                   <span className="text-xs font-bold text-ink block mb-1">What you get</span>
-                  <p className="text-xs text-muted/80 leading-relaxed">
+                  <p className="text-xs text-muted leading-relaxed">
                     A list of findings with the line that triggered each one, and a specific edit.
                   </p>
                 </div>
                 <div className="p-4 rounded-xl bg-soft border border-line">
                   <span className="text-xs font-bold text-ink block mb-1">What you will not get</span>
-                  <p className="text-xs text-muted/80 leading-relaxed">
+                  <p className="text-xs text-muted leading-relaxed">
                     A percentile, a pass/fail verdict, or a prediction about your application.
                   </p>
                 </div>
               </div>
 
-              <p className="text-[11px] text-muted/80 leading-relaxed border-t border-line pt-4">
+              <p className="text-[11px] text-muted leading-relaxed border-t border-line pt-4">
                 Sources: Greenhouse's documented 2.5 MB parsing limit; published findings that headers
                 and footers are frequently skipped; a randomised field experiment on writing clarity
                 (about 8% higher hiring rate). Graded in our{' '}
@@ -1036,13 +1036,13 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
 
             <div className="p-6 rounded-2xl bg-accent text-white shadow-lg space-y-4 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-white/70">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-white">
                   Ready to check yours?
                 </span>
                 <h3 className="font-heading font-bold text-xl mt-1">
                   Upload the file you actually send
                 </h3>
-                <p className="text-xs text-white/80 mt-2 leading-relaxed">
+                <p className="text-xs text-white mt-2 leading-relaxed">
                   Free, no account, read in your browser. You will see the extracted text before any
                   finding is shown, so you can confirm we read the right document.
                 </p>
@@ -1083,8 +1083,8 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 { id: 'builder', label: 'Resume Builder' },
                 { id: 'cover-letter', label: 'Cover Letter' },
                 { id: 'import', label: 'Import Old CV' },
-                { id: 'tracker', label: 'Job Tracker' },
-                { id: 'interview', label: 'Interview Prep' },
+                { id: 'tracker', label: 'Job Tracker · planned' },
+                { id: 'interview', label: 'Interview Prep · planned' },
                 { id: 'matching', label: 'AI Job Matcher' }
               ].map((tab) => (
                 <button
@@ -1144,12 +1144,12 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 </div>
 
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-3 font-mono text-xs">
-                  <div className="flex items-center justify-between text-muted/60 pb-2 border-b">
-                    <span>Text a parser would read</span>
+                  <div className="flex items-center justify-between text-muted pb-2 border-b">
+                    <span>Text generated from your fields</span>
                     <span className="text-accent font-bold">editable</span>
                   </div>
                   <p className="text-ink font-bold text-sm">SARAH CHEN · STAFF SYSTEMS ARCHITECT</p>
-                  <p className="text-muted/80 text-[11px]">San Francisco, CA · sarah.chen@dev.io · linkedin.com/in/sarahchen</p>
+                  <p className="text-muted text-[11px]">San Francisco, CA · sarah.chen@dev.io · linkedin.com/in/sarahchen</p>
                   <div className="pt-2 text-ink/90 text-[11px] leading-relaxed">
                     • Architected distributed Kafka streaming pipeline handling 4.5M msgs/sec, reducing p99 latency by 34%.
                   </div>
@@ -1211,12 +1211,12 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     Keep your resume history, upgrade everything around it
                   </h3>
                   <p className="text-sm text-muted leading-relaxed">
-                    The file you just checked can immediately become your working draft. Upload an old Word file or paste your LinkedIn URL, and ATS Resume Lab parses your career history into modern format.
+                    The file you just checked can become your working draft. Use a DOCX, a text-based PDF or pasted resume text. LinkedIn URL importing and legacy .doc reading are not connected.
                   </p>
                 </div>
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-3 text-xs">
                   <div className="p-3 bg-soft border border-line rounded-lg text-ink">
-                    <strong>LinkedIn / PDF Parser:</strong> Extracts job titles, companies, dates, and bullets automatically with zero copy-paste fatigue.
+                    <strong>Local field mapper:</strong> Review names, employers, dates and bullets after import. Missing or misassigned fields are not guessed.
                   </div>
                 </div>
               </div>
@@ -1232,7 +1232,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     Keep every application and interview round organized
                   </h3>
                   <p className="text-sm text-muted leading-relaxed">
-                    Once you’re sending tailored resumes to multiple roles, our built-in tracker holds each version, application status, interview date, and recruiter note in one clean dashboard.
+                    An application tracker is planned, not connected. For now, keep downloaded versions and your own record of application dates, statuses and follow-ups. The rows shown here are illustrative, not saved applications.
                   </p>
                 </div>
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
@@ -1255,10 +1255,10 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     Interview Readiness
                   </span>
                   <h3 className="font-heading text-2xl font-bold text-ink">
-                    Prepare for the interviews your resume earns
+                    A planned interview-preparation workspace
                   </h3>
                   <p className="text-sm text-muted leading-relaxed">
-                    When your checked resume gets you the call, prep with likely behavioral questions, STAR stories, and personal pitch outlines generated directly from your actual experience bullets.
+                    Automatic interview-preparation generation is not connected. You can prepare your own situation, task, action and result stories. The outline below is fictional; do not reuse its claims as your experience.
                   </p>
                 </div>
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
@@ -1281,7 +1281,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     Apply where your resume already matches
                   </h3>
                   <p className="text-sm text-muted leading-relaxed">
-                    Compare your resume against live job requirements to instantly identify missing hard skills, soft skills, and keyword gaps before hitting apply.
+                    Paste the actual job posting and compare frequent terms with your draft. This is vocabulary overlap, not an assessment of every required skill or your suitability. The numbers shown here are a fictional illustration.
                   </p>
                 </div>
                 <div className="p-6 rounded-xl bg-paper border border-line shadow-sm space-y-2 text-xs">
@@ -1291,7 +1291,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                   </div>
                   <p className="text-[11px] text-muted">Present: React, TypeScript, GraphQL, Docker, Microservices</p>
                   <p className="text-[11px] text-danger font-semibold">Absent: Kubernetes, Terraform</p>
-                  <p className="text-[10px] text-muted/70 pt-1 border-t border-line">
+                  <p className="text-[10px] text-muted pt-1 border-t border-line">
                     A word match, not a fit score.
                   </p>
                 </div>
@@ -1323,19 +1323,19 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 tag: 'MYTH · GRADE A',
                 title: '“75% of resumes are rejected by an ATS”',
                 readTime: 'traced to source',
-                desc: 'The most repeated number in this industry came from a 2011 vendor press release with no sample and no method. Rejection comes from screening questions, not resume text.'
+                desc: 'This widely repeated figure is traced to a vendor press release without a published validation method. It does not establish a universal rejection rate.'
               },
               {
-                tag: 'PARSING · GRADE B',
-                title: '43% of resumes carry at least one extraction error',
+                tag: 'PARSING · GRADE C',
+                title: '43% in a vendor-published estimate',
                 readTime: 'industry data',
-                desc: 'In published parsing data, 43% of resumes contain an extraction error. The information is not deleted — it lands in the wrong field, where a recruiter search will not find it.'
+                desc: 'Treat this estimate as a reason to inspect the extracted fields, not a measured error rate for this product or every employer’s parser.'
               },
               {
                 tag: 'FORMAT · GRADE C',
                 title: 'Two-column layouts reduce field extraction',
                 readTime: 'directional',
-                desc: 'In batch tests, two-column PDFs extracted 67% of fields correctly against 89% for single-column DOCX. Treat the figures as directional; the direction is consistent.'
+                desc: 'Commercial comparisons change both the layout and file format. They are directional, not tests that isolate the effect of columns or establish this tool’s accuracy.'
               },
               {
                 tag: 'LIMITS · GRADE A',
@@ -1347,7 +1347,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 tag: 'HEADERS · GRADE A',
                 title: 'Contact details in a header are frequently skipped',
                 readTime: 'vendor documentation',
-                desc: 'Headers and footers sit outside the main text flow. That is how candidates become nameless profiles in a database.'
+                desc: 'Review the text found in headers and footers. Copy essential details into body fields, but do not assume that the presence of a header proves data was lost.'
               },
               {
                 tag: 'WRITING · GRADE A',
@@ -1363,12 +1363,12 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between text-[11px] font-semibold">
                     <span className="text-accent tracking-wider">{article.tag}</span>
-                    <span className="text-muted/60">{article.readTime}</span>
+                    <span className="text-muted">{article.readTime}</span>
                   </div>
                   <h4 className="font-heading font-bold text-ink text-base leading-snug">
                     {article.title}
                   </h4>
-                  <p className="text-xs text-muted/80 leading-relaxed">
+                  <p className="text-xs text-muted leading-relaxed">
                     {article.desc}
                   </p>
                 </div>
@@ -1451,7 +1451,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
                     className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-semibold text-ink hover:text-accent transition-colors"
                   >
                     <span className="text-sm sm:text-base">{faq.q}</span>
-                    <span className="p-1 rounded-md bg-soft text-muted/80 shrink-0">
+                    <span className="p-1 rounded-md bg-soft text-muted shrink-0">
                       {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </span>
                   </button>
@@ -1499,7 +1499,7 @@ export const FreeScorePage: React.FC<FreeScorePageProps> = ({ onSelectPlan, onNa
             )}
           </div>
 
-          <p className="text-xs text-muted/60 pt-2">
+          <p className="text-xs text-white/70 pt-2">
             No signup required for checking and editing · Free for Bangladeshi candidates and applicants elsewhere
           </p>
         </div>

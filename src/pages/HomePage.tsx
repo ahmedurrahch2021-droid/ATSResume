@@ -101,7 +101,7 @@ const ResumePaperMock: React.FC = () => (
         </li>
         <li className="flex items-center gap-1.5 text-[10.5px] text-ink">
           <AlertCircle className="h-3 w-3 shrink-0 text-warning" aria-hidden="true" />
-          Photo not allowed for UK
+          US / UK preset omits photo
         </li>
       </ul>
     </div>
@@ -113,16 +113,16 @@ const ResumePaperMock: React.FC = () => (
 const TRUTHS = [
   {
     stat: '43%',
-    label: 'of resumes contain at least one parsing error',
+    label: 'reported in a vendor parsing estimate',
     detail:
-      'The information is not deleted. It lands in the wrong field, where a recruiter search will never find it.',
+      'A directional reason to inspect extracted text, not a measured error rate for this product or every ATS.',
     ref: 'EV-PARSE-ERRORS',
   },
   {
-    stat: '0',
-    label: 'resumes auto-rejected for using a table',
+    stat: 'Settings',
+    label: 'matter for employer screening',
     detail:
-      'Automatic rejection runs on screening questions, not on your formatting. The 75% figure came from a vendor that closed in 2013.',
+      'Some vendors document configurable rejection through screening answers. This tool cannot see an employer’s settings.',
     ref: 'EV-REJECT',
   },
   {
@@ -138,25 +138,25 @@ const KIT_STEPS = [
   {
     n: '01',
     title: 'Build once',
-    body: 'Your master profile, in a real A4 document with your country’s format applied.',
+    body: 'Your own fields in an A4 document, with explicit layout and region controls.',
     route: 'suite' as PageRoute,
   },
   {
     n: '02',
     title: 'Paste the job',
-    body: 'We read the description and show what it asks for, in plain language.',
+    body: 'Compare frequent terms from the actual posting with your draft.',
     route: 'free-resume-score' as PageRoute,
   },
   {
     n: '03',
-    title: 'Fix what fails',
-    body: 'Parse, format and content findings — each with a reason and a one-click fix.',
+    title: 'Review and edit',
+    body: 'Parse, format and content prompts link to sections you can correct.',
     route: 'free-resume-score' as PageRoute,
   },
   {
     n: '04',
     title: 'Export and apply',
-    body: 'DOCX for portals, PDF for humans, a matching cover letter, and a record to track.',
+    body: 'Follow the employer’s file instructions, export the draft and write a cover letter.',
     route: 'cover-letter' as PageRoute,
   },
 ];
@@ -165,35 +165,35 @@ const PILLARS = [
   {
     icon: FileText,
     title: 'Build',
-    body: 'Live editor, nine templates, real multi-page A4, DOCX and PDF.',
+    body: 'Live editor, four profession starters, multi-page A4, DOCX and PDF printing.',
     route: 'suite' as PageRoute,
     meta: 'Free',
   },
   {
     icon: ScanSearch,
     title: 'Check',
-    body: 'What a parser extracts, what breaks formatting, what a recruiter skims.',
+    body: 'The text and fields our reader extracts, with explained review prompts.',
     route: 'free-resume-score' as PageRoute,
     meta: 'Free · no signup',
   },
   {
     icon: Target,
     title: 'Tailor',
-    body: 'Job-description matching with title normalisation, not keyword stuffing.',
+    body: 'Job-posting vocabulary coverage with the comparison method disclosed.',
     route: 'free-resume-score' as PageRoute,
     meta: 'Free',
   },
   {
     icon: Mail,
     title: 'Apply',
-    body: 'A cover letter built from the same data, plus an application tracker.',
+    body: 'A letter editor that can copy contact details from your resume draft.',
     route: 'cover-letter' as PageRoute,
     meta: 'Free core',
   },
   {
     icon: BookOpen,
     title: 'Learn',
-    body: 'Role examples, country rules, and the myths this industry keeps repeating.',
+    body: 'Fictional role examples, application considerations and method explanations.',
     route: 'examples' as PageRoute,
     meta: 'Free',
   },
@@ -207,18 +207,18 @@ const PILLARS = [
 ];
 
 const COUNTRIES = [
-  { code: 'BD', name: 'Bangladesh', note: 'Photo, NID, 2–3 pages' },
-  { code: 'AE', name: 'UAE', note: 'Photo, visa status' },
-  { code: 'SA', name: 'Saudi Arabia', note: 'Photo, nationality' },
-  { code: 'QA', name: 'Qatar', note: 'Photo, QID' },
-  { code: 'GB', name: 'United Kingdom', note: 'No photo, 2 pages' },
-  { code: 'US', name: 'United States', note: 'No photo, 1–2 pages' },
-  { code: 'CA', name: 'Canada', note: 'No photo, 1–2 pages' },
-  { code: 'AU', name: 'Australia', note: 'Work rights, 2–3 pages' },
-  { code: 'DE', name: 'Germany', note: 'Photo, tabular CV' },
-  { code: 'FR', name: 'France', note: '1 page' },
-  { code: 'NL', name: 'Netherlands', note: 'No photo, 1–2 pages' },
-  { code: 'IN', name: 'India', note: 'DOB, address common' },
+  { code: 'BD', name: 'Bangladesh', note: 'Government form ≠ corporate resume' },
+  { code: 'AE', name: 'UAE', note: 'Review work-authorisation instructions' },
+  { code: 'SA', name: 'Saudi Arabia', note: 'Review work-authorisation instructions' },
+  { code: 'QA', name: 'Qatar', note: 'Follow the application form' },
+  { code: 'GB', name: 'United Kingdom', note: 'US / UK preset omits photo' },
+  { code: 'US', name: 'United States', note: 'US / UK preset omits photo' },
+  { code: 'CA', name: 'Canada', note: 'Review employer-specific instructions' },
+  { code: 'AU', name: 'Australia', note: 'Include work rights only if relevant' },
+  { code: 'DE', name: 'Germany', note: 'Choose relevant personal details' },
+  { code: 'FR', name: 'France', note: 'Follow any stated page limit' },
+  { code: 'NL', name: 'Netherlands', note: 'Follow the vacancy’s instructions' },
+  { code: 'IN', name: 'India', note: 'Government and private roles differ' },
 ];
 
 const FAQ_PREVIEW = [
@@ -239,12 +239,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
           <div>
             <p className="eyebrow">Resume · Cover letter · ATS check</p>
             <h1 className="mt-4 text-[38px] font-semibold leading-[1.12] tracking-[-0.025em] text-ink sm:text-[46px] lg:text-[56px]">
-              Your resume, read the way recruiters and software actually read it.
+              See what our reader extracts. Make your resume clearer.
             </h1>
             <p className="lede mt-5">
-              Most tools guess. This one shows you what a parser extracts from your file, what
-              breaks when it does, and what the job description is actually asking for — before you
-              hit apply.
+              Inspect the text and fields we can read from your file, review specific findings,
+              then edit the same draft before you apply. Other parsers can read a file differently.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -276,7 +275,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
               </li>
               <li className="inline-flex items-center gap-1.5">
                 <Globe className="h-3.5 w-3.5 text-success" aria-hidden="true" />
-                12 country formats
+                Multi-page A4 documents
               </li>
             </ul>
           </div>
@@ -338,7 +337,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
           <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {KIT_STEPS.map((step) => (
               <li key={step.n} className="relative">
-                <span className="font-heading text-[13px] font-semibold tracking-[0.1em] text-accent-line">
+                <span className="font-heading text-[13px] font-semibold tracking-[0.1em] text-accent">
                   {step.n}
                 </span>
                 <h3 className="mt-2 text-[17px] font-semibold text-ink">{step.title}</h3>
@@ -398,8 +397,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                 Single column, by design.
               </h2>
               <p className="mt-3 text-[14.5px] leading-relaxed text-muted">
-                Every template is tagged by how it behaves in a parser, so you choose with your eyes
-                open instead of guessing.
+                Profession-specific fictional starters use the same document model as the editor.
+                Review the sample and replace it with your own facts.
               </p>
             </div>
             <button
@@ -407,12 +406,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
               onClick={() => onNavigate('templates')}
               className="btn btn-secondary"
             >
-              All nine templates
+              All {ATS_TEMPLATES.length} starters
             </button>
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {previewTemplates.map((tpl, index) => (
+            {previewTemplates.map((tpl) => (
               <button
                 key={tpl.id}
                 type="button"
@@ -438,9 +437,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                 <div className="p-5">
                   <div className="flex items-center gap-2">
                     <span className="chip chip-active">
-                      {index < 2 ? 'ATS-safe' : 'Designed'}
+                      Fictional starter
                     </span>
-                    <span className="text-[11.5px] text-muted">1–2 pages</span>
+                    <span className="text-[11.5px] text-muted">Editable length</span>
                   </div>
                   <h3 className="mt-3 text-[15px] font-semibold text-ink">{tpl.title}</h3>
                   <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-muted">
@@ -457,21 +456,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
       <section className="section border-y border-line bg-soft">
         <div className="container-page grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <p className="eyebrow">Country formats</p>
+            <p className="eyebrow">International application considerations</p>
             <h2 className="mt-3 text-[32px] font-semibold leading-tight tracking-[-0.02em] text-ink sm:text-[40px]">
               A resume is not the same document everywhere.
             </h2>
             <p className="mt-4 text-[14.5px] leading-relaxed text-muted">
-              In Bangladesh, a state application expects a 300×300 photo, your parents’ names and
-              your NID. In the UK, the same fields are a liability. We switch the whole document —
-              and tell you why.
+              Follow the actual employer or application form rather than a blanket country rule.
+              The editor currently offers Bangladesh guidance, a US / UK photo-omission preset,
+              and an international option with personal fields you choose. Twelve automatic
+              country formats are not implemented yet.
             </p>
             <button
               type="button"
               onClick={() => onNavigate('suite')}
               className="btn btn-primary mt-6"
             >
-              Try a country format
+              Review layout and region
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
@@ -528,7 +528,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
             </div>
 
             <div className="space-y-2">
-              {[EVIDENCE[0], EVIDENCE[2], EVIDENCE[7], EVIDENCE[8]].map((item, i) => (
+              {[EVIDENCE[0], EVIDENCE[2], EVIDENCE[7], EVIDENCE[8]].map((item) => (
                 <div
                   key={item.id}
                   className="flex items-start gap-3 rounded-[8px] border border-line bg-surface p-4"
@@ -540,7 +540,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                     <p className="text-[13px] leading-relaxed text-ink">{item.publicWording}</p>
                     <p className="mt-1 text-[11px] uppercase tracking-[0.08em] text-muted">
                       Grade {item.grade} · {item.refs.slice(0, 2).join(', ')}
-                      {i === 0 ? ' · verified' : ''}
                     </p>
                   </div>
                 </div>
@@ -568,7 +567,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
           <div className="mt-10 grid gap-4 lg:grid-cols-4">
             <div className="card flex flex-col justify-between p-6">
               <div>
-                <span className="chip chip-active">Always free</span>
+                <span className="chip chip-active">Free core</span>
                 <p className="mt-4 font-heading text-[28px] font-semibold text-ink">$0</p>
                 <p className="mt-1 text-[12.5px] text-muted">No card, no trial, no signup wall</p>
                 <ul className="mt-4 space-y-2 text-[13px] text-ink">
@@ -600,14 +599,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
                 <div>
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[13px] font-medium text-muted">{pkg.name}</span>
-                    {pkg.popular && <span className="chip chip-active">Most chosen</span>}
+                    {pkg.badge && <span className="chip chip-active">{pkg.badge}</span>}
                   </div>
                   <p className="mt-4 font-heading text-[28px] font-semibold text-ink">
                     ${pkg.price}
                     <span className="ml-1 font-sans text-[12px] font-normal text-muted">once</span>
                   </p>
                   <p className="mt-1 text-[12.5px] text-muted">
-                    Human rewrite · {pkg.deliveryHours}h delivery
+                    Human review · timing confirmed before payment
                   </p>
                   <ul className="mt-4 space-y-2 text-[13px] text-ink">
                     {pkg.features.slice(1, 5).map((f) => (
@@ -643,8 +642,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
               Three things you have been told that are not true.
             </h2>
             <p className="mt-4 text-[14.5px] leading-relaxed text-muted">
-              We would rather correct the industry than repeat it. Every correction links to the
-              source it came from.
+              We distinguish product review prompts from research claims. The method page explains
+              the limits and research identifiers.
             </p>
             <button
               type="button"
@@ -686,7 +685,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenOrder, onO
         <div className="container-page flex flex-col items-start justify-between gap-6 py-14 sm:flex-row sm:items-center">
           <div className="max-w-[520px]">
             <h2 className="text-[26px] font-semibold leading-tight tracking-[-0.02em] text-paper sm:text-[32px]">
-              Find out what your resume actually says — in about a minute.
+              Inspect your resume before you send it.
             </h2>
             <p className="mt-2 text-[13.5px] text-paper/70">
               Free, no account, and your file never leaves your device.

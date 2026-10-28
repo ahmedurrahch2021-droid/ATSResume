@@ -3,29 +3,33 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { PageRoute, ResumeData } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ChecklistModal } from './components/ChecklistModal';
 import { HomePage } from './pages/HomePage';
-import { TemplatesPage } from './pages/TemplatesPage';
-import { PricingPage } from './pages/PricingPage';
-import { ExamplesPage } from './pages/ExamplesPage';
-import { FreeScorePage } from './pages/FreeScorePage';
-import { SuitePage } from './pages/SuitePage';
-import { HowItWorksPage } from './pages/HowItWorksPage';
-import { AboutPage } from './pages/AboutPage';
-import { FaqPage } from './pages/FaqPage';
-import { ContactPage } from './pages/ContactPage';
-import { OrderPage } from './pages/OrderPage';
-import { CoverLetterPage } from './pages/CoverLetterPage';
+import { PageErrorBoundary } from './components/PageErrorBoundary';
 import { UserAccount, INITIAL_GUEST_ACCOUNT } from './types/auth';
 import { AuthModal } from './components/AuthModal';
 import { useLocation, useNavigate } from 'react-router';
 import { ROUTE_META, ROUTE_PATHS, routeFromPath } from './routes';
 import { type ResumeDraft } from './utils/resumeDraft';
 import { editorSearch, type EditorTarget } from './utils/resumeActions';
+
+// Tools and document libraries are loaded when needed, not on every phone's
+// first visit. Prerender imports the page components directly, preserving HTML.
+const TemplatesPage = lazy(() => import('./pages/TemplatesPage').then((module) => ({ default: module.TemplatesPage })));
+const PricingPage = lazy(() => import('./pages/PricingPage').then((module) => ({ default: module.PricingPage })));
+const ExamplesPage = lazy(() => import('./pages/ExamplesPage').then((module) => ({ default: module.ExamplesPage })));
+const FreeScorePage = lazy(() => import('./pages/FreeScorePage').then((module) => ({ default: module.FreeScorePage })));
+const SuitePage = lazy(() => import('./pages/SuitePage').then((module) => ({ default: module.SuitePage })));
+const HowItWorksPage = lazy(() => import('./pages/HowItWorksPage').then((module) => ({ default: module.HowItWorksPage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then((module) => ({ default: module.AboutPage })));
+const FaqPage = lazy(() => import('./pages/FaqPage').then((module) => ({ default: module.FaqPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })));
+const OrderPage = lazy(() => import('./pages/OrderPage').then((module) => ({ default: module.OrderPage })));
+const CoverLetterPage = lazy(() => import('./pages/CoverLetterPage').then((module) => ({ default: module.CoverLetterPage })));
 
 export default function App() {
   const location = useLocation();
@@ -34,6 +38,7 @@ export default function App() {
   const [checklistModalOpen, setChecklistModalOpen] = useState<boolean>(false);
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
   const [orderPackageId, setOrderPackageId] = useState<'starter' | 'boost' | 'full'>('boost');
+  const [orderUrgent, setOrderUrgent] = useState(false);
   const [preloadedOrderData, setPreloadedOrderData] = useState<{ resume: string; jd: string } | undefined>(undefined);
   const [loadedTemplateResumeData, setLoadedTemplateResumeData] = useState<ResumeData | null>(null);
   const [draftImport, setDraftImport] = useState<ResumeDraft | null>(null);
@@ -46,11 +51,18 @@ export default function App() {
     if (meta?.title) document.title = meta.title;
   }, [currentPage]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname]);
+
   // User Account state
   const [userAccount, setUserAccount] = useState<UserAccount>(() => {
     try {
       const saved = localStorage.getItem('atsresume_user_account');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const account = JSON.parse(saved);
+        if (account && typeof account.displayName === 'string' && typeof account.email === 'string' && typeof account.country === 'string' && Array.isArray(account.savedResumes)) return { ...account, photoUrl: undefined, isLoggedIn: account.isLoggedIn === true };
+      }
     } catch {
       // fallback
     }
@@ -61,8 +73,9 @@ export default function App() {
     setUserAccount(account);
     try {
       localStorage.setItem('atsresume_user_account', JSON.stringify(account));
+      return true;
     } catch {
-      // ignore
+      return false;
     }
   };
 
@@ -93,18 +106,19 @@ export default function App() {
 
   const handleOpenOrder = (
     packageId: 'starter' | 'boost' | 'full' = 'boost',
-    preloadedData?: { resume: string; jd: string }
+    preloadedData?: { resume: string; jd: string },
+    urgent = false,
   ) => {
     setOrderPackageId(packageId);
-    if (preloadedData) {
-      setPreloadedOrderData(preloadedData);
-    }
+    setPreloadedOrderData(preloadedData);
+    setOrderUrgent(urgent);
     navigate(ROUTE_PATHS.order);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-paper text-ink font-sans antialiased selection:bg-accent selection:text-white">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       {/* Sticky Navigation */}
       <Navbar
         currentPage={currentPage}
@@ -116,7 +130,9 @@ export default function App() {
       />
 
       {/* Main Page Routing */}
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="min-w-0 flex-1">
+        <PageErrorBoundary key={location.pathname}>
+        <Suspense fallback={<div role="status" className="container-page py-12 text-muted">Opening page…</div>}>
         {currentPage === 'home' && (
           <HomePage
             onNavigate={handleNavigate}
@@ -152,7 +168,7 @@ export default function App() {
 
         {currentPage === 'pricing' && (
           <PricingPage
-            onSelectPlan={(pkg) => handleOpenOrder(pkg)}
+            onSelectPlan={(pkg, urgent) => handleOpenOrder(pkg, undefined, urgent)}
           />
         )}
 
@@ -202,10 +218,13 @@ export default function App() {
         {currentPage === 'order' && (
           <OrderPage
             initialPackageId={orderPackageId}
+            initialUrgent={orderUrgent}
             preloadedData={preloadedOrderData}
             onBackToPricing={() => handleNavigate('pricing')}
           />
         )}
+        </Suspense>
+        </PageErrorBoundary>
       </main>
 
       {/* Authentication Modal */}
@@ -213,6 +232,7 @@ export default function App() {
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
+        account={userAccount}
       />
 
       {/* Lead Magnet Checklist Modal */}

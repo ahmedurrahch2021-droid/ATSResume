@@ -14,6 +14,8 @@
 - Public pricing remains the existing one-time $10 / $25 / $35 human-service packages, with availability and scope confirmed before payment. Proposed subscriptions, quotas, cloud accounts and payment integrations below are roadmap items, not shipped entitlements.
 - Country controls do not assert universal photo or biography requirements. Follow the particular employer or application portal; government forms are not interchangeable with corporate resumes.
 - The owner will delete the AI Studio app when the replacement is complete. No staging `noindex` change is requested.
+- Mobile/reliability sign-off is tracked in `QUALITY_REVIEW.md`. The full ecosystem is not complete; roadmap copy must not describe planned integrations as shipped.
+- Warning ink is now `#7b5c24` (same Warm Paper hue family) to pass small-text contrast on the warning surface. The prior `#8a6a2f` measured below 4.5:1.
 
 ---
 
@@ -80,7 +82,7 @@ The homepage sells the outcome. The workspace holds the tools. Nobody is shown a
 | `accent-line` | `#c5a99a` | Decorative rules, input borders |
 | `success` | `#34614d` | Pass, checkmarks |
 | `success-soft` | `#e9f0e9` | Pass backgrounds |
-| `warning` | `#8a6a2f` | Caution (added for check states) |
+| `warning` | `#7b5c24` | Caution; contrast-corrected for small text |
 | `warning-soft` | `#f6efdf` | Caution backgrounds |
 | `danger` | `#8c3b32` | Fail |
 | `danger-soft` | `#f7e8e5` | Fail backgrounds |
