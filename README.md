@@ -73,6 +73,12 @@ In both cases: **do not add a catch-all rewrite to `/index.html`**. That rule wo
 
 `dist/` is generated and gitignored; it must be built on every deploy, never committed.
 
+### Dependency lockfiles
+
+Both `package-lock.json` and `bun.lock` describe the required app, document-reader and test packages. The npm lock is the version baseline; regenerate the Bun lock with `bun pm migrate --force` after a deliberate npm dependency change, then verify a frozen install. Do not replace either lock with an older AI Studio starter-project lockfile.
+
+The current Bun version 1 lockfile was generated and tested using Bun 1.3.14. A clean `bun install --frozen-lockfile --ignore-scripts`, `bun run lint`, `bun run test:resume`, `bun run build` and `bun run test:browser` passed. Node remains required for the build scripts. See `docs/QUALITY_REVIEW.md` for verification scope.
+
 ## Honesty rules for this codebase
 
 - No invented testimonials, user counts, scores or success rates.
