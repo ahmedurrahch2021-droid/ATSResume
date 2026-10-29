@@ -1,4 +1,4 @@
-import type { DiagnosticRequest, DiagnosticResponse } from '../src/types/ai';
+import type { DiagnosticRequest, DiagnosticResponse, ChatRequest, ChatResponse } from '../src/types/ai';
 import { isTargetCountry } from '../src/types/countryNorms';
 import { getCountryProfile } from '../src/data/targetCountries';
 import { sourcesFor } from '../src/data/resumeSources';
@@ -93,6 +93,119 @@ export function createDiagnosticService(options: { apiKey?: string; model?: stri
         return coachFallback(request, failure.reason);
       } finally {
         if (onAbort) signal.removeEventListener('abort', onAbort);
+      }
+    },
+    async runChat(chatReq: ChatRequest, cancelled?: AbortSignal): Promise<ChatResponse> {
+      const countryProfile = getCountryProfile(chatReq.countryNorm);
+      const evidence = sourcesFor(countryProfile.sourceIds).map((s) => `${s.id}: ${s.publisher}. ${s.scope}`).join('\n');
+
+      const systemInstruction = `You are ATS Resume Lab's senior recruitment architect and AI career coach.
+You provide evidence-grounded, honest resume feedback, ATS advice, and wording suggestions.
+CRITICAL HONESTY RULES:
+1. Ground every recommendation in verified ATS reality: single-column parsing, explicit keyword stems, and recruiter 6-second scanability.
+2. NEVER cite debunked myths (e.g. NEVER claim "75% of resumes are rejected by ATS").
+3. FACT PRESERVATION: Never invent fake employer names, dates, degrees, certifications, or unverified technical achievements.
+4. If a bullet lacks quantifiable scale, formulate the structure using Google's XYZ formula:
+   "Accomplished [X], as measured by [Y], by doing [Z]"
+   and ask the user for their real-life estimate or team size.
+5. NO AI BUZZWORDS OR FLATTERY: Do not say "Certainly!", "Impressive experience!", or "I have optimized your resume!". Output structured, clinical, high-impact advice.
+6. REGIONAL & ROLE NORMS:
+   - Target country: ${countryProfile.name}. ${countryProfile.spelling}
+   - ${countryProfile.guidance}
+Evidence sources:
+${evidence}
+
+OUTPUT FORMAT:
+Respond with valid JSON:
+{
+  "replyText": "Helpful direct response explaining your feedback or answer concisely",
+  "suggestedSnippet": "Exact revised wording for the bullet/summary/section if an edit was requested, or null",
+  "rationale": "One-sentence rationale citing parser or recruiter behavior, or null",
+  "clarifyingQuestion": "A targeted question if a key number/fact is missing, or null",
+  "quickActions": ["Make it punchier", "Give 3 variants", "Explain ATS mechanism"]
+}`;
+
+      if (!configured) {
+        return {
+          replyText: "AI assistance is in offline preview mode. Workday, Greenhouse, and Taleo parsers prioritize single-column documents with clear action verbs and quantifiable outcomes.",
+          suggestedSnippet: chatReq.currentText ? chatReq.currentText.replace(/\b(responsible for|worked on|assisted with)\b/gi, 'Spearheaded and delivered') : undefined,
+          rationale: "Replaced passive duty verbs with high-velocity leadership verbs.",
+          quickActions: ["Make it punchier", "Give 3 variants", "Explain ATS mechanism"],
+          isFallback: true,
+        };
+      }
+
+      // Build conversation contents
+      const turns = (chatReq.messages || []).map((m) => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.text }]
+      }));
+
+      const contextPrefix = chatReq.currentText
+        ? `[Active Context: Target Role: ${chatReq.targetRole || 'Not specified'}, Country: ${countryProfile.name}, Section: ${chatReq.sectionType || 'general'}\nCurrent Text: """${chatReq.currentText}"""\nDetected Flaws: ${(chatReq.flawsDetected || []).join('; ') || 'None'}]\n\n`
+        : '';
+
+      if (turns.length === 0) {
+        turns.push({ role: 'user', parts: [{ text: `${contextPrefix}Hello, please review my resume text.` }] });
+      } else {
+        const last = turns[turns.length - 1];
+        if (last.role === 'user') {
+          last.parts[0].text = `${contextPrefix}${last.parts[0].text}`;
+        }
+      }
+
+      const timeout = AbortSignal.timeout(options.timeoutMs ?? 20_000);
+      const signal = cancelled ? AbortSignal.any([timeout, cancelled]) : timeout;
+
+      try {
+        const { GoogleGenAI, ThinkingLevel } = await import('@google/genai');
+        client ??= new GoogleGenAI({ apiKey: key });
+        const response = await client.models.generateContent({
+          model,
+          contents: turns,
+          config: {
+            systemInstruction,
+            responseMimeType: 'application/json',
+            temperature: 0.25,
+            maxOutputTokens: 2048,
+            abortSignal: signal,
+            ...(model.replace(/^models\//, '') === 'gemini-3.8-flash' ? { thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } } : {}),
+            responseJsonSchema: {
+              type: 'object',
+              properties: {
+                replyText: { type: 'string' },
+                suggestedSnippet: { type: ['string', 'null'] },
+                rationale: { type: ['string', 'null'] },
+                clarifyingQuestion: { type: ['string', 'null'] },
+                quickActions: { type: 'array', items: { type: 'string' } }
+              },
+              required: ['replyText'],
+              additionalProperties: false
+            }
+          }
+        });
+
+        const raw = response.text?.trim() || '';
+        const parsed = JSON.parse(raw);
+        return {
+          replyText: parsed.replyText || 'Analysis complete.',
+          suggestedSnippet: parsed.suggestedSnippet || undefined,
+          rationale: parsed.rationale || undefined,
+          clarifyingQuestion: parsed.clarifyingQuestion || undefined,
+          quickActions: Array.isArray(parsed.quickActions) && parsed.quickActions.length > 0 
+            ? parsed.quickActions 
+            : ["Make it punchier", "Give 3 variants", "Explain ATS mechanism"],
+          isFallback: false,
+        };
+      } catch (err) {
+        console.warn('Gemini chat error, returning fallback:', err);
+        return {
+          replyText: "Workday and Greenhouse keyword scanners prioritize explicit leadership verbs over passive duty descriptions. Ensure every bullet links an action to a measured business outcome.",
+          suggestedSnippet: chatReq.currentText ? chatReq.currentText.replace(/\b(responsible for|worked on|assisted with)\b/gi, 'Spearheaded and delivered') : undefined,
+          rationale: "Replaced passive phrasing with direct outcome verb.",
+          quickActions: ["Make it punchier", "Give 3 variants", "Explain ATS mechanism"],
+          isFallback: true,
+        };
       }
     },
   };

@@ -30,3 +30,34 @@ export interface DiagnosticResponse {
   retryAfterSeconds?: number;
 }
 export interface CoachTarget { id: string; label: string; text: string; sectionType: DiagnosticSection }
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  text: string;
+  suggestedSnippet?: string;
+  rationale?: string;
+  clarifyingQuestion?: string | null;
+  quickActions?: string[];
+  createdAt: string;
+}
+
+export interface ChatRequest {
+  messages: CoachTurn[];
+  currentText?: string;
+  sectionType?: DiagnosticSection;
+  targetRole?: string;
+  countryNorm?: TargetCountry;
+  flawsDetected?: string[];
+  userInstruction?: string;
+}
+
+export interface ChatResponse {
+  replyText: string;
+  suggestedSnippet?: string;
+  rationale?: string;
+  clarifyingQuestion?: string | null;
+  quickActions?: string[];
+  usage?: CoachUsage;
+  isFallback?: boolean;
+}

@@ -42,6 +42,45 @@ export function createApp(options: { distPath?: string; service?: ReturnType<typ
     catch { if (!res.headersSent && !res.destroyed) res.status(503).json({ ...coachFallback(request, 'provider-unavailable'), usage: permit.usage }); }
     finally { permit.release(); }
   });
+  app.post('/api/gemini/chat', async (req, res) => {
+    const origin = req.get('origin');
+    if (origin) {
+      try { if (new URL(origin).host !== req.get('host')) { res.status(403).json({ error: 'Use the coach from this site.' }); return; } }
+      catch { res.status(400).json({ error: 'Invalid request origin.' }); return; }
+    }
+    const body = req.body;
+    if (!body || !Array.isArray(body.messages)) {
+      res.status(400).json({ error: 'messages array is required.' });
+      return;
+    }
+    const permit = limits.acquire(clientId(req.ip));
+    if (!permit.allowed) {
+      res.setHeader('Retry-After', String(permit.retryAfter));
+      res.status(429).json({
+        replyText: 'AI assistant is currently at daily capacity. Please retry shortly.',
+        quickActions: ['Retry now', 'Review offline rules'],
+        retryAfterSeconds: permit.retryAfter,
+        usage: permit.usage,
+      });
+      return;
+    }
+    const controller = new AbortController();
+    res.on('close', () => { if (!res.writableEnded) controller.abort(); });
+    try {
+      const response = await service.runChat(body, controller.signal);
+      res.json({ ...response, usage: permit.usage });
+    } catch {
+      if (!res.headersSent && !res.destroyed) {
+        res.status(503).json({
+          replyText: 'AI assistant is temporarily unavailable. Single-column layouts with active verbs remain the safest ATS standard.',
+          quickActions: ['Retry now'],
+          usage: permit.usage,
+        });
+      }
+    } finally {
+      permit.release();
+    }
+  });
   app.use('/api', (_req, res) => res.status(404).json({ error: 'API route not found.' }));
   const errors: ErrorRequestHandler = (error, _req, res, _next) => {
     res.status(error?.type === 'entity.too.large' ? 413 : error instanceof SyntaxError ? 400 : 500).json({ error: error?.type === 'entity.too.large' ? 'Request is too large.' : 'The request could not be processed.' });

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -16,6 +16,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { ROUTE_META, ROUTE_PATHS, routeFromPath } from './routes';
 import { type ResumeDraft } from './utils/resumeDraft';
 import { editorSearch, type EditorTarget } from './utils/resumeActions';
+import { GeminiChatWidget } from './components/ai/GeminiChatWidget';
 
 // Tools and document libraries are loaded when needed, not on every phone's
 // first visit. Prerender imports the page components directly, preserving HTML.
@@ -255,6 +256,9 @@ export default function App() {
         onOpenChecklist={() => setChecklistModalOpen(true)}
         onOpenOrder={(pkg) => handleOpenOrder(pkg || 'boost')}
       />
+
+      {/* Global Multi-Turn AI Career & Writing Coach */}
+      <GeminiChatWidget mode="floating" />
     </div>
   );
 }
